@@ -1,0 +1,96 @@
+/*
+ * Copyright 2016 Samsung Electronics Co., LTD
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.android.application'
+apply plugin: XmlValidator
+
+System.setProperty("appName", "sxr-3dcursor")
+
+if(file("../../common.gradle").exists()) {
+    apply from: '../../common.gradle'
+}
+else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../../sxrsdk-demos/common.gradle'
+}
+
+android {
+    defaultConfig {
+        applicationId "org.gearvrf.io.cursor"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    if(project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':3DCursorLibrary')) {
+            implementation project (':3DCursorLibrary')
+        } else {
+            implementation(name: '3DCursorLibrary-debug', ext: 'aar')
+        }
+        if (findProject(':GearWearIoDevice')) {
+            implementation project (':GearWearIoDevice')
+        } else {
+            implementation(name: 'GearWearIoDevice-debug', ext: 'aar')
+        }
+        if (findProject(':gearwearlibrary')) {
+            implementation project (':gearwearlibrary')
+        } else {
+            implementation(name: 'gearwearlibrary-debug', ext: 'aar')
+        }
+    } else {
+        implementation "org.gearvrf:3DCursorLibrary:$gearvrfVersion"
+        implementation "org.gearvrf:GearWearIoDevice:$gearvrfVersion"
+        implementation "org.gearvrf:gearwearlibrary:$gearvrfVersion"
+    }
+    //_VENDOR_TODO_ add the device to sxr-3dcursor here
+    //compile project(':IODevices:io_template')
+    //compile project(':IODevices:io_hand_template')
+}
+
+//TODO export plugin to jar
+import javax.xml.XMLConstants
+import javax.xml.transform.stream.StreamSource
+import javax.xml.validation.SchemaFactory
+
+class XmlValidator implements Plugin<Project> {
+    void apply(Project project) {
+        project.task('validateXml') {
+            doLast {
+                println 'Validating settings.xml file'
+                File xml = project.file('src/main/assets/settings.xml');
+                File xsd = project.file('src/main/res/xml/settings_schema.xsd');
+
+                def factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                def schema = factory.newSchema(xsd);
+                def validator = schema.newValidator();
+                validator.validate(new StreamSource(xml));
+            }
+        }
+    }
+}
+
+preBuild.dependsOn validateXml

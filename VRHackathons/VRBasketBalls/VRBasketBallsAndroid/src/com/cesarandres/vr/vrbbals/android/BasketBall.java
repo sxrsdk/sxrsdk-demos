@@ -3,28 +3,28 @@ package com.cesarandres.vr.vrbbals.android;
 import java.io.IOException;
 import java.util.Random;
 
-import org.gearvrf.GVRAndroidResource;
-import org.gearvrf.GVRContext;
-import org.gearvrf.GVRMesh;
-import org.gearvrf.GVRSceneObject;
-import org.gearvrf.GVRTexture;
-import org.gearvrf.animation.GVRAnimation;
-import org.gearvrf.animation.GVRAnimationEngine;
-import org.gearvrf.animation.GVRRepeatMode;
-import org.gearvrf.animation.GVRRotationByAxisWithPivotAnimation;
+import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRContext;
+import com.samsungxr.SXRMesh;
+import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRTexture;
+import com.samsungxr.animation.SXRAnimation;
+import com.samsungxr.animation.SXRAnimationEngine;
+import com.samsungxr.animation.SXRRepeatMode;
+import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 
 public class BasketBall {
 
-	protected GVRSceneObject vrObject;
-	protected GVRMesh mesh;
-	protected GVRTexture texture;
+	protected SXRSceneObject vrObject;
+	protected SXRMesh mesh;
+	protected SXRTexture texture;
 
-	protected GVRSceneObject vrpObject;
-	protected GVRMesh pmesh;
-	protected GVRTexture ptexture;
+	protected SXRSceneObject vrpObject;
+	protected SXRMesh pmesh;
+	protected SXRTexture ptexture;
 
 	protected static Random rnd = new Random();
-	protected GVRAnimationEngine mAnimationEngine;
+	protected SXRAnimationEngine mAnimationEngine;
 
 	public float duration;
 
@@ -32,22 +32,22 @@ public class BasketBall {
 		this.duration = 1f;
 	}
 
-	public void init(GVRContext vrcontext, GVRAnimationEngine mAnimationEngine,
+	public void init(SXRContext vrcontext, SXRAnimationEngine mAnimationEngine,
 			int index) {
 		try {
 			this.mAnimationEngine = mAnimationEngine;
-			mesh = vrcontext.loadMesh(new GVRAndroidResource(vrcontext,
+			mesh = vrcontext.loadMesh(new SXRAndroidResource(vrcontext,
 					"sphere.obj"));
-			texture = vrcontext.loadTexture(new GVRAndroidResource(vrcontext,
+			texture = vrcontext.loadTexture(new SXRAndroidResource(vrcontext,
 					"basketbal.jpg"));
-			vrObject = new GVRSceneObject(vrcontext, mesh, texture);
+			vrObject = new SXRSceneObject(vrcontext, mesh, texture);
 			vrObject.getTransform().setScale(0.2f, 0.2f, 0.2f);
 
-			pmesh = vrcontext.loadMesh(new GVRAndroidResource(vrcontext,
+			pmesh = vrcontext.loadMesh(new SXRAndroidResource(vrcontext,
 					"cube.obj"));
-			ptexture = vrcontext.loadTexture(new GVRAndroidResource(vrcontext,
+			ptexture = vrcontext.loadTexture(new SXRAndroidResource(vrcontext,
 					"mars_1k_color.jpg"));
-			vrpObject = new GVRSceneObject(vrcontext, pmesh, ptexture);
+			vrpObject = new SXRSceneObject(vrcontext, pmesh, ptexture);
 			vrpObject.getTransform().setScale(0.1f, 4f, 0.1f);
 			vrpObject.getTransform().setPosition(0f, -4f, 0f);
 
@@ -87,25 +87,25 @@ public class BasketBall {
 		this.vrObject.getTransform().setPositionZ(z);
 	}
 
-	public GVRSceneObject getVrObject() {
+	public SXRSceneObject getVrObject() {
 		return vrObject;
 	}
 
-	public void setup(GVRAnimation animation) {
-		animation.setRepeatMode(GVRRepeatMode.REPEATED).setRepeatCount(-1);
+	public void setup(SXRAnimation animation) {
+		animation.setRepeatMode(SXRRepeatMode.REPEATED).setRepeatCount(-1);
 		mAnimationEngine.start(animation);
 	}
 
-	public void counterClockwise(GVRSceneObject object, float duration) {
-		setup(new GVRRotationByAxisWithPivotAnimation( //
+	public void counterClockwise(SXRSceneObject object, float duration) {
+		setup(new SXRRotationByAxisWithPivotAnimation( //
 				object, duration, 360.0f, //
 				0.0f, 1.0f, 0.0f, //
 				object.getTransform().getPositionX(), object.getTransform()
 						.getPositionY(), object.getTransform().getPositionZ()));
 	}
 
-	public void clockwise(GVRSceneObject object, float duration) {
-		setup(new GVRRotationByAxisWithPivotAnimation( //
+	public void clockwise(SXRSceneObject object, float duration) {
+		setup(new SXRRotationByAxisWithPivotAnimation( //
 				object, duration, -360.0f, //
 				0.0f, 1.0f, 0.0f, //
 				object.getTransform().getPositionX(), object.getTransform()

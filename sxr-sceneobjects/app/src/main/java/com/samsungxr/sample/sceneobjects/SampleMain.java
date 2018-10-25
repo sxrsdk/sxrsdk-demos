@@ -1,0 +1,205 @@
+/* Copyright 2015 Samsung Electronics Co., LTD
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.samsungxr.sample.sceneobjects;
+
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+import android.util.Log;
+import android.view.Gravity;
+import android.webkit.WebView;
+
+import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRContext;
+import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMaterial;
+import com.samsungxr.SXRScene;
+import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRTexture;
+import com.samsungxr.scene_objects.SXRCameraSceneObject;
+import com.samsungxr.scene_objects.SXRConeSceneObject;
+import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.scene_objects.SXRCylinderSceneObject;
+import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.scene_objects.SXRVideoSceneObject;
+import com.samsungxr.scene_objects.SXRVideoSceneObject.SXRVideoType;
+import com.samsungxr.scene_objects.SXRViewSceneObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SampleMain extends SXRMain {
+    private static final String TAG = SampleMain.class.getSimpleName();
+    private List<SXRSceneObject> objectList = new ArrayList<SXRSceneObject>();
+
+    private int currentObject = 0;
+    private SceneObjectActivity mActivity;
+
+    SampleMain(SceneObjectActivity activity) {
+        mActivity = activity;
+    }
+
+    @Override
+    public void onInit(SXRContext gvrContext) throws IOException {
+
+        SXRScene scene = gvrContext.getMainScene();
+
+        // load texture asynchronously
+        SXRTexture futureTexture = gvrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+                        R.drawable.gearvr_logo));
+        SXRTexture futureTextureTop = gvrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+                        R.drawable.top));
+        SXRTexture futureTextureBottom = gvrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+                        R.drawable.bottom));
+        ArrayList<SXRTexture> futureTextureList = new ArrayList<SXRTexture>(
+                3);
+        futureTextureList.add(futureTextureTop);
+        futureTextureList.add(futureTexture);
+        futureTextureList.add(futureTextureBottom);
+
+        // setup material
+        SXRMaterial material = new SXRMaterial(gvrContext);
+        material.setMainTexture(futureTexture);
+
+        // create a scene object (this constructor creates a rectangular scene
+        // object that uses the standard 'unlit' shader)
+        SXRSceneObject quadObject = new SXRSceneObject(gvrContext, 4.0f, 2.0f);
+        SXRCubeSceneObject cubeObject = new SXRCubeSceneObject(gvrContext,
+                true, material);
+        SXRSphereSceneObject sphereObject = new SXRSphereSceneObject(
+                gvrContext, true, material);
+        SXRCylinderSceneObject cylinderObject = new SXRCylinderSceneObject(
+                gvrContext, true, material);
+        SXRConeSceneObject coneObject = new SXRConeSceneObject(gvrContext,
+                true, material);
+        SXRViewSceneObject webViewObject = createWebViewObject(gvrContext);
+        SXRCameraSceneObject cameraObject = null;
+        try {
+            cameraObject = new SXRCameraSceneObject(gvrContext, 3.6f, 2.0f);
+            cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
+        } catch (SXRCameraSceneObject.SXRCameraAccessException e) {
+            // Cannot open camera
+            Log.e(TAG, "Cannot open the camera",e);
+        }
+
+        SXRVideoSceneObject videoObject = createVideoObject(gvrContext);
+        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(gvrContext, "Hello World!");
+        textViewSceneObject.setGravity(Gravity.CENTER);
+        textViewSceneObject.setTextSize(12);
+        objectList.add(quadObject);
+        objectList.add(cubeObject);
+        objectList.add(sphereObject);
+        objectList.add(cylinderObject);
+        objectList.add(coneObject);
+        objectList.add(webViewObject);
+        if(cameraObject != null) {
+            objectList.add(cameraObject);
+        }
+        objectList.add(videoObject);
+        objectList.add(textViewSceneObject);
+
+        // turn all objects off, except the first one
+        int listSize = objectList.size();
+        for (int i = 1; i < listSize; i++) {
+            objectList.get(i).setEnable(false);
+        }
+
+        quadObject.getRenderData().setMaterial(material);
+
+        // set the scene object positions
+        quadObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
+        cubeObject.getTransform().setPosition(0.0f, -1.0f, -3.0f);
+        cylinderObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
+        coneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
+        sphereObject.getTransform().setPosition(0.0f, -1.0f, -3.0f);
+        if (cameraObject != null)
+            cameraObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
+        videoObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
+        textViewSceneObject.getTransform().setPosition(0.0f, 0.0f, -2.0f);
+
+        // add the scene objects to the scene graph.
+        // deal differently with camera scene object: we want it to move
+        // with the camera.
+        for (SXRSceneObject object : objectList) {
+            if (object instanceof SXRCameraSceneObject) {
+                scene.getMainCameraRig().addChildObject(object);
+            } else {
+                scene.addSceneObject(object);
+            }
+        }
+    }
+
+    private SXRVideoSceneObject createVideoObject(SXRContext gvrContext) throws IOException {
+        final AssetFileDescriptor afd = gvrContext.getActivity().getAssets().openFd("tron.mp4");
+        final MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        mediaPlayer.prepare();
+        SXRVideoSceneObject video = new SXRVideoSceneObject(gvrContext, 8.0f,
+                4.0f, mediaPlayer, SXRVideoType.MONO);
+        video.setName("video");
+        return video;
+    }
+
+    private SXRViewSceneObject createWebViewObject(SXRContext gvrContext) {
+        WebView webView = mActivity.getWebView();
+        SXRViewSceneObject webObject = new SXRViewSceneObject(gvrContext,
+                webView, 8.0f, 4.0f);
+        webObject.setName("web view object");
+        webObject.getRenderData().getMaterial().setOpacity(1.0f);
+        webObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
+
+        return webObject;
+    }
+
+    public void onPause() {
+        if (objectList.isEmpty()) {
+            return;
+        }
+
+        SXRSceneObject object = objectList.get(currentObject);
+        if (object instanceof SXRVideoSceneObject) {
+            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+            video.getMediaPlayer().pause();
+        }
+    }
+
+    public void onTap() {
+        SXRSceneObject object = objectList.get(currentObject);
+        object.setEnable(false);
+        if (object instanceof SXRVideoSceneObject) {
+            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+            video.getMediaPlayer().pause();
+        }
+
+        currentObject++;
+        int totalObjects = objectList.size();
+        if (currentObject >= totalObjects) {
+            currentObject = 0;
+        }
+
+        object = objectList.get(currentObject);
+        if (object instanceof SXRVideoSceneObject) {
+            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+            video.getMediaPlayer().start();
+        }
+
+        object.setEnable(true);
+    }
+}

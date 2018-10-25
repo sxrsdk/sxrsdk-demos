@@ -5,27 +5,27 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 
-import org.gearvrf.FutureWrapper;
-import org.gearvrf.GVRAndroidResource;
-import org.gearvrf.GVRCameraRig;
-import org.gearvrf.GVRContext;
-import org.gearvrf.GVREyePointeeHolder;
-import org.gearvrf.GVRMaterial;
-import org.gearvrf.GVRMesh;
-import org.gearvrf.GVRPicker;
-import org.gearvrf.GVRScene;
-import org.gearvrf.GVRSceneObject;
-import org.gearvrf.GVRScript;
-import org.gearvrf.GVRTexture;
-import org.gearvrf.animation.GVRAnimationEngine;
-import org.gearvrf.scene_objects.GVRTextViewSceneObject;
-import org.gearvrf.scene_objects.GVRTextViewSceneObject.IntervalFrequency;
+import com.samsungxr.FutureWrapper;
+import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRCameraRig;
+import com.samsungxr.SXRContext;
+import com.samsungxr.SXREyePointeeHolder;
+import com.samsungxr.SXRMaterial;
+import com.samsungxr.SXRMesh;
+import com.samsungxr.SXRPicker;
+import com.samsungxr.SXRScene;
+import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRScript;
+import com.samsungxr.SXRTexture;
+import com.samsungxr.animation.SXRAnimationEngine;
+import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.scene_objects.SXRTextViewSceneObject.IntervalFrequency;
 
 import android.graphics.Color;
 
 import com.cesarandres.vr.vrbbals.android.MainActivity.COMMANDS;
 
-public class BallSpinnerScript extends GVRScript {
+public class BallSpinnerScript extends SXRScript {
 
 	private static int GAME_OVER_REVOLUTION_DURATION = 3;
 	private static int STARTING_BALLS = 3;
@@ -36,12 +36,12 @@ public class BallSpinnerScript extends GVRScript {
 
 	private MainActivity core;
 
-	private GVRTextViewSceneObject textPanel;
-	private GVRContext context;
-	private GVRScene scene;
-	private GVRSceneObject root;
-	private GVRCameraRig mainCamera;
-	private GVRAnimationEngine animationEngine;
+	private SXRTextViewSceneObject textPanel;
+	private SXRContext context;
+	private SXRScene scene;
+	private SXRSceneObject root;
+	private SXRCameraRig mainCamera;
+	private SXRAnimationEngine animationEngine;
 
 	private boolean connected = false;
 
@@ -59,7 +59,7 @@ public class BallSpinnerScript extends GVRScript {
 	}
 
 	@Override
-	public void onInit(GVRContext ctx) throws Throwable {
+	public void onInit(SXRContext ctx) throws Throwable {
 
 		context = ctx;
 		scene = ctx.getMainScene();
@@ -69,26 +69,26 @@ public class BallSpinnerScript extends GVRScript {
 		float g = 5f / 255f;
 		float b = 55f / 255f;
 
-		FutureWrapper<GVRMesh> futureQuadMesh = new FutureWrapper<GVRMesh>(
+		FutureWrapper<SXRMesh> futureQuadMesh = new FutureWrapper<SXRMesh>(
 				ctx.createQuad(CUBE_WIDTH, CUBE_WIDTH));
 
-		Future<GVRTexture> futureCubemapTexture = ctx
-				.loadFutureCubemapTexture(new GVRAndroidResource(ctx,
+		Future<SXRTexture> futureCubemapTexture = ctx
+				.loadFutureCubemapTexture(new SXRAndroidResource(ctx,
 						R.raw.beach));
 
-		GVRMaterial cubemapMaterial = new GVRMaterial(ctx,
-				GVRMaterial.GVRShaderType.Cubemap.ID);
+		SXRMaterial cubemapMaterial = new SXRMaterial(ctx,
+				SXRMaterial.SXRShaderType.Cubemap.ID);
 		cubemapMaterial.setMainTexture(futureCubemapTexture);
 
 		// surrounding cube
-		GVRSceneObject frontFace = new GVRSceneObject(ctx, futureQuadMesh,
+		SXRSceneObject frontFace = new SXRSceneObject(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		frontFace.getRenderData().setMaterial(cubemapMaterial);
 		frontFace.setName("front");
 		scene.addSceneObject(frontFace);
 		frontFace.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.5f);
 
-		GVRSceneObject backFace = new GVRSceneObject(ctx, futureQuadMesh,
+		SXRSceneObject backFace = new SXRSceneObject(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		backFace.getRenderData().setMaterial(cubemapMaterial);
 		backFace.setName("back");
@@ -96,7 +96,7 @@ public class BallSpinnerScript extends GVRScript {
 		backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
 		backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-		GVRSceneObject leftFace = new GVRSceneObject(ctx, futureQuadMesh,
+		SXRSceneObject leftFace = new SXRSceneObject(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		leftFace.getRenderData().setMaterial(cubemapMaterial);
 		leftFace.setName("left");
@@ -104,7 +104,7 @@ public class BallSpinnerScript extends GVRScript {
 		leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
 		leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
-		GVRSceneObject rightFace = new GVRSceneObject(ctx, futureQuadMesh,
+		SXRSceneObject rightFace = new SXRSceneObject(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		rightFace.getRenderData().setMaterial(cubemapMaterial);
 		rightFace.setName("right");
@@ -112,7 +112,7 @@ public class BallSpinnerScript extends GVRScript {
 		rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
 		rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
-		GVRSceneObject topFace = new GVRSceneObject(ctx, futureQuadMesh,
+		SXRSceneObject topFace = new SXRSceneObject(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		topFace.getRenderData().setMaterial(cubemapMaterial);
 		topFace.setName("top");
@@ -120,7 +120,7 @@ public class BallSpinnerScript extends GVRScript {
 		topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
 		topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-		GVRSceneObject bottomFace = new GVRSceneObject(ctx, futureQuadMesh,
+		SXRSceneObject bottomFace = new SXRSceneObject(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		bottomFace.getRenderData().setMaterial(cubemapMaterial);
 		bottomFace.setName("bottom");
@@ -131,9 +131,9 @@ public class BallSpinnerScript extends GVRScript {
 		animationEngine = context.getAnimationEngine();
 
 		// head-tracking pointer
-		GVRTexture pTexture = ctx.loadTexture(new GVRAndroidResource(ctx,
+		SXRTexture pTexture = ctx.loadTexture(new SXRAndroidResource(ctx,
 				"headtrackingpointer.png"));
-		GVRSceneObject headTracker = new GVRSceneObject(ctx, 0.05f, 0.05f,
+		SXRSceneObject headTracker = new SXRSceneObject(ctx, 0.05f, 0.05f,
 				pTexture);
 
 		headTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
@@ -146,10 +146,10 @@ public class BallSpinnerScript extends GVRScript {
 		mainCamera.getRightCamera().setBackgroundColor(r, g, b, 1.0f);
 		mainCamera.getTransform().setPosition(0f, 0f, 0f);
 
-		root = new GVRSceneObject(ctx);
+		root = new SXRSceneObject(ctx);
 		scene.addSceneObject(root);
 
-		textPanel = new GVRTextViewSceneObject(context, 7, 4, "");
+		textPanel = new SXRTextViewSceneObject(context, 7, 4, "");
 
 		// set the scene object position
 		textPanel.setTextColor(Color.GREEN);
@@ -228,7 +228,7 @@ public class BallSpinnerScript extends GVRScript {
 
 		switch (command) {
 		case LEFT:
-			for (GVREyePointeeHolder eph : GVRPicker.pickScene(context
+			for (SXREyePointeeHolder eph : SXRPicker.pickScene(context
 					.getMainScene())) {
 				for (BasketBall vel : ballPool) {
 					if (eph.getOwnerObject().equals(vel.getVrObject())) {
@@ -271,7 +271,7 @@ public class BallSpinnerScript extends GVRScript {
 					.setColor(1.0f, 1.0f, 1.0f);
 		}
 
-		for (GVREyePointeeHolder eph : GVRPicker.pickScene(context
+		for (SXREyePointeeHolder eph : SXRPicker.pickScene(context
 				.getMainScene())) {
 			eph.getOwnerObject()
 					.getRenderData()

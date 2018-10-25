@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+System.setProperty("appName", "sxr-widgetviewer")
+
+if(file("../../common.gradle").exists()) {
+    apply from: '../../common.gradle'
+}
+else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../../sxrsdk-demos/common.gradle'
+}
+
+android {
+    defaultConfig {
+        applicationId "org.gearvrf.GVRWidgetViewer"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets.main {
+        jni.srcDirs = [] // no auto generation of Android.mk
+        jniLibs.srcDir 'libs' // pre-compiled libraries
+    }
+}
+
+dependencies {
+    if(project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':widgetplugin')) {
+            implementation project (':widgetplugin')
+        } else {
+            implementation(name: 'widgetplugin-debug', ext: 'aar')
+        }
+    } else {
+        implementation "org.gearvrf:widgetplugin:$gearvrfVersion"
+    }
+}

@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+System.setProperty("appName", "sxr-bullet")
+
+if(file("../../common.gradle").exists()) {
+    apply from: '../../common.gradle'
+}
+else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../../sxrsdk-demos/common.gradle'
+}
+
+android {
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets.main {
+        jni.srcDirs = [] // no auto generation of Android.mk
+        jniLibs.srcDir 'jniLibs' // pre-compiled libraries
+    }
+}
+
+dependencies {
+    if(project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':sxr-physics')) {
+            implementation project(':sxr-physics')
+        } else {
+            debugImplementation(name: 'sxr-physics-debug', ext: 'aar')
+            releaseImplementation(name: 'sxr-physics-release', ext: 'aar')
+        }
+    } else {
+        implementation "com.samsungxr:sxr-physics:$sxrVersion"
+    }
+}
+
+
+
