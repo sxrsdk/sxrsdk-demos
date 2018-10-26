@@ -23,12 +23,12 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.ITouchEvents;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.utility.Log;
 import com.samsungxr.videoplayer.component.DefaultFadeableObject;
 import com.samsungxr.videoplayer.component.FadeableObject;
@@ -61,11 +61,11 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
     private SXRScene mScene;
     private SXRCursorController mCursorController;
     private VideoPlayer mVideoPlayer;
-    private SXRSceneObject mCurrentContainer;
+    private SXRNode mCurrentContainer;
     private FadeableObject mCurrentCursor, mParentCursor;
     private LabelCursor mLabelCursor;
     private Gallery mGallery;
-    private SXRSphereSceneObject mSkybox;
+    private SXRSphereNode mSkybox;
     private NetworkManager mNetworkManager;
 
     /**
@@ -93,7 +93,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mGallery = new Gallery(getSXRContext());
         mGallery.getTransform().setPositionZ(-8);
         mGallery.setOnGalleryEventListener(this);
-        mScene.addSceneObject(mGallery);
+        mScene.addNode(mGallery);
         mCurrentContainer = mGallery;
     }
 
@@ -102,7 +102,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mVideoPlayer.setControlWidgetAutoHide(true);
         mVideoPlayer.setPlayerListener(mOnPlayerListener);
         mVideoPlayer.setBackButtonClickListener(mBackButtonClickListener);
-        mScene.addSceneObject(mVideoPlayer);
+        mScene.addNode(mVideoPlayer);
         mVideoPlayer.setCursorObject(mParentCursor);
         mVideoPlayer.hide();
         mParentCursor.setEnable(true);
@@ -113,10 +113,10 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         int availableSkyboxes[] = {R.raw.skybox_a, R.raw.skybox_b, R.raw.skybox_c};
         int selectedSkybox = availableSkyboxes[new SecureRandom().nextInt(2)];
         SXRTexture texture = mContext.getAssetLoader().loadTexture(new SXRAndroidResource(mContext, selectedSkybox));
-        mSkybox = new SXRSphereSceneObject(mContext, 72, 144, false, texture);
+        mSkybox = new SXRSphereNode(mContext, 72, 144, false, texture);
         mSkybox.setName("sphere");
         mSkybox.getTransform().setScale(SCALE, SCALE, SCALE);
-        mScene.addSceneObject(mSkybox);
+        mScene.addNode(mSkybox);
     }
 
     private void initCursorController() {
@@ -147,7 +147,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mLabelCursor = new LabelCursor(mContext, 0.45f * WIDTH_VIDEO_PLAYER * 1.2f, 0.2f * WIDTH_VIDEO_PLAYER, text);
     }
 
-    private SXRSceneObject createCursor() {
+    private SXRNode createCursor() {
         createLabel();
         mCurrentCursor = new DefaultFadeableObject(
                 mContext,
@@ -172,7 +172,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         }
 
         @Override
-        public void onTouchStart(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
+        public void onTouchStart(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
 
             mVideoPlayer.showAllControls();
 

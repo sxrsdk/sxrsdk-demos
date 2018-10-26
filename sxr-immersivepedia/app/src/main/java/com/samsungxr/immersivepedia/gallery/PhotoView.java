@@ -27,13 +27,13 @@ import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.input.TouchPadInput;
 import com.samsungxr.immersivepedia.util.AudioClip;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 import com.samsungxr.io.SXRTouchPadGestureListener.Action;
 
-public class PhotoView extends FocusableSceneObject implements FocusListener {
+public class PhotoView extends FocusableNode implements FocusListener {
 
     private SXRContext sxrContext = null;
 
@@ -286,7 +286,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
     }
 
     @Override
-    public void gainedFocus(FocusableSceneObject object) {
+    public void gainedFocus(FocusableNode object) {
 
         if ((currentState == PHOTO_VIEW_CLOSED) && (this.PhotoItemListener != null)
                 && (this.PhotoItemListener.shouldHoverItem(this) == true))
@@ -294,14 +294,14 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
     }
 
     @Override
-    public void lostFocus(FocusableSceneObject object) {
+    public void lostFocus(FocusableNode object) {
         if ((currentState == PHOTO_VIEW_CLOSED) && (this.PhotoItemListener != null)
                 && (this.PhotoItemListener.shouldHoverItem(this) == true))
             this.normal();
     }
 
     @Override
-    public void inFocus(FocusableSceneObject object) {
+    public void inFocus(FocusableNode object) {
 
         if (this.PhotoItemListener != null) {
             if (this.PhotoItemListener.isLocked())

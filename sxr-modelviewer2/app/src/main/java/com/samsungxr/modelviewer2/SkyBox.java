@@ -3,16 +3,16 @@ package com.samsungxr.modelviewer2;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.utility.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
 public class SkyBox {
-    SXRSphereSceneObject skyBoxModel;
+    SXRSphereNode skyBoxModel;
     String skyBoxName;
 
     public SkyBox(String skyBoxName) {
@@ -23,8 +23,8 @@ public class SkyBox {
         return skyBoxName;
     }
 
-    private SXRSphereSceneObject loadSkyBoxModel(SXRContext sxrContext, String skyBoxPath, String skyBoxName) {
-        SXRSphereSceneObject sphereObject = null;
+    private SXRSphereNode loadSkyBoxModel(SXRContext sxrContext, String skyBoxPath, String skyBoxName) {
+        SXRSphereNode sphereObject = null;
 
         // load texture
         SXRTexture texture = null;
@@ -34,12 +34,12 @@ public class SkyBox {
             e.printStackTrace();
         }
         // create a sphere scene object with the specified texture and triangles facing inward (the 'false' argument)
-        sphereObject = new SXRSphereSceneObject(sxrContext, false, texture);
+        sphereObject = new SXRSphereNode(sxrContext, false, texture);
         sphereObject.getTransform().setScale(100, 100, 100);
         return sphereObject;
     }
 
-    public SXRSphereSceneObject getSkyBox(SXRContext sxrContext, String skyBoxPath) {
+    public SXRSphereNode getSkyBox(SXRContext sxrContext, String skyBoxPath) {
         if (skyBoxModel == null) {
             skyBoxModel = loadSkyBoxModel(sxrContext, skyBoxPath, skyBoxName);
             return skyBoxModel;
@@ -48,8 +48,8 @@ public class SkyBox {
         }
     }
 
-    private SXRSphereSceneObject loadSkyBoxModelFromSD(SXRContext sxrContext, String skyBoxPath, String skyBoxName) {
-        SXRSphereSceneObject sphereObject = null;
+    private SXRSphereNode loadSkyBoxModelFromSD(SXRContext sxrContext, String skyBoxPath, String skyBoxName) {
+        SXRSphereNode sphereObject = null;
 
         // load texture
         SXRTexture texture = null;
@@ -60,12 +60,12 @@ public class SkyBox {
             e.printStackTrace();
         }
         // create a sphere scene object with the specified texture and triangles facing inward (the 'false' argument)
-        sphereObject = new SXRSphereSceneObject(sxrContext, false, texture);
+        sphereObject = new SXRSphereNode(sxrContext, false, texture);
         sphereObject.getTransform().setScale(100, 100, 100);
         return sphereObject;
     }
 
-    public SXRSphereSceneObject getSkyBoxFromSD(SXRContext sxrContext, String skyBoxPath) {
+    public SXRSphereNode getSkyBoxFromSD(SXRContext sxrContext, String skyBoxPath) {
         if (skyBoxModel == null) {
             skyBoxModel = loadSkyBoxModelFromSD(sxrContext, skyBoxPath, skyBoxName);
             return skyBoxModel;

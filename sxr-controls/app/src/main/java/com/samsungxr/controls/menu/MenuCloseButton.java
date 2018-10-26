@@ -25,11 +25,11 @@ import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.shaders.ButtonShader;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class MenuCloseButton extends ControlSceneObject {
+public class MenuCloseButton extends ControlNode {
 
     private final int IDLE_STATE = 0;
     private final int HOVER_STATE = 1;

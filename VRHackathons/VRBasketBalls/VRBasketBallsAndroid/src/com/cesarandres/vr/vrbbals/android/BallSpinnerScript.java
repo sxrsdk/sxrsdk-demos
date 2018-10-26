@@ -14,12 +14,12 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimationEngine;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject.IntervalFrequency;
+import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.nodes.SXRTextViewNode.IntervalFrequency;
 
 import android.graphics.Color;
 
@@ -36,10 +36,10 @@ public class BallSpinnerScript extends SXRScript {
 
 	private MainActivity core;
 
-	private SXRTextViewSceneObject textPanel;
+	private SXRTextViewNode textPanel;
 	private SXRContext context;
 	private SXRScene scene;
-	private SXRSceneObject root;
+	private SXRNode root;
 	private SXRCameraRig mainCamera;
 	private SXRAnimationEngine animationEngine;
 
@@ -81,50 +81,50 @@ public class BallSpinnerScript extends SXRScript {
 		cubemapMaterial.setMainTexture(futureCubemapTexture);
 
 		// surrounding cube
-		SXRSceneObject frontFace = new SXRSceneObject(ctx, futureQuadMesh,
+		SXRNode frontFace = new SXRNode(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		frontFace.getRenderData().setMaterial(cubemapMaterial);
 		frontFace.setName("front");
-		scene.addSceneObject(frontFace);
+		scene.addNode(frontFace);
 		frontFace.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.5f);
 
-		SXRSceneObject backFace = new SXRSceneObject(ctx, futureQuadMesh,
+		SXRNode backFace = new SXRNode(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		backFace.getRenderData().setMaterial(cubemapMaterial);
 		backFace.setName("back");
-		scene.addSceneObject(backFace);
+		scene.addNode(backFace);
 		backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
 		backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-		SXRSceneObject leftFace = new SXRSceneObject(ctx, futureQuadMesh,
+		SXRNode leftFace = new SXRNode(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		leftFace.getRenderData().setMaterial(cubemapMaterial);
 		leftFace.setName("left");
-		scene.addSceneObject(leftFace);
+		scene.addNode(leftFace);
 		leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
 		leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
-		SXRSceneObject rightFace = new SXRSceneObject(ctx, futureQuadMesh,
+		SXRNode rightFace = new SXRNode(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		rightFace.getRenderData().setMaterial(cubemapMaterial);
 		rightFace.setName("right");
-		scene.addSceneObject(rightFace);
+		scene.addNode(rightFace);
 		rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
 		rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
-		SXRSceneObject topFace = new SXRSceneObject(ctx, futureQuadMesh,
+		SXRNode topFace = new SXRNode(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		topFace.getRenderData().setMaterial(cubemapMaterial);
 		topFace.setName("top");
-		scene.addSceneObject(topFace);
+		scene.addNode(topFace);
 		topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
 		topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-		SXRSceneObject bottomFace = new SXRSceneObject(ctx, futureQuadMesh,
+		SXRNode bottomFace = new SXRNode(ctx, futureQuadMesh,
 				futureCubemapTexture);
 		bottomFace.getRenderData().setMaterial(cubemapMaterial);
 		bottomFace.setName("bottom");
-		scene.addSceneObject(bottomFace);
+		scene.addNode(bottomFace);
 		bottomFace.getTransform().setPosition(0.0f, -CUBE_WIDTH * 0.5f, 0.0f);
 		bottomFace.getTransform().rotateByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
 
@@ -133,7 +133,7 @@ public class BallSpinnerScript extends SXRScript {
 		// head-tracking pointer
 		SXRTexture pTexture = ctx.loadTexture(new SXRAndroidResource(ctx,
 				"headtrackingpointer.png"));
-		SXRSceneObject headTracker = new SXRSceneObject(ctx, 0.05f, 0.05f,
+		SXRNode headTracker = new SXRNode(ctx, 0.05f, 0.05f,
 				pTexture);
 
 		headTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
@@ -146,17 +146,17 @@ public class BallSpinnerScript extends SXRScript {
 		mainCamera.getRightCamera().setBackgroundColor(r, g, b, 1.0f);
 		mainCamera.getTransform().setPosition(0f, 0f, 0f);
 
-		root = new SXRSceneObject(ctx);
-		scene.addSceneObject(root);
+		root = new SXRNode(ctx);
+		scene.addNode(root);
 
-		textPanel = new SXRTextViewSceneObject(context, 7, 4, "");
+		textPanel = new SXRTextViewNode(context, 7, 4, "");
 
 		// set the scene object position
 		textPanel.setTextColor(Color.GREEN);
 		textPanel.setTextSize(textPanel.getTextSize() * 0.55f);
 		textPanel.setRefreshFrequency(IntervalFrequency.MEDIUM);
 		// add the scene object to the scene graph
-		scene.addSceneObject(textPanel);
+		scene.addNode(textPanel);
 		textPanel.getTransform().setPositionZ(-1.5f);
 		textPanel.getTransform().setPositionY(-2.5f);
 		textPanel.getTransform().setPositionX(1.5f);

@@ -22,16 +22,16 @@ import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.focus.OnClickListener;
 import com.samsungxr.immersivepedia.loadComponent.LoadComponent;
 import com.samsungxr.immersivepedia.loadComponent.LoadComponentListener;
 import com.samsungxr.immersivepedia.util.AudioClip;
 import com.samsungxr.immersivepedia.util.PlayPauseButton;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 
-public class Totem extends FocusableSceneObject implements FocusListener {
+public class Totem extends FocusableNode implements FocusListener {
 
     private static final float TEXT_HEIGHT = 2f;
     private static final float TEXT_WIDTH = 5f;
@@ -68,7 +68,7 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     }
 
     @Override
-    public void gainedFocus(FocusableSceneObject object) {
+    public void gainedFocus(FocusableNode object) {
         if (this.totemEventListener != null
                 && this.totemEventListener.shouldTotemAppear(this) == true) {
             createLoadComponent();
@@ -77,7 +77,7 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     }
 
     @Override
-    public void lostFocus(FocusableSceneObject object) {
+    public void lostFocus(FocusableNode object) {
         if (this.loadComponent != null) {
             this.loadComponent.disableListener();
             this.removeChildObject(this.loadComponent);
@@ -86,7 +86,7 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     }
 
     @Override
-    public void inFocus(FocusableSceneObject object) {
+    public void inFocus(FocusableNode object) {
 
     }
 
@@ -118,7 +118,7 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     }
 
     public void setText(String text) {
-        SXRTextViewSceneObject textTitle = new SXRTextViewSceneObject(sxrContext, TEXT_WIDTH, TEXT_HEIGHT, text);
+        SXRTextViewNode textTitle = new SXRTextViewNode(sxrContext, TEXT_WIDTH, TEXT_HEIGHT, text);
         textTitle.setTextSize(7);
         textTitle.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
         textTitle.getTransform().setPosition(0f, .6f, -0.1f);

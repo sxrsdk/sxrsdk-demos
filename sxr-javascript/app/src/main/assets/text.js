@@ -1,4 +1,4 @@
-importPackage(org.gearvrf)
+importPackage(com.samsungxr)
 
 var colors = [0xFFFFFF, 0xE53935, 0xD81B60, 0x8E24AA, 0x5E35B1, 0x3949AB, 0x00897B];
 var colorIdx = 0;
@@ -6,7 +6,7 @@ var colorIdx = 0;
 var sceneObject = null;
 var localAnimation = -1;
 
-function onInit(gvrf, sceneObj) {
+function onInit(sxr, sceneObj) {
     sceneObject = sceneObj;
 }
 
@@ -23,8 +23,8 @@ function onSensorEvent(event) {
 	    }
 
 	    // Change text color
-	    var textSceneObject = event.getPickedObject().getHitObject();
-	    textSceneObject.setTextColor(0xFF << 24 | colors[colorIdx]);
+	    var textNode = event.getPickedObject().getHitObject();
+	    textNode.setTextColor(0xFF << 24 | colors[colorIdx]);
 
 	    // Local animation
 	    localAnimation = 60;

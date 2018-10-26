@@ -17,7 +17,7 @@ package com.samsungxr.controls.menu.rotation;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
@@ -25,16 +25,16 @@ import com.samsungxr.controls.Main;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.anim.StarPreviewInfo;
 
-public class RotationGroup extends SXRSceneObject {
+public class RotationGroup extends SXRNode {
     private static final float SCALE_FACTOR = 0.7f;
-    SXRSceneObject star;
-    SXRSceneObject base;
-    private SXRSceneObject place;
+    SXRNode star;
+    SXRNode base;
+    private SXRNode place;
 
     public RotationGroup(SXRContext sxrContext) {
         super(sxrContext);
 
-        place = new SXRSceneObject(sxrContext);
+        place = new SXRNode(sxrContext);
 
         addChildObject(place);
         createStar();
@@ -51,7 +51,7 @@ public class RotationGroup extends SXRSceneObject {
         SXRAndroidResource baseTextRes = new SXRAndroidResource(getSXRContext(),
                 R.drawable.direction_rotation);
 
-        base = new SXRSceneObject(getSXRContext(), 1, 1, getSXRContext().getAssetLoader().loadTexture(baseTextRes));
+        base = new SXRNode(getSXRContext(), 1, 1, getSXRContext().getAssetLoader().loadTexture(baseTextRes));
 
         base.getTransform().rotateByAxis(90, 0, 0, 1);
         base.getTransform().rotateByAxis(-90, 1, 0, 0);
@@ -63,7 +63,7 @@ public class RotationGroup extends SXRSceneObject {
         SXRAndroidResource starTextRes = new SXRAndroidResource(getSXRContext(),
                 R.drawable.star_diffuse);
 
-        star = new SXRSceneObject(getSXRContext(), starMeshRes, starTextRes);
+        star = new SXRNode(getSXRContext(), starMeshRes, starTextRes);
         star.getTransform().setPositionY(0.5f);
     }
 

@@ -28,7 +28,7 @@ import com.samsungxr.shaders.SXRPhongShader;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
@@ -39,7 +39,7 @@ import com.samsungxr.io.cursor3d.MovableBehavior;
 import com.samsungxr.io.cursor3d.SelectableBehavior;
 import com.samsungxr.io.cursor3d.SelectableBehavior.ObjectState;
 import com.samsungxr.io.cursor3d.SelectableBehavior.StateChangedListener;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.utility.Log;
 
 import java.io.IOException;
@@ -57,8 +57,8 @@ public class CursorMain extends SXRMain {
     private static final String ROCKET_MODEL = "Rocket.fbx";
     private SXRScene mainScene;
     private CursorManager cursorManager;
-    private SXRSceneObject rocket;
-    private SXRSceneObject astronaut;
+    private SXRNode rocket;
+    private SXRNode astronaut;
 
     @Override
     public void onInit(SXRContext sxrContext) {
@@ -81,7 +81,7 @@ public class CursorMain extends SXRMain {
         */
 
         cursorManager = new CursorManager(sxrContext, mainScene, devices);
-        SXRSceneObject astronautModel, rocketModel;
+        SXRNode astronautModel, rocketModel;
 
         float[] position = new float[]{5.0f, 0.0f, -20.0f};
         try {
@@ -97,7 +97,7 @@ public class CursorMain extends SXRMain {
         SelectableBehavior selectableBehavior = new SelectableBehavior(cursorManager, true);
         astronaut.attachComponent(selectableBehavior);
         astronautModel.removeChildObject(astronaut);
-        mainScene.addSceneObject(astronaut);
+        mainScene.addNode(astronaut);
 
         position[0] = -5.0f;
         MovableBehavior movableRocketBehavior = new MovableBehavior(cursorManager, new ObjectState[]{
@@ -106,16 +106,16 @@ public class CursorMain extends SXRMain {
         rocket.getTransform().setPosition(position[0], position[1], position[2]);
         rocket.attachComponent(movableRocketBehavior);
         rocketModel.removeChildObject(rocket);
-        mainScene.addSceneObject(rocket);
+        mainScene.addNode(rocket);
 
         position[0] = 2.0f;
         position[1] = 2.0f;
-        SXRCubeSceneObject cubeSceneObject = new SXRCubeSceneObject(sxrContext, true, sxrContext
+        SXRCubeNode cubeNode = new SXRCubeNode(sxrContext, true, sxrContext
                 .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,R.mipmap.ic_launcher)));
-        cubeSceneObject.getTransform().setPosition(position[0], position[1], position[2]);
+        cubeNode.getTransform().setPosition(position[0], position[1], position[2]);
         MovableBehavior movableCubeBehavior = new MovableBehavior(cursorManager);
-        cubeSceneObject.attachComponent(movableCubeBehavior);
-        mainScene.addSceneObject(cubeSceneObject);
+        cubeNode.attachComponent(movableCubeBehavior);
+        mainScene.addNode(cubeNode);
 
         movableCubeBehavior.setStateChangedListener(new StateChangedListener() {
             @Override
@@ -148,7 +148,7 @@ public class CursorMain extends SXRMain {
     }
 
     private void addCustomMovableCube(SXRContext sxrContext) {
-        SXRSceneObject root = new SXRSceneObject(sxrContext);
+        SXRNode root = new SXRNode(sxrContext);
         SXRMaterial red = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
         SXRMaterial blue = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
         SXRMaterial green = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
@@ -158,20 +158,20 @@ public class CursorMain extends SXRMain {
         green.setDiffuseColor(0, 1, 0, 1);
         alphaRed.setDiffuseColor(1, 0, 0, 0.5f);
 
-        SXRCubeSceneObject cubeDefault = new SXRCubeSceneObject(sxrContext, true, red);
+        SXRCubeNode cubeDefault = new SXRCubeNode(sxrContext, true, red);
         root.addChildObject(cubeDefault);
 
         SXRMesh cubeMesh = cubeDefault.getRenderData().getMesh();
 
-        SXRSceneObject cubeColliding = new SXRSceneObject(sxrContext, cubeMesh);
+        SXRNode cubeColliding = new SXRNode(sxrContext, cubeMesh);
         cubeColliding.getRenderData().setMaterial(blue);
         root.addChildObject(cubeColliding);
 
-        SXRSceneObject cubeClicked = new SXRSceneObject(sxrContext, cubeMesh);
+        SXRNode cubeClicked = new SXRNode(sxrContext, cubeMesh);
         cubeClicked.getRenderData().setMaterial(green);
         root.addChildObject(cubeClicked);
 
-        SXRSceneObject cubeBehind = new SXRSceneObject(sxrContext, cubeMesh);
+        SXRNode cubeBehind = new SXRNode(sxrContext, cubeMesh);
         cubeBehind.getRenderData().setMaterial(alphaRed);
         cubeBehind.getRenderData().getMaterial().setOpacity(0.5f);
         cubeBehind.getRenderData().setRenderingOrder(SXRRenderingOrder.TRANSPARENT);
@@ -183,7 +183,7 @@ public class CursorMain extends SXRMain {
         float[] position = new float[]{-2, 2, -10};
         root.getTransform().setPosition(position[0], position[1], position[2]);
         root.attachComponent(movableBehavior);
-        mainScene.addSceneObject(root);
+        mainScene.addNode(root);
 
         movableBehavior.setStateChangedListener(new StateChangedListener() {
             @Override

@@ -23,12 +23,12 @@ import com.samsungxr.controls.Main;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.anim.AnimationsTime;
 import com.samsungxr.controls.anim.ColorWorm;
-import com.samsungxr.controls.focus.ControlSceneObject;
-import com.samsungxr.controls.menu.GridSceneObjects;
+import com.samsungxr.controls.focus.ControlNode;
+import com.samsungxr.controls.menu.GridNodes;
 import com.samsungxr.controls.menu.ItemSelectedListener;
 import com.samsungxr.controls.menu.MenuWindow;
-import com.samsungxr.controls.menu.RadioButtonSceneObject;
-import com.samsungxr.controls.menu.RadioGrupoSceneObject;
+import com.samsungxr.controls.menu.RadioButtonNode;
+import com.samsungxr.controls.menu.RadioGrupoNode;
 import com.samsungxr.controls.util.ColorControls.Color;
 
 public class ColorsMenu extends MenuWindow {
@@ -42,8 +42,8 @@ public class ColorsMenu extends MenuWindow {
     private final float GRID_POSITION_Z = 0.025f;
 
     private MenuColorsPreview previewArea;
-    private GridSceneObjects mGrid;
-    private RadioGrupoSceneObject radioGroup;
+    private GridNodes mGrid;
+    private RadioGrupoNode radioGroup;
 
     public ColorsMenu(SXRContext sxrContext) {
         super(sxrContext);
@@ -59,11 +59,11 @@ public class ColorsMenu extends MenuWindow {
 
         ParseColorItem parse = new ParseColorItem(getSXRContext());
 
-        mGrid = new GridSceneObjects(getSXRContext(), parse.getList(), R.array.colors_grid,
+        mGrid = new GridNodes(getSXRContext(), parse.getList(), R.array.colors_grid,
                 new ItemSelectedListener() {
 
                     @Override
-                    public void selected(ControlSceneObject object) {
+                    public void selected(ControlNode object) {
 
                         ColorsButton colorButton = (ColorsButton) object;
                         Color color = colorButton.getColor();
@@ -94,12 +94,12 @@ public class ColorsMenu extends MenuWindow {
 
     private void attachRadioGroup() {
 
-        radioGroup =  new RadioGrupoSceneObject(getSXRContext(), new ItemSelectedListener() {
+        radioGroup =  new RadioGrupoNode(getSXRContext(), new ItemSelectedListener() {
 
             @Override
-            public void selected(ControlSceneObject object) {
+            public void selected(ControlNode object) {
 
-                RadioButtonSceneObject button = (RadioButtonSceneObject)object;
+                RadioButtonNode button = (RadioButtonNode)object;
                 AnimationsTime.setChangeColorTime(button.getSecond());
             }
         }, 0.2f, 0.5f, 5);

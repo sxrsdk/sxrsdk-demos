@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRResourceVolume;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.debug.DebugServer;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.script.SXRScriptManager;
@@ -101,7 +101,7 @@ public class SourceUtils {
     
     public void attachScript(String filename, String sceneObjName)
     {
-        SXRSceneObject sceneObj = sxrContext.getMainScene().getSceneObjectByName(sceneObjName);
+        SXRNode sceneObj = sxrContext.getMainScene().getNodeByName(sceneObjName);
         if (sceneObj == null)
         {
             logError("attachScript: scene object not found " + sceneObjName);

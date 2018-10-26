@@ -17,10 +17,10 @@ package com.samsungxr.immersivepedia.focus;
 
 public interface FocusListener {
 
-    void gainedFocus(FocusableSceneObject object);
+    void gainedFocus(FocusableNode object);
 
-    void lostFocus(FocusableSceneObject object);
+    void lostFocus(FocusableNode object);
 
-    void inFocus(FocusableSceneObject object);
+    void inFocus(FocusableNode object);
 
 }

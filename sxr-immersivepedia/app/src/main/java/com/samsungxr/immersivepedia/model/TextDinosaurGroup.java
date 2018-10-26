@@ -26,7 +26,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.immersivepedia.R;
@@ -37,12 +37,12 @@ import com.samsungxr.immersivepedia.props.Totem;
 import com.samsungxr.immersivepedia.props.TotemEventListener;
 import com.samsungxr.immersivepedia.util.AudioClip;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject.IntervalFrequency;
+import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.nodes.SXRTextViewNode.IntervalFrequency;
 
 import java.io.IOException;
 
-public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListener, OnGestureListener {
+public class TextDinosaurGroup extends SXRNode implements TotemEventListener, OnGestureListener {
 
     private final float DESCRIPTION_HEIGHT = 3f;
     private final float DESCRIPTION_WIDTH = 16f;
@@ -53,8 +53,8 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
     private SXRScene scene;
     private static final float TEXT_ANIMATION_TIME = 0.2f;
     private boolean isOpen;
-    private SXRTextViewSceneObject title;
-    private SXRTextViewSceneObject description;
+    private SXRTextViewNode title;
+    private SXRTextViewNode description;
 
     public TextDinosaurGroup(SXRContext sxrContext, SXRScene scene) throws IOException {
         super(sxrContext);
@@ -82,7 +82,7 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
         totem.getTransform().setPosition(0f, 0f, 0f);
         totem.setName("totem_ankylosaurus");
         totem.setTotemEventListener(this);
-        scene.addSceneObject(totem);
+        scene.addNode(totem);
         totem.getTransform().setPosition(-.3f, 0f, -5.0f);
         totem.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         totem.getTransform().setScale(1f, 1f, 1f);
@@ -155,7 +155,7 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
         String stringTitle = getSXRContext().getContext().getString(R.string.ankylosaurus_title);
         Bitmap titleBitmap = BitmapFactory.decodeResource(resources, R.drawable.title_background);
         BitmapDrawable background = new BitmapDrawable(resources, titleBitmap);
-        title = new SXRTextViewSceneObject(sxrContext, TITLE_WIDTH, TITLE_HEIGHT, stringTitle);
+        title = new SXRTextViewNode(sxrContext, TITLE_WIDTH, TITLE_HEIGHT, stringTitle);
         title.setRefreshFrequency(IntervalFrequency.LOW);
         title.setTextColor(Color.BLACK);
         title.setBackGround(background);
@@ -168,7 +168,7 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
     }
 
     private void createDinosaurDescription() {
-        description = new SXRTextViewSceneObject(getSXRContext(), DESCRIPTION_WIDTH, DESCRIPTION_HEIGHT,
+        description = new SXRTextViewNode(getSXRContext(), DESCRIPTION_WIDTH, DESCRIPTION_HEIGHT,
                 getSXRContext().getContext().getString(R.string.ankylosaurus_text));
         description.setGravity(Gravity.LEFT);
         description.setTextColor(Color.BLACK);

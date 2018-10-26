@@ -21,13 +21,13 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.dinosaur.DinosaurFactory;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.focus.OnClickListener;
 import com.samsungxr.immersivepedia.focus.OnGestureListener;
 import com.samsungxr.immersivepedia.focus.SwipeIndicator;
@@ -37,10 +37,10 @@ import com.samsungxr.immersivepedia.util.PlayPauseButton;
 
 import java.io.IOException;
 
-public class RotateDinosaurGroup extends SXRSceneObject implements
+public class RotateDinosaurGroup extends SXRNode implements
         OnGestureListener {
 
-    private FocusableSceneObject styrocosaurus;
+    private FocusableNode styrocosaurus;
     private SXRContext sxrContext;
     private SXRScene scene;
     private Totem totem;
@@ -76,7 +76,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
                 this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.totem_tex_diffuse)));
         totem.setTotemEventListener(null);
-        scene.addSceneObject(totem);
+        scene.addNode(totem);
         totem.getTransform().setPosition(-.3f, 0f, -5.0f);
         totem.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         totem.getTransform().setScale(1f, 1f, 1f);
@@ -111,7 +111,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
 
         playPause.focusListener = new FocusListener() {
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
                 if (isPlayed) {
                     renderTextureButton(PlayPauseButton.PAUSE_NORMAL, playPause);
                 } else {
@@ -120,7 +120,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
                 if (isPlayed) {
                     renderTextureButton(PlayPauseButton.PAUSE_HOVER, playPause);
                 } else {
@@ -129,7 +129,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
             }
         };
     }
@@ -162,7 +162,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
         addChildObject(styrocosaurus);
     }
 
-    public void renderTextureButton(String textureID, SXRSceneObject sceneObject) {
+    public void renderTextureButton(String textureID, SXRNode sceneObject) {
         sceneObject
                 .getRenderData()
                 .getMaterial()

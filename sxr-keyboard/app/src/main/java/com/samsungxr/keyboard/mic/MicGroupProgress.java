@@ -15,7 +15,7 @@
 package com.samsungxr.keyboard.mic;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
@@ -26,9 +26,9 @@ import com.samsungxr.keyboard.interpolator.InterpolatorExpoEaseIn;
 import com.samsungxr.keyboard.interpolator.InterpolatorExpoEaseOut;
 import com.samsungxr.keyboard.mic.model.MicItem;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class MicGroupProgress extends SXRSceneObject {
+public class MicGroupProgress extends SXRNode {
     MicItem mProgress;
     boolean isVisibleByOpacity;
     SXRAnimation mOpacityAnimation;
@@ -42,7 +42,7 @@ public class MicGroupProgress extends SXRSceneObject {
 
     public MicGroupProgress(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.MIC_GROUP_PROGRESS);
+        setName(NodeNames.MIC_GROUP_PROGRESS);
         mProgress = new MicItem(sxrContext, R.drawable.mic_loading);
         mProgress.getRenderData().getMaterial().setOpacity(0);
         mProgress.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_PROGRESS);

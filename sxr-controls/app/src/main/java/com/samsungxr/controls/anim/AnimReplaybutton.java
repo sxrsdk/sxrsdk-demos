@@ -1,5 +1,5 @@
 /* Copyright 2015 Samsung Electronicimport com.samsungxr.controls.R;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.shaders.ButtonShader;
 import com.samsungxr.controls.util.RenderingOrder;
 " BASIS,
@@ -19,12 +19,12 @@ import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.shaders.ButtonShader;
 import com.samsungxr.controls.shaders.ColorSwapShader;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class AnimReplaybutton extends ControlSceneObject {
+public class AnimReplaybutton extends ControlNode {
 
     private final int IDLE_STATE = 0;
     private final int HOVER_STATE = 1;

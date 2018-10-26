@@ -16,9 +16,9 @@
 package com.samsungxr.video.movie;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
-public abstract class MovieTheater extends SXRSceneObject {
+public abstract class MovieTheater extends SXRNode {
 
     public MovieTheater (SXRContext context) {
         super(context);

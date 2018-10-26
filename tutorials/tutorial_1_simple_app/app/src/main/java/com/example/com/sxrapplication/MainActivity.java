@@ -6,7 +6,7 @@ import com.samsungxr.SXRActivity;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 public class MainActivity extends SXRActivity {

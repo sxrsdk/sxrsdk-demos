@@ -26,17 +26,17 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
-import com.samsungxr.scene_objects.SXRConeSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject.SXRVideoType;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
+import com.samsungxr.nodes.SXRConeNode;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRCylinderNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNode.SXRVideoType;
+import com.samsungxr.nodes.SXRViewNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,12 +44,12 @@ import java.util.List;
 
 public class SampleMain extends SXRMain {
     private static final String TAG = SampleMain.class.getSimpleName();
-    private List<SXRSceneObject> objectList = new ArrayList<SXRSceneObject>();
+    private List<SXRNode> objectList = new ArrayList<SXRNode>();
 
     private int currentObject = 0;
-    private SceneObjectActivity mActivity;
+    private NodeActivity mActivity;
 
-    SampleMain(SceneObjectActivity activity) {
+    SampleMain(NodeActivity activity) {
         mActivity = activity;
     }
 
@@ -80,29 +80,29 @@ public class SampleMain extends SXRMain {
 
         // create a scene object (this constructor creates a rectangular scene
         // object that uses the standard 'unlit' shader)
-        SXRSceneObject quadObject = new SXRSceneObject(sxrContext, 4.0f, 2.0f);
-        SXRCubeSceneObject cubeObject = new SXRCubeSceneObject(sxrContext,
+        SXRNode quadObject = new SXRNode(sxrContext, 4.0f, 2.0f);
+        SXRCubeNode cubeObject = new SXRCubeNode(sxrContext,
                 true, material);
-        SXRSphereSceneObject sphereObject = new SXRSphereSceneObject(
+        SXRSphereNode sphereObject = new SXRSphereNode(
                 sxrContext, true, material);
-        SXRCylinderSceneObject cylinderObject = new SXRCylinderSceneObject(
+        SXRCylinderNode cylinderObject = new SXRCylinderNode(
                 sxrContext, true, material);
-        SXRConeSceneObject coneObject = new SXRConeSceneObject(sxrContext,
+        SXRConeNode coneObject = new SXRConeNode(sxrContext,
                 true, material);
-        SXRViewSceneObject webViewObject = createWebViewObject(sxrContext);
-        SXRCameraSceneObject cameraObject = null;
+        SXRViewNode webViewObject = createWebViewObject(sxrContext);
+        SXRCameraNode cameraObject = null;
         try {
-            cameraObject = new SXRCameraSceneObject(sxrContext, 3.6f, 2.0f);
+            cameraObject = new SXRCameraNode(sxrContext, 3.6f, 2.0f);
             cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
-        } catch (SXRCameraSceneObject.SXRCameraAccessException e) {
+        } catch (SXRCameraNode.SXRCameraAccessException e) {
             // Cannot open camera
             Log.e(TAG, "Cannot open the camera",e);
         }
 
-        SXRVideoSceneObject videoObject = createVideoObject(sxrContext);
-        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(sxrContext, "Hello World!");
-        textViewSceneObject.setGravity(Gravity.CENTER);
-        textViewSceneObject.setTextSize(12);
+        SXRVideoNode videoObject = createVideoObject(sxrContext);
+        SXRTextViewNode textViewNode = new SXRTextViewNode(sxrContext, "Hello World!");
+        textViewNode.setGravity(Gravity.CENTER);
+        textViewNode.setTextSize(12);
         objectList.add(quadObject);
         objectList.add(cubeObject);
         objectList.add(sphereObject);
@@ -113,7 +113,7 @@ public class SampleMain extends SXRMain {
             objectList.add(cameraObject);
         }
         objectList.add(videoObject);
-        objectList.add(textViewSceneObject);
+        objectList.add(textViewNode);
 
         // turn all objects off, except the first one
         int listSize = objectList.size();
@@ -132,34 +132,34 @@ public class SampleMain extends SXRMain {
         if (cameraObject != null)
             cameraObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
         videoObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
-        textViewSceneObject.getTransform().setPosition(0.0f, 0.0f, -2.0f);
+        textViewNode.getTransform().setPosition(0.0f, 0.0f, -2.0f);
 
         // add the scene objects to the scene graph.
         // deal differently with camera scene object: we want it to move
         // with the camera.
-        for (SXRSceneObject object : objectList) {
-            if (object instanceof SXRCameraSceneObject) {
+        for (SXRNode object : objectList) {
+            if (object instanceof SXRCameraNode) {
                 scene.getMainCameraRig().addChildObject(object);
             } else {
-                scene.addSceneObject(object);
+                scene.addNode(object);
             }
         }
     }
 
-    private SXRVideoSceneObject createVideoObject(SXRContext sxrContext) throws IOException {
+    private SXRVideoNode createVideoObject(SXRContext sxrContext) throws IOException {
         final AssetFileDescriptor afd = sxrContext.getActivity().getAssets().openFd("tron.mp4");
         final MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         mediaPlayer.prepare();
-        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, 8.0f,
+        SXRVideoNode video = new SXRVideoNode(sxrContext, 8.0f,
                 4.0f, mediaPlayer, SXRVideoType.MONO);
         video.setName("video");
         return video;
     }
 
-    private SXRViewSceneObject createWebViewObject(SXRContext sxrContext) {
+    private SXRViewNode createWebViewObject(SXRContext sxrContext) {
         WebView webView = mActivity.getWebView();
-        SXRViewSceneObject webObject = new SXRViewSceneObject(sxrContext,
+        SXRViewNode webObject = new SXRViewNode(sxrContext,
                 webView, 8.0f, 4.0f);
         webObject.setName("web view object");
         webObject.getRenderData().getMaterial().setOpacity(1.0f);
@@ -173,18 +173,18 @@ public class SampleMain extends SXRMain {
             return;
         }
 
-        SXRSceneObject object = objectList.get(currentObject);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        SXRNode object = objectList.get(currentObject);
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().pause();
         }
     }
 
     public void onTap() {
-        SXRSceneObject object = objectList.get(currentObject);
+        SXRNode object = objectList.get(currentObject);
         object.setEnable(false);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().pause();
         }
 
@@ -195,8 +195,8 @@ public class SampleMain extends SXRMain {
         }
 
         object = objectList.get(currentObject);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().start();
         }
 

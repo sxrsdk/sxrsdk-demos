@@ -17,14 +17,14 @@ package com.samsungxr.controls.model;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRRelativeMotionAnimation;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.util.MathUtils;
 
-public class Star extends SXRSceneObject {
+public class Star extends SXRNode {
 
     private static final float ANIMATION_DURATION = 5;
     private static final float OPACITY_ANIMATION_DURATION = 4;
@@ -41,7 +41,7 @@ public class Star extends SXRSceneObject {
 
     }
 
-    public void playMoveAnimation(SXRContext sxrContext, SXRSceneObject returnTarget) {
+    public void playMoveAnimation(SXRContext sxrContext, SXRNode returnTarget) {
         getTransform().setPosition(returnTarget.getTransform().getPositionX(),
                 returnTarget.getTransform().getPositionY(),
                 returnTarget.getTransform().getPositionZ());

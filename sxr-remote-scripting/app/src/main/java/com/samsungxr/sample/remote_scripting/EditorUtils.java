@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.samsungxr.SXRContext;
 import com.samsungxr.IViewEvents;
 import com.samsungxr.debug.cli.LineProcessor;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.script.SXRScriptManager;
 
 import java.io.StringWriter;
@@ -34,7 +34,7 @@ import javax.script.ScriptException;
 
 public class EditorUtils {
     private final SXRContext sxrContext;
-    private final SXRViewSceneObject layoutSceneObject;
+    private final SXRViewNode layoutNode;
     private GearVRScripting activity;
 
     private static final float QUAD_X = 2.0f;
@@ -48,35 +48,35 @@ public class EditorUtils {
         sxrContext = context;
         activity = (GearVRScripting) context.getActivity();
 
-        layoutSceneObject = new SXRViewSceneObject(sxrContext, R.layout.main, viewEventsHandler,
+        layoutNode = new SXRViewNode(sxrContext, R.layout.main, viewEventsHandler,
                 sxrContext.createQuad(QUAD_X, QUAD_Y));
 
-        layoutSceneObject.getTransform().setPosition(0.0f, 0.0f, -1.0f);
-        layoutSceneObject.setName("editor");
+        layoutNode.getTransform().setPosition(0.0f, 0.0f, -1.0f);
+        layoutNode.setName("editor");
 
         mScriptHandler = new ScriptHandler(sxrContext);
     }
 
     public void show() {
-        sxrContext.getMainScene().addSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().addNode(layoutNode);
     }
 
     public void setPosition(float x, float y, float z) {
-        layoutSceneObject.getTransform().setPosition(x, y, z);
+        layoutNode.getTransform().setPosition(x, y, z);
     }
 
     public void setRotationByAxis(float angle, float x, float y, float z) {
-        layoutSceneObject.getTransform().setRotationByAxis(angle, x, y, z);
+        layoutNode.getTransform().setRotationByAxis(angle, x, y, z);
     }
 
     public void hide() {
-        sxrContext.getMainScene().removeSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().removeNode(layoutNode);
     }
 
 
     private IViewEvents viewEventsHandler = new IViewEvents() {
         @Override
-        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onInitView(SXRViewNode sxrViewNode, View view) {
             final EditText editor = (EditText) view.findViewById(R.id.editor);
             editor.requestFocus();
             editor.setDrawingCacheEnabled(false);
@@ -95,7 +95,7 @@ public class EditorUtils {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onStartRendering(SXRViewNode sxrViewNode, View view) {
 
         }
     };

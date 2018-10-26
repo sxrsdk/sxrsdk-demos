@@ -27,13 +27,13 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
 import com.samsungxr.io.SXRTouchPadGestureListener;
 import com.samsungxr.widgetplugin.SXRWidgetPlugin;
-import com.samsungxr.widgetplugin.SXRWidgetSceneObject;
-import com.samsungxr.widgetplugin.SXRWidgetSceneObjectMeshInfo;
+import com.samsungxr.widgetplugin.SXRWidgetNode;
+import com.samsungxr.widgetplugin.SXRWidgetNodeMeshInfo;
 
 import org.joml.Vector3f;
 
@@ -51,7 +51,7 @@ public class ModelViewer2Manager extends SXRMain {
     private boolean mIsSingleTapped = false;
 
     SXRWidgetPlugin mPlugin;
-    SXRWidgetSceneObject mWidget;
+    SXRWidgetNode mWidget;
     float widgetModelMatrix[];
     SXRActivity activity;
 
@@ -76,27 +76,27 @@ public class ModelViewer2Manager extends SXRMain {
         }
     };
 
-    private SXRSceneObject mPicked = null;
+    private SXRNode mPicked = null;
 
-    void setPicked(SXRSceneObject obj)
+    void setPicked(SXRNode obj)
     {
         mPicked = obj;
     }
 
-    SXRSceneObject getPicked() { return mPicked; }
+    SXRNode getPicked() { return mPicked; }
     private ITouchEvents mPickHandler = new SXREventListeners.TouchEvents()
     {
-        public void onExit(SXRSceneObject sceneObject, SXRPicker.SXRPickedObject pickInfo)
+        public void onExit(SXRNode sceneObject, SXRPicker.SXRPickedObject pickInfo)
         {
            setPicked(null);
         }
 
-        public void onTouchStart(SXRSceneObject sceneObject, SXRPicker.SXRPickedObject pickInfo)
+        public void onTouchStart(SXRNode sceneObject, SXRPicker.SXRPickedObject pickInfo)
         {
             setPicked(sceneObject);
         }
 
-        public void onTouchEnd(SXRSceneObject sceneObject, SXRPicker.SXRPickedObject pickInfo)
+        public void onTouchEnd(SXRNode sceneObject, SXRPicker.SXRPickedObject pickInfo)
         {
             setPicked(null);
         }
@@ -109,9 +109,9 @@ public class ModelViewer2Manager extends SXRMain {
     }
 
     void addWidgetToTheRoom() {
-        SXRWidgetSceneObjectMeshInfo info =
-                new SXRWidgetSceneObjectMeshInfo(-4.5f, 1.0f, -1.5f, -1.0f, new int[]{0, 0}, new int[]{mPlugin.getWidth(), mPlugin.getHeight()});
-        mWidget = new SXRWidgetSceneObject(mSXRContext,
+        SXRWidgetNodeMeshInfo info =
+                new SXRWidgetNodeMeshInfo(-4.5f, 1.0f, -1.5f, -1.0f, new int[]{0, 0}, new int[]{mPlugin.getWidth(), mPlugin.getHeight()});
+        mWidget = new SXRWidgetNode(mSXRContext,
                 mPlugin.getTextureId(), info, mPlugin.getWidth(),
                 mPlugin.getHeight());
 
@@ -130,7 +130,7 @@ public class ModelViewer2Manager extends SXRMain {
         scene.getMainCameraRig().removeChildObject(mWidget);
         mWidget.getTransform().setModelMatrix(temp);
 
-        scene.addSceneObject(mWidget);
+        scene.addNode(mWidget);
         controller.enableDisableLightOnModel(mWidget, false);
     }
 
@@ -247,7 +247,7 @@ public class ModelViewer2Manager extends SXRMain {
         controller.checkLookInside(scene);
 
         if (isSingleTapped) {
-            SXRSceneObject picked = getPicked();
+            SXRNode picked = getPicked();
             if (picked != null)
             {
                 controller.setCameraPositionByNavigator(picked.getCollider(), scene, scene, mWidget, widgetModelMatrix);
@@ -268,7 +268,7 @@ public class ModelViewer2Manager extends SXRMain {
 
     public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2, float arg3) {
         Log.i(TAG, "Angle mover called");
-        SXRSceneObject picked = getPicked();
+        SXRNode picked = getPicked();
         if (picked != null)
         {
             controller.onScrollOverModel(picked.getCollider(), arg2);

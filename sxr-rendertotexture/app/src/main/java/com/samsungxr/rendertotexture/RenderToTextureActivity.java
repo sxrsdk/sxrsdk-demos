@@ -24,13 +24,13 @@ import com.samsungxr.SXRShader;
 import com.samsungxr.SXRRenderTarget;
 import com.samsungxr.SXRRenderTexture;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRRepeatMode;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.utility.Log;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public final class RenderToTextureActivity extends SXRActivity {
             if (!SXRShader.isVulkanInstance()) {
                 addLight();
             }
-            final SXRSceneObject cube = addCube();
+            final SXRNode cube = addCube();
             final SXRScene scene = createRenderToTextureScene();
 
             sxrContext.runOnGlThread(new Runnable()
@@ -76,7 +76,7 @@ public final class RenderToTextureActivity extends SXRActivity {
             centerCamera.setBackgroundColor(0.7f, 0.4f, 0, 1);
 
             try {
-                final SXRSceneObject model = getSXRContext().getAssetLoader().loadModel("astro_boy.dae", newScene);
+                final SXRNode model = getSXRContext().getAssetLoader().loadModel("astro_boy.dae", newScene);
 
                 model.getTransform()
                         .setRotationByAxis(45.0f, 0.0f, 1.0f, 0.0f)
@@ -97,12 +97,12 @@ public final class RenderToTextureActivity extends SXRActivity {
             return newScene;
         }
 
-        private SXRSceneObject addCube() {
-            final SXRSceneObject cube = new SXRCubeSceneObject(getSXRContext(), true);
+        private SXRNode addCube() {
+            final SXRNode cube = new SXRCubeNode(getSXRContext(), true);
             mCubeTransform = cube.getTransform();
             mCubeTransform.setPosition(0, 0, -4f).setScale(2, 2, 2);
 
-            getSXRContext().getMainScene().addSceneObject(cube);
+            getSXRContext().getMainScene().addNode(cube);
             return cube;
         }
 
@@ -116,11 +116,11 @@ public final class RenderToTextureActivity extends SXRActivity {
             light.setInnerConeAngle(8);
             light.setOuterConeAngle(24);
 
-            final SXRSceneObject lightNode = new SXRSceneObject(context);
+            final SXRNode lightNode = new SXRNode(context);
             lightNode.attachLight(light);
             lightNode.getTransform().setPosition(0, 1, 3);
 
-            context.getMainScene().addSceneObject(lightNode);
+            context.getMainScene().addNode(lightNode);
         }
 
         @Override

@@ -21,12 +21,12 @@ import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.anim.AnimationsTime;
-import com.samsungxr.controls.focus.ControlSceneObject;
-import com.samsungxr.controls.menu.GridSceneObjects;
+import com.samsungxr.controls.focus.ControlNode;
+import com.samsungxr.controls.menu.GridNodes;
 import com.samsungxr.controls.menu.ItemSelectedListener;
 import com.samsungxr.controls.menu.MenuWindow;
-import com.samsungxr.controls.menu.RadioButtonSceneObject;
-import com.samsungxr.controls.menu.RadioGrupoSceneObject;
+import com.samsungxr.controls.menu.RadioButtonNode;
+import com.samsungxr.controls.menu.RadioGrupoNode;
 import com.samsungxr.controls.model.Apple;
 import com.samsungxr.controls.model.Apple.Motion;
 
@@ -40,8 +40,8 @@ public class MotionMenu extends MenuWindow {
     private final float GRID_POSITION_Z = 0.f;
 
     private MenuPreview previewArea;
-    private GridSceneObjects mGrid;
-    private RadioGrupoSceneObject radioGroup;
+    private GridNodes mGrid;
+    private RadioGrupoNode radioGroup;
 
     public MotionMenu(SXRContext sxrContext) {
         super(sxrContext);
@@ -57,11 +57,11 @@ public class MotionMenu extends MenuWindow {
 
         ParserMotionItem parse = new ParserMotionItem(getSXRContext());
 
-        mGrid = new GridSceneObjects(getSXRContext(), parse.getList(),R.array.grid,
+        mGrid = new GridNodes(getSXRContext(), parse.getList(),R.array.grid,
                 new ItemSelectedListener() {
 
                     @Override
-                    public void selected(ControlSceneObject object) {
+                    public void selected(ControlNode object) {
 
                         Motion motion = ((MotionButton) object).getMotion();
                         Apple.motion = motion;
@@ -89,12 +89,12 @@ public class MotionMenu extends MenuWindow {
 
     private void attachRadioGroup() {
 
-        radioGroup =  new RadioGrupoSceneObject(getSXRContext(), new ItemSelectedListener() {
+        radioGroup =  new RadioGrupoNode(getSXRContext(), new ItemSelectedListener() {
 
             @Override
-            public void selected(ControlSceneObject object) {
+            public void selected(ControlNode object) {
 
-                RadioButtonSceneObject button = (RadioButtonSceneObject)object;
+                RadioButtonNode button = (RadioButtonNode)object;
                 AnimationsTime.setDropTime(button.getSecond());
 
                 previewArea.animationsTime();

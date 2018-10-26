@@ -33,9 +33,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 import com.samsungxr.videoplayer.component.FadeableObject;
 import com.samsungxr.videoplayer.focus.FocusListener;
@@ -62,7 +62,7 @@ public class ControlWidget extends FadeableObject implements Focusable, View.OnC
     private ControlWidgetListener mOnVideoControllerListener;
     @DrawableRes
     private int mStateResource;
-    private SXRSceneObject mMainSceneObject;
+    private SXRNode mMainNode;
     private FocusListener mFocusListener;
     private final AlphaAnimation mFadeOut;
     private final AlphaAnimation mFadeIn;
@@ -79,14 +79,14 @@ public class ControlWidget extends FadeableObject implements Focusable, View.OnC
         mFadeOut.setInterpolator(new AccelerateInterpolator());
         mFadeOut.setDuration(200);
 
-        mMainSceneObject = new SXRViewSceneObject(sxrContext, R.layout.layout_player_controller, this);
+        mMainNode = new SXRViewNode(sxrContext, R.layout.layout_player_controller, this);
         setName(getClass().getSimpleName());
     }
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
-        return mMainSceneObject;
+    protected SXRNode getFadeable() {
+        return mMainNode;
     }
 
     public void setButtonState(@ButtonState int state) {
@@ -218,13 +218,13 @@ public class ControlWidget extends FadeableObject implements Focusable, View.OnC
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject sceneObject, View view) {
+    public void onInitView(SXRViewNode sceneObject, View view) {
         holdView(view);
         showPlayingState();
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject sceneObject, View view) {
+    public void onStartRendering(SXRViewNode sceneObject, View view) {
         addChildObject(sceneObject);
     }
 

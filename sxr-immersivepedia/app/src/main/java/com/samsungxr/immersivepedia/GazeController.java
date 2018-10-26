@@ -18,14 +18,14 @@ package com.samsungxr.immersivepedia;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSwitch;
 import com.samsungxr.io.SXRCursorController;
 
 public class GazeController {
-    private SXRSceneObject cursorRoot;
-    private SXRSceneObject cursor;
-    private SXRSceneObject highlightCursor;
+    private SXRNode cursorRoot;
+    private SXRNode cursor;
+    private SXRNode highlightCursor;
     private SXRSwitch cursorSelector;
 
     private static float NORMAL_CURSOR_SIZE = 0.5f;
@@ -38,10 +38,10 @@ public class GazeController {
     public  GazeController(SXRCursorController controller) {
         SXRContext sxrContext = controller.getSXRContext();
 
-        cursorRoot = new SXRSceneObject(sxrContext);
+        cursorRoot = new SXRNode(sxrContext);
         cursorSelector = new SXRSwitch(sxrContext);
         cursorRoot.attachComponent(cursorSelector);
-        cursor = new SXRSceneObject(sxrContext,
+        cursor = new SXRNode(sxrContext,
                                     sxrContext.createQuad(NORMAL_CURSOR_SIZE,
                                                           NORMAL_CURSOR_SIZE),
                                     sxrContext.getAssetLoader().loadTexture(
@@ -53,7 +53,7 @@ public class GazeController {
         cursor.getRenderData().setDepthTest(false);
         cursor.getRenderData().setRenderingOrder(CURSOR_RENDER_ORDER);
         cursorRoot.addChildObject(cursor);
-        highlightCursor = new SXRSceneObject(sxrContext,
+        highlightCursor = new SXRNode(sxrContext,
                                              sxrContext.createQuad(HIGHLIGHT_CURSOR_SIZE,
                                                                    HIGHLIGHT_CURSOR_SIZE),
                                              sxrContext.getAssetLoader().loadTexture(
@@ -75,7 +75,7 @@ public class GazeController {
         return mSingleton;
     }
 
-    public SXRSceneObject getCursor()
+    public SXRNode getCursor()
     {
        return cursorRoot;
     }

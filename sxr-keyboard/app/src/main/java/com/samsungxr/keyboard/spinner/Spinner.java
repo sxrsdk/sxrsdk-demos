@@ -21,7 +21,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
@@ -29,7 +29,7 @@ import com.samsungxr.keyboard.model.CharList;
 import com.samsungxr.keyboard.textField.TextFieldItem;
 import com.samsungxr.keyboard.util.Util;
 
-public class Spinner extends SXRSceneObject {
+public class Spinner extends SXRNode {
 
     private static final float Z_DISTANCE = 3 * 0.15f;
     private static final float ANIMATION_TIME = .1f;
@@ -120,7 +120,7 @@ public class Spinner extends SXRSceneObject {
         }
     }
 
-    public boolean isHitArea(SXRSceneObject sceneObject) {
+    public boolean isHitArea(SXRNode sceneObject) {
         if (sceneObject.getCollider().hashCode() == spinnerSkeleton.getSpinnerBox().getCollider().hashCode()) {
             return false;
         }
@@ -139,7 +139,7 @@ public class Spinner extends SXRSceneObject {
 
     }
 
-    private void lookAt(SXRSceneObject currentChar) {
+    private void lookAt(SXRNode currentChar) {
         SXRCameraRig camera = this.getSXRContext().getMainScene().getMainCameraRig();
         Vector3D vectorCamera = new Vector3D(camera.getTransform().getPositionX(), camera
                 .getTransform().getPositionY(), camera.getTransform()

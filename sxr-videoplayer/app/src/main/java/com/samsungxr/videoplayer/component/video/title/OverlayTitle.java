@@ -21,35 +21,35 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 import com.samsungxr.videoplayer.component.FadeableObject;
 import com.samsungxr.videoplayer.focus.Focusable;
 
 public class OverlayTitle extends FadeableObject implements Focusable, IViewEvents {
 
-    private SXRViewSceneObject mTitleObject;
+    private SXRViewNode mTitleObject;
 
     public OverlayTitle(SXRContext sxrContext) {
         super(sxrContext);
-        mTitleObject = new SXRViewSceneObject(sxrContext, R.layout.layout_title_image, this);
+        mTitleObject = new SXRViewNode(sxrContext, R.layout.layout_title_image, this);
     }
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mTitleObject;
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+    public void onInitView(SXRViewNode sxrViewNode, View view) {
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-        addChildObject(sxrViewSceneObject);
+    public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+        addChildObject(sxrViewNode);
     }
 
     @Override

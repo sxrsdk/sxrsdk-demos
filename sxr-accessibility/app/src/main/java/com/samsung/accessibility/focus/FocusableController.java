@@ -11,16 +11,16 @@
 
 package com.samsung.accessibility.focus;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.utility.Log;
 
 import java.util.ArrayList;
 
 public final class FocusableController {
 
-    public static boolean clickProcess(SXRSceneObject pickedObject) {
+    public static boolean clickProcess(SXRNode pickedObject) {
         if(pickedObject != null) {
-            FocusableSceneObject object = (FocusableSceneObject) pickedObject;
+            FocusableNode object = (FocusableNode) pickedObject;
             Log.d("NOLA", "clickProcess " + object.getClass().getSimpleName());
             object.dispatchInClick();
             return true;

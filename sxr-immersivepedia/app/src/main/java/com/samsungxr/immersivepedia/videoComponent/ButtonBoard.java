@@ -18,19 +18,19 @@ package com.samsungxr.immersivepedia.videoComponent;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.focus.OnClickListener;
 import com.samsungxr.immersivepedia.util.PlayPauseButton;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 
-public class ButtonBoard extends SXRSceneObject {
+public class ButtonBoard extends SXRNode {
 
     private final float PLAY_PAUSE_X_POSITION = 0.1f;
     private final float PLAY_PAUSE_Y_POSITION = -1.8f;
@@ -66,7 +66,7 @@ public class ButtonBoard extends SXRSceneObject {
         playPauseButton.focusListener = new FocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
 
                 if (videoComponent.isPlaying()) {
                     renderTextureButton(PlayPauseButton.PAUSE_NORMAL, playPauseButton);
@@ -76,7 +76,7 @@ public class ButtonBoard extends SXRSceneObject {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
 
                 if (videoComponent.isPlaying()) {
                     renderTextureButton(PlayPauseButton.PAUSE_HOVER, playPauseButton);
@@ -87,7 +87,7 @@ public class ButtonBoard extends SXRSceneObject {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
 
             }
         };
@@ -135,7 +135,7 @@ public class ButtonBoard extends SXRSceneObject {
         renderTextureButton(PlayPauseButton.PLAY_NORMAL, playPauseButton);
     }
 
-    public void renderTextureButton(String textureID, SXRSceneObject sceneObject) {
+    public void renderTextureButton(String textureID, SXRNode sceneObject) {
 
         sceneObject.getRenderData().getMaterial()
                 .setMainTexture(sceneObject.getRenderData().getMaterial().getTexture(textureID));

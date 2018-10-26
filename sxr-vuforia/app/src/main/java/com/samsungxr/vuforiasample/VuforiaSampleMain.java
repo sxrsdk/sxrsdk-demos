@@ -13,7 +13,7 @@ import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRRenderTexture;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
@@ -38,8 +38,8 @@ public class VuforiaSampleMain extends SXRMain {
     private static final String TAG = "sxr-vuforia";
 
     private SXRContext sxrContext = null;
-    private SXRSceneObject teapot = null;
-    private SXRSceneObject passThroughObject = null;
+    private SXRNode teapot = null;
+    private SXRNode passThroughObject = null;
     private Renderer mRenderer = null;
     SampleApplicationSession vuforiaAppSession = null;
 
@@ -109,7 +109,7 @@ public class VuforiaSampleMain extends SXRMain {
     }
 
     private void createCameraPassThrough() {
-        passThroughObject = new SXRSceneObject(sxrContext, 1.0f, 1.0f);
+        passThroughObject = new SXRNode(sxrContext, 1.0f, 1.0f);
 
         passThroughObject.getTransform().setPosition(0.0f, 0.0f, -100.0f);
         passThroughObject.getTransform().setScaleX(200f);
@@ -179,7 +179,7 @@ public class VuforiaSampleMain extends SXRMain {
                     new SXRAndroidResource(sxrContext, "teapot.obj"));
             SXRTexture teapotTexture = sxrContext.getAssetLoader().loadTexture(
                     new SXRAndroidResource(sxrContext.getContext(), "teapot_tex1.jpg"));
-            teapot = new SXRSceneObject(sxrContext, teapotMesh);
+            teapot = new SXRNode(sxrContext, teapotMesh);
 
             SXRMaterial material = new SXRMaterial(sxrContext, new SXRShaderId(ModelShader.class));
             material.setTexture(ModelShader.TEXTURE_KEY, teapotTexture);
@@ -196,14 +196,14 @@ public class VuforiaSampleMain extends SXRMain {
 
     private void showTeapot() {
         if (teapotVisible == false) {
-            mainScene.addSceneObject(teapot);
+            mainScene.addNode(teapot);
             teapotVisible = true;
         }
     }
 
     private void hideTeapot() {
         if (teapotVisible) {
-            mainScene.removeSceneObject(teapot);
+            mainScene.removeNode(teapot);
             teapotVisible = false;
         }
     }

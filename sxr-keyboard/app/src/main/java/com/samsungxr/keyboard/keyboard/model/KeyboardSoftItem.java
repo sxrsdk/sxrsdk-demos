@@ -18,7 +18,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.keyboard.keyboard.numeric.Keyboard;
 import com.samsungxr.keyboard.model.KeyboardCharItem;
 import com.samsungxr.keyboard.shader.TransparentButtonShaderThreeStates;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
 public class KeyboardSoftItem extends KeyboardItemBase {
     
@@ -26,7 +26,7 @@ public class KeyboardSoftItem extends KeyboardItemBase {
 
     public KeyboardSoftItem(SXRContext sxrContext, KeyboardCharItem mCharItem, KeyboardItemStyle styleItem) {
         super(sxrContext, styleItem);
-        setName(SceneObjectNames.KEYBOARD_ITEM);
+        setName(NodeNames.KEYBOARD_ITEM);
 
         this.keyboardCharItem = mCharItem;
 

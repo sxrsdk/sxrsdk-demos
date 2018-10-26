@@ -14,18 +14,18 @@ import android.content.res.Resources;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.focus.TouchAndGestureImpl;
 
-public class StarBoxSceneObject extends SXRSceneObject {
+public class StarBoxNode extends SXRNode {
 
     private static final float CLEARBUTTON_OFFSET = 0.99f;
     private static final float PLAYBUTTON_OFFSET = 0.65f;
-    private SXRSceneObject star;
+    private SXRNode star;
     private AnimButtonPlay playButton;
     private AnimCleanButton cleanButton;
     private boolean playbuttonbIsHidden = true;
@@ -34,7 +34,7 @@ public class StarBoxSceneObject extends SXRSceneObject {
     private float evPositionX, evPositionY, evPositionZ, evRotationW;
     private SXRRotationByAxisAnimation rotationAnimation;
 
-    public StarBoxSceneObject(SXRContext sxrContext) {
+    public StarBoxNode(SXRContext sxrContext) {
         super(sxrContext);
 
         Resources res = sxrContext.getContext().getResources();
@@ -119,7 +119,7 @@ public class StarBoxSceneObject extends SXRSceneObject {
         SXRAndroidResource starTextRes = new SXRAndroidResource(getSXRContext(),
                 R.drawable.star_diffuse);
 
-        star = new SXRSceneObject(getSXRContext(), starMeshRes, starTextRes);
+        star = new SXRNode(getSXRContext(), starMeshRes, starTextRes);
         star.getTransform().setPositionY(0.2f);
 
         evPositionX = star.getTransform().getRotationX();

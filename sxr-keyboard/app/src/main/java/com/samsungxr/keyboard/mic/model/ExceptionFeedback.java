@@ -16,7 +16,7 @@ package com.samsungxr.keyboard.mic.model;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
@@ -24,20 +24,20 @@ import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.interpolator.InterpolatorExpoEaseInOut;
 import com.samsungxr.keyboard.model.AudioClip;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class ExceptionFeedback extends SXRSceneObject {
+public class ExceptionFeedback extends SXRNode {
 
-    private SXRSceneObject blurObject;
-    private SXRSceneObject iconObject;
-    private SXRSceneObject ringObject;
+    private SXRNode blurObject;
+    private SXRNode iconObject;
+    private SXRNode ringObject;
     private SXRAnimation blurScale, ringScale, blurOpacity, ringOpacity, iconOpacity;
 
     private static final float ANIMATION_TIME = 0.3f;
 
     public ExceptionFeedback(SXRContext context) {
         super(context);
-        setName(SceneObjectNames.EXCEPTION_FEEDBACK);
+        setName(NodeNames.EXCEPTION_FEEDBACK);
 
         SXRAndroidResource mResourceGlow = new SXRAndroidResource(context,
                 R.drawable.exception_glow);
@@ -46,9 +46,9 @@ public class ExceptionFeedback extends SXRSceneObject {
         SXRAndroidResource mResourceRing = new SXRAndroidResource(context,
                 R.drawable.exception_ring);
 
-        blurObject = new SXRSceneObject(context, 2.8f, 2.8f, context.getAssetLoader().loadTexture(mResourceGlow));
-        iconObject = new SXRSceneObject(context, 0.1f, 0.1f, context.getAssetLoader().loadTexture(mResourceIcon));
-        ringObject = new SXRSceneObject(context, 1.4f, 1.4f, context.getAssetLoader().loadTexture(mResourceRing));
+        blurObject = new SXRNode(context, 2.8f, 2.8f, context.getAssetLoader().loadTexture(mResourceGlow));
+        iconObject = new SXRNode(context, 0.1f, 0.1f, context.getAssetLoader().loadTexture(mResourceIcon));
+        ringObject = new SXRNode(context, 1.4f, 1.4f, context.getAssetLoader().loadTexture(mResourceRing));
 
         this.addChildObject(blurObject);
         this.addChildObject(iconObject);

@@ -23,7 +23,7 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPerspectiveCamera;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
@@ -44,9 +44,9 @@ public class SolarMain extends SXRMain {
     private SXRAnimator mAnimator;
     private SXRScene mMainScene;
 
-    private SXRSceneObject asyncSceneObject(SXRContext context,
+    private SXRNode asyncNode(SXRContext context,
             String textureName) throws IOException {
-        return new SXRSceneObject(context, //
+        return new SXRNode(context, //
                 new SXRAndroidResource(context, "sphere.obj"), //
                 new SXRAndroidResource(context, textureName));
     }
@@ -66,63 +66,63 @@ public class SolarMain extends SXRMain {
         mAnimator = new SXRAnimator(sxrContext);
         mMainScene = sxrContext.getMainScene();
 
-        SXRSceneObject solarSystemObject = new SXRSceneObject(sxrContext);
+        SXRNode solarSystemObject = new SXRNode(sxrContext);
         solarSystemObject.attachComponent(mAnimator);
-        mMainScene.addSceneObject(solarSystemObject);
+        mMainScene.addNode(solarSystemObject);
 
-        SXRSceneObject sunRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode sunRotationObject = new SXRNode(sxrContext);
         solarSystemObject.addChildObject(sunRotationObject);
 
-        SXRSceneObject sunMeshObject = asyncSceneObject(sxrContext, "sunmap.astc");
+        SXRNode sunMeshObject = asyncNode(sxrContext, "sunmap.astc");
         sunMeshObject.getTransform().setScale(10.0f, 10.0f, 10.0f);
         sunRotationObject.addChildObject(sunMeshObject);
 
-        SXRSceneObject mercuryRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode mercuryRevolutionObject = new SXRNode(sxrContext);
         mercuryRevolutionObject.getTransform().setPosition(14.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(mercuryRevolutionObject);
 
-        SXRSceneObject mercuryRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode mercuryRotationObject = new SXRNode(sxrContext);
         mercuryRevolutionObject.addChildObject(mercuryRotationObject);
 
-        SXRSceneObject mercuryMeshObject = asyncSceneObject(sxrContext, "mercurymap.jpg");
+        SXRNode mercuryMeshObject = asyncNode(sxrContext, "mercurymap.jpg");
         mercuryMeshObject.getTransform().setScale(0.3f, 0.3f, 0.3f);
         mercuryRotationObject.addChildObject(mercuryMeshObject);
 
-        SXRSceneObject venusRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode venusRevolutionObject = new SXRNode(sxrContext);
         venusRevolutionObject.getTransform().setPosition(17.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(venusRevolutionObject);
 
-        SXRSceneObject venusRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode venusRotationObject = new SXRNode(sxrContext);
         venusRevolutionObject.addChildObject(venusRotationObject);
 
-        SXRSceneObject venusMeshObject = asyncSceneObject(sxrContext, "venusmap.jpg");
+        SXRNode venusMeshObject = asyncNode(sxrContext, "venusmap.jpg");
         venusMeshObject.getTransform().setScale(0.8f, 0.8f, 0.8f);
         venusRotationObject.addChildObject(venusMeshObject);
 
-        SXRSceneObject earthRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode earthRevolutionObject = new SXRNode(sxrContext);
         earthRevolutionObject.getTransform().setPosition(22.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(earthRevolutionObject);
 
-        SXRSceneObject earthRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode earthRotationObject = new SXRNode(sxrContext);
         earthRevolutionObject.addChildObject(earthRotationObject);
 
-        SXRSceneObject moonRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode moonRevolutionObject = new SXRNode(sxrContext);
         moonRevolutionObject.getTransform().setPosition(4.0f, 0.0f, 0.0f);
         earthRevolutionObject.addChildObject(moonRevolutionObject);
         moonRevolutionObject.addChildObject(newRig.getOwnerObject());
 
-        SXRSceneObject earthMeshObject = asyncSceneObject(sxrContext, "earthmap1k.jpg");
+        SXRNode earthMeshObject = asyncNode(sxrContext, "earthmap1k.jpg");
         earthMeshObject.getTransform().setScale(1.0f, 1.0f, 1.0f);
         earthRotationObject.addChildObject(earthMeshObject);
 
-        SXRSceneObject marsRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode marsRevolutionObject = new SXRNode(sxrContext);
         marsRevolutionObject.getTransform().setPosition(30.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(marsRevolutionObject);
 
-        SXRSceneObject marsRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode marsRotationObject = new SXRNode(sxrContext);
         marsRevolutionObject.addChildObject(marsRotationObject);
 
-        SXRSceneObject marsMeshObject = asyncSceneObject(sxrContext, "mars_1k_color.jpg");
+        SXRNode marsMeshObject = asyncNode(sxrContext, "mars_1k_color.jpg");
         marsMeshObject.getTransform().setScale(0.6f, 0.6f, 0.6f);
         marsRotationObject.addChildObject(marsMeshObject);
 
@@ -164,14 +164,14 @@ public class SolarMain extends SXRMain {
         mAnimator.addAnimation(animation);
     }
 
-    private void counterClockwise(SXRSceneObject object, float duration) {
+    private void counterClockwise(SXRNode object, float duration) {
         setup(new SXRRotationByAxisWithPivotAnimation( //
                 object, duration, 360.0f, //
                 0.0f, 1.0f, 0.0f, //
                 0.0f, 0.0f, 0.0f));
     }
 
-    private void clockwise(SXRSceneObject object, float duration) {
+    private void clockwise(SXRNode object, float duration) {
         setup(new SXRRotationByAxisWithPivotAnimation( //
                 object, duration, -360.0f, //
                 0.0f, 1.0f, 0.0f, //

@@ -21,8 +21,8 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.SXRNode;
+import com.samsungxr.nodes.SXRSphereNode;
 
 import android.opengl.GLES20;
 
@@ -52,15 +52,15 @@ public class SampleScript extends SXRMain {
         blueMaterial.setDiffuseColor(0, 0, 1, 0.5f);
         blueMaterial.setLineWidth(8.0f);
         
-        SXRSceneObject Lobj = new SXRSceneObject(sxrContext);
+        SXRNode Lobj = new SXRNode(sxrContext);
         mesh.setVertices(L);
     	rd.setMesh(mesh);
     	rd.setDrawMode(GLES20.GL_LINE_STRIP);
     	rd.setMaterial(redMaterial);
     	Lobj.attachRenderData(rd);
-    	scene.addSceneObject(Lobj);
+    	scene.addNode(Lobj);
 
-        SXRSceneObject Iobj = new SXRSceneObject(sxrContext);
+        SXRNode Iobj = new SXRNode(sxrContext);
     	mesh = new SXRMesh(sxrContext);
     	rd = new SXRRenderData(sxrContext);
     	mesh.setVertices(I);
@@ -68,9 +68,9 @@ public class SampleScript extends SXRMain {
         rd.setDrawMode(GLES20.GL_LINES);
         rd.setMaterial(redMaterial);
         Iobj.attachRenderData(rd);
-        scene.addSceneObject(Iobj);
+        scene.addNode(Iobj);
 
-        SXRSceneObject Nobj = new SXRSceneObject(sxrContext);
+        SXRNode Nobj = new SXRNode(sxrContext);
         mesh = new SXRMesh(sxrContext);
         mesh.setVertices(N);
         rd = new SXRRenderData(sxrContext);
@@ -78,9 +78,9 @@ public class SampleScript extends SXRMain {
         rd.setDrawMode(GLES20.GL_LINE_STRIP);
         rd.setMaterial(redMaterial);
         Nobj.attachRenderData(rd);
-        scene.addSceneObject(Nobj);
+        scene.addNode(Nobj);
         
-        SXRSceneObject Eobj = new SXRSceneObject(sxrContext);
+        SXRNode Eobj = new SXRNode(sxrContext);
         mesh = new SXRMesh(sxrContext);
         mesh.setVertices(E);
         rd = new SXRRenderData(sxrContext);
@@ -89,14 +89,14 @@ public class SampleScript extends SXRMain {
         rd.setMaterial(blueMaterial);
         rd.setAlphaBlend(true);
         Eobj.attachRenderData(rd);
-        scene.addSceneObject(Eobj);
+        scene.addNode(Eobj);
         
-        SXRSceneObject sphere = new SXRSphereSceneObject(sxrContext);
+        SXRNode sphere = new SXRSphereNode(sxrContext);
         rd = sphere.getRenderData();
         rd.setAlphaBlend(true);
         rd.setMaterial(blueMaterial);
         sphere.getTransform().setPositionZ(Z);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
      }
 
     @Override

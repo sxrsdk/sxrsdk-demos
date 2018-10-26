@@ -6,7 +6,7 @@ import com.samsungxr.SXRActivity;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 public class MainActivity extends SXRActivity {
@@ -31,11 +31,11 @@ public class MainActivity extends SXRActivity {
             SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.__default_splash_screen__));
 
             //Create a rectangle with the texture we just loaded
-            SXRSceneObject quad = new SXRSceneObject(sxrContext, 4, 2, texture);
+            SXRNode quad = new SXRNode(sxrContext, 4, 2, texture);
             quad.getTransform().setPosition(0, 0, -3);
 
             //Add rectangle to the scene
-            sxrContext.getMainScene().addSceneObject(quad);
+            sxrContext.getMainScene().addNode(quad);
         }
 
         @Override

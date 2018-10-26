@@ -22,15 +22,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 import com.samsungxr.videoplayer.component.gallery.OnMessageListener;
 
 public class MessageText extends FadeableObject implements IViewEvents {
 
-    private SXRViewSceneObject mMessageTextObject;
+    private SXRViewNode mMessageTextObject;
     private final boolean mHasBackground;
     private final String mText;
     private OnMessageListener mMessageListener;
@@ -43,7 +43,7 @@ public class MessageText extends FadeableObject implements IViewEvents {
         super(sxrContext);
         mHasBackground = hasBackground;
         mText = text;
-        mMessageTextObject = new SXRViewSceneObject(sxrContext, R.layout.message_text, this);
+        mMessageTextObject = new SXRViewNode(sxrContext, R.layout.message_text, this);
         mMessageListener = listener;
     }
 
@@ -54,7 +54,7 @@ public class MessageText extends FadeableObject implements IViewEvents {
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+    public void onInitView(SXRViewNode sxrViewNode, View view) {
         TextView textView = view.findViewById(R.id.message_text);
         if (mHasBackground) {
             int[] state = {android.R.attr.state_enabled};
@@ -67,13 +67,13 @@ public class MessageText extends FadeableObject implements IViewEvents {
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-        addChildObject(sxrViewSceneObject);
+    public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+        addChildObject(sxrViewNode);
     }
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mMessageTextObject;
     }
 }

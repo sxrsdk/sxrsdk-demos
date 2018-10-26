@@ -25,17 +25,17 @@ import com.samsungxr.utility.Log;
 public class SampleMain extends SXRMain {
     public class PickHandler implements IPickEvents
     {
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
         {
             sceneObj.getRenderData().getMaterial().setVec4("u_color", PICKED_COLOR_R, PICKED_COLOR_G, PICKED_COLOR_B, PICKED_COLOR_A);
         }
-        public void onExit(SXRSceneObject sceneObj)
+        public void onExit(SXRNode sceneObj)
         {
             sceneObj.getRenderData().getMaterial().setVec4("u_color", UNPICKED_COLOR_R, UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
         }
         public void onNoPick(SXRPicker picker) { }
         public void onPick(SXRPicker picker) { }
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
     }
 
     private static final String TAG = "SampleMain";
@@ -50,7 +50,7 @@ public class SampleMain extends SXRMain {
     private static final float PICKED_COLOR_A = 1.0f;
 
     private SXRContext mSXRContext = null;
-    private List<SXRSceneObject> mObjects = new ArrayList<SXRSceneObject>();
+    private List<SXRNode> mObjects = new ArrayList<SXRNode>();
     private IPickEvents mPickHandler = new PickHandler();
     private SXRPicker mPicker;
 
@@ -76,52 +76,52 @@ public class SampleMain extends SXRMain {
         /*
          * Adding Boards
          */
-        SXRSceneObject object = getColorBoard(1.0f, 1.0f);
+        SXRNode object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(0.0f, 3.0f, -5.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(0.0f, -3.0f, -5.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(-3.0f, 0.0f, -5.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(3.0f, 0.0f, -5.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(3.0f, 3.0f, -5.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(3.0f, -3.0f, -5.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(-3.0f, 3.0f, -5.0f);
         attachSphereCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(-3.0f, -3.0f, -5.0f);
         attachSphereCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         /*
@@ -149,13 +149,13 @@ public class SampleMain extends SXRMain {
         object = getColorMesh(1.0f, mesh);
         object.getTransform().setPosition(0.0f, 0.0f, -2.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorMesh(1.0f, mesh);
         object.getTransform().setPosition(3.0f, 3.0f, -2.0f);
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         object.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
         mObjects.add(object);
 
@@ -163,13 +163,13 @@ public class SampleMain extends SXRMain {
         object = getColorMesh(2.0f, mesh);
         object.getTransform().setPosition(-5.0f, 0.0f, -2.0f);
         attachBoundsCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorMesh(1.0f, mesh);
         object.getTransform().setPosition(0.0f, -5.0f, -2.0f);
         attachBoundsCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
     }
 
@@ -177,24 +177,24 @@ public class SampleMain extends SXRMain {
     public void onStep() {
     }
 
-    private SXRSceneObject getColorBoard(float width, float height) {
+    private SXRNode getColorBoard(float width, float height) {
         SXRMaterial material = new SXRMaterial(mSXRContext, SXRMaterial.SXRShaderType.Color.ID);
         material.setVec4("u_color", UNPICKED_COLOR_R,
                 UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
-        SXRSceneObject board = new SXRSceneObject(mSXRContext, width, height);
+        SXRNode board = new SXRNode(mSXRContext, width, height);
         board.getRenderData().setMaterial(material);
         // material.setVec4("u_color", UNPICKED_COLOR_R,
         //        UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
         return board;
     }
 
-    private SXRSceneObject getColorMesh(float scale, SXRMesh mesh) {
+    private SXRNode getColorMesh(float scale, SXRMesh mesh) {
         SXRMaterial material = new SXRMaterial(mSXRContext, SXRMaterial.SXRShaderType.Color.ID);
         material.setVec4("u_color", UNPICKED_COLOR_R,
                 UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
 
-        SXRSceneObject meshObject = null;
-        meshObject = new SXRSceneObject(mSXRContext, mesh);
+        SXRNode meshObject = null;
+        meshObject = new SXRNode(mSXRContext, mesh);
         meshObject.getTransform().setScale(scale, scale, scale);
         meshObject.getRenderData().setMaterial(material);
         // material.setVec4("u_color", UNPICKED_COLOR_R,
@@ -202,15 +202,15 @@ public class SampleMain extends SXRMain {
         return meshObject;
     }
 
-    private void attachMeshCollider(SXRSceneObject sceneObject) {
+    private void attachMeshCollider(SXRNode sceneObject) {
         sceneObject.attachComponent(new SXRMeshCollider(mSXRContext, false));
     }
 
-    private void attachSphereCollider(SXRSceneObject sceneObject) {
+    private void attachSphereCollider(SXRNode sceneObject) {
         sceneObject.attachComponent(new SXRSphereCollider(mSXRContext));
     }
 
-    private void attachBoundsCollider(SXRSceneObject sceneObject) {
+    private void attachBoundsCollider(SXRNode sceneObject) {
         sceneObject.attachComponent(new SXRMeshCollider(mSXRContext, true));
     }
 }

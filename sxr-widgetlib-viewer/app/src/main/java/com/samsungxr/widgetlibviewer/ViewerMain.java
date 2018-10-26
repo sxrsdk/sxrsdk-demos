@@ -80,7 +80,7 @@ public class ViewerMain extends SXRMain {
                 }
             }
 
-            ArrayList<SXRRenderData> rdata = getSceneObject().getAllComponents(SXRRenderData.getComponentType());
+            ArrayList<SXRRenderData> rdata = getNode().getAllComponents(SXRRenderData.getComponentType());
             for (SXRRenderData r : rdata) {
                 r.disableLight();
             }
@@ -109,7 +109,7 @@ public class ViewerMain extends SXRMain {
             mLight.loadLights(sxrContext);
             mLight.getLightScene().getTransform().setPosition(0, 10, 0);
             mLight.getLightScene().getTransform().rotateByAxis(-90, 1, 0, 0);
-            mMainScene.addSceneObject(mLight.getLightScene());
+            mMainScene.addNode(mLight.getLightScene());
 
 
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class ViewerMain extends SXRMain {
         WidgetLib.getMainThread().runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                mMainScene.addSceneObject(mBackgroundWidget);
+                mMainScene.addNode(mBackgroundWidget);
                 mContentSceneController.goTo(mModelsList);
 //                mContentSceneController.goTo(mNotificationList);
                 closeSplashScreen();

@@ -21,15 +21,15 @@ import android.widget.Toast;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.controls.R;
 
 public class Util {
 
-    public static float[] calculatePointBetweenTwoObjects(SXRSceneObject object1,
-            SXRSceneObject object2, float desiredDistance) {
+    public static float[] calculatePointBetweenTwoObjects(SXRNode object1,
+            SXRNode object2, float desiredDistance) {
         float[] point = new float[3];
         float ratio = desiredDistance / (float) distance(object1, object2);
         point[0] = (1 - ratio) * object1.getTransform().getPositionX() + (ratio)
@@ -52,7 +52,7 @@ public class Util {
         return normalizedColor;
     }
 
-    public static double distance(SXRSceneObject object1, SXRSceneObject object2) {
+    public static double distance(SXRNode object1, SXRNode object2) {
         return Math.sqrt(Math.pow(object1.getTransform().getPositionX()
                 - object2.getTransform().getPositionX(), 2)
                 +
@@ -101,21 +101,21 @@ public class Util {
         return context.getAssetLoader().loadTexture(new SXRAndroidResource(context, res));
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject, SXRSceneObject targetObject) {
+    public static float getYRotationAngle(SXRNode rotatingObject, SXRNode targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
                 targetObject.getTransform().getPositionZ()
                         - rotatingObject.getTransform().getPositionZ()));
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject, SXRCameraRig targetObject) {
+    public static float getYRotationAngle(SXRNode rotatingObject, SXRCameraRig targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
                 targetObject.getTransform().getPositionZ()
                         - rotatingObject.getTransform().getPositionZ()));
     }
 
-    public static void lookAtYAxis(SXRSceneObject origin, SXRSceneObject destination) {
+    public static void lookAtYAxis(SXRNode origin, SXRNode destination) {
         origin.getTransform().setRotationByAxis(
                 MathUtils.getYRotationAngle(origin, destination), 0, 1, 0);
     }

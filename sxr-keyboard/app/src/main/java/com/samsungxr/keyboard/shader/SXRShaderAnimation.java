@@ -17,7 +17,7 @@ package com.samsungxr.keyboard.shader;
 
 import com.samsungxr.SXRHybridObject;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRMaterialAnimation;
 
 /** Animate the opacity. */
@@ -45,12 +45,12 @@ public class SXRShaderAnimation extends SXRMaterialAnimation {
     /**
      * Animate the {@link SXRMaterial#setFloat(key,float) blur} property.
      * 
-     * @param target {@link SXRSceneObject} containing a {@link SXRMaterial} to
+     * @param target {@link SXRNode} containing a {@link SXRMaterial} to
      *            animate.
      * @param duration The animation duration, in seconds.
      * @param opacity A value from 0 to 1
      */
-    public SXRShaderAnimation(SXRSceneObject target, String key, float duration,
+    public SXRShaderAnimation(SXRNode target, String key, float duration,
             float finalValue) {
         this(getMaterial(target), key, duration, finalValue);
     }

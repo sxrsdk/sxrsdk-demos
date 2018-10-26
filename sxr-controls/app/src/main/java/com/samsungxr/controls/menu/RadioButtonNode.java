@@ -43,7 +43,7 @@
         import com.samsungxr.controls.util.RenderingOrder;
         import com.samsungxr.controls.util.Text;
 
-public class RadioButtonSceneObject extends MenuControlSceneObject {
+public class RadioButtonNode extends MenuControlNode {
 
     private final int IDLE_STATE = 0;
     private final int HOVER_STATE = 1;
@@ -61,7 +61,7 @@ public class RadioButtonSceneObject extends MenuControlSceneObject {
 
     private float second;
 
-    public RadioButtonSceneObject(SXRContext sxrContext, String title, float second) {
+    public RadioButtonNode(SXRContext sxrContext, String title, float second) {
         super(sxrContext);
 
         this.title = title;

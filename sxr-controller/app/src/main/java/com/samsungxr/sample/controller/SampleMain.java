@@ -28,14 +28,14 @@ import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.ITouchEvents;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.utility.Log;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class SampleMain extends SXRMain
     private SXRScene mainScene;
     private SXRContext mSXRContext = null;
     private SXRActivity mActivity;
-    private SXRSceneObject cursor;
+    private SXRNode cursor;
     private SXRCursorController controller;
 
     SampleMain(SXRActivity activity)
@@ -81,7 +81,7 @@ public class SampleMain extends SXRMain
         mainScene = mSXRContext.getMainScene();
         mainScene.getEventReceiver().addListener(mPickHandler);
         SXRInputManager inputManager = mSXRContext.getInputManager();
-        cursor = new SXRSceneObject(mSXRContext, mSXRContext.createQuad(1f, 1f),
+        cursor = new SXRNode(mSXRContext, mSXRContext.createQuad(1f, 1f),
                                     mSXRContext.getAssetLoader().loadTexture(
                                     new SXRAndroidResource(mSXRContext, R.raw.cursor)));
         cursor.getRenderData().setDepthTest(false);
@@ -109,53 +109,53 @@ public class SampleMain extends SXRMain
         /*
          * Adding Boards
          */
-        SXRSceneObject object = getColorBoard();
+        SXRNode object = getColorBoard();
         object.getTransform().setPosition(0.0f, BOARD_OFFSET, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBoard1");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(0.0f, -BOARD_OFFSET, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBoard2");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(-BOARD_OFFSET, 0.0f, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBoard3");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(BOARD_OFFSET, 0.0f, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBoard4");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(BOARD_OFFSET, BOARD_OFFSET, DEPTH);
         object.setName("MeshBoard5");
         attachMeshCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(BOARD_OFFSET, -BOARD_OFFSET, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBoard6");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(-BOARD_OFFSET, BOARD_OFFSET, DEPTH);
         attachSphereCollider(object);
         object.setName("SphereBoard1");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorBoard();
         object.getTransform().setPosition(-BOARD_OFFSET, -BOARD_OFFSET, DEPTH);
         object.setName("SphereBoard2");
         attachSphereCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         SXRMesh mesh = null;
         try
@@ -182,48 +182,48 @@ public class SampleMain extends SXRMain
         object.getTransform().setPosition(0.0f, 0.0f, DEPTH);
         object.setName("BoundsBunny1");
         attachBoundsCollider(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorMesh(0.75f, mesh);
         object.getTransform().setPosition(4.0f, 0.0f, DEPTH);
         attachBoundsCollider(object);
         object.setName("BoundsBunny2");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorMesh(0.75f, mesh);
         object.getTransform().setPosition(-4.0f, 0.0f, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBunny3");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         object = getColorMesh(0.75f, mesh);
         object.getTransform().setPosition(0.0f, -4.0f, DEPTH);
         attachMeshCollider(object);
         object.setName("MeshBunny4");
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
 
         SXRAssetLoader assetLoader = sxrContext.getAssetLoader();
         SXRTexture texture = assetLoader.loadTexture(
                 new SXRAndroidResource(sxrContext, R.drawable.skybox_gridroom));
         SXRMaterial material = new SXRMaterial(sxrContext);
-        SXRSphereSceneObject skyBox = new SXRSphereSceneObject(sxrContext, false, material);
+        SXRSphereNode skyBox = new SXRSphereNode(sxrContext, false, material);
         skyBox.getTransform().setScale(SCALE, SCALE, SCALE);
         skyBox.getRenderData().getMaterial().setMainTexture(texture);
-        mainScene.addSceneObject(skyBox);
+        mainScene.addNode(skyBox);
     }
 
     private ITouchEvents mPickHandler = new ITouchEvents()
     {
-        private SXRSceneObject movingObject;
+        private SXRNode movingObject;
 
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
         {
             sceneObj.getRenderData().getMaterial().setVec4("u_color", PICKED_COLOR_R,
                                                            PICKED_COLOR_G, PICKED_COLOR_B,
                                                            PICKED_COLOR_A);
         }
 
-        public void onTouchStart(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+        public void onTouchStart(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
         {
             if (movingObject == null)
             {
@@ -237,7 +237,7 @@ public class SampleMain extends SXRMain
             }
         }
 
-        public void onTouchEnd(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+        public void onTouchEnd(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
         {
             sceneObj.getRenderData().getMaterial().setVec4("u_color", PICKED_COLOR_R,
                                                            PICKED_COLOR_G, PICKED_COLOR_B,
@@ -249,7 +249,7 @@ public class SampleMain extends SXRMain
             }
          }
 
-        public void onExit(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+        public void onExit(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
         {
             sceneObj.getRenderData().getMaterial().setVec4("u_color", UNPICKED_COLOR_R,
                                                            UNPICKED_COLOR_G, UNPICKED_COLOR_B,
@@ -260,46 +260,46 @@ public class SampleMain extends SXRMain
                 movingObject = null;
             }
         }
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
 
         public void onMotionOutside(SXRPicker p, MotionEvent e) { }
     };
 
-    private SXRSceneObject getColorBoard()
+    private SXRNode getColorBoard()
     {
         SXRMaterial material = new SXRMaterial(mSXRContext, SXRShaderType.Color.ID);
         material.setVec4("u_color", UNPICKED_COLOR_R,
                          UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
-        SXRCubeSceneObject board = new SXRCubeSceneObject(mSXRContext);
+        SXRCubeNode board = new SXRCubeNode(mSXRContext);
         board.getRenderData().setMaterial(material);
         board.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.GEOMETRY);
         return board;
     }
 
-    private SXRSceneObject getColorMesh(float scale, SXRMesh mesh)
+    private SXRNode getColorMesh(float scale, SXRMesh mesh)
     {
         SXRMaterial material = new SXRMaterial(mSXRContext, SXRShaderType.Color.ID);
         material.setVec4("u_color", UNPICKED_COLOR_R,
                          UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
 
-        SXRSceneObject meshObject = new SXRSceneObject(mSXRContext, mesh);
+        SXRNode meshObject = new SXRNode(mSXRContext, mesh);
         meshObject.getTransform().setScale(scale, scale, scale);
         meshObject.getRenderData().setMaterial(material);
         meshObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.GEOMETRY);
         return meshObject;
     }
 
-    private void attachMeshCollider(SXRSceneObject sceneObject)
+    private void attachMeshCollider(SXRNode sceneObject)
     {
         sceneObject.attachComponent(new SXRMeshCollider(mSXRContext, false));
     }
 
-    private void attachSphereCollider(SXRSceneObject sceneObject)
+    private void attachSphereCollider(SXRNode sceneObject)
     {
         sceneObject.attachComponent(new SXRSphereCollider(mSXRContext));
     }
 
-    private void attachBoundsCollider(SXRSceneObject sceneObject)
+    private void attachBoundsCollider(SXRNode sceneObject)
     {
         sceneObject.attachComponent(new SXRMeshCollider(mSXRContext, true));
     }

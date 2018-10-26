@@ -17,13 +17,13 @@ package com.samsungxr.keyboard.textField;
 
 import com.samsungxr.SXRBitmapImage;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.keyboard.model.CharItem;
 import com.samsungxr.keyboard.util.SXRTextBitmapFactory;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class TextFieldItem extends SXRSceneObject {
+public class TextFieldItem extends SXRNode {
 
     public Text currentText;
     protected int width;
@@ -35,7 +35,7 @@ public class TextFieldItem extends SXRSceneObject {
             int bitmapWidth, int bitmapHeigth, Text text,
             int position) {
         super(sxrContext, sceneObjectWidth, sceneObjectHeigth);
-        setName(SceneObjectNames.TEXT_FIELD_ITEM);
+        setName(NodeNames.TEXT_FIELD_ITEM);
 
         currentText = text;
         this.width = bitmapWidth;

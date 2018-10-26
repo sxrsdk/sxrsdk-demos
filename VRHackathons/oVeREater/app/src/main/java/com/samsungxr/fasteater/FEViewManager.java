@@ -17,7 +17,7 @@ import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
@@ -29,8 +29,8 @@ import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject.IntervalFrequency;
+import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.nodes.SXRTextViewNode.IntervalFrequency;
 import com.samsungxr.utility.Log;
 import org.siprop.bullet.Bullet;
 import org.siprop.bullet.Geometry;
@@ -56,24 +56,24 @@ public class FEViewManager extends SXRScript {
 	private SXRAnimationEngine mAnimationEngine;
 	private SXRScene mMainScene;
 	private SXRContext mSXRContext;
-	private SXRSceneObject mainSceneObject, headTracker, astronautMeshObject;
-	private SXRTextViewSceneObject textMessageObject, scoreTextMessageObject, livesTextMessageObject, tapTOStart;
-	private SXRSceneObject burger;
+	private SXRNode mainNode, headTracker, astronautMeshObject;
+	private SXRTextViewNode textMessageObject, scoreTextMessageObject, livesTextMessageObject, tapTOStart;
+	private SXRNode burger;
 	private List<FlyingItem> mObjects = new ArrayList<FlyingItem>();
     private Bullet mBullet = null;
     private static final float OBJECT_MASS = 0.5f;
     private RigidBody boxBody;
     private Boolean gameStart = false;
-    private Map<RigidBody, SXRSceneObject> rigidBodiesSceneMap = new HashMap<RigidBody, SXRSceneObject>();
+    private Map<RigidBody, SXRNode> rigidBodiesSceneMap = new HashMap<RigidBody, SXRNode>();
     private Timer timer;
     private GameStateMachine gameState;
-    private SXRSceneObject homeButton, pauseButton, timerButton;
+    private SXRNode homeButton, pauseButton, timerButton;
     private Player ovrEater;
     private Boolean isBGAudioOnce = false;
 
-	private SXRSceneObject asyncSceneObject(SXRContext context, String meshName, String textureName)
+	private SXRNode asyncNode(SXRContext context, String meshName, String textureName)
 			throws IOException {
-		return new SXRSceneObject(context, //
+		return new SXRNode(context, //
 				new SXRAndroidResource(context, meshName), new SXRAndroidResource(context, textureName));
 	}
 
@@ -104,33 +104,33 @@ public class FEViewManager extends SXRScript {
 
         ovrEater = new Player();
 
-        mainSceneObject = new SXRSceneObject(context);
-        mMainScene.addSceneObject(mainSceneObject);
+        mainNode = new SXRNode(context);
+        mMainScene.addNode(mainNode);
         mMainScene.getMainCameraRig().getTransform().setPosition(0.0f, 6.0f, 8.0f);
 
         SXRMesh mesh = context.loadMesh(new SXRAndroidResource(context,
                 "space_sphere.obj"));
 
-        SXRSceneObject leftScreen = new SXRSceneObject(context, mesh,
+        SXRNode leftScreen = new SXRNode(context, mesh,
                 context.loadTexture(new SXRAndroidResource(context,
                         "city_domemap_left.png")));
         leftScreen.getTransform().setScale(200,200,200);
-        SXRSceneObject rightScreen = new SXRSceneObject(context, mesh,
+        SXRNode rightScreen = new SXRNode(context, mesh,
                 context.loadTexture(new SXRAndroidResource(context,
                         "city_domemap_right.png")));
         rightScreen.getTransform().setScale(200,200,200);
 
-        mainSceneObject.addChildObject(leftScreen);
-        mainSceneObject.addChildObject(rightScreen);
+        mainNode.addChildObject(leftScreen);
+        mainNode.addChildObject(rightScreen);
 
         tapTOStart = setInfoMessage("Tap to start");
-        mainSceneObject.addChildObject(tapTOStart);
+        mainNode.addChildObject(tapTOStart);
 
     }
 
-    private SXRTextViewSceneObject setInfoMessage(String str)
+    private SXRTextViewNode setInfoMessage(String str)
     {
-        SXRTextViewSceneObject textMessageObject = new SXRTextViewSceneObject(mSXRContext, 4, 4, str);
+        SXRTextViewNode textMessageObject = new SXRTextViewNode(mSXRContext, 4, 4, str);
         textMessageObject.setTextColor(Color.YELLOW);
         textMessageObject.setGravity(Gravity.CENTER);
         textMessageObject.setKeepWrapper(true);
@@ -147,9 +147,9 @@ public class FEViewManager extends SXRScript {
         return textMessageObject;
     }
 
-    private SXRTextViewSceneObject makeScoreboard(SXRContext ctx, SXRSceneObject parent)
+    private SXRTextViewNode makeScoreboard(SXRContext ctx, SXRNode parent)
     {
-        SXRTextViewSceneObject scoreBoard = new SXRTextViewSceneObject(ctx, 2.0f, 1.5f, "000");
+        SXRTextViewNode scoreBoard = new SXRTextViewNode(ctx, 2.0f, 1.5f, "000");
 
         SXRRenderData rdata = scoreBoard.getRenderData();
         SXRCollider collider = new SXRMeshCollider(ctx, true);
@@ -167,9 +167,9 @@ public class FEViewManager extends SXRScript {
         return scoreBoard;
     }
 
-    private SXRTextViewSceneObject makeLivesLeft(SXRContext ctx, SXRSceneObject parent)
+    private SXRTextViewNode makeLivesLeft(SXRContext ctx, SXRNode parent)
     {
-        SXRTextViewSceneObject livesLeft = new SXRTextViewSceneObject(ctx, 5.3f, 1.5f, "Lives: 3");
+        SXRTextViewNode livesLeft = new SXRTextViewNode(ctx, 5.3f, 1.5f, "Lives: 3");
         livesLeft.setTextSize(6);
         SXRRenderData rdata = livesLeft.getRenderData();
         SXRCollider collider = new SXRMeshCollider(ctx, true);
@@ -186,11 +186,11 @@ public class FEViewManager extends SXRScript {
         return livesLeft;
     }
 
-	private SXRSceneObject quadWithTexture(float width, float height, String texture) {
+	private SXRNode quadWithTexture(float width, float height, String texture) {
 		FutureWrapper<SXRMesh> futureMesh = new FutureWrapper<SXRMesh>(mSXRContext.createQuad(width, height));
-		SXRSceneObject object = null;
+		SXRNode object = null;
 		try {
-			object = new SXRSceneObject(mSXRContext, futureMesh,
+			object = new SXRNode(mSXRContext, futureMesh,
 					mSXRContext.loadFutureTexture(new SXRAndroidResource(mSXRContext, texture)));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -246,13 +246,13 @@ public class FEViewManager extends SXRScript {
     public void throwAnObject() throws IOException {
         if(!ovrEater.isDead()) {
             int rand_index = Helper.randomNextInt(OverEatObjects.length);
-            SXRSceneObject object = asyncSceneObject(mSXRContext, OverEatObjects[rand_index][0], OverEatObjects[rand_index][1]);
+            SXRNode object = asyncNode(mSXRContext, OverEatObjects[rand_index][0], OverEatObjects[rand_index][1]);
             FlyingItem item = new FlyingItem(OverEatObjects[rand_index][2], object);
             object.getTransform().setPosition(
                     Helper.randomInRangeFloat(MIN_GAME_WIDTH, MAX_GAME_WIDTH),
                     Helper.randomInRangeFloat(MIN_GAME_HEIGHT_START, MAX_GAME_HEIGHT_START),
                     -20);
-            mainSceneObject.addChildObject(object);
+            mainNode.addChildObject(object);
             mObjects.add(item);
 
             relativeMotionAnimation(object,
@@ -275,17 +275,17 @@ public class FEViewManager extends SXRScript {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (mObjects.get(i) != null && mObjects.get(i).getSceneObject().getRenderData().getMesh() != null) {
-                    if (mObjects.get(i).getSceneObject().isColliding(headTracker)) {
+                if (mObjects.get(i) != null && mObjects.get(i).getNode().getRenderData().getMesh() != null) {
+                    if (mObjects.get(i).getNode().isColliding(headTracker)) {
                         //Log.e(TAG, "mObjects.get(i).getName: Penke " + mObjects.get(i).getName() + "score" + ovrEater.getCurrentScore());
                         if (mObjects.get(i).getName().compareTo("bomb") == 0) {
-                            animateTextures("explode_.zip", mObjects.get(i).getSceneObject());
+                            animateTextures("explode_.zip", mObjects.get(i).getNode());
                             ovrEater.loseALife();
                             AudioClip.getInstance(mSXRContext.getContext()).
                                     playSound(AudioClip.getUISoundGrenadeID(), 1.0f, 1.0f);
                             Log.e(TAG, "remaining Lives Penke " + ovrEater.getNumLivesRemaining());
                         } else if (mObjects.get(i).getName().compareTo("hamburger") == 0) {
-                            animateTextures("splat.zip", mObjects.get(i).getSceneObject());
+                            animateTextures("splat.zip", mObjects.get(i).getNode());
                             AudioClip.getInstance(mSXRContext.getContext()).
                                     playSound(AudioClip.getUISoundEatID(), 1.0f, 1.0f);
                             ovrEater.incrementScore(50);
@@ -298,7 +298,7 @@ public class FEViewManager extends SXRScript {
                         }
                         scoreTextMessageObject.setText(String.format("%03d", ovrEater.getCurrentScore()));
                         livesTextMessageObject.setText("Lives: " + ovrEater.getNumLivesRemaining());
-                        mainSceneObject.removeChildObject(mObjects.get(i).getSceneObject());
+                        mainNode.removeChildObject(mObjects.get(i).getNode());
                         mObjects.remove(i);
                         try {
                             headTracker.getRenderData().getMaterial().setMainTexture(
@@ -306,9 +306,9 @@ public class FEViewManager extends SXRScript {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    } else if (mObjects.get(i).getSceneObject().getTransform().getPositionZ() >
+                    } else if (mObjects.get(i).getNode().getTransform().getPositionZ() >
                             mMainScene.getMainCameraRig().getTransform().getPositionZ()) {
-                        mainSceneObject.removeChildObject(mObjects.get(i).getSceneObject());
+                        mainNode.removeChildObject(mObjects.get(i).getNode());
                         mObjects.remove(i);
                     }
 
@@ -324,7 +324,7 @@ public class FEViewManager extends SXRScript {
         }
 	}
 
-    private void animateTextures(String assetName, SXRSceneObject object) {
+    private void animateTextures(String assetName, SXRNode object) {
         try {
             List<Future<SXRTexture>> loaderTextures = ZipLoader.load(mSXRContext,
                     assetName, new ZipLoader.ZipEntryProcessor<Future<SXRTexture>>() {
@@ -335,7 +335,7 @@ public class FEViewManager extends SXRScript {
                         }
                     });
 
-            SXRSceneObject loadingObject = new SXRSceneObject(mSXRContext, 1.0f, 1.0f);
+            SXRNode loadingObject = new SXRNode(mSXRContext, 1.0f, 1.0f);
 
             SXRRenderData renderData = loadingObject.getRenderData();
             SXRMaterial loadingMaterial = new SXRMaterial(mSXRContext);
@@ -353,7 +353,7 @@ public class FEViewManager extends SXRScript {
                     object.getTransform().getPositionY(),
                     object.getTransform().getPositionZ()
             );
-            mainSceneObject.addChildObject(loadingObject);
+            mainNode.addChildObject(loadingObject);
         } catch (IOException e) {
             Log.e(TAG, "Error loading animation", e);
         }
@@ -369,7 +369,7 @@ public class FEViewManager extends SXRScript {
         showMouthPointer(false);
         tapTOStart = setInfoMessage("Game Over   " + String
                 .format("Score : %d", ovrEater.getCurrentScore()) + "Click Back Button to Play Again");
-        mainSceneObject.addChildObject(tapTOStart);
+        mainNode.addChildObject(tapTOStart);
         if(timer != null)
             timer.cancel();
     }
@@ -378,7 +378,7 @@ public class FEViewManager extends SXRScript {
         if(enable) {
             // add head-tracking pointer
             try {
-                headTracker = new SXRSceneObject(mSXRContext, new FutureWrapper<SXRMesh>(mSXRContext.createQuad(0.5f, 0.5f)),
+                headTracker = new SXRNode(mSXRContext, new FutureWrapper<SXRMesh>(mSXRContext.createQuad(0.5f, 0.5f)),
                         mSXRContext.loadFutureTexture(new SXRAndroidResource(mSXRContext, "mouth_open.png")));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -389,7 +389,7 @@ public class FEViewManager extends SXRScript {
             mMainScene.getMainCameraRig().addChildObject(headTracker);
         } else {
             if(headTracker != null)
-                mainSceneObject.removeChildObject(headTracker);
+                mainNode.removeChildObject(headTracker);
         }
     }
 	
@@ -413,7 +413,7 @@ public class FEViewManager extends SXRScript {
 		animation.setRepeatMode(SXRRepeatMode.ONCE).setRepeatCount(-1).start(mAnimationEngine);
 	}
 
-	private SXRSceneObject attachedObject = null;
+	private SXRNode attachedObject = null;
 	private float lastX = 0, lastY = 0;
 	private boolean isOnClick = false;
 
@@ -441,7 +441,7 @@ public class FEViewManager extends SXRScript {
                     isBGAudioOnce = true;
                 }
                 if(tapTOStart != null)
-                    mainSceneObject.removeChildObject(tapTOStart);
+                    mainNode.removeChildObject(tapTOStart);
 
                 showMouthPointer(true);
                 if (scoreTextMessageObject == null) {
@@ -467,11 +467,11 @@ public class FEViewManager extends SXRScript {
 		}
 	}
 
-	private void counterClockwise(SXRSceneObject object, float duration) {
+	private void counterClockwise(SXRNode object, float duration) {
 		run(new SXRRotationByAxisWithPivotAnimation(object, duration, 360.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
-	private void clockwise(SXRSceneObject object, float duration) {
+	private void clockwise(SXRNode object, float duration) {
 		run(new SXRRotationByAxisWithPivotAnimation(object, duration, -360.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
@@ -479,25 +479,25 @@ public class FEViewManager extends SXRScript {
 		run(new SXRRotationByAxisWithPivotAnimation(transform, duration, -360.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
-	private void clockwiseOnZ(SXRSceneObject object, float duration) {
+	private void clockwiseOnZ(SXRNode object, float duration) {
 		runOnce(new SXRRotationByAxisAnimation(object, duration, -360.0f, 0.0f, 0.0f, 1.0f));
 	}
 
-	private void scaleAnimation(SXRSceneObject object, float duration, float x, float y, float z) {
+	private void scaleAnimation(SXRNode object, float duration, float x, float y, float z) {
 		runOnce(new SXRScaleAnimation(object, duration, x, y, z));
 	}
 
     /*
-	private void startSpaceShip(SXRSceneObject object, float duration) {
+	private void startSpaceShip(SXRNode object, float duration) {
 
 	}
 	*/
 
-	private void relativeMotionAnimation(SXRSceneObject object, float duration, float x, float y, float z) {
+	private void relativeMotionAnimation(SXRNode object, float duration, float x, float y, float z) {
 		runOnce(new SXRRelativeMotionAnimation(object, duration, x, y, z));
 	}
 
-	private void attachDefaultEyePointee(SXRSceneObject sceneObject) {
+	private void attachDefaultEyePointee(SXRNode sceneObject) {
 		sceneObject.attachEyePointeeHolder();
 	}
 

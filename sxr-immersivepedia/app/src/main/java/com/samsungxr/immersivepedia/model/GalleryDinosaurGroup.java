@@ -19,12 +19,12 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.dinosaur.Dinosaur;
 import com.samsungxr.immersivepedia.dinosaur.DinosaurFactory;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.focus.OnGestureListener;
 import com.samsungxr.immersivepedia.gallery.Gallery;
 import com.samsungxr.immersivepedia.props.Totem;
@@ -32,7 +32,7 @@ import com.samsungxr.immersivepedia.util.AudioClip;
 
 import java.io.IOException;
 
-public class GalleryDinosaurGroup extends SXRSceneObject {
+public class GalleryDinosaurGroup extends SXRNode {
     private int photos[] = new int[] {
             R.drawable.photo01, R.drawable.photo02, R.drawable.photo03,
             R.drawable.photo04,
@@ -42,11 +42,11 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
             R.drawable.photo02
     };
 
-    private SXRSceneObject galleryGroup;
+    private SXRNode galleryGroup;
     private Gallery gallery;
     private SXRScene scene;
     private SXRContext sxrContext;
-    private FocusableSceneObject focus;
+    private FocusableNode focus;
     private Dinosaur dinosaur;
 
     public GalleryDinosaurGroup(SXRContext sxrContext, SXRScene scene) throws IOException {
@@ -63,7 +63,7 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
 
     private void createFocus() {
 
-        focus = new FocusableSceneObject(sxrContext, sxrContext.createQuad(15f, 9f),
+        focus = new FocusableNode(sxrContext, sxrContext.createQuad(15f, 9f),
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty)));
         focus.getTransform().setPosition(0f, 3.5f, DinosaurFactory.APATOSAURUS_DISTANCE - 0.01f);
         focus.getTransform().rotateByAxis(-180.0f, 0f, 1f, 0f);
@@ -96,18 +96,18 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
                 new SXRRotationByAxisAnimation(dinosaur, 4f, -45, 0, 1, 0).start(sxrContext.getAnimationEngine());
             }
         });
-        scene.addSceneObject(focus);
+        scene.addNode(focus);
     }
 
     private void createGallery() {
         gallery = new Gallery(getSXRContext(), photos);
         gallery.getTransform().setPosition(Gallery.GALLERY_POSITION_X, Gallery.GALLERY_POSITION_Y, Gallery.GALLERY_POSITION_Z);
         gallery.getTransform().setRotationByAxis(180.0f, 0f, 1f, 0f);
-        scene.addSceneObject(gallery);
+        scene.addNode(gallery);
     }
 
     private void createGalleryGroup() {
-        galleryGroup = new SXRSceneObject(getSXRContext());
+        galleryGroup = new SXRNode(getSXRContext());
         galleryGroup.getTransform().setPosition(0f, 0f, -8.0f);
         galleryGroup.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         galleryGroup.getTransform().rotateByAxisWithPivot(
@@ -120,7 +120,7 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
         dinosaur.getTransform().rotateByAxisWithPivot(180.0f, 0f, 1f, 0f, 0f, 0f, 0f);
         dinosaur.getTransform().setPosition(0f, 0f, DinosaurFactory.APATOSAURUS_DISTANCE);
         dinosaur.getTransform().rotateByAxis(-70.0f, 0f, 1f, 0f);
-        scene.addSceneObject(dinosaur);
+        scene.addNode(dinosaur);
     }
 
     private void createTotem() {
@@ -133,7 +133,7 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
         totem.setName("totem_apatosaurus");
         totem.setText(sxrContext.getActivity().getResources().getString(R.string.gallery_totem));
         galleryGroup.addChildObject(totem);
-        scene.addSceneObject(galleryGroup);
+        scene.addNode(galleryGroup);
     }
 
     public boolean isOpen() {

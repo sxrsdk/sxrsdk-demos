@@ -11,11 +11,11 @@
 package com.samsung.accessibility.util;
 
 import com.samsungxr.SXRCameraRig;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 public class Utils {
 
-    public static double distance(SXRSceneObject object, SXRCameraRig sxrCameraRig) {
+    public static double distance(SXRNode object, SXRCameraRig sxrCameraRig) {
         return Math.sqrt(Math.pow(object.getTransform().getPositionX()
                 - sxrCameraRig.getTransform().getPositionX(), 2)
                 +
@@ -27,7 +27,7 @@ public class Utils {
 
     }
 
-    public static float[] calculatePointBetweenTwoObjects(SXRSceneObject object,
+    public static float[] calculatePointBetweenTwoObjects(SXRNode object,
             SXRCameraRig sxrCameraRig, float desiredDistance) {
         float[] point = new float[3];
         float ratio = desiredDistance / (float) distance(object, sxrCameraRig);

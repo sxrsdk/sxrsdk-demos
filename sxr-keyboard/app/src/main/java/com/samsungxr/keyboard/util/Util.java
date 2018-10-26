@@ -22,7 +22,7 @@ import android.util.Log;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 
 public class Util {
@@ -35,7 +35,7 @@ public class Util {
         return pixel * 0.00367f;
     }
 
-    public static Vector3D getVec3(SXRSceneObject object) {
+    public static Vector3D getVec3(SXRNode object) {
 
         Vector3D vObject = null;
 
@@ -50,7 +50,7 @@ public class Util {
         return vObject;
     }
 
-    public static Vector3D getVec3IgnoreY(SXRSceneObject object) {
+    public static Vector3D getVec3IgnoreY(SXRNode object) {
 
         Vector3D vObject = null;
 
@@ -64,7 +64,7 @@ public class Util {
         return vObject;
     }
 
-    public static float getXRotationAngle(SXRSceneObject rotatingObject, SXRSceneObject targetObject) {
+    public static float getXRotationAngle(SXRNode rotatingObject, SXRNode targetObject) {
         float angle = (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionY()
                 - rotatingObject.getTransform().getPositionY(),
                 targetObject.getTransform().getPositionZ()
@@ -83,28 +83,28 @@ public class Util {
         return angle;
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject, SXRSceneObject targetObject) {
+    public static float getYRotationAngle(SXRNode rotatingObject, SXRNode targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
                 targetObject.getTransform().getPositionZ()
                         - rotatingObject.getTransform().getPositionZ()));
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject, SXRTransform targetObject) {
+    public static float getYRotationAngle(SXRNode rotatingObject, SXRTransform targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
                 targetObject.getPositionZ()
                         - rotatingObject.getTransform().getPositionZ()));
     }
 
-    public static float getYRotationAngle(Vector3D rotatingVector, SXRSceneObject targetObject) {
+    public static float getYRotationAngle(Vector3D rotatingVector, SXRNode targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingVector.getX(),
                 targetObject.getTransform().getPositionZ()
                         - rotatingVector.getZ()));
     }
 
-    public static float getZRotationAngle(SXRSceneObject rotatingObject, SXRSceneObject targetObject) {
+    public static float getZRotationAngle(SXRNode rotatingObject, SXRNode targetObject) {
         float angle = (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionY()
                 - rotatingObject.getTransform().getPositionY(),
                 targetObject.getTransform().getPositionX()
@@ -120,8 +120,8 @@ public class Util {
                         - rotatingVector.getZ()));
     }
 
-    public static float[] calculatePointBetweenTwoObjects(SXRSceneObject object1,
-            SXRSceneObject object2, float desiredDistance) {
+    public static float[] calculatePointBetweenTwoObjects(SXRNode object1,
+            SXRNode object2, float desiredDistance) {
         float[] point = new float[3];
         float ratio = desiredDistance / (float) distance(object1, object2);
         point[0] = (1 - ratio) * object1.getTransform().getPositionX() + (ratio)
@@ -135,7 +135,7 @@ public class Util {
     }
 
     public static float[] calculatePointBetweenTwoObjects(SXRTransform object1,
-            SXRSceneObject object2, float desiredDistance) {
+            SXRNode object2, float desiredDistance) {
         float[] point = new float[3];
         float ratio = desiredDistance / (float) distance(object1, object2.getTransform());
         point[0] = (1 - ratio) * object1.getPositionX() + (ratio)
@@ -148,7 +148,7 @@ public class Util {
         return point;
     }
 
-    public static float[] calculatePointBetweenTwoObjects(SXRSceneObject object, Vector3D vector,
+    public static float[] calculatePointBetweenTwoObjects(SXRNode object, Vector3D vector,
             float desiredDistance) {
         float[] point = new float[3];
         float ratio = desiredDistance / (float) distance(vector, object);
@@ -176,7 +176,7 @@ public class Util {
         return point;
     }
 
-    public static double distance(SXRSceneObject object1, SXRSceneObject object2) {
+    public static double distance(SXRNode object1, SXRNode object2) {
         return Math.sqrt(Math.pow(object1.getTransform().getPositionX()
                 - object2.getTransform().getPositionX(), 2)
                 +
@@ -200,7 +200,7 @@ public class Util {
 
     }
 
-    public static double distance(SXRSceneObject object1, SXRTransform object2) {
+    public static double distance(SXRNode object1, SXRTransform object2) {
         return Math.sqrt(Math.pow(object1.getTransform().getPositionX()
                 - object2.getPositionX(), 2)
                 +
@@ -220,7 +220,7 @@ public class Util {
 
     }
 
-    public static double distance(Vector3D vector, SXRSceneObject object) {
+    public static double distance(Vector3D vector, SXRNode object) {
         return Math.sqrt(Math.pow(vector.getX() - object.getTransform().getPositionX(), 2) +
                 Math.pow(vector.getY() - object.getTransform().getPositionY(), 2) +
                 Math.pow(vector.getZ() - object.getTransform().getPositionZ(), 2));
@@ -242,7 +242,7 @@ public class Util {
     }
 
     public static void rotateWithOpenGLLookAt(Vector3D cameraVector, Vector3D parentVector,
-            SXRSceneObject object) {
+            SXRNode object) {
         Vector3D globalUpVector = new Vector3D(0, 1, 0);
         Vector3D lookVector = parentVector.normalize();
         Vector3D rightVector = lookVector.crossProduct(globalUpVector);
@@ -276,7 +276,7 @@ public class Util {
             for (SXRPicker.SXRPickedObject pickedObject : pickedObjects) {
 
                 for (int i = 0; i < varargsObject.length; i++) {
-                    if (pickedObject.hashCode() == ((SXRSceneObject) varargsObject[i])
+                    if (pickedObject.hashCode() == ((SXRNode) varargsObject[i])
                             .getCollider().hashCode())
                         return false;
 
@@ -298,7 +298,7 @@ public class Util {
         return result;
     }
 
-    public static void logRotation(SXRSceneObject object) {
+    public static void logRotation(SXRNode object) {
 
         Log.d("RotationUtil", " RotationPitch :" + object.getTransform().getRotationPitch());
         Log.d("RotationUtil", " RotationRoll :" + object.getTransform().getRotationRoll());
@@ -432,7 +432,7 @@ public class Util {
         mediaPlayer.start();
     }
 
-    public static float getZRotationAngle(SXRSceneObject rotatingObject, SXRTransform targetObject) {
+    public static float getZRotationAngle(SXRNode rotatingObject, SXRTransform targetObject) {
         float angle = (float) Math.toDegrees(Math.atan2(targetObject.getPositionY()
                 - rotatingObject.getTransform().getPositionY(),
                 targetObject.getPositionX()

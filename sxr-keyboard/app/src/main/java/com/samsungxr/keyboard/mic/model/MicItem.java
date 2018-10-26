@@ -17,10 +17,10 @@ package com.samsungxr.keyboard.mic.model;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.SXRNode;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class MicItem extends SXRSceneObject {
+public class MicItem extends SXRNode {
 
     public static final float WIDTH = 1.2f;
     public static float HIGHT = 1.2f;
@@ -29,7 +29,7 @@ public class MicItem extends SXRSceneObject {
 
         super(sxrContext, HIGHT, WIDTH, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 gVRAndroidResourceTexture)));
-        setName(SceneObjectNames.MIC_ITEM);
+        setName(NodeNames.MIC_ITEM);
 
     }
 

@@ -22,7 +22,7 @@ import android.view.KeyEvent;
 
 import com.samsungxr.SXRPicker;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import com.samsungxr.io.cursor3d.Cursor;
 import com.samsungxr.io.cursor3d.CursorManager;
@@ -36,7 +36,7 @@ import java.util.concurrent.Future;
 
 class SpaceObject implements ICursorEvents {
     private static final String TAG = SpaceObject.class.getSimpleName();
-    protected SXRSceneObject mainObject;
+    protected SXRNode mainObject;
     private final float rotationX;
     private final float rotationY;
     private final float x, y, z;
@@ -44,12 +44,12 @@ class SpaceObject implements ICursorEvents {
     private final float orientationY;
     private final float orientationZ;
 
-    SpaceObject(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f position, float
+    SpaceObject(CursorManager cursorMgr, SXRNode asset, String name, Vector3f position, float
             scale, float rotationX, float rotationY) {
         this(cursorMgr, asset, name, position, scale, rotationX, rotationY, 0.0f, 0.0f, 0.0f);
     }
 
-    SpaceObject(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f position, float
+    SpaceObject(CursorManager cursorMgr, SXRNode asset, String name, Vector3f position, float
             scale, float rotationX, float rotationY, float orientationX, float orientationY,
                 float orientationZ) {
         this.x = position.x;
@@ -92,7 +92,7 @@ class SpaceObject implements ICursorEvents {
         }
     }
 
-    SXRSceneObject getSceneObject() {
+    SXRNode getNode() {
         return mainObject;
     }
 

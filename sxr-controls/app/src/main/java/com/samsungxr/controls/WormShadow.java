@@ -19,11 +19,11 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 
-public class WormShadow extends SXRSceneObject {
+public class WormShadow extends SXRNode {
 
     public WormShadow(SXRContext sxrContext, float width, float height, int renderingOrder) {
         super(sxrContext);
@@ -38,7 +38,7 @@ public class WormShadow extends SXRSceneObject {
         SXRTexture checkTexture = getSXRContext().getAssetLoader().loadTexture(
                 new SXRAndroidResource(getSXRContext(), R.drawable.shadow));
 
-        SXRSceneObject shadowObject = new SXRSceneObject(getSXRContext(), checkMesh, checkTexture);
+        SXRNode shadowObject = new SXRNode(getSXRContext(), checkMesh, checkTexture);
         shadowObject.getTransform().rotateByAxis(90, 1, 0, 0);
         shadowObject.getRenderData().setRenderingOrder(renderingOrder);
 

@@ -21,7 +21,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.focus.GamepadTouchImpl;
 import com.samsungxr.controls.input.GamepadMap;
 import com.samsungxr.controls.menu.MenuHeaderItem.headerType;
@@ -35,7 +35,7 @@ import com.samsungxr.controls.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuHeader extends ControlSceneObject implements ItemSelectedListener {
+public class MenuHeader extends ControlNode implements ItemSelectedListener {
 
     private static final int MENU_WINDOW_INDEX = 4;
     private static final float Z_HOVER_ANIMATION_OFFSET = 0.25f;
@@ -146,7 +146,7 @@ public class MenuHeader extends ControlSceneObject implements ItemSelectedListen
                 itemPositionY, Z_OFFSET);
     }
 
-    private void resetMenuState(ControlSceneObject object) {
+    private void resetMenuState(ControlNode object) {
 
         if (itemSelected != null) {
             if (itemSelected != object) {
@@ -239,7 +239,7 @@ public class MenuHeader extends ControlSceneObject implements ItemSelectedListen
     }
 
     @Override
-    public void selected(ControlSceneObject object) {
+    public void selected(ControlNode object) {
         resetMenuState(object);
     }
 }

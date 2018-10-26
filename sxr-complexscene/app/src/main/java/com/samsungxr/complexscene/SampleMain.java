@@ -23,7 +23,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -47,7 +47,7 @@ public class SampleMain extends SXRMain {
         float CURSOR_Z_POSITION = -9.0f;
         int CURSOR_RENDER_ORDER = 100000;
 
-        SXRSceneObject cursor = new SXRSceneObject(sxrContext,
+        SXRNode cursor = new SXRNode(sxrContext,
                 NORMAL_CURSOR_SIZE, NORMAL_CURSOR_SIZE,
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "cursor_idle.png")));
         cursor.getTransform().setPositionZ(CURSOR_Z_POSITION);
@@ -67,10 +67,10 @@ public class SampleMain extends SXRMain {
             final int OBJECTS_CNT = 8;
             for (int x=-OBJECTS_CNT; x<=OBJECTS_CNT; ++x) {
                 for (int y=-OBJECTS_CNT; y<=OBJECTS_CNT; ++y) {
-                    SXRSceneObject sceneObject = getColorMesh(1.0f, mesh);
+                    SXRNode sceneObject = getColorMesh(1.0f, mesh);
                     sceneObject.getTransform().setPosition(1.0f*x, 1.0f*y, -7.5f);
                     sceneObject.getTransform().setScale(0.5f, 0.5f, 1.0f);
-                    scene.addSceneObject(sceneObject);
+                    scene.addNode(sceneObject);
                 }
 
         }
@@ -81,11 +81,11 @@ public class SampleMain extends SXRMain {
 
     }
 
-    private SXRSceneObject getColorMesh(float scale, SXRMesh mesh) {
+    private SXRNode getColorMesh(float scale, SXRMesh mesh) {
         SXRMaterial material = new SXRMaterial(getSXRContext(), SXRMaterial.SXRShaderType.Color.ID);
         material.setColor(1.0f, 0.0f, 1.0f);
 
-        SXRSceneObject meshObject = new SXRSceneObject(getSXRContext(), mesh);
+        SXRNode meshObject = new SXRNode(getSXRContext(), mesh);
         meshObject.getTransform().setScale(scale, scale, scale);
         meshObject.getRenderData().setMaterial(material);
 

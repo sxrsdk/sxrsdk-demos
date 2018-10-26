@@ -19,9 +19,9 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.immersivepedia.R;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 
-public class PlayPauseButton extends FocusableSceneObject {
+public class PlayPauseButton extends FocusableNode {
 
     public static final String PAUSE_HOVER = "inactive_pause";
     public static final String PAUSE_NORMAL = "normal_pause";

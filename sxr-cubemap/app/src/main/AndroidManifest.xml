@@ -32,7 +32,7 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/GVRfAppTheme" >
+        android:theme="@style/SXRfAppTheme" >
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
         <activity
             android:name="com.samsungxr.cubemap.CubemapActivity"

@@ -12,7 +12,7 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.physics.SXRRigidBody;
@@ -34,7 +34,7 @@ public class BulletSampleMain extends SXRMain {
             }
         }
 
-        private void swapTextures(SXRSceneObject sceneObj0) {
+        private void swapTextures(SXRNode sceneObj0) {
             SXRTexture tmp = sceneObj0.getRenderData().getMaterial().getMainTexture();
 
             sceneObj0.getRenderData().getMaterial().setMainTexture(blueObject);
@@ -42,11 +42,11 @@ public class BulletSampleMain extends SXRMain {
             blueObject = tmp;
         }
 
-        public void onEnter(SXRSceneObject sceneObj0, SXRSceneObject sceneObj1, float normal[], float distance) {
+        public void onEnter(SXRNode sceneObj0, SXRNode sceneObj1, float normal[], float distance) {
             swapTextures(sceneObj0);
         }
 
-       public void onExit(SXRSceneObject sceneObj0, SXRSceneObject sceneObj1, float normal[], float distance) {
+       public void onExit(SXRNode sceneObj0, SXRNode sceneObj1, float normal[], float distance) {
             swapTextures(sceneObj0);
         }
 
@@ -150,12 +150,12 @@ public class BulletSampleMain extends SXRMain {
             break;
 
             case 2:
-            SXRSceneObject owner = mSphereRigidBody.getOwnerObject();
+            SXRNode owner = mSphereRigidBody.getOwnerObject();
 
             if (world != null) {
-                mScene.removeSceneObject(owner);
+                mScene.removeNode(owner);
             } else {
-                mScene.addSceneObject(owner);
+                mScene.addNode(owner);
                 randomActions = -1;
             }
             break;
@@ -172,7 +172,7 @@ public class BulletSampleMain extends SXRMain {
 
     }
 
-    private SXRSceneObject quadWithTexture(float width, float height,
+    private SXRNode quadWithTexture(float width, float height,
                                            String texture) {
         SXRMesh mesh = new SXRMesh(getSXRContext());
         mesh.createQuad(width, height);
@@ -180,7 +180,7 @@ public class BulletSampleMain extends SXRMain {
         {
             SXRTexture tex = mSXRContext.getAssetLoader().loadTexture(
                                     new SXRAndroidResource(mSXRContext, texture));
-            return new SXRSceneObject(mSXRContext, width, height, tex);
+            return new SXRNode(mSXRContext, width, height, tex);
             // TODO: Create mesh collider to ground and add SXRCollision component
         } catch (IOException e) {
             e.printStackTrace();
@@ -188,10 +188,10 @@ public class BulletSampleMain extends SXRMain {
         return null;
     }
 
-    private SXRSceneObject meshWithTexture(String mesh, String texture) {
-        SXRSceneObject object = null;
+    private SXRNode meshWithTexture(String mesh, String texture) {
+        SXRNode object = null;
         try {
-            object = new SXRSceneObject(mSXRContext, new SXRAndroidResource(
+            object = new SXRNode(mSXRContext, new SXRAndroidResource(
                     mSXRContext, mesh), new SXRAndroidResource(mSXRContext,
                     texture));
         } catch (IOException e) {
@@ -203,7 +203,7 @@ public class BulletSampleMain extends SXRMain {
     private void addGroundMesh(SXRScene scene, float x, float y, float z, float mass) {
         try {
             SXRTexture texture = mSXRContext.getAssetLoader().loadTexture(new SXRAndroidResource(mSXRContext, "floor.jpg"));
-            SXRSceneObject meshObject =  new SXRSceneObject(mSXRContext, 100.0f, 100.0f, texture);
+            SXRNode meshObject =  new SXRNode(mSXRContext, 100.0f, 100.0f, texture);
 
             meshObject.getTransform().setPosition(x, y, z);
             meshObject.getTransform().setRotationByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
@@ -220,7 +220,7 @@ public class BulletSampleMain extends SXRMain {
 
             meshObject.attachComponent(body);
 
-            scene.addSceneObject(meshObject);
+            scene.addNode(meshObject);
         } catch (IOException exception) {
             Log.d("sxr", exception.toString());
         }
@@ -232,7 +232,7 @@ public class BulletSampleMain extends SXRMain {
      */
     private void addCube(SXRScene scene, float x, float y, float z, float mass) {
 
-        SXRSceneObject cubeObject = meshWithTexture("cube.obj", "cube.jpg");
+        SXRNode cubeObject = meshWithTexture("cube.obj", "cube.jpg");
         cubeObject.getTransform().setPosition(x, y, z);
 
         // Collider
@@ -248,7 +248,7 @@ public class BulletSampleMain extends SXRMain {
 
         cubeObject.attachComponent(body);
 
-        scene.addSceneObject(cubeObject);
+        scene.addNode(cubeObject);
     }
 
     /*
@@ -258,7 +258,7 @@ public class BulletSampleMain extends SXRMain {
     private void addSphere(SXRScene scene, float radius, float x, float y,
                            float z, float mass) {
 
-        SXRSceneObject sphereObject = meshWithTexture("sphere.obj",
+        SXRNode sphereObject = meshWithTexture("sphere.obj",
                 "sphere.jpg");
         sphereObject.getTransform().setPosition(x, y, z);
 
@@ -276,7 +276,7 @@ public class BulletSampleMain extends SXRMain {
 
         sphereObject.attachComponent(mSphereRigidBody);
 
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
     }
 
 }

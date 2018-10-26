@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 public class DefaultFadeableObject extends FadeableObject {
@@ -36,7 +36,7 @@ public class DefaultFadeableObject extends FadeableObject {
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return this;
     }
 }

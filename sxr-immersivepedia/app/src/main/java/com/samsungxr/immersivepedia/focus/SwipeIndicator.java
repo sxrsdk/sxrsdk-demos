@@ -18,34 +18,34 @@ package com.samsungxr.immersivepedia.focus;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.immersivepedia.R;
 
-public class SwipeIndicator extends SXRSceneObject {
+public class SwipeIndicator extends SXRNode {
 
     private SXRContext sxrContext;
-    private SXRSceneObject swipeIndicator;
-    private SXRSceneObject hand;
-    private FocusableSceneObject dino;
+    private SXRNode swipeIndicator;
+    private SXRNode hand;
+    private FocusableNode dino;
     private static final float HAND_X = -.2f;
     private static final float HAND_Y = -.15f;
     private static final float HAND_Z = 0.1f;
     private long currentSecond;
     private boolean isStoping;
 
-    public SwipeIndicator(SXRContext sxrContext, FocusableSceneObject dino) {
+    public SwipeIndicator(SXRContext sxrContext, FocusableNode dino) {
         super(sxrContext);
         this.sxrContext = sxrContext;
 
         this.dino = dino;
-        swipeIndicator = new SXRSceneObject(sxrContext, .6f, .1f,
+        swipeIndicator = new SXRNode(sxrContext, .6f, .1f,
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.swipe_trace)));
 
-        hand = new SXRSceneObject(sxrContext, sxrContext.createQuad(.2f, .3f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+        hand = new SXRNode(sxrContext, sxrContext.createQuad(.2f, .3f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                 sxrContext, R.drawable.swipe_hand)));
 
         setAttribute();
@@ -58,11 +58,11 @@ public class SwipeIndicator extends SXRSceneObject {
         addChildObject(hand);
         dino.focusListener = new FocusListener() {
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
                 currentSecond = System.currentTimeMillis() / 1000;
                 if (!isStoping) {
                     if (currentSecond % 5 == 0) {
@@ -72,7 +72,7 @@ public class SwipeIndicator extends SXRSceneObject {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
             }
         };
     }

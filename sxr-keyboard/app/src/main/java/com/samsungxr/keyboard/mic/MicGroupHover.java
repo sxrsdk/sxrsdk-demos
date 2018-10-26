@@ -15,16 +15,16 @@
 package com.samsungxr.keyboard.mic;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.mic.model.MicItem;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class MicGroupHover extends SXRSceneObject {
+public class MicGroupHover extends SXRNode {
 
     private boolean isVisibleByOpacity = false;
     private SXRAnimation mOpacityAnimation;
@@ -36,7 +36,7 @@ public class MicGroupHover extends SXRSceneObject {
 
     public MicGroupHover(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.MIC_GROUP_HOVER);
+        setName(NodeNames.MIC_GROUP_HOVER);
         mHover = new MicItem(sxrContext, R.drawable.mic_hover);
         mHover.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_HOVER);
         mHover.getRenderData().getMaterial().setOpacity(0);

@@ -20,15 +20,15 @@ import android.widget.TextView;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRViewNode;
 
 public class Main extends SXRMain {
     private final MainActivity mActivity;
 
-    private SXRViewSceneObject mLayoutLeftSceneObject;
-    private SXRViewSceneObject mWebSceneObject;
-    private SXRViewSceneObject mTextSceneObject;
+    private SXRViewNode mLayoutLeftNode;
+    private SXRViewNode mWebNode;
+    private SXRViewNode mTextNode;
 
     public Main(MainActivity activity) {
         mActivity = activity;
@@ -36,40 +36,40 @@ public class Main extends SXRMain {
 
     @Override
     public void onInit(final SXRContext sxrContext) throws Throwable {
-        // SXRCubeSceneObject - Just to take cube mesh.
-        SXRCubeSceneObject cube = new SXRCubeSceneObject(sxrContext);
+        // SXRCubeNode - Just to take cube mesh.
+        SXRCubeNode cube = new SXRCubeNode(sxrContext);
 
-        mLayoutLeftSceneObject = new SXRViewSceneObject(sxrContext,
+        mLayoutLeftNode = new SXRViewNode(sxrContext,
                 R.layout.activity_main, cube.getRenderData().getMesh());
 
-        sxrContext.getMainScene().addSceneObject(mLayoutLeftSceneObject);
+        sxrContext.getMainScene().addNode(mLayoutLeftNode);
 
-        mLayoutLeftSceneObject.getTransform().setPosition(-1.0f, 0.0f, -2.5f);
-        mLayoutLeftSceneObject.setTextureBufferSize(512);
+        mLayoutLeftNode.getTransform().setPosition(-1.0f, 0.0f, -2.5f);
+        mLayoutLeftNode.setTextureBufferSize(512);
 
-        mWebSceneObject = new SXRViewSceneObject(sxrContext,
+        mWebNode = new SXRViewNode(sxrContext,
                 mActivity.getWebView(), cube.getRenderData().getMesh());
 
-        sxrContext.getMainScene().addSceneObject(mWebSceneObject);
+        sxrContext.getMainScene().addNode(mWebNode);
 
-        mWebSceneObject.getTransform().setPosition(1.0f, 0.0f, -2.5f);
-        mWebSceneObject.setTextureBufferSize(512);
+        mWebNode.getTransform().setPosition(1.0f, 0.0f, -2.5f);
+        mWebNode.setTextureBufferSize(512);
 
         TextView  textView = new TextView(sxrContext.getActivity());
         textView.setText("Android's Renderable Views");
         textView.setTextColor(Color.WHITE);
 
-        mTextSceneObject = new SXRViewSceneObject(sxrContext, textView, 2.0f, 1.0f);
-        sxrContext.getMainScene().addSceneObject(mTextSceneObject);
-        mTextSceneObject.getTransform().setPosition(0.0f, -2.0f, -2.5f);
-        mTextSceneObject.setTextureBufferSize(512);
+        mTextNode = new SXRViewNode(sxrContext, textView, 2.0f, 1.0f);
+        sxrContext.getMainScene().addNode(mTextNode);
+        mTextNode.getTransform().setPosition(0.0f, -2.0f, -2.5f);
+        mTextNode.setTextureBufferSize(512);
     }
 
     @Override
     public void onStep() {
-        mLayoutLeftSceneObject.getTransform().rotateByAxis(0.5f, 1, 1, 0);
+        mLayoutLeftNode.getTransform().rotateByAxis(0.5f, 1, 1, 0);
 
-        mWebSceneObject.getTransform().rotateByAxis(-0.5f, 1, 1, 0);
+        mWebNode.getTransform().rotateByAxis(-0.5f, 1, 1, 0);
     }
 
 }

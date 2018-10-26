@@ -20,17 +20,17 @@ import android.media.MediaPlayer;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.immersivepedia.GazeController;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.focus.OnClickListener;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject.SXRVideoType;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNode.SXRVideoType;
 
-public class VideoComponent extends SXRSceneObject {
+public class VideoComponent extends SXRNode {
 
     private Seekbar seekbar;
     private ButtonBoard buttonBoard;
@@ -47,8 +47,8 @@ public class VideoComponent extends SXRSceneObject {
 
     private boolean active = false;
 
-    private SXRVideoSceneObject video;
-    private FocusableSceneObject focus;
+    private SXRVideoNode video;
+    private FocusableNode focus;
 
     public VideoComponent(SXRContext sxrContext, float WIDTH, float HEIGHT) {
         super(sxrContext, 0, 0);
@@ -81,15 +81,15 @@ public class VideoComponent extends SXRSceneObject {
     private void createVideo() {
 
         mediaPlayer = MediaPlayer.create(sxrContext.getContext(), R.raw.dinos_videos_wip);
-        video = new SXRVideoSceneObject(sxrContext, WIDTH, HEIGHT, mediaPlayer, SXRVideoType.MONO);
-        focus = new FocusableSceneObject(sxrContext, WIDTH, HEIGHT, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
+        video = new SXRVideoNode(sxrContext, WIDTH, HEIGHT, mediaPlayer, SXRVideoType.MONO);
+        focus = new FocusableNode(sxrContext, WIDTH, HEIGHT, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.empty_clickable)));
         focus.attachCollider(new SXRMeshCollider(sxrContext, false));
         focus.setName("video");
         focus.focusListener = new FocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
                 if (isActive()) {
                     getButtonbar().turnOnGUIButton();
                     getSeekbar().turnOnGUISeekbar();
@@ -98,11 +98,11 @@ public class VideoComponent extends SXRSceneObject {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
                 if (isActive() && isPlaying()) {
                     getButtonbar().turnOffGUIButton();
                     getSeekbar().turnOffGUISeekbar();
@@ -186,7 +186,7 @@ public class VideoComponent extends SXRSceneObject {
         mediaPlayer.release();
         mediaPlayer = null;
         new SXROpacityAnimation(this, .1f, 0).start(sxrContext.getAnimationEngine());
-        sxrContext.getMainScene().removeSceneObject(this);
+        sxrContext.getMainScene().removeNode(this);
     }
 
     public boolean isActive() {

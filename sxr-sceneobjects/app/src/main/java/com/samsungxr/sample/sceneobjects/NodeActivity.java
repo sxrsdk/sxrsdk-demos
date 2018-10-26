@@ -24,8 +24,8 @@ import android.webkit.WebViewClient;
 
 import com.samsungxr.SXRActivity;
 
-public class SceneObjectActivity extends SXRActivity {
-    private static final String TAG = "SceneObjectActivity";
+public class NodeActivity extends SXRActivity {
+    private static final String TAG = "NodeActivity";
     private SampleMain mMain;
     private long lastDownTime = 0;
     private WebView webView;

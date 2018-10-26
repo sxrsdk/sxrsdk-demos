@@ -20,11 +20,11 @@ import com.samsungxr.SXRCollider;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.input.TouchPadInput;
 import com.samsungxr.immersivepedia.props.Totem;
 import com.samsungxr.immersivepedia.props.TotemEventListener;
@@ -34,7 +34,7 @@ import com.samsungxr.io.SXRTouchPadGestureListener.Action;
 
 import java.util.ArrayList;
 
-public class Gallery extends FocusableSceneObject implements PhotoEventListener, TotemEventListener {
+public class Gallery extends FocusableNode implements PhotoEventListener, TotemEventListener {
 
     private static final int COLS = 3;
 
@@ -70,15 +70,15 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     private static final float GALLERY_ARROWS_POSITION_Y = GALLERY_HIGHLIGHT_PHOTO_POSITION_Y - 1.8f;
     private static final float GALLERY_ARROWS_POSITION_Z = GALLERY_HIGHLIGHT_PHOTO_POSITION_Z + 0.01f;
 
-    private SXRSceneObject highlightPhotoView;
-    private SXRSceneObject highlightLeftPhotoView;
-    private SXRSceneObject highlightRightPhotoView;
+    private SXRNode highlightPhotoView;
+    private SXRNode highlightLeftPhotoView;
+    private SXRNode highlightRightPhotoView;
 
     private int currentState = GALLERY_CLOSED;
 
     protected int currentPage = 3;
 
-    private SXRSceneObject scrollbar = null;
+    private SXRNode scrollbar = null;
 
     protected boolean locked = false;
 
@@ -93,8 +93,8 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     private SXRCollider galleryCollider;
     private int[] photoIds;
 
-    private SXRSceneObject leftArrow;
-    private SXRSceneObject rightArrow;
+    private SXRNode leftArrow;
+    private SXRNode rightArrow;
 
     public Gallery(SXRContext sxrContext, int[] resources) {
         this(sxrContext);
@@ -114,7 +114,7 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
 
         float height = GALLERY_SCROLLBAR_AREA_HEIGHT / this.getNumberOfPages();
 
-        scrollbar = new SXRSceneObject(sxrContext, Gallery.GALLERY_SCROLLBAR_WIDTH,
+        scrollbar = new SXRNode(sxrContext, Gallery.GALLERY_SCROLLBAR_WIDTH,
                 height,
                 this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(this.sxrContext,
                         R.drawable.scrollbar)));
@@ -191,16 +191,16 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
         this.focusListener = new FocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
                 Gallery.this.process();
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
             }
         };
     }
@@ -233,9 +233,9 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     }
 
     private void createHighlightGridItem() {
-        this.highlightPhotoView = new SXRSceneObject(this.sxrContext);
-        this.highlightLeftPhotoView = new SXRSceneObject(this.sxrContext);
-        this.highlightRightPhotoView = new SXRSceneObject(this.sxrContext);
+        this.highlightPhotoView = new SXRNode(this.sxrContext);
+        this.highlightLeftPhotoView = new SXRNode(this.sxrContext);
+        this.highlightRightPhotoView = new SXRNode(this.sxrContext);
 
         this.highlightPhotoView.getTransform().setPosition(GALLERY_HIGHLIGHT_PHOTO_POSITION_X,
                 GALLERY_HIGHLIGHT_PHOTO_POSITION_Y, GALLERY_HIGHLIGHT_PHOTO_POSITION_Z);
@@ -510,11 +510,11 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     }
 
     private void createArrows() {
-        this.leftArrow = new SXRSceneObject(this.sxrContext, GALLERY_ARROW_WIDTH,
+        this.leftArrow = new SXRNode(this.sxrContext, GALLERY_ARROW_WIDTH,
                 GALLERY_ARROW_HEIGHT, this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                         this.sxrContext, R.drawable.arrowleft)));
 
-        this.rightArrow = new SXRSceneObject(this.sxrContext, GALLERY_ARROW_WIDTH,
+        this.rightArrow = new SXRNode(this.sxrContext, GALLERY_ARROW_WIDTH,
                 GALLERY_ARROW_HEIGHT, this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                         this.sxrContext, R.drawable.arrowright)));
 

@@ -20,29 +20,29 @@ package com.samsungxr.videoplayer.event;
 import android.view.MotionEvent;
 
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.ITouchEvents;
 
 public class DefaultTouchEvent implements ITouchEvents {
 
     @Override
-    public void onEnter(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
+    public void onEnter(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onExit(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
+    public void onExit(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onTouchStart(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
+    public void onTouchStart(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onTouchEnd(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
+    public void onTouchEnd(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onInside(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
+    public void onInside(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override

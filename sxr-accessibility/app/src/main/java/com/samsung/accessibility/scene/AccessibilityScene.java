@@ -16,7 +16,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
@@ -45,28 +45,28 @@ public class AccessibilityScene extends SXRScene {
         this.mainApplicationScene = mainApplicationScene;
         this.shortcutMenu = shortcutMenu;
 
-        SXRSceneObject skyBox = createSkybox();
+        SXRNode skyBox = createSkybox();
         applyShaderOnSkyBox(skyBox);
-        addSceneObject(skyBox);
+        addNode(skyBox);
         createItems();
     }
 
-    private SXRSceneObject createSkybox() {
+    private SXRNode createSkybox() {
         SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_walls_mesh));
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_walls_tex_diffuse));
-        SXRSceneObject skybox = new SXRSceneObject(sxrContext, mesh, texture);
+        SXRNode skybox = new SXRNode(sxrContext, mesh, texture);
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getTransform().setPositionY(-1.6f);
         skybox.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshGround = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_ground_mesh));
         SXRTexture textureGround = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_ground_tex_diffuse));
-        SXRSceneObject skyboxGround = new SXRSceneObject(sxrContext, meshGround, textureGround);
+        SXRNode skyboxGround = new SXRNode(sxrContext, meshGround, textureGround);
         skyboxGround.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshFx = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.windows_fx_mesh));
         SXRTexture textureFx = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
-        SXRSceneObject skyboxFx = new SXRSceneObject(sxrContext, meshFx, textureFx);
+        SXRNode skyboxFx = new SXRNode(sxrContext, meshFx, textureFx);
         skyboxGround.getRenderData().setRenderingOrder(0);
         skybox.addChildObject(skyboxFx);
         skybox.addChildObject(skyboxGround);
@@ -101,7 +101,7 @@ public class AccessibilityScene extends SXRScene {
                 }
             }
         });
-        this.addSceneObject(invertedColors);
+        this.addNode(invertedColors);
 
         final SceneItem zoom = new SceneItem(getSXRContext(), mesh, getSXRContext()
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.zoom)));
@@ -121,7 +121,7 @@ public class AccessibilityScene extends SXRScene {
                 }
             }
         });
-        this.addSceneObject(zoom);
+        this.addNode(zoom);
 
         final SceneItem talkBack = new SceneItem(getSXRContext(), mesh, getSXRContext()
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.talk_back)));
@@ -143,7 +143,7 @@ public class AccessibilityScene extends SXRScene {
             }
         });
 
-        this.addSceneObject(talkBack);
+        this.addNode(talkBack);
 
         final SceneItem speech = new SceneItem(getSXRContext(), mesh, getSXRContext()
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.speech)));
@@ -163,7 +163,7 @@ public class AccessibilityScene extends SXRScene {
             }
         });
 
-        this.addSceneObject(speech);
+        this.addNode(speech);
         float angle = -20;
         invertedColors.getTransform().rotateByAxisWithPivot(-1 * angle, 0, 1, 0, 0, 0, 0);
         zoom.getTransform().rotateByAxisWithPivot(0 * angle, 0, 1, 0, 0, 0, 0);
@@ -172,14 +172,14 @@ public class AccessibilityScene extends SXRScene {
 
     }
 
-    private void applyShaderOnSkyBox(SXRSceneObject skyBox) {
+    private void applyShaderOnSkyBox(SXRNode skyBox) {
         applyShader(skyBox);
-        for (SXRSceneObject object : skyBox.getChildren()) {
+        for (SXRNode object : skyBox.getChildren()) {
             applyShader(object);
         }
     }
 
-    private void applyShader(SXRSceneObject object) {
+    private void applyShader(SXRNode object) {
         if (object != null && object.getRenderData() != null && object.getRenderData().getMaterial() != null) {
 
             SXRMaterial shader = new SXRMaterial(sxrContext, new SXRShaderId(AccessibilitySceneShader.class));
@@ -201,7 +201,7 @@ public class AccessibilityScene extends SXRScene {
     }
 
     private void setActivityOrInactiveTalkBackObjects(boolean active) {
-        for (SXRSceneObject object : mainApplicationScene.getWholeSceneObjects()) {
+        for (SXRNode object : mainApplicationScene.getWholeNodes()) {
             if (object instanceof SXRAccessiblityObject && ((SXRAccessiblityObject) object).getTalkBack() != null) {
                 ((SXRAccessiblityObject) object).getTalkBack().setActive(active);
             }
@@ -212,8 +212,8 @@ public class AccessibilityScene extends SXRScene {
         Main main = (Main) sxrContext.getMain();
 
         main.setScene(this);
-        mainApplicationScene.removeSceneObject(shortcutMenu);
-        addSceneObject(shortcutMenu);
+        mainApplicationScene.removeNode(shortcutMenu);
+        addNode(shortcutMenu);
     }
 
 }

@@ -21,7 +21,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRTransform;
 
@@ -44,9 +44,9 @@ public class SampleMain extends SXRMain {
             Color.GRAY);
 
     // asynchronic loading of objects
-    private SXRSceneObject asyncSceneObject(SXRContext context,
+    private SXRNode asyncNode(SXRContext context,
             String textureName) throws IOException {
-        return new SXRSceneObject(context, new SXRAndroidResource(context,
+        return new SXRNode(context, new SXRAndroidResource(context,
                 "sphere.obj"), new SXRAndroidResource(context, textureName));
     }
 
@@ -59,17 +59,17 @@ public class SampleMain extends SXRMain {
         mainCameraRig.getLeftCamera().setBackgroundColor(Color.WHITE);
         mainCameraRig.getRightCamera().setBackgroundColor(Color.WHITE);
 
-        SXRSceneObject venusMeshObject = asyncSceneObject(sxrContext,
+        SXRNode venusMeshObject = asyncNode(sxrContext,
                 "venusmap.jpg");
         venusMeshObject.getTransform().setPosition(-2.0f, 0.0f, -4.0f);
         venusMeshObject.getTransform().setScale(1.5f, 1.5f, 1.5f);
-        mScene.addSceneObject(venusMeshObject);
+        mScene.addNode(venusMeshObject);
 
-        SXRSceneObject earthMeshObject = asyncSceneObject(sxrContext,
+        SXRNode earthMeshObject = asyncNode(sxrContext,
                 "earthmap1k.jpg");
         earthMeshObject.getTransform().setPosition(2.0f, 0.0f, -4.0f);
         earthMeshObject.getTransform().setScale(1.5f, 1.5f, 1.5f);
-        mScene.addSceneObject(earthMeshObject);
+        mScene.addNode(earthMeshObject);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class SampleMain extends SXRMain {
     }
 
     public boolean processJoystickInput(MotionEvent event, int historyPos) {
-        if (mScene.getSceneObjects().isEmpty()) {
+        if (mScene.getNodes().isEmpty()) {
             return false;
         }
 
@@ -145,7 +145,7 @@ public class SampleMain extends SXRMain {
         // Translate the camera
         // the first object of the scene is the cameraRigObject
         final float SCALE = 0.5f;
-        SXRTransform transform = mScene.getSceneObjects().get(0).getTransform();
+        SXRTransform transform = mScene.getNodes().get(0).getTransform();
         transform.setPositionX(transform.getPositionX() - SCALE * hatx);
         transform.setPositionY(transform.getPositionY() + SCALE * haty);
 

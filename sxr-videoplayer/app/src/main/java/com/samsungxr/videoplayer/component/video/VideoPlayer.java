@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
@@ -54,7 +54,7 @@ import static com.samsungxr.videoplayer.component.video.VideoPlayer.ConfigureVid
 import static com.samsungxr.videoplayer.component.video.VideoPlayer.ConfigureVideoPlayer.POSITION_TITLE;
 import static com.samsungxr.videoplayer.component.video.VideoPlayer.ConfigureVideoPlayer.SCALE_FACTOR;
 
-public class VideoPlayer extends SXRSceneObject {
+public class VideoPlayer extends SXRNode {
 
     private static final String TAG = VideoPlayer.class.getSimpleName();
 
@@ -66,7 +66,7 @@ public class VideoPlayer extends SXRSceneObject {
     private LoadingAsset mLoadingAsset;
     private MessageText mMessageText;
 
-    private SXRSceneObject mWidgetsContainer;
+    private SXRNode mWidgetsContainer;
     private FadeableObject mCursor;
 
     private HideControlWidgetTimer mHideControlTimer;
@@ -94,7 +94,7 @@ public class VideoPlayer extends SXRSceneObject {
             }
         });
 
-        mWidgetsContainer = new SXRSceneObject(sxrContext);
+        mWidgetsContainer = new SXRNode(sxrContext);
         mWidgetsContainer.getTransform().setPositionZ(-8.1f);
         addChildObject(mWidgetsContainer);
         addPlayer();
@@ -490,7 +490,7 @@ public class VideoPlayer extends SXRSceneObject {
         }
     }
 
-    public SXRSceneObject getWidgetsContainer() {
+    public SXRNode getWidgetsContainer() {
         return mWidgetsContainer;
     }
 

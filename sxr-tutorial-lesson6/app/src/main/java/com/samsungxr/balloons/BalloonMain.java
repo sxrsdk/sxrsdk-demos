@@ -23,7 +23,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
@@ -31,7 +31,7 @@ import com.samsungxr.SXRShader;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 ;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -40,7 +40,7 @@ import android.view.MotionEvent;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.IPickEvents;
 import com.samsungxr.SXRPicker.SXRPickedObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.utility.Log;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -56,11 +56,11 @@ public class BalloonMain extends SXRMain {
 
     public class PickHandler implements IPickEvents
     {
-        public SXRSceneObject   PickedObject = null;
+        public SXRNode   PickedObject = null;
 
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
-        public void onExit(SXRSceneObject sceneObj) { }
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onExit(SXRNode sceneObj) { }
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
         public void onNoPick(SXRPicker picker)
         {
             PickedObject = null;
@@ -80,7 +80,7 @@ public class BalloonMain extends SXRMain {
     private Random      mRandom = new Random();
     private SoundPool   mAudioEngine;
     private SoundEffect mPopSound;
-    private SXRTextViewSceneObject mScoreBoard;
+    private SXRTextViewNode mScoreBoard;
     private Integer     mScore = 0;
     private SXRPicker   mPicker;
 
@@ -109,7 +109,7 @@ public class BalloonMain extends SXRMain {
         /*
          * Set up a head-tracking pointer
          */
-        SXRSceneObject headTracker = new SXRSceneObject(context,
+        SXRNode headTracker = new SXRNode(context,
                 context.createQuad(0.1f, 0.1f),
                 context.getAssetLoader().loadTexture(new SXRAndroidResource(context, R.drawable.headtrackingpointer)));
         headTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
@@ -123,22 +123,22 @@ public class BalloonMain extends SXRMain {
         /*
          * Add the environment
          */
-        SXRSceneObject environment = makeEnvironment(context);
-        mScene.addSceneObject(environment);
+        SXRNode environment = makeEnvironment(context);
+        mScene.addNode(environment);
         /*
          * Make balloon prototype sphere mesh
          */
         mMaterials = makeMaterials(context);
-        mSphereMesh = new SXRSphereSceneObject(context, true).getRenderData().getMesh();
+        mSphereMesh = new SXRSphereNode(context, true).getRenderData().getMesh();
 
         /*
          * Start the particle emitter making balloons
          */
-        SXRSceneObject particleRoot = new SXRSceneObject(context);
+        SXRNode particleRoot = new SXRNode(context);
         particleRoot.setName("ParticleSystem");
         ParticleEmitter.MakeParticle particleCreator = new ParticleEmitter.MakeParticle()
         {
-            public SXRSceneObject create(SXRContext context) { return makeBalloon(context); }
+            public SXRNode create(SXRContext context) { return makeBalloon(context); }
         };
         mParticleSystem = new ParticleEmitter(context, mScene, particleCreator);
         mParticleSystem.MaxDistance = 10.0f;
@@ -149,7 +149,7 @@ public class BalloonMain extends SXRMain {
         particleRoot.getTransform().setRotationByAxis(-90.0f, 1, 0, 0);
         particleRoot.getTransform().setPosition(0, -3.0f, -3.0f);
         particleRoot.attachComponent(mParticleSystem);
-        mScene.addSceneObject(particleRoot);
+        mScene.addNode(particleRoot);
         /*
          * Respond to picking events
          */
@@ -189,9 +189,9 @@ public class BalloonMain extends SXRMain {
         timer.schedule(gameOver, oneMinute);
     }
 
-    SXRSceneObject makeBalloon(SXRContext context)
+    SXRNode makeBalloon(SXRContext context)
     {
-        SXRSceneObject balloon = new SXRSceneObject(context, mSphereMesh);
+        SXRNode balloon = new SXRNode(context, mSphereMesh);
         SXRRenderData rdata = balloon.getRenderData();
         SXRSphereCollider collider = new SXRSphereCollider(context);
         Random rand = new Random();
@@ -206,12 +206,12 @@ public class BalloonMain extends SXRMain {
         return balloon;
     }
 
-    SXRSceneObject makeEnvironment(SXRContext context)
+    SXRNode makeEnvironment(SXRContext context)
     {
         SXRTexture tex = context.getAssetLoader().loadCubemapTexture(new SXRAndroidResource(context, R.raw.lycksele3));
         SXRMaterial material = new SXRMaterial(context, SXRMaterial.SXRShaderType.Cubemap.ID);
         material.setMainTexture(tex);
-        SXRSphereSceneObject environment = new SXRSphereSceneObject(context, 18, 36, false, material, 4, 4);
+        SXRSphereNode environment = new SXRSphereNode(context, 18, 36, false, material, 4, 4);
         environment.getTransform().setScale(20.0f, 20.0f, 20.0f);
 
         if (!SXRShader.isVulkanInstance())
@@ -251,9 +251,9 @@ public class BalloonMain extends SXRMain {
     /*
      * Make the scoreboard
      */
-    SXRTextViewSceneObject makeScoreboard(SXRContext ctx, SXRSceneObject parent)
+    SXRTextViewNode makeScoreboard(SXRContext ctx, SXRNode parent)
     {
-        SXRTextViewSceneObject scoreBoard = new SXRTextViewSceneObject(ctx, 2.0f, 1.5f, "000");
+        SXRTextViewNode scoreBoard = new SXRTextViewNode(ctx, 2.0f, 1.5f, "000");
         SXRRenderData rdata = scoreBoard.getRenderData();
         SXRCollider collider = new SXRMeshCollider(ctx, true);
 
@@ -265,11 +265,11 @@ public class BalloonMain extends SXRMain {
         rdata.setDepthTest(false);
         rdata.setAlphaBlend(true);
         rdata.setRenderingOrder(SXRRenderingOrder.OVERLAY);
-        SXRSceneObject boardFrame = null;
+        SXRNode boardFrame = null;
         try
         {
             boardFrame = ctx.getAssetLoader().loadModel("mirror.3ds");
-            SXRSceneObject.BoundingVolume bv = boardFrame.getBoundingVolume();
+            SXRNode.BoundingVolume bv = boardFrame.getBoundingVolume();
             SXRTransform trans = boardFrame.getTransform();
             Matrix4f mtx = new Matrix4f();
             float sf = 1.5f / bv.radius;
@@ -310,7 +310,7 @@ public class BalloonMain extends SXRMain {
         }
     }
 
-    private void onHit(SXRSceneObject sceneObj)
+    private void onHit(SXRNode sceneObj)
     {
         Particle particle = (Particle) sceneObj.getComponent(Particle.getComponentType());
         if (particle != null)

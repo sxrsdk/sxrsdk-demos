@@ -3,13 +3,13 @@ package com.samsungxr.util;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import org.joml.Vector3f;
 
 public class BoundingBoxCreator {
     private SXRMesh mesh;
 
-    public BoundingBoxCreator(SXRContext sxrContext, SXRSceneObject.BoundingVolume bv){
+    public BoundingBoxCreator(SXRContext sxrContext, SXRNode.BoundingVolume bv){
         mesh = new SXRMesh(sxrContext);
 
         Vector3f min_corner = bv.minCorner;

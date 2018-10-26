@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 
 import com.samsungxr.SXRBehavior;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 public class ElementCursor extends SXRBehavior
 {
@@ -19,7 +19,7 @@ public class ElementCursor extends SXRBehavior
         public void onLongPress(MotionEvent ev)  {}
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
         {
-            SXRSceneObject owner = getOwnerObject();
+            SXRNode owner = getOwnerObject();
 
             if ((owner != null) && owner.isEnabled())
             {
@@ -52,12 +52,12 @@ public class ElementCursor extends SXRBehavior
         mGestureListener = new MoveCursor();
     }
 
-    public void onAttach(SXRSceneObject sceneObj)
+    public void onAttach(SXRNode sceneObj)
     {
         mGestureDetector = new GestureDetector(sceneObj.getSXRContext().getActivity(), mGestureListener);
     }
 
-    public void onDetach(SXRSceneObject sceneObj)
+    public void onDetach(SXRNode sceneObj)
     {
         mGestureDetector = null;
     }

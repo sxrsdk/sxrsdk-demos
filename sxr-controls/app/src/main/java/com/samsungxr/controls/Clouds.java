@@ -21,13 +21,13 @@ import android.content.res.TypedArray;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.controls.model.Cloud;
 
-public class Clouds extends SXRSceneObject {
+public class Clouds extends SXRNode {
 
     public Cloud[] clouds;
     private final int NUMBER_OF_CLOUDS = 4;
@@ -54,7 +54,7 @@ public class Clouds extends SXRSceneObject {
 
             clouds[i] = new Cloud(sxrContext, mesh, -cloudDistance, cloudTypeValues, angle * i);
 
-            sxrContext.getMainScene().addSceneObject(clouds[i]);
+            sxrContext.getMainScene().addNode(clouds[i]);
 
             rotateCloudsAroundCameraAnimation(sxrContext, clouds[i]);
 

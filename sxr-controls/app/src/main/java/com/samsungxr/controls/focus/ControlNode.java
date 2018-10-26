@@ -16,11 +16,11 @@
 package com.samsungxr.controls.focus;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.cursor.ControlGazeController;
 
-public abstract class ControlSceneObject extends SXRSceneObject {
+public abstract class ControlNode extends SXRNode {
 
     private boolean focus = false;
     public String tag = null;
@@ -28,15 +28,15 @@ public abstract class ControlSceneObject extends SXRSceneObject {
     protected TouchAndGestureImpl touchAndGesturelistener;
     protected GamepadTouchImpl gamepadActionButtonslistener;
 
-    public ControlSceneObject(SXRContext sxrContext) {
+    public ControlNode(SXRContext sxrContext) {
         super(sxrContext);
-        ControlSceneObjectBehavior.interactiveObjects.add(this);
+        ControlNodeBehavior.interactiveObjects.add(this);
     }
 
 
-    public ControlSceneObject(SXRContext sxrContext, float f, float g, SXRTexture t) {
+    public ControlNode(SXRContext sxrContext, float f, float g, SXRTexture t) {
         super(sxrContext, f, g, t);
-        ControlSceneObjectBehavior.interactiveObjects.add(this);
+        ControlNodeBehavior.interactiveObjects.add(this);
     }
 
     public void dispatchGainedFocus() {

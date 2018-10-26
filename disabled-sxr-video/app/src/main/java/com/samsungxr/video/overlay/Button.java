@@ -20,9 +20,9 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.video.focus.FocusListener;
-import com.samsungxr.video.focus.FocusableSceneObject;
+import com.samsungxr.video.focus.FocusableNode;
 
-public class Button extends FocusableSceneObject {
+public class Button extends FocusableNode {
 
     public Button(SXRContext sxrContext, SXRMesh mesh, SXRTexture active, SXRTexture inactive) {
         super(sxrContext, mesh, inactive);
@@ -36,13 +36,13 @@ public class Button extends FocusableSceneObject {
 
         super.setFocusListener(new FocusListener() {
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
                 getRenderData().getMaterial().setMainTexture(
                         getRenderData().getMaterial().getTexture("active_texture"));
             }
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
                 getRenderData().getMaterial().setMainTexture(
                         getRenderData().getMaterial().getTexture("inactive_texture"));
             }

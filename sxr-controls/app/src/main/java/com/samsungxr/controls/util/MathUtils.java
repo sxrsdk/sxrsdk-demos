@@ -17,12 +17,12 @@ package com.samsungxr.controls.util;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import com.samsungxr.SXRCameraRig;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 
 public class MathUtils {
 
-    public static float distance(SXRSceneObject obj1, SXRSceneObject obj2) {
+    public static float distance(SXRNode obj1, SXRNode obj2) {
 
         Vector3D v1 = new Vector3D(obj1.getTransform().getPositionX(),
                 obj1.getTransform().getPositionY(),
@@ -72,14 +72,14 @@ public class MathUtils {
         return (float) Vector3D.distance(v1, v2);
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject, SXRSceneObject targetObject) {
+    public static float getYRotationAngle(SXRNode rotatingObject, SXRNode targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
                 targetObject.getTransform().getPositionZ()
                         - rotatingObject.getTransform().getPositionZ()));
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject,
+    public static float getYRotationAngle(SXRNode rotatingObject,
             SXRCameraRig targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
@@ -173,7 +173,7 @@ public class MathUtils {
         return quat;
     }
     
-    public static float getYAngleEuler(SXRSceneObject object) {
+    public static float getYAngleEuler(SXRNode object) {
 
         // xAngle = atan2(2*y*w - 2*x*z, 1 - 2*y*y - 2*z*z) //SXRF y
         // yAngle = atan2(2*x*w - 2*y*z, 1 - 2*x*x - 2*z*z) //SXRF x

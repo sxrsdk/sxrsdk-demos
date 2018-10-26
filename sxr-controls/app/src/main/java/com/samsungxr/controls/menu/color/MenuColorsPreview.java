@@ -17,12 +17,12 @@ package com.samsungxr.controls.menu.color;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.Worm;
 import com.samsungxr.controls.util.ColorControls.Color;
 
-public class MenuColorsPreview extends SXRSceneObject {
+public class MenuColorsPreview extends SXRNode {
 
     private final float WORM_HEAD_X_POSITION = -0.15f;
     private final float WORM_MIDDLE_X_POSITION = 0f;

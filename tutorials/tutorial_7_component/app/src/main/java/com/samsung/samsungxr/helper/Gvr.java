@@ -9,11 +9,11 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.IEvents;
 import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.utility.Log;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -31,18 +31,18 @@ public class Gvr {
      * Scene Objects
      ***************************************/
 
-    public static SXRCubeSceneObject createCube(){
+    public static SXRCubeNode createCube(){
         if (s_Context == null) {
             Log.e(TAG, "SXRContext is not initialized");
             return null;
         }
 
-        SXRCubeSceneObject cube = new SXRCubeSceneObject(s_Context);
+        SXRCubeNode cube = new SXRCubeNode(s_Context);
         cube.getRenderData().getMaterial().setColor(Color.WHITE);
         return cube;
     }
 
-    public static SXRSceneObject createMesh(int meshID, int textureID) {
+    public static SXRNode createMesh(int meshID, int textureID) {
         if (s_Context == null) {
             Log.e(TAG, "SXRContext is not initialized");
             return null;
@@ -50,13 +50,13 @@ public class Gvr {
 
         SXRMesh mesh = s_Context.getAssetLoader().loadMesh(new SXRAndroidResource(s_Context, meshID));
         SXRTexture texture = s_Context.getAssetLoader().loadTexture(new SXRAndroidResource(s_Context, textureID));
-        SXRSceneObject sceneObject = new SXRSceneObject(s_Context, mesh, texture);
+        SXRNode sceneObject = new SXRNode(s_Context, mesh, texture);
 
         return sceneObject;
     }
 
-    public static SXRSceneObject createQuad(float width, float height, int textureID){
-        SXRSceneObject quad = new SXRSceneObject(s_Context,
+    public static SXRNode createQuad(float width, float height, int textureID){
+        SXRNode quad = new SXRNode(s_Context,
                 s_Context.createQuad(width, height),
                 s_Context.getAssetLoader().loadTexture(new SXRAndroidResource(s_Context, textureID)));
 
@@ -67,7 +67,7 @@ public class Gvr {
      * Utils
      ***************************************/
 
-    static Matrix4f reverseMatrix(SXRSceneObject object, Matrix4f worldMat){
+    static Matrix4f reverseMatrix(SXRNode object, Matrix4f worldMat){
         Matrix4f mat = new Matrix4f();
         Matrix4f newMat = new Matrix4f(worldMat);
 
@@ -77,7 +77,7 @@ public class Gvr {
         return newMat;
     }
 
-    public static Vector3f getWorldDirection(SXRSceneObject object) {
+    public static Vector3f getWorldDirection(SXRNode object) {
         Matrix4f tmp = object.getTransform().getModelMatrix4f();
 
         Vector3f dir = new Vector3f(-tmp.m20(), -tmp.m21(), -tmp.m22());
@@ -85,7 +85,7 @@ public class Gvr {
         return dir;
     }
 
-    public static Quaternionf getWorldRotation(SXRSceneObject object) {
+    public static Quaternionf getWorldRotation(SXRNode object) {
         Matrix4f tmp = object.getTransform().getModelMatrix4f();
 
         Quaternionf rot = new Quaternionf();
@@ -94,7 +94,7 @@ public class Gvr {
         return rot;
     }
 
-    public static Vector3f getWorldPosition(SXRSceneObject object) {
+    public static Vector3f getWorldPosition(SXRNode object) {
         Matrix4f tmp = object.getTransform().getModelMatrix4f();
 
         Vector3f pos = tmp.getTranslation(new Vector3f());

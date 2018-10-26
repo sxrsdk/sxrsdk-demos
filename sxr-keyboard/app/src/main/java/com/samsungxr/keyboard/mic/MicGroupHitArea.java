@@ -16,19 +16,19 @@
 package com.samsungxr.keyboard.mic;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.mic.model.MicItem;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class MicGroupHitArea extends SXRSceneObject {
+public class MicGroupHitArea extends SXRNode {
 
     MicItem mHitArea;
 
     public MicGroupHitArea(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.MIC_GROUP_HIT_AREA);
+        setName(NodeNames.MIC_GROUP_HIT_AREA);
 
         mHitArea = new MicItem(sxrContext, R.raw.empty);
         this.addChildObject(mHitArea);
@@ -36,7 +36,7 @@ public class MicGroupHitArea extends SXRSceneObject {
 
     }
 
-    public SXRSceneObject getHitAreaObject() {
+    public SXRNode getHitAreaObject() {
 
         return mHitArea;
     }
@@ -45,7 +45,7 @@ public class MicGroupHitArea extends SXRSceneObject {
         attachDefaultEyePointee(hitArea);
     }
 
-    private void attachDefaultEyePointee(SXRSceneObject sceneObject) {
+    private void attachDefaultEyePointee(SXRNode sceneObject) {
         sceneObject.attachComponent(new SXRSphereCollider(getSXRContext()));
     }
 

@@ -17,7 +17,7 @@ package com.samsungxr.immersivepedia.focus;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.immersivepedia.Main;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.input.TouchPadInput;
@@ -33,7 +33,7 @@ public final class FocusableController {
         if (mPickHandler.PickedObject != null &&
             isAVisibleObjectBeingSeen(context, mPickHandler.PickedObject))
         {
-            FocusableSceneObject object = (FocusableSceneObject) mPickHandler.PickedObject;
+            FocusableNode object = (FocusableNode) mPickHandler.PickedObject;
             object.dispatchInGesture(TouchPadInput.getCurrent().swipeDirection);
             return true;
         }
@@ -51,23 +51,23 @@ public final class FocusableController {
             Main.clickOut();
         }
         else{
-            FocusableSceneObject object = (FocusableSceneObject) mPickHandler.PickedObject;
+            FocusableNode object = (FocusableNode) mPickHandler.PickedObject;
             object.dispatchInClick();
             return true;
         }
         return false;
     }
 
-    private static boolean isAVisibleObjectBeingSeen(SXRContext sxrContext, SXRSceneObject object) {
+    private static boolean isAVisibleObjectBeingSeen(SXRContext sxrContext, SXRNode object) {
         return (isVisible(object) && !hasEmptyTexture(sxrContext, object));
     }
 
-    private static boolean isVisible(SXRSceneObject object) {
+    private static boolean isVisible(SXRNode object) {
         return object.getRenderData() != null && object.getRenderData().getMaterial() != null
                 && object.getRenderData().getMaterial().getOpacity() > 0;
     }
 
-    private static boolean hasEmptyTexture(SXRContext sxrContext, SXRSceneObject object) {
+    private static boolean hasEmptyTexture(SXRContext sxrContext, SXRNode object) {
         return object.getRenderData().getMaterial().getMainTexture() != null
                 && object.getRenderData().getMaterial().getMainTexture()
                 .equals(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty)));

@@ -17,16 +17,16 @@ package com.samsungxr.controls.model.touchpad;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.input.TouchPadInput;
 import com.samsungxr.controls.util.RenderingOrder;
 import com.samsungxr.io.SXRTouchPadGestureListener;
 import com.samsungxr.io.SXRTouchPadGestureListener.Action;
 
-public class TouchPad extends SXRSceneObject {
+public class TouchPad extends SXRNode {
 
-    SXRSceneObject touchPad;
+    SXRNode touchPad;
     IndicatorTap indicator;
     IndicatorLongPress indicatorLongPress;
     Arrow aroowUp;
@@ -87,7 +87,7 @@ public class TouchPad extends SXRSceneObject {
     }
 
     private void createTouchpad() {
-        touchPad = new SXRSceneObject(getSXRContext(),
+        touchPad = new SXRNode(getSXRContext(),
                 getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(getSXRContext(), (R.raw.gear_vr))),
                 getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.gear_vr_texture)));
         touchPad.getTransform().setPositionZ(-4f);

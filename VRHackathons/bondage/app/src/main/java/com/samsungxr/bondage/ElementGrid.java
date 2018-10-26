@@ -7,14 +7,14 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPhongShader;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.utility.Log;
 
-public class ElementGrid extends SXRBehavior implements SXRSceneObject.SceneVisitor
+public class ElementGrid extends SXRBehavior implements SXRNode.SceneVisitor
 {
     static private long TYPE_ELEMENT_GRID = newComponentType(ElementGrid.class);
     static private final float ELEMENT_SCALE = 0.5f;
@@ -37,22 +37,22 @@ public class ElementGrid extends SXRBehavior implements SXRSceneObject.SceneVisi
         };
     }
 
-    public void onAttach(SXRSceneObject owner)
+    public void onAttach(SXRNode owner)
     {
         if (owner.getChildrenCount() == 0)
         {
             for (float[] pos : mGridPositions)
             {
-                SXRSceneObject element = new SXRSceneObject(owner.getSXRContext());
+                SXRNode element = new SXRNode(owner.getSXRContext());
                 element.getTransform().setPosition(pos[0], pos[1], pos[2]);
                 owner.addChildObject(element);
             }
         }
     }
 
-    private SXRSceneObject findEmptyGridSlot()
+    private SXRNode findEmptyGridSlot()
     {
-        for (SXRSceneObject child : owner.children())
+        for (SXRNode child : owner.children())
         {
             if (child.getChildrenCount() == 0)
             {
@@ -67,14 +67,14 @@ public class ElementGrid extends SXRBehavior implements SXRSceneObject.SceneVisi
     private float[][] mGridPositions;
     private int mGridIndex = 0;
 
-    public void makeGrid(SXRSceneObject srcRoot)
+    public void makeGrid(SXRNode srcRoot)
     {
         srcRoot.forAllDescendants(this);
     }
 
-    public void addToGrid(SXRSceneObject newElem)
+    public void addToGrid(SXRNode newElem)
     {
-        SXRSceneObject gridParent = findEmptyGridSlot();
+        SXRNode gridParent = findEmptyGridSlot();
         if (gridParent != null)
         {
             SXRTransform trans = newElem.getTransform();
@@ -84,11 +84,11 @@ public class ElementGrid extends SXRBehavior implements SXRSceneObject.SceneVisi
         }
     }
 
-    public boolean visit(SXRSceneObject srcObj)
+    public boolean visit(SXRNode srcObj)
     {
         SXRRenderData srcRender = srcObj.getRenderData();
-        SXRSceneObject owner = getOwnerObject();
-        SXRSceneObject dstRoot = findEmptyGridSlot();
+        SXRNode owner = getOwnerObject();
+        SXRNode dstRoot = findEmptyGridSlot();
 
         if ((srcRender != null) && (dstRoot != null))
         {
@@ -100,7 +100,7 @@ public class ElementGrid extends SXRBehavior implements SXRSceneObject.SceneVisi
             {
                 return true;
             }
-            SXRSceneObject dstObj = new SXRSphereSceneObject(ctx);
+            SXRNode dstObj = new SXRSphereNode(ctx);
             SXRRenderData dstRender = new SXRRenderData(ctx);
             SXRTransform dstTrans = dstObj.getTransform();
             SXRSphereCollider collider = new SXRSphereCollider(ctx);

@@ -18,11 +18,11 @@ package com.samsungxr.keyboard.model;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class Dashboard extends SXRSceneObject {
+public class Dashboard extends SXRNode {
 
     public static int currentDashboardHashCode;
 
@@ -62,7 +62,7 @@ public class Dashboard extends SXRSceneObject {
     public Dashboard(SXRContext sxrContext, int gVRAndroidResourceTexture) {
 
         super(sxrContext, HIGHT, WIDTH);
-        setName(SceneObjectNames.DASHBOARD);
+        setName(NodeNames.DASHBOARD);
 
         Dashboard.currentDashboardHashCode = this.hashCode();
 
@@ -85,7 +85,7 @@ public class Dashboard extends SXRSceneObject {
         resetRotation();
     }
 
-    public void onUpdate(SXRSceneObject sceneObject) {
+    public void onUpdate(SXRNode sceneObject) {
 
         distanceToAnchorPoint = Math.abs(getTransform().getPositionY() - Y_ANCHOR_POINT);
         if (distanceToAnchorPoint <= Y_ANCHOR_POINT_THRESHOLD) {
@@ -111,11 +111,11 @@ public class Dashboard extends SXRSceneObject {
     }
 
     public void show() {
-        getSXRContext().getMainScene().addSceneObject(this);
+        getSXRContext().getMainScene().addNode(this);
     }
 
     public void hide() {
-        getSXRContext().getMainScene().removeSceneObject(this);
+        getSXRContext().getMainScene().removeNode(this);
     }
 
     public static float getZPositionOffset(float f) {

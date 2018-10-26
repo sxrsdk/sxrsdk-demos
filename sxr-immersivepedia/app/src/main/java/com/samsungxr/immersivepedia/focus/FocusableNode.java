@@ -17,13 +17,13 @@ package com.samsungxr.immersivepedia.focus;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.immersivepedia.GazeController;
 import com.samsungxr.immersivepedia.input.TouchPadInput;
 import com.samsungxr.io.SXRTouchPadGestureListener.Action;
 
-public class FocusableSceneObject extends SXRSceneObject {
+public class FocusableNode extends SXRNode {
 
     private boolean focus = false;
     public FocusListener focusListener = null;
@@ -33,15 +33,15 @@ public class FocusableSceneObject extends SXRSceneObject {
     private OnGestureListener onGestureListener;
     public float[] hitLocation;
 
-    public FocusableSceneObject(SXRContext sxrContext) {
+    public FocusableNode(SXRContext sxrContext) {
         super(sxrContext);
     }
 
-    public FocusableSceneObject(SXRContext sxrContext, SXRMesh sxrMesh, SXRTexture sxrTexture) {
+    public FocusableNode(SXRContext sxrContext, SXRMesh sxrMesh, SXRTexture sxrTexture) {
         super(sxrContext, sxrMesh, sxrTexture);
     }
 
-    public FocusableSceneObject(SXRContext sxrContext, float width, float height, SXRTexture t) {
+    public FocusableNode(SXRContext sxrContext, float width, float height, SXRTexture t) {
         super(sxrContext, width, height, t);
     }
 

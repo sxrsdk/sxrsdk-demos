@@ -16,15 +16,15 @@
 package com.samsungxr.immersivepedia.dinosaur;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.SXRNode;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 
 
-public class Dinosaur extends FocusableSceneObject {
+public class Dinosaur extends FocusableNode {
 
-    public Dinosaur(SXRContext context, SXRSceneObject dino, SXRSceneObject base,
-            SXRSceneObject ground) {
+    public Dinosaur(SXRContext context, SXRNode dino, SXRNode base,
+            SXRNode ground) {
         super(context, dino.getRenderData().getMesh(), dino.getRenderData().getMaterial().getMainTexture());
 
         if (dino != null && dino.getRenderData() != null

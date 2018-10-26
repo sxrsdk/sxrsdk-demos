@@ -14,12 +14,12 @@ import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRelativeMotionAnimation;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 import pw.ian.vrtransit.data.BusUpdate;
 import pw.ian.vrtransit.data.TransitDataAccessor;
@@ -42,11 +42,11 @@ public class MUNIVisualizerScript extends SXRScript {
 
 	private TransitDataAccessor tda;
 
-	private SXRSceneObject root;
+	private SXRNode root;
 
-	private SXRSceneObject map;
+	private SXRNode map;
 
-	private Map<String, SXRSceneObject> vehicles = new HashMap<>();
+	private Map<String, SXRNode> vehicles = new HashMap<>();
 
 	public MUNIVisualizerScript(MainActivity core) {
 		this.core = core;
@@ -81,10 +81,10 @@ public class MUNIVisualizerScript extends SXRScript {
 
 		mapTex = ctx.loadTexture(new SXRAndroidResource(ctx, "map.jpg"));
 
-		root = new SXRSceneObject(ctx);
-		scene.addSceneObject(root);
+		root = new SXRNode(ctx);
+		scene.addNode(root);
 
-		map = new SXRSceneObject(ctx, 10f, 10f, mapTex);
+		map = new SXRNode(ctx, 10f, 10f, mapTex);
 		map.getTransform().setPosition(0f, 0f, -5f);
 		root.addChildObject(map);
 
@@ -101,18 +101,18 @@ public class MUNIVisualizerScript extends SXRScript {
 			if (vehicles.containsKey(bu.getId())) {
 
 				if (bu.remove) {
-					SXRSceneObject bus = vehicles.remove(bu.getId());
+					SXRNode bus = vehicles.remove(bu.getId());
 				} else {
-					SXRSceneObject bus = vehicles.get(bu.getId());
+					SXRNode bus = vehicles.get(bu.getId());
 					smoothSetBusPos(bus, bu.getLat(), bu.getLon());
 				}
 
 			} else {
-				SXRSceneObject bus = setBusPos(nextBus(), bu.getLat(),
+				SXRNode bus = setBusPos(nextBus(), bu.getLat(),
 						bu.getLon());
 				if (vehicles.containsValue(bus)) {
 					String key = null;
-					for (Entry<String, SXRSceneObject> e : vehicles.entrySet()) {
+					for (Entry<String, SXRNode> e : vehicles.entrySet()) {
 						if (e.getValue().equals(bus)) {
 							key = e.getKey();
 							break;
@@ -132,7 +132,7 @@ public class MUNIVisualizerScript extends SXRScript {
 		}
 	}
 
-	private Queue<SXRSceneObject> busPool = new LinkedList<>();
+	private Queue<SXRNode> busPool = new LinkedList<>();
 
 	private void initBusObjectPool(int amt) {
 		for (int i = 0; i < amt; i++) {
@@ -140,24 +140,24 @@ public class MUNIVisualizerScript extends SXRScript {
 		}
 	}
 
-	private SXRSceneObject resetPos(SXRSceneObject bus) {
+	private SXRNode resetPos(SXRNode bus) {
 		bus.getTransform().setPosition(-1000f, -1000f, -1000f);
 		return bus;
 	}
 
-	private SXRSceneObject nextBus() {
-		SXRSceneObject bus = busPool.poll();
+	private SXRNode nextBus() {
+		SXRNode bus = busPool.poll();
 		busPool.add(bus);
 		return bus;
 	}
 
-	private SXRSceneObject constructBus(SXRContext ctx) {
-		SXRSceneObject bus = new SXRSceneObject(ctx, busMesh, busTex);
+	private SXRNode constructBus(SXRContext ctx) {
+		SXRNode bus = new SXRNode(ctx, busMesh, busTex);
 		root.addChildObject(bus);
 		return bus;
 	}
 
-	public SXRSceneObject smoothSetBusPos(SXRSceneObject bus, double lat,
+	public SXRNode smoothSetBusPos(SXRNode bus, double lat,
 			double lon) {
 
 		// 37.809607, -122.387515
@@ -174,7 +174,7 @@ public class MUNIVisualizerScript extends SXRScript {
 		return bus;
 	}
 
-	public SXRSceneObject setBusPos(SXRSceneObject bus, double lat, double lon) {
+	public SXRNode setBusPos(SXRNode bus, double lat, double lon) {
 
 		// 37.809607, -122.387515
 		// 37.734027, -122.514716
@@ -276,7 +276,7 @@ public class MUNIVisualizerScript extends SXRScript {
 	}
 
 	public void initVehicles() {
-		for (Entry<String, SXRSceneObject> e : vehicles.entrySet()) {
+		for (Entry<String, SXRNode> e : vehicles.entrySet()) {
 			resetPos(e.getValue());
 		}
 		vehicles.clear();

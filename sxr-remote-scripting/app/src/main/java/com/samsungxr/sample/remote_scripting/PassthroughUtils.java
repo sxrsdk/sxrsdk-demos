@@ -19,13 +19,13 @@ import java.lang.Runnable;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
 import android.hardware.Camera;
 import android.os.Handler;
 
 public class PassthroughUtils {
     private SXRContext sxrContext;
-    private SXRCameraSceneObject cameraObject;
+    private SXRCameraNode cameraObject;
     private GearVRScripting activity;
     private Camera camera;
     private boolean previewStarted = false;
@@ -64,7 +64,7 @@ public class PassthroughUtils {
         @Override
         public void run() {
             if(cameraObject == null) {
-                cameraObject = new SXRCameraSceneObject(sxrContext, PASSTHROUGH_WIDTH, PASSTHROUGH_HEIGHT, camera);
+                cameraObject = new SXRCameraNode(sxrContext, PASSTHROUGH_WIDTH, PASSTHROUGH_HEIGHT, camera);
                 cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
                 cameraObject.getTransform().setPosition(0.0f, 0.0f, PASSTHROUGH_Z);
                 cameraObject.getRenderData().setRenderingOrder(SXRRenderingOrder.BACKGROUND);
@@ -87,7 +87,7 @@ public class PassthroughUtils {
                 @Override
                 public void run() {
                     if(cameraObject != null) {
-                        sxrContext.getMainScene().removeSceneObject(cameraObject);
+                        sxrContext.getMainScene().removeNode(cameraObject);
                     }
                 }
             });

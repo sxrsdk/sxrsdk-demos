@@ -22,7 +22,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
@@ -37,8 +37,8 @@ public class MultiLightMain extends SXRMain {
     private static final float LIGHT_Z = 100.0f;
     private static final float LIGHT_ROTATE_RADIUS = 100.0f;
     private SXRContext mSXRContext;
-    private SXRSceneObject rotateObject;
-    private SXRSceneObject backdrop;
+    private SXRNode rotateObject;
+    private SXRNode backdrop;
     private SXRScene mScene;
 
     @Override
@@ -47,15 +47,15 @@ public class MultiLightMain extends SXRMain {
         mScene = mSXRContext.getMainScene();
         float zdist = 2.0f;
 
-        SXRSceneObject root = new SXRSceneObject(sxrContext);
-        SXRSceneObject character = createCharacter(sxrContext);
-        SXRSceneObject light1 = createLight(sxrContext, 1, 0, 0, 0.8f);
-        SXRSceneObject light2 = createLight(sxrContext, 0, 1, 0, -0.8f);
+        SXRNode root = new SXRNode(sxrContext);
+        SXRNode character = createCharacter(sxrContext);
+        SXRNode light1 = createLight(sxrContext, 1, 0, 0, 0.8f);
+        SXRNode light2 = createLight(sxrContext, 0, 1, 0, -0.8f);
         
         backdrop = createBackdrop(sxrContext);
         root.setName("root");
         root.getTransform().setPosition(0, 0, -zdist);
-        mScene.addSceneObject(root);
+        mScene.addNode(root);
         root.addChildObject(backdrop);
         root.addChildObject(light1);
         root.addChildObject(light2);
@@ -95,11 +95,11 @@ public class MultiLightMain extends SXRMain {
     /*
      * Load in a model of a little guy
      */
-    private SXRSceneObject createCharacter(SXRContext context)
+    private SXRNode createCharacter(SXRContext context)
     {
          try
          {
-            SXRSceneObject model = context.getAssetLoader().loadModel("astro_boy.dae");
+            SXRNode model = context.getAssetLoader().loadModel("astro_boy.dae");
 
             model.getTransform().setScale(10, 10, 10);
             model.getTransform().setPositionY(-1);
@@ -116,9 +116,9 @@ public class MultiLightMain extends SXRMain {
      * Creates a  spot light in front of the character
      * pointing straight at it.
      */
-    private SXRSceneObject createLight(SXRContext context, float r, float g, float b, float y)
+    private SXRNode createLight(SXRContext context, float r, float g, float b, float y)
     {
-        SXRSceneObject lightNode = new SXRSceneObject(context);
+        SXRNode lightNode = new SXRNode(context);
         SXRSpotLight light = new SXRSpotLight(context);
         Quaternionf q = new Quaternionf();
         
@@ -138,10 +138,10 @@ public class MultiLightMain extends SXRMain {
      * The multiple light shader uses the name "diffuseTexture" instead
      * of the name "main_texture".
      */
-    private SXRSceneObject createBackdrop(SXRContext context)
+    private SXRNode createBackdrop(SXRContext context)
     {
         SXRTexture tex = context.getAssetLoader().loadTexture(new SXRAndroidResource(mSXRContext, R.drawable.gearvrflogo));
-        SXRSceneObject backdrop = new SXRSceneObject(context, 10.0f, 4.0f, tex);
+        SXRNode backdrop = new SXRNode(context, 10.0f, 4.0f, tex);
         SXRRenderData rdata = backdrop.getRenderData();
         SXRMaterial material = new SXRMaterial(context, SXRMaterial.SXRShaderType.Phong.ID);
         

@@ -16,12 +16,12 @@
 package com.samsungxr.controls.menu;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.controls.focus.GamepadTouchImpl;
 import com.samsungxr.controls.focus.TouchAndGestureImpl;
 import com.samsungxr.controls.input.GamepadMap;
 
-public class MenuBox extends SXRSceneObject {
+public class MenuBox extends SXRNode {
 
     public static final float FRAME_INITITAL_POSITION_Y = -0.8f;
     private static final float MENU_BOX_Y = 0.5f;
@@ -100,7 +100,7 @@ public class MenuBox extends SXRSceneObject {
 
     private void attachEmptyFrame() {
 
-        SXRSceneObject wrapper = new SXRSceneObject(getSXRContext());
+        SXRNode wrapper = new SXRNode(getSXRContext());
 
         frameWrapper = new MenuFrame(getSXRContext());
         frameWrapper.getTransform().setPosition(0f, FRAME_INITITAL_POSITION_Y, 0f);

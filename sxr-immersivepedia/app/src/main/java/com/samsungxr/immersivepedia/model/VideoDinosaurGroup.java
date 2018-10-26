@@ -19,7 +19,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.dinosaur.Dinosaur;
@@ -32,7 +32,7 @@ import com.samsungxr.immersivepedia.videoComponent.VideoComponent;
 
 import java.io.IOException;
 
-public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventListener, OnGestureListener {
+public class VideoDinosaurGroup extends SXRNode implements TotemEventListener, OnGestureListener {
 
     private VideoComponent videoComponent;
     private Dinosaur trex;
@@ -55,7 +55,7 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
         videoComponent.getTransform().setPosition(0f, 2.0f, -3.0f);
         videoComponent.getTransform().rotateByAxisWithPivot(
                 DinosaurFactory.TREX_ANGLE_AROUND_CAMERA, 0f, 1f, 0f, 0f, 0f, 0f);
-        scene.addSceneObject(videoComponent);
+        scene.addNode(videoComponent);
     }
 
     private void createDinosaur() {
@@ -76,7 +76,7 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
         totem.getTransform().setPosition(0f, 0f, 0f);
         totem.setName("totem_trex");
         totem.setTotemEventListener(this);
-        scene.addSceneObject(totem);
+        scene.addNode(totem);
         totem.getTransform().setPosition(.3f, 0f, -5.0f);
         totem.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         totem.getTransform().setScale(1f, 1f, 1f);

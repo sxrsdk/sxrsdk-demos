@@ -12,17 +12,17 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXROpacityAnimation;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
 
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
-import com.samsungxr.scene_objects.view.SXRView;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRViewNode;
+import com.samsungxr.nodes.view.SXRView;
 import com.samsungxr.utility.Log;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -58,8 +58,8 @@ public class BulletSampleMain extends SXRMain {
     SXRScene scene = null;
     private Bullet mBullet = null;
     RigidBody sphereBody = null;
-    Map<SXRSceneObject, Vector3f> objectMap = new HashMap<SXRSceneObject, Vector3f>();
-    private Map<RigidBody, SXRSceneObject> rigidBodiesSceneMap = new HashMap<RigidBody, SXRSceneObject>();
+    Map<SXRNode, Vector3f> objectMap = new HashMap<SXRNode, Vector3f>();
+    private Map<RigidBody, SXRNode> rigidBodiesSceneMap = new HashMap<RigidBody, SXRNode>();
     private static final float CYLINDER_MASS = 50.0f;
     private static final float SPHERE_MASS = 80.0f;
     float speed = 0.0f;
@@ -79,11 +79,11 @@ public class BulletSampleMain extends SXRMain {
     Geometry sidewallGeometry1 = null;
     MotionState sidewallState2 = null;
     Geometry sidewallGeometry2 = null;
-    SXRSceneObject sphereObject = null;
-    SXRSceneObject groundScene = null;
-    SXRSceneObject wallScene = null;
-    SXRSceneObject sidewallScene1 = null;
-    SXRSceneObject sidewallScene2 = null;
+    SXRNode sphereObject = null;
+    SXRNode groundScene = null;
+    SXRNode wallScene = null;
+    SXRNode sidewallScene1 = null;
+    SXRNode sidewallScene2 = null;
     Integer count = 0;
     Integer totalScore = 0;
     float minX = 0.25f;
@@ -99,24 +99,24 @@ public class BulletSampleMain extends SXRMain {
     int right;
     StaticPlaneShape floorShape, wallShape, sidewallShape1, sidewallShape2;
     // fake sphere
-    SXRSceneObject sphereObjectFake = null;
-    SXRTextViewSceneObject scoreDisplayObject = null;
+    SXRNode sphereObjectFake = null;
+    SXRTextViewNode scoreDisplayObject = null;
 
-    private SXRCameraSceneObject mCameraObject;
+    private SXRCameraNode mCameraObject;
     private Camera mCamera;
     private boolean cameraDisplayed = false;
     private SXRAnimation mCameraAnim;
-    SXRSceneObject mContainer;
+    SXRNode mContainer;
     private SXRAnimationEngine mAnimationEngine;
-    private SXRSceneObject mHeadContainer;
+    private SXRNode mHeadContainer;
 
     // webview stuff
-    public SXRViewSceneObject webViewObject;
-    public SXRViewSceneObject webViewObject2;
-    public SXRViewSceneObject webViewObject3;
+    public SXRViewNode webViewObject;
+    public SXRViewNode webViewObject2;
+    public SXRViewNode webViewObject3;
 
     //video
-    SXRVideoSceneObject videoObject;
+    SXRVideoNode videoObject;
 
 
     BulletSampleActivity mActivity;
@@ -131,23 +131,23 @@ public class BulletSampleMain extends SXRMain {
         mSXRContext = sxrContext;
         scene = mSXRContext.getNextMainScene();
         mAnimationEngine = mSXRContext.getAnimationEngine();
-        mContainer = new SXRSceneObject(sxrContext);
+        mContainer = new SXRNode(sxrContext);
         mainCameraRig = scene.getMainCameraRig();
         mainCameraRig.getLeftCamera().setBackgroundColor(Color.BLACK);
         mainCameraRig.getRightCamera().setBackgroundColor(Color.BLACK);
 
-        scoreDisplayObject = new SXRTextViewSceneObject(mSXRContext,50.0f,30.0f,null);
+        scoreDisplayObject = new SXRTextViewNode(mSXRContext,50.0f,30.0f,null);
         scoreDisplayObject.getTransform().setPosition(0.0f,42.0f,-210.f);
         scoreDisplayObject.setGravity(Gravity.CENTER);
         scoreDisplayObject.setTextColor(YELLOW);
         scoreDisplayObject.setTextSize(10.0f);
-        scoreDisplayObject.setRefreshFrequency(SXRTextViewSceneObject.IntervalFrequency.HIGH);
-        scene.addSceneObject(scoreDisplayObject);
+        scoreDisplayObject.setRefreshFrequency(SXRTextViewNode.IntervalFrequency.HIGH);
+        scene.addNode(scoreDisplayObject);
 
         /* Create the bowling room */
-        SXRSceneObject bowlingRoom= meshWithTexture("room_export.fbx");
+        SXRNode bowlingRoom= meshWithTexture("room_export.fbx");
         bowlingRoom.getTransform().setPosition(0.0f, 0.0f, 0.0f);
-        scene.addSceneObject(bowlingRoom);
+        scene.addNode(bowlingRoom);
         //SXRDirectLight light = ((SXRDirectLight)(scene.getLightList()[0]));
         // light.setDiffuseIntensity(0.8f, 0.8f, 0.8f, 0.8f);
         // light.setAmbientIntensity(0.5f, 0.5f, 0.5f, 1f);
@@ -155,7 +155,7 @@ public class BulletSampleMain extends SXRMain {
         // camera
         initCamera( );
 
-        mHeadContainer = new SXRSceneObject(mSXRContext);
+        mHeadContainer = new SXRNode(mSXRContext);
         mainCameraRig.addChildObject(mHeadContainer);
         addCamera(mHeadContainer);
 
@@ -237,13 +237,13 @@ public class BulletSampleMain extends SXRMain {
         }
     }
 
-    private SXRSceneObject quadWithTexture(float width, float height,
+    private SXRNode quadWithTexture(float width, float height,
             String texture) {
         FutureWrapper<SXRMesh> futureMesh = new FutureWrapper<SXRMesh>(
                 mSXRContext.createQuad(width, height));
-        SXRSceneObject object = null;
+        SXRNode object = null;
         try {
-            object = new SXRSceneObject(mSXRContext, futureMesh,
+            object = new SXRNode(mSXRContext, futureMesh,
                     mSXRContext.loadFutureTexture(new SXRAndroidResource(
                             mSXRContext, texture)));
         } catch (IOException e) {
@@ -252,8 +252,8 @@ public class BulletSampleMain extends SXRMain {
         return object;
     }
 
-    private SXRSceneObject meshWithTexture(String mesh) {
-        SXRSceneObject object = null;
+    private SXRNode meshWithTexture(String mesh) {
+        SXRNode object = null;
         try {
            object = mSXRContext.loadModel(mesh);
 
@@ -271,12 +271,12 @@ public class BulletSampleMain extends SXRMain {
         cylinderState.worldTransform = new Transform(new Point3(x,y,z));
         RigidBody cylinderBody = mBullet.createAndAddRigidBody(cylinderGeometry,cylinderState);
 
-        SXRSceneObject cylinderSceneObject = meshWithTexture("pin_export.fbx");
+        SXRNode cylinderNode = meshWithTexture("pin_export.fbx");
 
-        cylinderSceneObject.getTransform().setPosition(x,y,z);
+        cylinderNode.getTransform().setPosition(x,y,z);
 
-        scene.addSceneObject(cylinderSceneObject);
-        rigidBodiesSceneMap.put(cylinderBody,cylinderSceneObject);
+        scene.addNode(cylinderNode);
+        rigidBodiesSceneMap.put(cylinderBody,cylinderNode);
 
     }
 
@@ -300,20 +300,20 @@ public class BulletSampleMain extends SXRMain {
 
         //mBullet.setActive(sphereBody, true);
         objectMap.put(sphereObject, new Vector3f(x,y,z));
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
         rigidBodiesSceneMap.put(sphereBody, sphereObject);
     }
 
     public void addDisplaySphere(SXRScene scene, float radius, float x, float y, float z, float mass)  {
         sphereObjectFake = meshWithTexture("ball_export.fbx");
         sphereObjectFake.getTransform().setPosition(x, y, z);
-        scene.addSceneObject(sphereObjectFake);
+        scene.addNode(sphereObjectFake);
     }
 
 
-    private SXRViewSceneObject createWebViewObject(SXRContext sxrContext, float w, float h, SXRView webView) {
+    private SXRViewNode createWebViewObject(SXRContext sxrContext, float w, float h, SXRView webView) {
         //SXRView webView = mActivity.getWebView();
-        SXRViewSceneObject webObject = new SXRViewSceneObject(sxrContext,
+        SXRViewNode webObject = new SXRViewNode(sxrContext,
                 webView, w, h);
         //webObject.setName("web view object");
         webObject.getRenderData().getMaterial().setOpacity(1.0f);
@@ -345,7 +345,7 @@ public class BulletSampleMain extends SXRMain {
                 this.speed = 5;
 
             //sphereObjectFake.getRenderData().setRenderMask(0);
-            scene.removeSceneObject(sphereObjectFake);
+            scene.removeNode(sphereObjectFake);
             applyForce = true;
             addSphere(scene, 1.32f, sphereObjectFake.getTransform().getPositionX(),
                     sphereObjectFake.getTransform().getPositionY(),
@@ -394,18 +394,18 @@ public class BulletSampleMain extends SXRMain {
 
     public void onTap() {
         applyForce = false;
-        //scene.removeSceneObject(mContainer);
+        //scene.removeNode(mContainer);
         //scene.clear();
-        scene.removeSceneObject(groundScene);
-        scene.removeSceneObject(wallScene);
-        scene.removeSceneObject(sidewallScene1);
-        scene.removeSceneObject(sidewallScene2);
-        scene.removeSceneObject(sphereObjectFake);
+        scene.removeNode(groundScene);
+        scene.removeNode(wallScene);
+        scene.removeNode(sidewallScene1);
+        scene.removeNode(sidewallScene2);
+        scene.removeNode(sphereObjectFake);
 
         for (RigidBody body : rigidBodiesSceneMap.keySet()) {
             if (body.geometry.shape.getType() == ShapeType.SPHERE_SHAPE_PROXYTYPE
                     || body.geometry.shape.getType() == ShapeType.CYLINDER_SHAPE_PROXYTYPE) {
-                scene.removeSceneObject(rigidBodiesSceneMap.get(body));
+                scene.removeNode(rigidBodiesSceneMap.get(body));
             }
         }
         createPhysicsScene();
@@ -439,7 +439,7 @@ public class BulletSampleMain extends SXRMain {
         groundScene = meshWithTexture("floor.fbx");
         //groundScene.getTransform().setRotationByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
         groundScene.getTransform().setPosition(0.0f, 0.0f, 0.0f);
-        scene.addSceneObject(groundScene);
+        scene.addNode(groundScene);
 
         StaticPlaneShape floorShape = new StaticPlaneShape(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
         floorGeometry = mBullet.createGeometry(floorShape, 0.0f, new Vector3(0.0f, 0.0f, 0.0f));
@@ -449,7 +449,7 @@ public class BulletSampleMain extends SXRMain {
         wallScene = meshWithTexture("wall.fbx");
         //wallScene.getTransform().setRotationByAxis(-0.0f, 1.0f, 0.0f, 0.0f);
         wallScene.getTransform().setPosition(0.0f, 0.0f, -210.0f);
-        scene.addSceneObject(wallScene);
+        scene.addNode(wallScene);
 
         scoreDisplayObject.setText("Vol Key to adjust Ball\nForward Swipe to Throw\nSwipe Speed -> Ball Speed\nSwipe Down -> See Through");
 
@@ -462,7 +462,7 @@ public class BulletSampleMain extends SXRMain {
         sidewallScene1 = meshWithTexture("sidewall1.fbx");
         //wallScene.getTransform().setRotationByAxis(-0.0f, 1.0f, 0.0f, 0.0f);
         sidewallScene1.getTransform().setPosition(0.0f, 0.0f, 0.0f);
-        scene.addSceneObject(sidewallScene1);
+        scene.addNode(sidewallScene1);
 
         sidewallShape1 = new StaticPlaneShape(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
         sidewallGeometry1 = mBullet.createGeometry(sidewallShape1, 0.0f, new Vector3(0.0f, 0.0f, 0.0f));
@@ -473,7 +473,7 @@ public class BulletSampleMain extends SXRMain {
         sidewallScene2 = meshWithTexture("sidewall2.fbx");
         //wallScene.getTransform().setRotationByAxis(-0.0f, 1.0f, 0.0f, 0.0f);
         sidewallScene2.getTransform().setPosition(0.0f, 0.0f, 0.0f);
-        scene.addSceneObject(sidewallScene2);
+        scene.addNode(sidewallScene2);
 
         sidewallShape2 = new StaticPlaneShape(new Vector3(-1.0f, 0.0f, 0.0f), 0.0f);
         sidewallGeometry2 = mBullet.createGeometry(sidewallShape2, 0.0f, new Vector3(0.0f, 0.0f, 0.0f));
@@ -512,7 +512,7 @@ public class BulletSampleMain extends SXRMain {
         webViewObject.getRenderData().setDepthTest(false);
         webViewObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
 
-        scene.addSceneObject(webViewObject);
+        scene.addNode(webViewObject);
 
         Log.v("", "addWebView");
 
@@ -520,13 +520,13 @@ public class BulletSampleMain extends SXRMain {
         webViewObject2 = createWebViewObject(mSXRContext, 25f, 25f, webView2);
         webViewObject2.getTransform().setPosition( 30f, 19f, 24f );
         webViewObject2.getTransform().setRotationByAxis( -90,  0.0f, 1.0f, 0.0f );
-        scene.addSceneObject(webViewObject2);
+        scene.addNode(webViewObject2);
 
         SXRView webView3 = mActivity.getWebView(0);
         webViewObject3 = createWebViewObject(mSXRContext, 25f, 25f, webView3);
         webViewObject3.getTransform().setPosition( -40f, 25f, 25f );
         webViewObject3.getTransform().setRotationByAxis( 90,  0.0f, 1.0f, 0.0f );
-        scene.addSceneObject(webViewObject3);
+        scene.addNode(webViewObject3);
 
 
     }
@@ -573,13 +573,13 @@ public class BulletSampleMain extends SXRMain {
         mCamera.setParameters(parameters);
     }
 
-    public void addCamera(SXRSceneObject container) {
+    public void addCamera(SXRNode container) {
         float ratio = 16f / 9f; // size.width / size.height;
 
         float H = 1.0f;
         float W = H * ratio;
 
-        mCameraObject = new SXRCameraSceneObject(mSXRContext,
+        mCameraObject = new SXRCameraNode(mSXRContext,
                 W, H, mCamera);
         mCameraObject.getTransform().setPosition( 0f, 0f, -1.3f );
         mCameraObject.getRenderData().getMaterial().setOpacity( 0.0f );
@@ -604,13 +604,13 @@ public class BulletSampleMain extends SXRMain {
         cameraDisplayed = active;
     }
 
-    private SXRVideoSceneObject createVideoObject(SXRContext sxrContext) throws IOException {
+    private SXRVideoNode createVideoObject(SXRContext sxrContext) throws IOException {
         final AssetFileDescriptor afd = sxrContext.getActivity().getAssets().openFd("tron.mp4");
         final MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         mediaPlayer.prepare();
-        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, 8.0f,
-                4.0f, mediaPlayer, SXRVideoSceneObject.SXRVideoType.MONO);
+        SXRVideoNode video = new SXRVideoNode(sxrContext, 8.0f,
+                4.0f, mediaPlayer, SXRVideoNode.SXRVideoType.MONO);
         video.setName("video");
         return video;
     }

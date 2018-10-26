@@ -17,12 +17,12 @@ package com.samsungxr.video.focus;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IPickEvents;
 
 public final class FocusableController implements IPickEvents {
 
-    private FocusableSceneObject currentFocused = null;
+    private FocusableNode currentFocused = null;
 
     @Override
     public void onPick(SXRPicker picker) {
@@ -35,24 +35,24 @@ public final class FocusableController implements IPickEvents {
     }
 
     @Override
-    public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject collision) {
-        if (FocusableSceneObject.class.isAssignableFrom(sceneObj.getClass())) {
-            currentFocused = (FocusableSceneObject)sceneObj;
+    public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject collision) {
+        if (FocusableNode.class.isAssignableFrom(sceneObj.getClass())) {
+            currentFocused = (FocusableNode)sceneObj;
             currentFocused.setFocus(true);
         }
     }
 
     @Override
-    public void onExit(SXRSceneObject sceneObj) {
-        if (FocusableSceneObject.class.isAssignableFrom(sceneObj.getClass())) {
-            currentFocused = (FocusableSceneObject)sceneObj;
+    public void onExit(SXRNode sceneObj) {
+        if (FocusableNode.class.isAssignableFrom(sceneObj.getClass())) {
+            currentFocused = (FocusableNode)sceneObj;
             currentFocused.setFocus(false);
         }
         currentFocused = null;
     }
 
     @Override
-    public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject collision) {
+    public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject collision) {
 
     }
 

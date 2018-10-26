@@ -15,7 +15,7 @@
 
 package com.samsungxr.keyboard.util;
 
-public class SceneObjectNames {
+public class NodeNames {
 
     public static final String KEYBOARD = "keyboard";
     public static final String KEYBOARD_ALPHABETIC = "keyboardAlphabetic";

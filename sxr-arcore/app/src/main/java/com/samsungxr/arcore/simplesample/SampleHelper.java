@@ -23,7 +23,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
 
@@ -31,18 +31,18 @@ import java.util.EnumSet;
 
 
 public class SampleHelper {
-    private SXRSceneObject mCursor;
+    private SXRNode mCursor;
     private SXRCursorController mCursorController;
 
     private int hsvHUE = 0;
 
-    public SXRSceneObject createQuadPlane(SXRContext sxrContext) {
+    public SXRNode createQuadPlane(SXRContext sxrContext) {
         SXRMesh mesh = SXRMesh.createQuad(sxrContext,
                 "float3 a_position", 1.0f, 1.0f);
 
         SXRMaterial mat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
 
-        SXRSceneObject polygonObject = new SXRSceneObject(sxrContext, mesh, mat);
+        SXRNode polygonObject = new SXRNode(sxrContext, mesh, mat);
 
         hsvHUE += 35;
         float[] hsv = new float[3];
@@ -64,7 +64,7 @@ public class SampleHelper {
         final int cursorDepth = 100;
         sxrContext.getMainScene().getEventReceiver().addListener(handler);
         SXRInputManager inputManager = sxrContext.getInputManager();
-        mCursor = new SXRSceneObject(sxrContext,
+        mCursor = new SXRNode(sxrContext,
                 sxrContext.createQuad(0.2f * cursorDepth,
                         0.2f * cursorDepth),
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,

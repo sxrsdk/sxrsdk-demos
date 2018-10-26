@@ -17,7 +17,7 @@ package com.samsungxr.controls.menu.color;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.menu.MenuControlSceneObject;
+import com.samsungxr.controls.menu.MenuControlNode;
 import com.samsungxr.controls.util.ColorControls;
 import com.samsungxr.controls.util.ColorControls.Color;
 
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ParseColorItem {
 
-    private List<MenuControlSceneObject> listItens = new ArrayList<MenuControlSceneObject>();
+    private List<MenuControlNode> listItens = new ArrayList<MenuControlNode>();
 
     public ParseColorItem(SXRContext sxrContext) {
 
@@ -40,7 +40,7 @@ public class ParseColorItem {
         }
     }
 
-    public ArrayList<MenuControlSceneObject> getList() {
-        return (ArrayList<MenuControlSceneObject>) listItens;
+    public ArrayList<MenuControlNode> getList() {
+        return (ArrayList<MenuControlNode>) listItens;
     }
 }

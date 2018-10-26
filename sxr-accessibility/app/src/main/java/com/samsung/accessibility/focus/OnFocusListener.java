@@ -17,10 +17,10 @@ package com.samsung.accessibility.focus;
 
 public interface OnFocusListener {
 
-    public void gainedFocus(FocusableSceneObject object);
+    public void gainedFocus(FocusableNode object);
 
-    public void lostFocus(FocusableSceneObject object);
+    public void lostFocus(FocusableNode object);
 
-    public void inFocus(FocusableSceneObject object);
+    public void inFocus(FocusableNode object);
 
 }

@@ -15,11 +15,11 @@
 package com.samsungxr.controls.menu;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 
-public abstract class MenuControlSceneObject extends ControlSceneObject{
+public abstract class MenuControlNode extends ControlNode{
 
-    public MenuControlSceneObject(SXRContext sxrContext) {
+    public MenuControlNode(SXRContext sxrContext) {
         super(sxrContext);
     }
     

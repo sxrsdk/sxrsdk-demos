@@ -16,7 +16,7 @@
 package com.samsungxr.keyboard.mic;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
@@ -25,9 +25,9 @@ import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.interpolator.InterpolatorExpoEaseOut;
 import com.samsungxr.keyboard.mic.model.MicItem;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class MicGroupRun extends SXRSceneObject {
+public class MicGroupRun extends SXRNode {
 
     private static final float ANIMATION_TIME = 2f;
     private static final float DELAY_TIME = 3 / 5f;
@@ -40,7 +40,7 @@ public class MicGroupRun extends SXRSceneObject {
 
     public MicGroupRun(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.MIC_GROUP_RUN);
+        setName(NodeNames.MIC_GROUP_RUN);
 
         mMicRunItens = new MicItem[NUMBER_OF_WAVES];
         mOpacityAnimation = new SXRAnimation[NUMBER_OF_WAVES];

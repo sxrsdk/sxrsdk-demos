@@ -21,7 +21,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
@@ -36,7 +36,7 @@ public class Model {
     String name;
     String location;
 
-    SXRSceneObject model;
+    SXRNode model;
     ArrayList<SXRMaterial> originalMaterial;
     SXRAnimator animation;
     private float currentZoom = 0;
@@ -71,7 +71,7 @@ public class Model {
             return;
         }
 
-        SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
         model.attachComponent(new SXRMeshCollider(context, true));
 
         // Adding Pointee to Model
@@ -96,7 +96,7 @@ public class Model {
         return animation;
     }
 
-    public SXRSceneObject getModel(SXRContext context) {
+    public SXRNode getModel(SXRContext context) {
         if (model == null) {
             loadModel(context);
         }

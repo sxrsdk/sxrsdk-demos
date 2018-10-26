@@ -19,11 +19,11 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 
 
 public class GearVRJavascriptMain extends SXRMain {
@@ -33,7 +33,7 @@ public class GearVRJavascriptMain extends SXRMain {
     private SXRContext context;
     private SXRMaterial mShaderMaterial;
     private SXRShaderId mShaderID = null;
-    private SXRSceneObject cursorModel = null;
+    private SXRNode cursorModel = null;
 
     @Override
     public void onInit(SXRContext sxrContext) {
@@ -50,9 +50,9 @@ public class GearVRJavascriptMain extends SXRMain {
         // The onStep function in script.js will be invoked
     }
 
-    private SXRSceneObject createCursor()
+    private SXRNode createCursor()
     {
-        SXRSceneObject cursor = new SXRSphereSceneObject(context);
+        SXRNode cursor = new SXRSphereNode(context);
         SXRRenderData cursorRenderData = cursor.getRenderData();
 
         mShaderID = new SXRShaderId(CustomShaderManager.class);

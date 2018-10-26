@@ -1,4 +1,4 @@
-importPackage(org.gearvrf)
+importPackage(com.samsungxr)
 
 function onPause() {
     utils.log("script log: onPause");
