@@ -15,7 +15,7 @@
  */
  
 #pragma version(1)
-#pragma rs java_package_name(com.samsungxr.gvrcamera2renderscript)
+#pragma rs java_package_name(com.samsungxr.sxrcamera2renderscript)
 
 const static float3 gMonoMult = {0.299f, 0.587f, 0.114f};
 
