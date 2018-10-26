@@ -41,7 +41,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
         OnGestureListener {
 
     private FocusableSceneObject styrocosaurus;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRScene scene;
     private Totem totem;
     public boolean isPlayed;
@@ -50,11 +50,11 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
     private int streamID;
 
 
-    public RotateDinosaurGroup(SXRContext gvrContext, SXRScene scene)
+    public RotateDinosaurGroup(SXRContext sxrContext, SXRScene scene)
             throws IOException {
-        super(gvrContext);
+        super(sxrContext);
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
         this.scene = scene;
 
         createDinosaur();
@@ -64,7 +64,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
     }
 
     private void createSwipeIndicator() {
-        swipeIndicator = new SwipeIndicator(gvrContext, styrocosaurus);
+        swipeIndicator = new SwipeIndicator(sxrContext, styrocosaurus);
         swipeIndicator.getTransform().setPosition(0, 1.5f, -3f);
         swipeIndicator.init();
         addChildObject(swipeIndicator);
@@ -72,15 +72,15 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
 
     private void createTotem() {
 
-        totem = new Totem(this.gvrContext,
-                this.gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        totem = new Totem(this.sxrContext,
+                this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.totem_tex_diffuse)));
         totem.setTotemEventListener(null);
         scene.addSceneObject(totem);
         totem.getTransform().setPosition(-.3f, 0f, -5.0f);
         totem.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         totem.getTransform().setScale(1f, 1f, 1f);
-        totem.setText(gvrContext.getActivity().getResources()
+        totem.setText(sxrContext.getActivity().getResources()
                 .getString(R.string.rotate_totem));
         totem.getTransform().rotateByAxisWithPivot(
                 DinosaurFactory.STYRACOSAURUS_ANGLE_AROUND_CAMERA - 35.0f, 0f,
@@ -136,7 +136,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
 
     private void startAnimation() {
         animation = new SXRRotationByAxisAnimation(styrocosaurus, 25, 360, 0,
-                1, 0).start(gvrContext.getAnimationEngine());
+                1, 0).start(sxrContext.getAnimationEngine());
         animation.setRepeatMode(1);
         animation.setRepeatCount(-1);
         isPlayed = true;
@@ -144,7 +144,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
     }
 
     private void stopAnimation() {
-        gvrContext.getAnimationEngine().stop(animation);
+        sxrContext.getAnimationEngine().stop(animation);
         AudioClip.getInstance(getSXRContext().getContext())
                 .pauseSound(streamID);
         animation = null;
@@ -152,7 +152,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
     }
 
     private void createDinosaur() {
-        styrocosaurus = DinosaurFactory.getInstance(gvrContext)
+        styrocosaurus = DinosaurFactory.getInstance(sxrContext)
                 .getStyracosaurus();
         styrocosaurus.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0,
                 0);
@@ -185,7 +185,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
             AudioClip.getInstance(getSXRContext().getContext()).playSound(
                     AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
             new SXRRotationByAxisAnimation(styrocosaurus, 4f, 45, 0, 1, 0)
-                    .start(gvrContext.getAnimationEngine());
+                    .start(sxrContext.getAnimationEngine());
             swipeIndicator.setStop(true);
         }
     }
@@ -196,7 +196,7 @@ public class RotateDinosaurGroup extends SXRSceneObject implements
             AudioClip.getInstance(getSXRContext().getContext()).playSound(
                     AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
             new SXRRotationByAxisAnimation(styrocosaurus, 4f, -45, 0, 1, 0)
-                    .start(gvrContext.getAnimationEngine());
+                    .start(sxrContext.getAnimationEngine());
             swipeIndicator.setStop(true);
         }
     }

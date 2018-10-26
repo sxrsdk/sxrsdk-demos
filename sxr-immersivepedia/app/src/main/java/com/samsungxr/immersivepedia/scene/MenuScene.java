@@ -44,8 +44,8 @@ public class MenuScene extends SXRScene {
     private int totalRenderObject = 0;
     private int finishCounter = 0;
 
-    public MenuScene(SXRContext gvrContext) {
-        super(gvrContext);
+    public MenuScene(SXRContext sxrContext) {
+        super(sxrContext);
         createDinosaursMenuItem();
         createBirdsMenuItem();
         createFishesMenuItem();

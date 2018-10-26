@@ -62,14 +62,14 @@ public class EventsMain extends SXRMain {
     }
 
     @Override
-    public void onInit(final SXRContext gvrContext) {
-        context = gvrContext;
-        mainScene = gvrContext.getMainScene();
+    public void onInit(final SXRContext sxrContext) {
+        context = sxrContext;
+        mainScene = sxrContext.getMainScene();
 
-        layoutSceneObject = new SXRViewSceneObject(gvrContext,
+        layoutSceneObject = new SXRViewSceneObject(sxrContext,
                 R.layout.activity_main, viewSOEventsListener);
 
-        gvrContext.getInputManager().selectController();
+        sxrContext.getInputManager().selectController();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class EventsMain extends SXRMain {
 
     private IViewEvents viewSOEventsListener = new IViewEvents() {
         @Override
-        public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
             final Activity activity = context.getActivity();
 
             button1 = view.findViewById(R.id.button1);
@@ -109,9 +109,9 @@ public class EventsMain extends SXRMain {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-            mainScene.addSceneObject(gvrViewSceneObject);
-            gvrViewSceneObject.getTransform().setPosition(0.0f, 0.0f, DEPTH);
+        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+            mainScene.addSceneObject(sxrViewSceneObject);
+            sxrViewSceneObject.getTransform().setPosition(0.0f, 0.0f, DEPTH);
         }
     };
 

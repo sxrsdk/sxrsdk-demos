@@ -31,16 +31,16 @@ public class TextFieldItem extends SXRSceneObject {
     protected CharItem charItem;
     private int position;
 
-    public TextFieldItem(SXRContext gvrContext, float sceneObjectWidth, float sceneObjectHeigth,
+    public TextFieldItem(SXRContext sxrContext, float sceneObjectWidth, float sceneObjectHeigth,
             int bitmapWidth, int bitmapHeigth, Text text,
             int position) {
-        super(gvrContext, sceneObjectWidth, sceneObjectHeigth);
+        super(sxrContext, sceneObjectWidth, sceneObjectHeigth);
         setName(SceneObjectNames.TEXT_FIELD_ITEM);
 
         currentText = text;
         this.width = bitmapWidth;
         this.height = bitmapHeigth;
-        updateText(gvrContext);
+        updateText(sxrContext);
         this.position = position;
     }
 
@@ -90,8 +90,8 @@ public class TextFieldItem extends SXRSceneObject {
         }
     }
 
-    public void setText(SXRContext gvrContext, CharItem charItem) {
-        setText(gvrContext, charItem.getCharacter());
+    public void setText(SXRContext sxrContext, CharItem charItem) {
+        setText(sxrContext, charItem.getCharacter());
         this.charItem = charItem;
     }
 

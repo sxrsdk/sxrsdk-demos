@@ -26,10 +26,10 @@ public class SpinnerItem extends TextFieldItem {
 
     private boolean cacheTestOn = true;
 
-    public SpinnerItem(SXRContext gvrContext, float sceneObjectWidth, float sceneObjectHeigth,
+    public SpinnerItem(SXRContext sxrContext, float sceneObjectWidth, float sceneObjectHeigth,
             int bitmapWidth, int bitmapHeigth, int position,
             Text text) {
-        super(gvrContext, sceneObjectWidth, sceneObjectHeigth, bitmapWidth, bitmapHeigth, text,
+        super(sxrContext, sceneObjectWidth, sceneObjectHeigth, bitmapWidth, bitmapHeigth, text,
                 position);
 
     }

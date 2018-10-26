@@ -50,27 +50,27 @@ public class Main extends SXRMain {
     }
 
     @Override
-    public void onInit(final SXRContext gvrContext) throws Throwable {
-        mScene = gvrContext.getMainScene();
+    public void onInit(final SXRContext sxrContext) throws Throwable {
+        mScene = sxrContext.getMainScene();
 
-        mFrameLayoutFormSceneObject = new SXRViewSceneObject(gvrContext, R.layout.main_form, new ViewEventsHandler());
+        mFrameLayoutFormSceneObject = new SXRViewSceneObject(sxrContext, R.layout.main_form, new ViewEventsHandler());
         mFrameLayoutFormSceneObject.getTransform().setPosition(0.0f, -0.3f, DEPTH);
         mFrameLayoutFormSceneObject.setName("frame");
         mScene.addSceneObject(mFrameLayoutFormSceneObject);
 
         mKeyboardSceneObject = new SXRKeyboardSceneObject.Builder()
-                .setKeyboardTexture(gvrContext.getAssetLoader().loadTexture(
-                        new SXRAndroidResource(gvrContext, R.drawable.keyboard_background)))
+                .setKeyboardTexture(sxrContext.getAssetLoader().loadTexture(
+                        new SXRAndroidResource(sxrContext, R.drawable.keyboard_background)))
                 .setKeyBackground(mActivity.getDrawable(R.drawable.key_background))
-                .build(gvrContext, R.xml.qwerty);
+                .build(sxrContext, R.xml.qwerty);
         mKeyboardSceneObject.setName("keyboard");
         // Add frames per second display
-        SXRSceneObject fpsObject = new SXRFPSCounter(gvrContext);
+        SXRSceneObject fpsObject = new SXRFPSCounter(sxrContext);
         fpsObject.getTransform().setPosition(0.0f, -1.0f, -0.1f);
         fpsObject.getTransform().setScale(0.2f, 0.2f, 1.0f);
         mScene.getMainCameraRig().addChildObject(fpsObject);
 
-        gvrContext.getInputManager().selectController(new SXRInputManager.ICursorControllerSelectListener()
+        sxrContext.getInputManager().selectController(new SXRInputManager.ICursorControllerSelectListener()
         {
             public void onCursorControllerSelected(SXRCursorController newController, SXRCursorController oldController)
             {
@@ -83,7 +83,7 @@ public class Main extends SXRMain {
     private class ViewEventsHandler implements IViewEvents {
 
         @Override
-        public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
             view.findViewById(R.id.nameEdit).setOnClickListener(mTextEditClickHandler);
             view.findViewById(R.id.emailEdit).setOnClickListener(mTextEditClickHandler);
             view.findViewById(R.id.phoneEdit).setOnClickListener(mTextEditClickHandler);
@@ -98,7 +98,7 @@ public class Main extends SXRMain {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
         }
     }
 

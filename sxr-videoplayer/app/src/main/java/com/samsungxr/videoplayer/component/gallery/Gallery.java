@@ -61,23 +61,23 @@ public class Gallery extends FadeableObject implements OnItemsSelectionListener 
     private MessageText mMessageText;
 
     @SuppressLint("InflateParams")
-    public Gallery(SXRContext gvrContext) {
-        super(gvrContext);
+    public Gallery(SXRContext sxrContext) {
+        super(sxrContext);
 
-        mObjectViewGallery = new SXRViewSceneObject(gvrContext, R.layout.gallery_layout,
+        mObjectViewGallery = new SXRViewSceneObject(sxrContext, R.layout.gallery_layout,
                 new IViewEvents() {
                     @Override
-                    public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+                    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
                         onInitRecyclerView(view);
                         onInitBreadcrumb(view);
                     }
 
                     @Override
-                    public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-                        gvrViewSceneObject.getTransform().setScale(6f, 6, 1);
+                    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+                        sxrViewSceneObject.getTransform().setScale(6f, 6, 1);
                         // Set the texture buffer to maximum value to avoid anti-aliasing issue
-                        gvrViewSceneObject.setTextureBufferSize(1024);
-                        addChildObject(gvrViewSceneObject);
+                        sxrViewSceneObject.setTextureBufferSize(1024);
+                        addChildObject(sxrViewSceneObject);
                     }
                 });
 

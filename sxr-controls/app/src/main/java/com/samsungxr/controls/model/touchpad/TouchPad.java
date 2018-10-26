@@ -40,8 +40,8 @@ public class TouchPad extends SXRSceneObject {
     static final float CORRETION_FACTOR_CENTER_INPUT_Y = 700;
     static final float SCALE_OBJECT = 2f;
 
-    public TouchPad(SXRContext gvrContext) {
-        super(gvrContext);
+    public TouchPad(SXRContext sxrContext) {
+        super(sxrContext);
 
         createTouchpad();
 

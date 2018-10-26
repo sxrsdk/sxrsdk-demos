@@ -25,6 +25,6 @@ public class SampleActivity extends SXRActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setMain(script, "gvr.xml");
+        setMain(script, "sxr.xml");
     }
 }

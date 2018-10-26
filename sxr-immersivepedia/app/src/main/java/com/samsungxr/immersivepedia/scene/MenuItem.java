@@ -67,13 +67,13 @@ public class MenuItem extends FocusableSceneObject {
     private SXRTextViewSceneObject subText;
     float scale ;
 
-    public MenuItem(SXRContext gvrContext, int frontIdleRes, int frontHoverRes, int backgroundIdleRes, int backgroundHoverRes) {
-        super(gvrContext);
+    public MenuItem(SXRContext sxrContext, int frontIdleRes, int frontHoverRes, int backgroundIdleRes, int backgroundHoverRes) {
+        super(sxrContext);
 
-        attachRenderData(new SXRRenderData(gvrContext));
-        getRenderData().setMaterial(new SXRMaterial(gvrContext));
-        getRenderData().setMesh(gvrContext.createQuad(WIDTH, HEIGHT));
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.empty_clickable));
+        attachRenderData(new SXRRenderData(sxrContext));
+        getRenderData().setMaterial(new SXRMaterial(sxrContext));
+        getRenderData().setMesh(sxrContext.createQuad(WIDTH, HEIGHT));
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty_clickable));
         getRenderData().getMaterial().setMainTexture(texture);
 
         frontObj = createSceneObject(frontIdleRes, frontHoverRes);
@@ -86,7 +86,7 @@ public class MenuItem extends FocusableSceneObject {
         backgroundObj = createSceneObject(backgroundIdleRes, backgroundHoverRes);
         backgroundObj.getRenderData().setRenderingOrder(RenderingOrderApplication.BACKGROUND_IMAGE);
 
-        SXRMeshCollider collider = new SXRMeshCollider(gvrContext, false);
+        SXRMeshCollider collider = new SXRMeshCollider(sxrContext, false);
 
         attachComponent(collider);
         createFocusListener();

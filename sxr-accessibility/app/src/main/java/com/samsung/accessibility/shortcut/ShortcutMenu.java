@@ -29,12 +29,12 @@ public class ShortcutMenu extends SXRSceneObject {
     private ShortcutMenuItem sortAux;
     private AccessibilityTexture textures;
 
-    public ShortcutMenu(SXRContext gvrContext) {
-        super(gvrContext);
+    public ShortcutMenu(SXRContext sxrContext) {
+        super(sxrContext);
         this.getTransform().rotateByAxis(110, 0, 1, 0);
         shortcutItems = new ArrayList<ShortcutMenuItem>();
-        textures = AccessibilityTexture.getInstance(gvrContext);
-        mGvrContext = gvrContext;
+        textures = AccessibilityTexture.getInstance(sxrContext);
+        mGvrContext = sxrContext;
         createDefaultMenu();
         sortAux = new ShortcutMenuItem(mGvrContext);
     }

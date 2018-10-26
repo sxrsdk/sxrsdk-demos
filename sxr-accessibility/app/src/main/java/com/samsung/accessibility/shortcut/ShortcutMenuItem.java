@@ -36,7 +36,7 @@ import com.samsungxr.accessibility.SXRAccessibilitySpeech;
 
 public class ShortcutMenuItem extends FocusableSceneObject {
     private static final String TAG = ShortcutMenuItem.class.getSimpleName();
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private static final int IN_FOCUS_COLOR = 8570046;
     private static final int LOST_FOCUS_COLOR = 6186095;
     private static final int CLICKED_COLOR = 12631476;
@@ -47,21 +47,21 @@ public class ShortcutMenuItem extends FocusableSceneObject {
     private AccessibilityTexture textures;
     private SXRAccessibilitySpeech speech;
 
-    public ShortcutMenuItem(SXRContext gvrContext) {
-        super(gvrContext);
-        this.gvrContext = gvrContext;
+    public ShortcutMenuItem(SXRContext sxrContext) {
+        super(sxrContext);
+        this.sxrContext = sxrContext;
         createRenderData();
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
         focusAndUnFocus();
         clickEvent();
     }
 
     private void createRenderData() {
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.circle_menu));
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.circle_normal));
-        textures = AccessibilityTexture.getInstance(gvrContext);
-        SXRMaterial material = new SXRMaterial(gvrContext);
-        SXRRenderData renderData = new SXRRenderData(gvrContext);
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.circle_menu));
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.circle_normal));
+        textures = AccessibilityTexture.getInstance(sxrContext);
+        SXRMaterial material = new SXRMaterial(sxrContext);
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
         material.setMainTexture(texture);
         material.setColor(LOST_FOCUS_COLOR);
         renderData.setMaterial(material);
@@ -100,7 +100,7 @@ public class ShortcutMenuItem extends FocusableSceneObject {
             removeIcon();
         }
         iconTexture = iconMenu;
-        icon = new SXRSceneObject(gvrContext, gvrContext.createQuad(.60f, .20f), iconMenu);
+        icon = new SXRSceneObject(sxrContext, sxrContext.createQuad(.60f, .20f), iconMenu);
         icon.getTransform().setPosition(-0f, 0.02f, -0.7f);
         icon.getTransform().rotateByAxis(-90, 1, 0, 0);
         icon.getTransform().rotateByAxisWithPivot(245, 0, 1, 0, 0, 0, 0);
@@ -156,17 +156,17 @@ public class ShortcutMenuItem extends FocusableSceneObject {
     }
 
     private void speech() {
-        gvrContext.getActivity().runOnUiThread(new Runnable() {
+        sxrContext.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                speech = new SXRAccessibilitySpeech(gvrContext);
+                speech = new SXRAccessibilitySpeech(sxrContext);
                 speech.start(null);
             }
         });
     }
 
     private void talkBack() {
-        AudioManager audioManager = (AudioManager) gvrContext.getActivity().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) sxrContext.getActivity().getSystemService(Context.AUDIO_SERVICE);
         if (icon.getRenderData().getMaterial().getMainTexture().equals(textures.getTalkBackLess())) {
             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                     AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
@@ -179,7 +179,7 @@ public class ShortcutMenuItem extends FocusableSceneObject {
 
     private void back() {
         final AccessibilityScene accessibilityScene = Main.accessibilityScene;
-        Main main = (Main) gvrContext.getMain();
+        Main main = (Main) sxrContext.getMain();
 
         main.setScene(accessibilityScene.getMainApplicationScene());
         createIcon(textures.getAccessibilityIcon(), TypeItem.ACCESSIBILITY);

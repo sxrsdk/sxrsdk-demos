@@ -33,16 +33,16 @@ public class FocusableSceneObject extends SXRSceneObject {
     private OnGestureListener onGestureListener;
     public float[] hitLocation;
 
-    public FocusableSceneObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public FocusableSceneObject(SXRContext sxrContext) {
+        super(sxrContext);
     }
 
-    public FocusableSceneObject(SXRContext gvrContext, SXRMesh gvrMesh, SXRTexture gvrTexture) {
-        super(gvrContext, gvrMesh, gvrTexture);
+    public FocusableSceneObject(SXRContext sxrContext, SXRMesh sxrMesh, SXRTexture sxrTexture) {
+        super(sxrContext, sxrMesh, sxrTexture);
     }
 
-    public FocusableSceneObject(SXRContext gvrContext, float width, float height, SXRTexture t) {
-        super(gvrContext, width, height, t);
+    public FocusableSceneObject(SXRContext sxrContext, float width, float height, SXRTexture t) {
+        super(sxrContext, width, height, t);
     }
 
     public void dispatchGainedFocus() {

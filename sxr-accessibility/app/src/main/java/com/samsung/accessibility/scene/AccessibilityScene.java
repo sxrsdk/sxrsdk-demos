@@ -33,15 +33,15 @@ import com.samsung.accessibility.util.AccessibilityTexture;
 
 public class AccessibilityScene extends SXRScene {
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRScene mainApplicationScene;
     private ShortcutMenu shortcutMenu;
     private AccessibilityTexture textures;
 
-    public AccessibilityScene(SXRContext gvrContext, SXRScene mainApplicationScene, ShortcutMenu shortcutMenu) {
-        super(gvrContext);
-        this.gvrContext = gvrContext;
-        textures = AccessibilityTexture.getInstance(gvrContext);
+    public AccessibilityScene(SXRContext sxrContext, SXRScene mainApplicationScene, ShortcutMenu shortcutMenu) {
+        super(sxrContext);
+        this.sxrContext = sxrContext;
+        textures = AccessibilityTexture.getInstance(sxrContext);
         this.mainApplicationScene = mainApplicationScene;
         this.shortcutMenu = shortcutMenu;
 
@@ -52,21 +52,21 @@ public class AccessibilityScene extends SXRScene {
     }
 
     private SXRSceneObject createSkybox() {
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.environment_walls_mesh));
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.environment_walls_tex_diffuse));
-        SXRSceneObject skybox = new SXRSceneObject(gvrContext, mesh, texture);
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_walls_mesh));
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_walls_tex_diffuse));
+        SXRSceneObject skybox = new SXRSceneObject(sxrContext, mesh, texture);
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getTransform().setPositionY(-1.6f);
         skybox.getRenderData().setRenderingOrder(0);
 
-        SXRMesh meshGround = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.environment_ground_mesh));
-        SXRTexture textureGround = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.environment_ground_tex_diffuse));
-        SXRSceneObject skyboxGround = new SXRSceneObject(gvrContext, meshGround, textureGround);
+        SXRMesh meshGround = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_ground_mesh));
+        SXRTexture textureGround = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_ground_tex_diffuse));
+        SXRSceneObject skyboxGround = new SXRSceneObject(sxrContext, meshGround, textureGround);
         skyboxGround.getRenderData().setRenderingOrder(0);
 
-        SXRMesh meshFx = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.windows_fx_mesh));
-        SXRTexture textureFx = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.windows_fx_tex_diffuse));
-        SXRSceneObject skyboxFx = new SXRSceneObject(gvrContext, meshFx, textureFx);
+        SXRMesh meshFx = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.windows_fx_mesh));
+        SXRTexture textureFx = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
+        SXRSceneObject skyboxFx = new SXRSceneObject(sxrContext, meshFx, textureFx);
         skyboxGround.getRenderData().setRenderingOrder(0);
         skybox.addChildObject(skyboxFx);
         skybox.addChildObject(skyboxGround);
@@ -83,7 +83,7 @@ public class AccessibilityScene extends SXRScene {
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.inverted_colors)));
         invertedColors.getTransform().setPosition(positionX, positionY, positionZ);
         invertedColors.getTransform().setScale(scale, scale, scale);
-        invertedColors.attachComponent(new SXRMeshCollider(gvrContext, null, true));
+        invertedColors.attachComponent(new SXRMeshCollider(sxrContext, null, true));
         invertedColors.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -107,7 +107,7 @@ public class AccessibilityScene extends SXRScene {
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.zoom)));
         zoom.getTransform().setPosition(positionX, positionY, positionZ);
         zoom.getTransform().setScale(scale, scale, scale);
-        zoom.attachComponent(new SXRSphereCollider(gvrContext));
+        zoom.attachComponent(new SXRSphereCollider(sxrContext));
         zoom.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -127,7 +127,7 @@ public class AccessibilityScene extends SXRScene {
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.talk_back)));
         talkBack.getTransform().setPosition(positionX, positionY, positionZ);
         talkBack.getTransform().setScale(scale, scale, scale);
-        talkBack.attachComponent(new SXRSphereCollider(gvrContext));
+        talkBack.attachComponent(new SXRSphereCollider(sxrContext));
         talkBack.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -149,7 +149,7 @@ public class AccessibilityScene extends SXRScene {
                 .getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.speech)));
         speech.getTransform().setPosition(positionX, positionY, positionZ);
         speech.getTransform().setScale(scale, scale, scale);
-        speech.attachComponent(new SXRSphereCollider(gvrContext));
+        speech.attachComponent(new SXRSphereCollider(sxrContext));
         speech.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -182,7 +182,7 @@ public class AccessibilityScene extends SXRScene {
     private void applyShader(SXRSceneObject object) {
         if (object != null && object.getRenderData() != null && object.getRenderData().getMaterial() != null) {
 
-            SXRMaterial shader = new SXRMaterial(gvrContext, new SXRShaderId(AccessibilitySceneShader.class));
+            SXRMaterial shader = new SXRMaterial(sxrContext, new SXRShaderId(AccessibilitySceneShader.class));
             SXRTexture texture = object.getRenderData().getMaterial().getMainTexture();
 
             object.getRenderData().setMaterial(shader);
@@ -209,7 +209,7 @@ public class AccessibilityScene extends SXRScene {
     }
 
     public void show() {
-        Main main = (Main) gvrContext.getMain();
+        Main main = (Main) sxrContext.getMain();
 
         main.setScene(this);
         mainApplicationScene.removeSceneObject(shortcutMenu);

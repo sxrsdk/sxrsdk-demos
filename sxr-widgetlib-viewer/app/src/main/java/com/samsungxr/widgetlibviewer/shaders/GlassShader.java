@@ -90,7 +90,7 @@ public class GlassShader extends SXRShader {
             + "  FragColor = vec4( color, 0.4 );\n" //
             + "}\n";
 
-    public GlassShader(SXRContext gvrContext) {
+    public GlassShader(SXRContext sxrContext) {
         super("float3 u_eye, float3 u_light, float4 u_color, float u_radius ", "sampler2D u_texture", "float3 a_position, float2 a_texcoord, float3 a_normal", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

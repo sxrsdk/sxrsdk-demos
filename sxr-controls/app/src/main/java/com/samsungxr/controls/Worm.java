@@ -77,11 +77,11 @@ public class Worm extends SXRSceneObject {
         Up, Right, Down, Left
     }
 
-    public Worm(SXRContext gvrContext) {
-        super(gvrContext);
+    public Worm(SXRContext sxrContext) {
+        super(sxrContext);
 
-        ColorControls gvrColor = new ColorControls(gvrContext.getContext());
-        Color color = gvrColor.parseColor(R.color.color10);
+        ColorControls sxrColor = new ColorControls(sxrContext.getContext());
+        Color color = sxrColor.parseColor(R.color.color10);
 
         this.color = color;
 
@@ -164,7 +164,7 @@ public class Worm extends SXRSceneObject {
         return scaleWorm;
     }
 
-    public void chainMove(SXRContext gvrContext) {
+    public void chainMove(SXRContext sxrContext) {
 
         if (!ScaleWorm.animPlaying) {
 
@@ -323,7 +323,7 @@ public class Worm extends SXRSceneObject {
         }
     }
 
-    public void checkWormEatingApple(SXRContext gvrContext) {
+    public void checkWormEatingApple(SXRContext sxrContext) {
 
         Vector3D wormPosition = new Vector3D(wormParent.getTransform().getPositionX(), head
                 .getParent()
@@ -335,7 +335,7 @@ public class Worm extends SXRSceneObject {
 
             if (Vector3D.distance(applePosition, wormPosition) < DISTANCE_TO_EAT_APPLE) {
 
-                a.resetPosition(gvrContext);
+                a.resetPosition(sxrContext);
             }
         }
     }

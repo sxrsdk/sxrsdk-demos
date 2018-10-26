@@ -54,18 +54,18 @@ public class SampleMain extends SXRMain {
 
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mSXRContext = gvrContext;
+    public void onInit(SXRContext sxrContext) {
+        mSXRContext = sxrContext;
         mainScene = mSXRContext.getMainScene();
         helper = new SampleHelper();
         mTouchHandler = new TouchHandler();
         mVirtualObjects = new ArrayList<>() ;
         mVirtObjCount = 0;
 
-        helper.initCursorController(gvrContext, mTouchHandler);
+        helper.initCursorController(sxrContext, mTouchHandler);
 
 
-        mixedReality = new SXRMixedReality(gvrContext, mainScene);
+        mixedReality = new SXRMixedReality(sxrContext, mainScene);
         mixedReality.registerPlaneListener(planeEventsListener);
         mixedReality.registerAnchorListener(anchorEventsListener);
         mixedReality.resume();
@@ -85,34 +85,34 @@ public class SampleMain extends SXRMain {
 
     private IPlaneEventsListener planeEventsListener = new IPlaneEventsListener() {
         @Override
-        public void onPlaneDetection(SXRPlane gvrPlane) {
-            gvrPlane.setSceneObject(helper.createQuadPlane(getSXRContext()));
-            mainScene.addSceneObject(gvrPlane);
+        public void onPlaneDetection(SXRPlane sxrPlane) {
+            sxrPlane.setSceneObject(helper.createQuadPlane(getSXRContext()));
+            mainScene.addSceneObject(sxrPlane);
         }
 
         @Override
-        public void onPlaneStateChange(SXRPlane gvrPlane, SXRTrackingState gvrTrackingState) {
-            if (gvrTrackingState != SXRTrackingState.TRACKING) {
-                gvrPlane.setEnable(false);
+        public void onPlaneStateChange(SXRPlane sxrPlane, SXRTrackingState sxrTrackingState) {
+            if (sxrTrackingState != SXRTrackingState.TRACKING) {
+                sxrPlane.setEnable(false);
             }
             else {
-                gvrPlane.setEnable(true);
+                sxrPlane.setEnable(true);
             }
         }
 
         @Override
-        public void onPlaneMerging(SXRPlane gvrPlane, SXRPlane gvrPlane1) {
+        public void onPlaneMerging(SXRPlane sxrPlane, SXRPlane sxrPlane1) {
         }
     };
 
     private IAnchorEventsListener anchorEventsListener = new IAnchorEventsListener() {
         @Override
-        public void onAnchorStateChange(SXRAnchor gvrAnchor, SXRTrackingState gvrTrackingState) {
-            if (gvrTrackingState != SXRTrackingState.TRACKING) {
-                gvrAnchor.setEnable(false);
+        public void onAnchorStateChange(SXRAnchor sxrAnchor, SXRTrackingState sxrTrackingState) {
+            if (sxrTrackingState != SXRTrackingState.TRACKING) {
+                sxrAnchor.setEnable(false);
             }
             else {
-                gvrAnchor.setEnable(true);
+                sxrAnchor.setEnable(true);
             }
         }
     };
@@ -226,12 +226,12 @@ public class SampleMain extends SXRMain {
 
             pickInfo = pickSceneObject(mixedReality.getPassThroughObject());
             if (pickInfo != null) {
-                SXRHitResult gvrHitResult = mixedReality.hitTest(
+                SXRHitResult sxrHitResult = mixedReality.hitTest(
                         mixedReality.getPassThroughObject(), pickInfo);
 
-                if (gvrHitResult != null) {
+                if (sxrHitResult != null) {
                     mixedReality.updateAnchorPose((SXRAnchor)mDraggingObject.getParent(),
-                            gvrHitResult.getPose());
+                            sxrHitResult.getPose());
                 }
             }
         }
@@ -247,14 +247,14 @@ public class SampleMain extends SXRMain {
         }
 
         private void onSingleTap(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject collision) {
-            SXRHitResult gvrHitResult = mixedReality.hitTest(sceneObj, collision);
+            SXRHitResult sxrHitResult = mixedReality.hitTest(sceneObj, collision);
             VirtualObject andy = new VirtualObject(mSXRContext);
 
-            if (gvrHitResult == null) {
+            if (sxrHitResult == null) {
                 return;
             }
 
-            addVirtualObject(gvrHitResult.getPose(), andy);
+            addVirtualObject(sxrHitResult.getPose(), andy);
         }
     }
 

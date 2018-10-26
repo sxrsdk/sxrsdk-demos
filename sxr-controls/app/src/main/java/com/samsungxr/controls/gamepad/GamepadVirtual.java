@@ -39,17 +39,17 @@ public class GamepadVirtual extends SXRSceneObject {
     private float angle;
     private boolean isRotated = false;
 
-    public GamepadVirtual(SXRContext gvrContext) {
-        super(gvrContext);
+    public GamepadVirtual(SXRContext sxrContext) {
+        super(sxrContext);
 
-        res = gvrContext.getContext().getResources();
+        res = sxrContext.getContext().getResources();
 
-        SXRMesh gamepadMesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(
-                gvrContext, R.raw.gamepad_dev));
+        SXRMesh gamepadMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(
+                sxrContext, R.raw.gamepad_dev));
 
         //Log.e("Texture:","in gamepad constructor");
-        gamepadTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                gvrContext, R.drawable.gamepad_diffuse));
+        gamepadTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                sxrContext, R.drawable.gamepad_diffuse));
 
         SXRSceneObject sceneObject = new SXRSceneObject(getSXRContext(), gamepadMesh, gamepadTexture);
         sceneObject.setName("gamepad");

@@ -35,10 +35,10 @@ public class SphereShader extends SXRShader{
     public static final String BLUR_INTENSITY = "blur";
     public static final String HDRI_TEXTURE_KEY = "hdri_texture";
 
-    public SphereShader(SXRContext gvrContext) {
+    public SphereShader(SXRContext sxrContext) {
         super("float3 u_eye, float3 u_light, float3 trans_color, float animTexture, float blur, float u_radius", "sampler2D texture_t sampler2D second_texture sampler2D HDRI_texture",
                 "float4 a_position, float2 a_texcoord float3 a_normal", SXRShader.GLSLESVersion.VULKAN);
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.sphereshader_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context, R.raw.sphereshader_vertex));
 

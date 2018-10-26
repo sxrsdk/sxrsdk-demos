@@ -139,12 +139,12 @@ public class ViewerMain extends SXRMain {
     };
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mSXRContext = gvrContext;
+    public void onInit(SXRContext sxrContext) {
+        mSXRContext = sxrContext;
         mScene = mSXRContext.getMainScene();
         mScene.setBackgroundColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        gvrContext.getInputManager().selectController(mControllerSelector);
+        sxrContext.getInputManager().selectController(mControllerSelector);
         mScene.addSceneObject(addEnvironment());
 
         mLightNode = createLight(mSXRContext, 1, 1, 1, 2.8f);
@@ -152,16 +152,16 @@ public class ViewerMain extends SXRMain {
 
         try
         {
-            mScene.addSceneObject(makeObjects(gvrContext));
+            mScene.addSceneObject(makeObjects(sxrContext));
             makeWidgetButtons();
         }
         catch (IOException e)
         {
             e.printStackTrace();
             Log.e(TAG, "Assets were not loaded. Stopping application!");
-            gvrContext.getActivity().finish();
+            sxrContext.getActivity().finish();
         }
-        gvrContext.runOnGlThread(new Runnable() {
+        sxrContext.runOnGlThread(new Runnable() {
             @Override
             public void run() {
                 updateState();
@@ -354,7 +354,7 @@ public class ViewerMain extends SXRMain {
 
         float[] matO = mObjectRot.getTransform().getModelMatrix();
 
-        mWidgetMaterial = new SXRMaterial(mSXRContext, new SXRShaderId(PhongShader3.class));//new SXRMaterial(gvrContext, SXRShaderType.UnlitFBO.ID);
+        mWidgetMaterial = new SXRMaterial(mSXRContext, new SXRShaderId(PhongShader3.class));//new SXRMaterial(sxrContext, SXRShaderType.UnlitFBO.ID);
         ldata.setMaterial(mWidgetMaterial);
         mWidgetMaterial.setMainTexture(mWidgetTexture);
         mWidgetMaterial.setVec4(PhongShader3.MAT1_KEY, matO[0], matO[4], matO[8], matO[12]);

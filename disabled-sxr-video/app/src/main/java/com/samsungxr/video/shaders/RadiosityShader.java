@@ -73,7 +73,7 @@ public class RadiosityShader extends SXRShader {
             + "  FragColor = vec4( u_fade*(color1*(1.0-u_weight)+color2*u_weight), alpha);\n"
             + "}\n";
 
-    public RadiosityShader(SXRContext gvrContext) {
+    public RadiosityShader(SXRContext sxrContext) {
         super("float u_weight, float u_fade, float u_lightness", "samplerExternalOES u_screen sampler2D u_texture_off", "float3 a_position, float3 a_normal, float2 a_tex_coord", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

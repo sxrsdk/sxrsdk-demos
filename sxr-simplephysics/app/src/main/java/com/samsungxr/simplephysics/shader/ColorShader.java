@@ -34,7 +34,7 @@ public class ColorShader extends SXRShaderTemplate
             + "  fragColor = u_color;\n"
             + "}\n";
 
-    public ColorShader(SXRContext gvrContext)
+    public ColorShader(SXRContext sxrContext)
     {
         super("float4 u_color", "", "float3 a_position", GLSLESVersion.V300);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);

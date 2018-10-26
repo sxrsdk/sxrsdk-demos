@@ -35,32 +35,32 @@ public class Main extends SXRMain {
     }
 
     @Override
-    public void onInit(final SXRContext gvrContext) throws Throwable {
+    public void onInit(final SXRContext sxrContext) throws Throwable {
         // SXRCubeSceneObject - Just to take cube mesh.
-        SXRCubeSceneObject cube = new SXRCubeSceneObject(gvrContext);
+        SXRCubeSceneObject cube = new SXRCubeSceneObject(sxrContext);
 
-        mLayoutLeftSceneObject = new SXRViewSceneObject(gvrContext,
+        mLayoutLeftSceneObject = new SXRViewSceneObject(sxrContext,
                 R.layout.activity_main, cube.getRenderData().getMesh());
 
-        gvrContext.getMainScene().addSceneObject(mLayoutLeftSceneObject);
+        sxrContext.getMainScene().addSceneObject(mLayoutLeftSceneObject);
 
         mLayoutLeftSceneObject.getTransform().setPosition(-1.0f, 0.0f, -2.5f);
         mLayoutLeftSceneObject.setTextureBufferSize(512);
 
-        mWebSceneObject = new SXRViewSceneObject(gvrContext,
+        mWebSceneObject = new SXRViewSceneObject(sxrContext,
                 mActivity.getWebView(), cube.getRenderData().getMesh());
 
-        gvrContext.getMainScene().addSceneObject(mWebSceneObject);
+        sxrContext.getMainScene().addSceneObject(mWebSceneObject);
 
         mWebSceneObject.getTransform().setPosition(1.0f, 0.0f, -2.5f);
         mWebSceneObject.setTextureBufferSize(512);
 
-        TextView  textView = new TextView(gvrContext.getActivity());
+        TextView  textView = new TextView(sxrContext.getActivity());
         textView.setText("Android's Renderable Views");
         textView.setTextColor(Color.WHITE);
 
-        mTextSceneObject = new SXRViewSceneObject(gvrContext, textView, 2.0f, 1.0f);
-        gvrContext.getMainScene().addSceneObject(mTextSceneObject);
+        mTextSceneObject = new SXRViewSceneObject(sxrContext, textView, 2.0f, 1.0f);
+        sxrContext.getMainScene().addSceneObject(mTextSceneObject);
         mTextSceneObject.getTransform().setPosition(0.0f, -2.0f, -2.5f);
         mTextSceneObject.setTextureBufferSize(512);
     }

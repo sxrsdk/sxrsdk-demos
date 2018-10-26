@@ -33,10 +33,10 @@ public class MenuColorsPreview extends SXRSceneObject {
 
     private Worm worm;
 
-    public MenuColorsPreview(SXRContext gvrContext, SXRMesh mesh, SXRTexture texture) {
-        super(gvrContext, mesh, texture);
+    public MenuColorsPreview(SXRContext sxrContext, SXRMesh mesh, SXRTexture texture) {
+        super(sxrContext, mesh, texture);
 
-        worm = new Worm(gvrContext);
+        worm = new Worm(sxrContext);
         
         worm.getHead().getParent().getTransform().setPositionY(WORM_Y_POSITION);
         worm.getMiddle().getTransform().setPositionY(WORM_Y_POSITION);

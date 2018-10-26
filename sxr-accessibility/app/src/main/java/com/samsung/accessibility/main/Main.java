@@ -46,7 +46,7 @@ import java.util.Locale;
 
 public class Main extends SXRMain {
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
     private GazeCursorSceneObject cursor;
 
@@ -110,41 +110,41 @@ public class Main extends SXRMain {
     }
 
     @Override
-    public void onInit(final SXRContext gvrContext) {
+    public void onInit(final SXRContext sxrContext) {
 
-        this.gvrContext = gvrContext;
-        AccessibilityTexture.getInstance(gvrContext);
-        cursor = GazeCursorSceneObject.getInstance(gvrContext);
-        manager = new AccessibilityManager(gvrContext);
+        this.sxrContext = sxrContext;
+        AccessibilityTexture.getInstance(sxrContext);
+        cursor = GazeCursorSceneObject.getInstance(sxrContext);
+        manager = new AccessibilityManager(sxrContext);
 
-        SXRScene scene = gvrContext.getMainScene();
+        SXRScene scene = sxrContext.getMainScene();
         final ShortcutMenu shortcutMenu = createShortcut();
 
-        accessibilityScene = new AccessibilityScene(gvrContext, gvrContext.getMainScene(), shortcutMenu);
+        accessibilityScene = new AccessibilityScene(sxrContext, sxrContext.getMainScene(), shortcutMenu);
         createPedestalObject();
         createDinossaur();
 
         scene.addSceneObject(shortcutMenu);
         scene.addSceneObject(createSkybox());
-        gvrContext.getInputManager().selectController(controllerSelector);
+        sxrContext.getInputManager().selectController(controllerSelector);
     }
 
     private ShortcutMenu createShortcut() {
-        ShortcutMenu shortcutMenu = new ShortcutMenu(gvrContext);
+        ShortcutMenu shortcutMenu = new ShortcutMenu(sxrContext);
         ShortcutMenuItem shortcuteItem = shortcutMenu.getShortcutItems().get(0);
-        shortcuteItem.createIcon(AccessibilityTexture.getInstance(gvrContext).getAccessibilityIcon(), TypeItem.ACCESSIBILITY);        
+        shortcuteItem.createIcon(AccessibilityTexture.getInstance(sxrContext).getAccessibilityIcon(), TypeItem.ACCESSIBILITY);        
         return shortcutMenu;
     }
 
     private void createPedestalObject() {
-        SXRMesh baseMesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.base));
-        SXRMesh bookMesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.book));
-        SXRTexture bookTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.book));
-        SXRTexture baseTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.base));
+        SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.base));
+        SXRMesh bookMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.book));
+        SXRTexture bookTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.book));
+        SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.base));
 
-        FocusableSceneObject baseObject = new FocusableSceneObject(gvrContext, baseMesh, baseTexture);
-        bookObject = new FocusableSceneObject(gvrContext, bookMesh, bookTexture);
-        FocusableSceneObject pedestalObject = new FocusableSceneObject(gvrContext);
+        FocusableSceneObject baseObject = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
+        bookObject = new FocusableSceneObject(sxrContext, bookMesh, bookTexture);
+        FocusableSceneObject pedestalObject = new FocusableSceneObject(sxrContext);
 
         baseObject.getTransform().setScale(0.005f, 0.005f, 0.005f);
         bookObject.getTransform().setScale(0.005f, 0.005f, 0.005f);
@@ -155,25 +155,25 @@ public class Main extends SXRMain {
         pedestalObject.addChildObject(baseObject);
         pedestalObject.addChildObject(bookObject);
 
-        gvrContext.getMainScene().addSceneObject(pedestalObject);
+        sxrContext.getMainScene().addSceneObject(pedestalObject);
     }
 
     private SXRSceneObject createSkybox() {
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.environment_walls_mesh));
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.environment_walls_tex_diffuse));
-        SXRSceneObject skybox = new SXRSceneObject(gvrContext, mesh, texture);
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_walls_mesh));
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_walls_tex_diffuse));
+        SXRSceneObject skybox = new SXRSceneObject(sxrContext, mesh, texture);
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getTransform().setPositionY(-1.6f);
         skybox.getRenderData().setRenderingOrder(0);
 
-        SXRMesh meshGround = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.environment_ground_mesh));
-        SXRTexture textureGround = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.environment_ground_tex_diffuse));
-        SXRSceneObject skyboxGround = new SXRSceneObject(gvrContext, meshGround, textureGround);
+        SXRMesh meshGround = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_ground_mesh));
+        SXRTexture textureGround = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_ground_tex_diffuse));
+        SXRSceneObject skyboxGround = new SXRSceneObject(sxrContext, meshGround, textureGround);
         skyboxGround.getRenderData().setRenderingOrder(0);
 
-        SXRMesh meshFx = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.windows_fx_mesh));
-        SXRTexture textureFx = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.windows_fx_tex_diffuse));
-        SXRSceneObject skyboxFx = new SXRSceneObject(gvrContext, meshFx, textureFx);
+        SXRMesh meshFx = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.windows_fx_mesh));
+        SXRTexture textureFx = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
+        SXRSceneObject skyboxFx = new SXRSceneObject(sxrContext, meshFx, textureFx);
         skyboxGround.getRenderData().setRenderingOrder(0);
         skybox.addChildObject(skyboxFx);
         skybox.addChildObject(skyboxGround);
@@ -188,20 +188,20 @@ public class Main extends SXRMain {
         EnumSet<SXRImportSettings> settings = SXRImportSettings
                 .getRecommendedSettingsWith(additionalSettings);
 
-        SXRMesh baseMesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, R.raw.trex_mesh), settings);
-        SXRTexture baseTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.trex_tex_diffuse));
-        trex = new FocusableSceneObject(gvrContext, baseMesh, baseTexture);
+        SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.trex_mesh), settings);
+        SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.trex_tex_diffuse));
+        trex = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
         trex.getTransform().setPosition(0, -1.6f, -7f);
         trex.getTransform().rotateByAxis(-90, 1, 0, 0);
         trex.getTransform().rotateByAxis(90, 0, 1, 0);
         activeTalkBack();
-        gvrContext.getMainScene().addSceneObject(trex);
+        sxrContext.getMainScene().addSceneObject(trex);
     }
 
     public void setScene(SXRScene scene)
     {
         mController.setScene(scene);
-        gvrContext.setMainScene(scene);
+        sxrContext.setMainScene(scene);
     }
 
     @Override
@@ -210,9 +210,9 @@ public class Main extends SXRMain {
 
 
     private void activeTalkBack() {
-        SXRAccessibilityTalkBack talkBackDinossaur = new SXRAccessibilityTalkBack(Locale.US, gvrContext.getContext(), "Dinossaur");
+        SXRAccessibilityTalkBack talkBackDinossaur = new SXRAccessibilityTalkBack(Locale.US, sxrContext.getContext(), "Dinossaur");
         trex.setTalkBack(talkBackDinossaur);
-        trex.attachComponent(new SXRSphereCollider(gvrContext));
+        trex.attachComponent(new SXRSphereCollider(sxrContext));
         trex.setOnFocusListener(new OnFocusListener() {
 
             @Override
@@ -229,9 +229,9 @@ public class Main extends SXRMain {
             }
         });
 
-        SXRAccessibilityTalkBack talkBackBook = new SXRAccessibilityTalkBack(Locale.US, gvrContext.getContext(), "Book");
+        SXRAccessibilityTalkBack talkBackBook = new SXRAccessibilityTalkBack(Locale.US, sxrContext.getContext(), "Book");
         bookObject.setTalkBack(talkBackBook);
-        bookObject.attachComponent(new SXRMeshCollider(gvrContext, true));
+        bookObject.attachComponent(new SXRMeshCollider(sxrContext, true));
         bookObject.setOnFocusListener(new OnFocusListener() {
 
             @Override

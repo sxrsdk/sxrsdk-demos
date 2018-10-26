@@ -36,16 +36,16 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     private static final float TEXT_HEIGHT = 2f;
     private static final float TEXT_WIDTH = 5f;
     private LoadComponent loadComponent = null;
-    private SXRContext gvrContext = null;
+    private SXRContext sxrContext = null;
     private TotemEventListener totemEventListener;
     private PlayPauseButton icon;
     private int streamIDTotem;
 
-    public Totem(SXRContext gvrContext, SXRTexture t) {
-        super(gvrContext, gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext.getActivity(),
+    public Totem(SXRContext sxrContext, SXRTexture t) {
+        super(sxrContext, sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext.getActivity(),
                 R.raw.totem_standup_mesh)), t);
 
-        prepareTotem(gvrContext);
+        prepareTotem(sxrContext);
 
         this.setOnClickListener(new OnClickListener() {
 
@@ -59,8 +59,8 @@ public class Totem extends FocusableSceneObject implements FocusListener {
         });
     }
 
-    private void prepareTotem(SXRContext gvrContext) {
-        this.gvrContext = gvrContext;
+    private void prepareTotem(SXRContext sxrContext) {
+        this.sxrContext = sxrContext;
         this.getRenderData().setCullFace(SXRCullFaceEnum.None);
         getRenderData().setRenderingOrder(RenderingOrderApplication.TOTEM);
         this.attachCollider(new SXRMeshCollider(getSXRContext(), true));
@@ -92,7 +92,7 @@ public class Totem extends FocusableSceneObject implements FocusListener {
 
     private void createLoadComponent() {
 
-        loadComponent = new LoadComponent(gvrContext, new LoadComponentListener() {
+        loadComponent = new LoadComponent(sxrContext, new LoadComponentListener() {
 
             @Override
             public void onFinishLoadComponent() {
@@ -118,7 +118,7 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     }
 
     public void setText(String text) {
-        SXRTextViewSceneObject textTitle = new SXRTextViewSceneObject(gvrContext, TEXT_WIDTH, TEXT_HEIGHT, text);
+        SXRTextViewSceneObject textTitle = new SXRTextViewSceneObject(sxrContext, TEXT_WIDTH, TEXT_HEIGHT, text);
         textTitle.setTextSize(7);
         textTitle.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
         textTitle.getTransform().setPosition(0f, .6f, -0.1f);
@@ -127,8 +127,8 @@ public class Totem extends FocusableSceneObject implements FocusListener {
     }
 
     public void setIcon(int iconPath) {
-        icon = new PlayPauseButton(gvrContext, .3f, .3f,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, iconPath)));
+        icon = new PlayPauseButton(sxrContext, .3f, .3f,
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, iconPath)));
         icon.getTransform().setPosition(0f, 1f, -0.11f);
         icon.getTransform().rotateByAxis(-180, 0, 1, 0);
         this.attachCollider(new SXRMeshCollider(getSXRContext(), false));

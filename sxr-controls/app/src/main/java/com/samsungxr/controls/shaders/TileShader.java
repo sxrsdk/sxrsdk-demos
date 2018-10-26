@@ -26,11 +26,11 @@ public class TileShader extends SXRShader{
 
     public static final String TEXTURE_KEY = "u_texture";
 
-    public TileShader(SXRContext gvrContext) {
+    public TileShader(SXRContext sxrContext) {
 
 
         super("","sampler2D u_texture", "float3 a_position float2 a_texcoord", GLSLESVersion.VULKAN);
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.tileshader_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context,R.raw.tileshader_vertex));
     }

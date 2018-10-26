@@ -45,13 +45,13 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
     private SXRSceneObject galleryGroup;
     private Gallery gallery;
     private SXRScene scene;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private FocusableSceneObject focus;
     private Dinosaur dinosaur;
 
-    public GalleryDinosaurGroup(SXRContext gvrContext, SXRScene scene) throws IOException {
-        super(gvrContext);
-        this.gvrContext = gvrContext;
+    public GalleryDinosaurGroup(SXRContext sxrContext, SXRScene scene) throws IOException {
+        super(sxrContext);
+        this.sxrContext = sxrContext;
         this.scene = scene;
 
         createGallery();
@@ -63,8 +63,8 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
 
     private void createFocus() {
 
-        focus = new FocusableSceneObject(gvrContext, gvrContext.createQuad(15f, 9f),
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.empty)));
+        focus = new FocusableSceneObject(sxrContext, sxrContext.createQuad(15f, 9f),
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty)));
         focus.getTransform().setPosition(0f, 3.5f, DinosaurFactory.APATOSAURUS_DISTANCE - 0.01f);
         focus.getTransform().rotateByAxis(-180.0f, 0f, 1f, 0f);
         focus.attachCollider(new SXRMeshCollider(getSXRContext(), false));
@@ -83,7 +83,7 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
             @Override
             public void onSwipeForward() {
                 AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
-                new SXRRotationByAxisAnimation(dinosaur, 4f, 45, 0, 1, 0).start(gvrContext.getAnimationEngine());
+                new SXRRotationByAxisAnimation(dinosaur, 4f, 45, 0, 1, 0).start(sxrContext.getAnimationEngine());
             }
 
             @Override
@@ -93,7 +93,7 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
             @Override
             public void onSwipeBack() {
                 AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
-                new SXRRotationByAxisAnimation(dinosaur, 4f, -45, 0, 1, 0).start(gvrContext.getAnimationEngine());
+                new SXRRotationByAxisAnimation(dinosaur, 4f, -45, 0, 1, 0).start(sxrContext.getAnimationEngine());
             }
         });
         scene.addSceneObject(focus);
@@ -131,7 +131,7 @@ public class GalleryDinosaurGroup extends SXRSceneObject {
         totem.getTransform().setPosition(-1f, 0f, -3f);
         totem.setTotemEventListener(gallery);
         totem.setName("totem_apatosaurus");
-        totem.setText(gvrContext.getActivity().getResources().getString(R.string.gallery_totem));
+        totem.setText(sxrContext.getActivity().getResources().getString(R.string.gallery_totem));
         galleryGroup.addChildObject(totem);
         scene.addSceneObject(galleryGroup);
     }

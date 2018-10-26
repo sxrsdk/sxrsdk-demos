@@ -26,26 +26,26 @@ import java.lang.Runnable;
 
 public class DisplayUtils {
     SXRMaterial postEffect;
-    SXRContext gvrContext;
+    SXRContext sxrContext;
 
     public DisplayUtils(SXRContext context) {
-        gvrContext = context;
+        sxrContext = context;
     }
 
     public void addGammaCorrection() {
         // add a custom post effect for dynamically adjusting gamma
         SXRShaderId gammaShader = new SXRShaderId(GammaShader.class);
-        postEffect = new SXRMaterial(gvrContext, gammaShader);
+        postEffect = new SXRMaterial(sxrContext, gammaShader);
 
         postEffect.setFloat("u_gamma", 2.2f);
-        SXRCameraRig rig = gvrContext.getMainScene().getMainCameraRig();
+        SXRCameraRig rig = sxrContext.getMainScene().getMainCameraRig();
         rig.getLeftCamera().addPostEffect(postEffect);
         rig.getRightCamera().addPostEffect(postEffect);
     }
 
     public void setGamma(float gammaLevel) {
         final float gamma = gammaLevel;
-        gvrContext.runOnGlThread(new Runnable() {
+        sxrContext.runOnGlThread(new Runnable() {
                 @Override
                 public void run() {
                     if(postEffect == null) {

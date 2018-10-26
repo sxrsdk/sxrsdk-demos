@@ -33,11 +33,11 @@ public class SceneItem extends FocusableSceneObject {
     private boolean isAnimating = false;
     private static final float duration = 0.35f;
 
-    public SceneItem(SXRContext gvrContext, SXRMesh mesh, SXRTexture texture) {
-        super(gvrContext, mesh, texture);
+    public SceneItem(SXRContext sxrContext, SXRMesh mesh, SXRTexture texture) {
+        super(sxrContext, mesh, texture);
 
-        final SXRSceneObject onFocusSceneObject = new SXRSceneObject(gvrContext, gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext,
-                R.raw.edge_box_normal)), gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.edge_box)));
+        final SXRSceneObject onFocusSceneObject = new SXRSceneObject(sxrContext, sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
+                R.raw.edge_box_normal)), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.edge_box)));
         onFocusSceneObject.getTransform().setPositionZ(-.1f);
         onFocusSceneObject.getRenderData().setRenderingOrder(getRenderData().getRenderingOrder() + 1);
         onFocusSceneObject.getRenderData().setDepthTest(false);

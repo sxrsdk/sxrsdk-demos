@@ -25,6 +25,6 @@ public class RagdollActivity extends SXRActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setMain(new RagdollMain(), "gvr.xml");
+        setMain(new RagdollMain(), "sxr.xml");
     }
 }

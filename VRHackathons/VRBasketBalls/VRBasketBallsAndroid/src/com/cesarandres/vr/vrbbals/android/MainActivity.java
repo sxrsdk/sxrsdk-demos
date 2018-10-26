@@ -24,7 +24,7 @@ public class MainActivity extends SXRActivity {
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		script = new BallSpinnerScript(this);
-		setScript(script, "gvr_note4.xml");
+		setScript(script, "sxr.xml");
 		Log.i("VRBasketBall", "Init application");
 
 		new LeapClientThread(this).start();

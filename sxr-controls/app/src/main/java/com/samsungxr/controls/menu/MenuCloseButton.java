@@ -38,28 +38,28 @@ public class MenuCloseButton extends ControlSceneObject {
     private SXROpacityAnimation opacityShow;
     private SXROpacityAnimation opacityHide;
 
-    public MenuCloseButton(SXRContext gvrContext) {
-        super(gvrContext);
+    public MenuCloseButton(SXRContext sxrContext) {
+        super(sxrContext);
 
         SXRMesh sMesh = getSXRContext().createQuad(0.4f, 0.4f);
 
-        attachRenderData(new SXRRenderData(gvrContext));
-        getRenderData().setMaterial(new SXRMaterial(gvrContext, new SXRShaderId(ButtonShader.class)));
+        attachRenderData(new SXRRenderData(sxrContext));
+        getRenderData().setMaterial(new SXRMaterial(sxrContext, new SXRShaderId(ButtonShader.class)));
         getRenderData().setMesh(sMesh);
-        createTextures(gvrContext);
+        createTextures(sxrContext);
 
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
         getRenderData().setRenderingOrder(RenderingOrder.MENU_FRAME_TEXT + 1);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
     }
 
-    private void createTextures(SXRContext gvrContext) {
+    private void createTextures(SXRContext sxrContext) {
 
-        SXRTexture empty = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.raw.empty));
-        SXRTexture idle = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.bt_close));
-        SXRTexture hover = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.bt_close_hover));
-        SXRTexture selected = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.bt_close_pressed));
+        SXRTexture empty = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.empty));
+        SXRTexture idle = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.bt_close));
+        SXRTexture hover = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.bt_close_hover));
+        SXRTexture selected = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.bt_close_pressed));
 
         getRenderData().getMaterial().setTexture(ButtonShader.STATE1_BACKGROUND_TEXTURE, empty);
         getRenderData().getMaterial().setTexture(ButtonShader.STATE1_TEXT_TEXTURE, idle);

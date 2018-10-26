@@ -29,10 +29,10 @@ public class ColorSwapShader extends SXRShader{
     public static final String TEXTURE_DETAILS = "detailsTexture";
     public static final String COLOR = "u_color";
 
-    public ColorSwapShader(SXRContext gvrContext) {
+    public ColorSwapShader(SXRContext sxrContext) {
 
         super("float4 u_color float u_opacity", "sampler2D grayScaleTexture sampler2D detailsTexture", "float3 a_position float2 a_texcoord", GLSLESVersion.VULKAN);
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.color_swap_shader_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context,R.raw.color_swap_shader_vertex));
     }

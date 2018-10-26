@@ -2,7 +2,7 @@ package com.samsung.gearvrf.helper;
 
 import android.graphics.Color;
 
-import com.example.org.gvrfapplication.R;
+import com.example.org.sxrfapplication.R;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;

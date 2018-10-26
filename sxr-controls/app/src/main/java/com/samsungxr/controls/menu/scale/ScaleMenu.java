@@ -51,17 +51,17 @@ public class ScaleMenu extends MenuWindow {
 
     private RadioGrupoSceneObject radioGroup;
 
-    public ScaleMenu(SXRContext gvrContext) {
-        super(gvrContext);
-        addWorm(gvrContext);
+    public ScaleMenu(SXRContext sxrContext) {
+        super(sxrContext);
+        addWorm(sxrContext);
 
-        addScaleSigns(gvrContext);
+        addScaleSigns(sxrContext);
 
         attachRadioGroup();
     }
 
-    private void addWorm(SXRContext gvrContext) {
-        worm = new Worm(gvrContext);
+    private void addWorm(SXRContext sxrContext) {
+        worm = new Worm(sxrContext);
         worm.getTransform().setPositionZ(2.7f);
         worm.getTransform().setPositionY(0.20f);
 
@@ -100,23 +100,23 @@ public class ScaleMenu extends MenuWindow {
         addChildObject(radioGroup);
     }
 
-    private void addScaleSigns(SXRContext gvrContext) {
-        addMinusSign(gvrContext);
-        addPlusSign(gvrContext);
+    private void addScaleSigns(SXRContext sxrContext) {
+        addMinusSign(sxrContext);
+        addPlusSign(sxrContext);
     }
 
-    private void addMinusSign(SXRContext gvrContext) {
+    private void addMinusSign(SXRContext sxrContext) {
         final ArrayList<SXRTexture> minusSignTextures = createTextureList(getSXRContext(),
                 R.drawable.scale_less_idle, R.drawable.scale_less_hover,
                 R.drawable.scale_less_pressed);
-        minusSign = new TouchableButton(gvrContext, minusSignTextures);
-        addMinusSignTouchListener(gvrContext);
+        minusSign = new TouchableButton(sxrContext, minusSignTextures);
+        addMinusSignTouchListener(sxrContext);
         addMinusSignGamepadListener();
         minusSign.getTransform().setPositionX(-ARROW_X_POSITION);
         minusSign.getTransform().setPositionY(ARROW_Y_POSITION);
     }
 
-    private void addMinusSignTouchListener(SXRContext gvrContext) {
+    private void addMinusSignTouchListener(SXRContext sxrContext) {
         minusSign.setTouchAndGesturelistener(new TouchAndGestureImpl() {
 
             @Override
@@ -157,11 +157,11 @@ public class ScaleMenu extends MenuWindow {
         });
     }
 
-    private void addPlusSign(SXRContext gvrContext) {
+    private void addPlusSign(SXRContext sxrContext) {
         final ArrayList<SXRTexture> plusSignTextures = createTextureList(getSXRContext(),
                 R.drawable.scale_more_idle, R.drawable.scale_more_hover,
                 R.drawable.scale_more_pressed);
-        plusSign = new TouchableButton(gvrContext, plusSignTextures);
+        plusSign = new TouchableButton(sxrContext, plusSignTextures);
 
         addPlusSignTouchListener();
         addPlusSignGamepadListener();
@@ -212,12 +212,12 @@ public class ScaleMenu extends MenuWindow {
         });
     }
 
-    private ArrayList<SXRTexture> createTextureList(SXRContext gvrContext, int res1, int res2,
+    private ArrayList<SXRTexture> createTextureList(SXRContext sxrContext, int res1, int res2,
             int res3) {
         ArrayList<SXRTexture> textureList = new ArrayList<SXRTexture>();
-        textureList.add(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res1)));
-        textureList.add(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res2)));
-        textureList.add(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res3)));
+        textureList.add(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res1)));
+        textureList.add(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res2)));
+        textureList.add(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res3)));
         return textureList;
     }
 

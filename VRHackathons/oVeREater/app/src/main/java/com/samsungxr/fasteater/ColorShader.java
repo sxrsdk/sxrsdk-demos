@@ -13,7 +13,7 @@ import com.samsungxr.SXRCustomMaterialShaderId;
 
 
 /**
- * Copied from gvr-eyepicking demo app
+ * Copied from sxr-eyepicking demo app
  */
 public class ColorShader extends SXRShaderTemplate {
 
@@ -30,7 +30,7 @@ public class ColorShader extends SXRShaderTemplate {
             + "  fragColor = u_color;\n"
             + "}\n";
 
-    public ColorShader(SXRContext gvrContext)
+    public ColorShader(SXRContext sxrContext)
     {
         super("float4 u_color");
         setSegment("FragmentTemplate", FRAGMENT_SHADER);

@@ -72,9 +72,9 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
      * Called when the activity is first created.
      */
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mContext = gvrContext;
-        mScene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) {
+        mContext = sxrContext;
+        mScene = sxrContext.getMainScene();
 
         addSkyBoxSphere();
         initCursorController();
@@ -164,7 +164,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
 
     private ITouchEvents mTouchHandler = new DefaultTouchEvent() {
         @Override
-        public void onMotionOutside(SXRPicker gvrPicker, MotionEvent motionEvent) {
+        public void onMotionOutside(SXRPicker sxrPicker, MotionEvent motionEvent) {
             if (mVideoPlayer.is360VideoPlaying()) {
                 mVideoPlayer.showAllControls();
             }
@@ -172,7 +172,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         }
 
         @Override
-        public void onTouchStart(SXRSceneObject gvrSceneObject, SXRPicker.SXRPickedObject gvrPickedObject) {
+        public void onTouchStart(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
 
             mVideoPlayer.showAllControls();
 

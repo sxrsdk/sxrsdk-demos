@@ -28,8 +28,8 @@ import static com.samsungxr.widgetlib.main.Utility.getId;
 import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.optFloat;
 
 public class ModelsListContentScene extends BaseContentScene {
-    ModelsListContentScene(SXRContext gvrContext, Widget.OnTouchListener settingsListener) {
-        super(gvrContext);
+    ModelsListContentScene(SXRContext sxrContext, Widget.OnTouchListener settingsListener) {
+        super(sxrContext);
         mControlBar.addControlListener("Settings", settingsListener);
     }
 

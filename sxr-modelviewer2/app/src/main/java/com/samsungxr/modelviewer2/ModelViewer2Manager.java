@@ -135,12 +135,12 @@ public class ModelViewer2Manager extends SXRMain {
     }
 
     @Override
-    public void onInit(final SXRContext gvrContext) {
+    public void onInit(final SXRContext sxrContext) {
 
-        mSXRContext = gvrContext;
-        scene = gvrContext.getMainScene();
+        mSXRContext = sxrContext;
+        scene = sxrContext.getMainScene();
 
-        gvrContext.getInputManager().selectController( controllerSelector);
+        sxrContext.getInputManager().selectController( controllerSelector);
         Log.d(TAG, "Controller initialization done");
 
         controller = new Controller(activity, mSXRContext);

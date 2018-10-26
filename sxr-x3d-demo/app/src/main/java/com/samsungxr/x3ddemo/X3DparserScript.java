@@ -59,23 +59,23 @@ public class X3DparserScript extends SXRMain
   {
   }
 
-  public void onInit(SXRContext gvrContext)
+  public void onInit(SXRContext sxrContext)
   {
-    mSXRContext = gvrContext;
+    mSXRContext = sxrContext;
 
-    scene = gvrContext.getMainScene();
+    scene = sxrContext.getMainScene();
     scene.setBackgroundColor(0, 0, 0, 1);
 
     SXRSceneObject model = new SXRSceneObject(mSXRContext);
     // X3D test files should be in the assets directory.
     // Replace 'filename' to view another .x3d file
-    String filename = SystemPropertyUtil.getSystemPropertyString("debug.gearvrf.gvr-x3d-demo");
+    String filename = SystemPropertyUtil.getSystemPropertyString("debug.gearvrf.sxr-x3d-demo");
     if (null == filename) {
       filename = "JavaScriptLightColors.x3d";
     }
     try
     {
-      model = gvrContext.getAssetLoader().loadModel(filename, scene);
+      model = sxrContext.getAssetLoader().loadModel(filename, scene);
 
       // check if a headlight was attached to the model's camera rig
       // during parsing, as specified by the NavigationInfo node.

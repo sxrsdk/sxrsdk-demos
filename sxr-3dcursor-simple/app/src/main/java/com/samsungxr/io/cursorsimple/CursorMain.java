@@ -61,32 +61,32 @@ public class CursorMain extends SXRMain {
     private SXRSceneObject astronaut;
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mainScene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) {
+        mainScene = sxrContext.getMainScene();
         mainScene.getMainCameraRig().getLeftCamera().setBackgroundColor(Color.BLACK);
         mainScene.getMainCameraRig().getRightCamera().setBackgroundColor(Color.BLACK);
         List<IoDevice> devices = new ArrayList<IoDevice>();
 
         //_VENDOR_TODO_ register the devices with Cursor Manager here.
         /*
-        TemplateDevice device1 = new TemplateDevice(gvrContext, "template_1", "Right controller");
-        TemplateDevice device2 = new TemplateDevice(gvrContext, "template_2", "Left controller");
+        TemplateDevice device1 = new TemplateDevice(sxrContext, "template_1", "Right controller");
+        TemplateDevice device2 = new TemplateDevice(sxrContext, "template_2", "Left controller");
         devices.add(device1);
         devices.add(device2);
         */
 
         /*
-        HandTemplateDevice device = new HandTemplateDevice(gvrContext, mainScene);
+        HandTemplateDevice device = new HandTemplateDevice(sxrContext, mainScene);
         devices.addAll(device.getDeviceList());
         */
 
-        cursorManager = new CursorManager(gvrContext, mainScene, devices);
+        cursorManager = new CursorManager(sxrContext, mainScene, devices);
         SXRSceneObject astronautModel, rocketModel;
 
         float[] position = new float[]{5.0f, 0.0f, -20.0f};
         try {
-            astronautModel = gvrContext.getAssetLoader().loadModel(ASTRONAUT_MODEL);
-            rocketModel = gvrContext.getAssetLoader().loadModel(ROCKET_MODEL);
+            astronautModel = sxrContext.getAssetLoader().loadModel(ASTRONAUT_MODEL);
+            rocketModel = sxrContext.getAssetLoader().loadModel(ROCKET_MODEL);
         } catch (IOException e) {
             Log.e(TAG, "Could not load the assets:", e);
             return;
@@ -110,8 +110,8 @@ public class CursorMain extends SXRMain {
 
         position[0] = 2.0f;
         position[1] = 2.0f;
-        SXRCubeSceneObject cubeSceneObject = new SXRCubeSceneObject(gvrContext, true, gvrContext
-                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,R.mipmap.ic_launcher)));
+        SXRCubeSceneObject cubeSceneObject = new SXRCubeSceneObject(sxrContext, true, sxrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,R.mipmap.ic_launcher)));
         cubeSceneObject.getTransform().setPosition(position[0], position[1], position[2]);
         MovableBehavior movableCubeBehavior = new MovableBehavior(cursorManager);
         cubeSceneObject.attachComponent(movableCubeBehavior);
@@ -128,7 +128,7 @@ public class CursorMain extends SXRMain {
             }
         });
 
-        addCustomMovableCube(gvrContext);
+        addCustomMovableCube(sxrContext);
     }
 
     @Override
@@ -147,31 +147,31 @@ public class CursorMain extends SXRMain {
 
     }
 
-    private void addCustomMovableCube(SXRContext gvrContext) {
-        SXRSceneObject root = new SXRSceneObject(gvrContext);
-        SXRMaterial red = new SXRMaterial(gvrContext, new SXRShaderId(SXRPhongShader.class));
-        SXRMaterial blue = new SXRMaterial(gvrContext, new SXRShaderId(SXRPhongShader.class));
-        SXRMaterial green = new SXRMaterial(gvrContext, new SXRShaderId(SXRPhongShader.class));
-        SXRMaterial alphaRed = new SXRMaterial(gvrContext, new SXRShaderId(SXRPhongShader.class));
+    private void addCustomMovableCube(SXRContext sxrContext) {
+        SXRSceneObject root = new SXRSceneObject(sxrContext);
+        SXRMaterial red = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
+        SXRMaterial blue = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
+        SXRMaterial green = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
+        SXRMaterial alphaRed = new SXRMaterial(sxrContext, new SXRShaderId(SXRPhongShader.class));
         red.setDiffuseColor(1, 0, 0, 1);
         blue.setDiffuseColor(0, 0, 1, 1);
         green.setDiffuseColor(0, 1, 0, 1);
         alphaRed.setDiffuseColor(1, 0, 0, 0.5f);
 
-        SXRCubeSceneObject cubeDefault = new SXRCubeSceneObject(gvrContext, true, red);
+        SXRCubeSceneObject cubeDefault = new SXRCubeSceneObject(sxrContext, true, red);
         root.addChildObject(cubeDefault);
 
         SXRMesh cubeMesh = cubeDefault.getRenderData().getMesh();
 
-        SXRSceneObject cubeColliding = new SXRSceneObject(gvrContext, cubeMesh);
+        SXRSceneObject cubeColliding = new SXRSceneObject(sxrContext, cubeMesh);
         cubeColliding.getRenderData().setMaterial(blue);
         root.addChildObject(cubeColliding);
 
-        SXRSceneObject cubeClicked = new SXRSceneObject(gvrContext, cubeMesh);
+        SXRSceneObject cubeClicked = new SXRSceneObject(sxrContext, cubeMesh);
         cubeClicked.getRenderData().setMaterial(green);
         root.addChildObject(cubeClicked);
 
-        SXRSceneObject cubeBehind = new SXRSceneObject(gvrContext, cubeMesh);
+        SXRSceneObject cubeBehind = new SXRSceneObject(sxrContext, cubeMesh);
         cubeBehind.getRenderData().setMaterial(alphaRed);
         cubeBehind.getRenderData().getMaterial().setOpacity(0.5f);
         cubeBehind.getRenderData().setRenderingOrder(SXRRenderingOrder.TRANSPARENT);
@@ -198,13 +198,13 @@ public class CursorMain extends SXRMain {
     }
 
     @Override
-    public SXRTexture getSplashTexture(SXRContext gvrContext) {
+    public SXRTexture getSplashTexture(SXRContext sxrContext) {
         Bitmap bitmap = BitmapFactory.decodeResource(
-                gvrContext.getContext().getResources(),
+                sxrContext.getContext().getResources(),
                 R.mipmap.ic_launcher);
         // return the correct splash screen bitmap
-        SXRTexture tex = new SXRTexture(gvrContext);
-        tex.setImage(new SXRBitmapImage(gvrContext, bitmap));
+        SXRTexture tex = new SXRTexture(sxrContext);
+        tex.setImage(new SXRBitmapImage(sxrContext, bitmap));
         return tex;
     }
 }

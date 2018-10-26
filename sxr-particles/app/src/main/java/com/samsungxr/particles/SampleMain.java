@@ -35,11 +35,11 @@ public class SampleMain extends SXRMain {
     private int NUMBER_OF_SYSTEMS = 3;
 
     @Override
-    public void onInit(SXRContext gvrContext) throws IOException {
+    public void onInit(SXRContext sxrContext) throws IOException {
 
-        mSXRContext = gvrContext;
+        mSXRContext = sxrContext;
 
-        SXRScene scene = gvrContext.getMainScene();
+        SXRScene scene = sxrContext.getMainScene();
 
         scene.getMainCameraRig().getTransform().setPosition(0,0,0);
 

@@ -51,21 +51,21 @@ public class SampleMain extends SXRMain {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) throws IOException {
-        mScene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) throws IOException {
+        mScene = sxrContext.getMainScene();
 
         // set background color
         SXRCameraRig mainCameraRig = mScene.getMainCameraRig();
         mainCameraRig.getLeftCamera().setBackgroundColor(Color.WHITE);
         mainCameraRig.getRightCamera().setBackgroundColor(Color.WHITE);
 
-        SXRSceneObject venusMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject venusMeshObject = asyncSceneObject(sxrContext,
                 "venusmap.jpg");
         venusMeshObject.getTransform().setPosition(-2.0f, 0.0f, -4.0f);
         venusMeshObject.getTransform().setScale(1.5f, 1.5f, 1.5f);
         mScene.addSceneObject(venusMeshObject);
 
-        SXRSceneObject earthMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject earthMeshObject = asyncSceneObject(sxrContext,
                 "earthmap1k.jpg");
         earthMeshObject.getTransform().setPosition(2.0f, 0.0f, -4.0f);
         earthMeshObject.getTransform().setScale(1.5f, 1.5f, 1.5f);

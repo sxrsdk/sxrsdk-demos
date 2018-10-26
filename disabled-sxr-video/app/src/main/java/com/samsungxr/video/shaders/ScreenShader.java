@@ -41,7 +41,7 @@ public class ScreenShader extends SXRShader {
             + "  gl_FragColor = texture2D(u_screen, v_tex_coord);\n" //
             + "}\n";
 
-    public ScreenShader(SXRContext gvrContext) {
+    public ScreenShader(SXRContext sxrContext) {
         super("", "samplerExternalOES u_screen", "float3 a_position, float3 a_normal, float2 a_texcoord", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

@@ -91,7 +91,7 @@ public class MetalOnlyShader extends SXRShader {
             + "}\n";
 
 
-    public MetalOnlyShader(SXRContext gvrContext) {
+    public MetalOnlyShader(SXRContext sxrContext) {
         super("float3 u_eye, float3 u_light, float4 u_color, float u_radius ", "sampler2D u_texture", "float3 a_position, float2 a_texcoord, float3 a_normal", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

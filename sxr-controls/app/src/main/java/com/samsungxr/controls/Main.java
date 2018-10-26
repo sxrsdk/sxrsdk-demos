@@ -85,13 +85,13 @@ public class Main extends SXRMain {
     };
 
     @Override
-    public void onInit(SXRContext gvrContext) {
+    public void onInit(SXRContext sxrContext) {
 
         // save context for possible use in onStep(), even though that's empty
         // in this sample
-        mSXRContext = gvrContext;
+        mSXRContext = sxrContext;
 
-        scene = gvrContext.getMainScene();
+        scene = sxrContext.getMainScene();
         //mSXRContext.getActivity().getEventReceiver().addListener(activityTouchHandler);
         // set background color
         SXRCameraRig mainCameraRig = scene.getMainCameraRig();

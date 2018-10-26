@@ -57,11 +57,11 @@ public class TestMain extends SXRMain {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) {
+    public void onInit(SXRContext sxrContext) {
 
-        mAnimationEngine = gvrContext.getAnimationEngine();
+        mAnimationEngine = sxrContext.getAnimationEngine();
 
-        mMainScene = gvrContext.getMainScene();
+        mMainScene = sxrContext.getMainScene();
 
         SXRCameraRig mainCameraRig = mMainScene.getMainCameraRig();
 
@@ -81,7 +81,7 @@ public class TestMain extends SXRMain {
 
         try {
             List<SXRTexture> textures;
-            textures = ZipLoader.load(gvrContext, TEXTURE_FILE_NAME, new ZipLoader
+            textures = ZipLoader.load(sxrContext, TEXTURE_FILE_NAME, new ZipLoader
                     .ZipEntryProcessor<SXRTexture>() {
 
                 @Override
@@ -96,8 +96,8 @@ public class TestMain extends SXRMain {
                 SXRSceneObject bunny;
                 EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(NO_LIGHTING));
                 // we assume that the mesh and the textures are valid
-                bunny = new SXRSceneObject(gvrContext,
-                        gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext,
+                bunny = new SXRSceneObject(sxrContext,
+                        sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                                 "bunny.obj"), settings), textures.get(i % numTextures));
 
                 Random random = new Random();

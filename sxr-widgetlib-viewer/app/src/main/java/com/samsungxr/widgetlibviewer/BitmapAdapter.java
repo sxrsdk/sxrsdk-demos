@@ -18,11 +18,11 @@ public class BitmapAdapter extends BaseAdapter {
     protected float widthQuad = 4;
     protected float heightQuad = widthQuad / 2.f;
 
-    public BitmapAdapter(SXRContext gvrContext,
+    public BitmapAdapter(SXRContext sxrContext,
                          final List<? extends BitmapGetter> items) {
         Log.d(TAG, "CTOR(): items: %d", items.size());
         mBitmaps = new ArrayList<Bitmap>();
-        mGvrContext = gvrContext;
+        mGvrContext = sxrContext;
         final Runnable onBackgroundThread = new Runnable() {
             @Override
             public void run() {

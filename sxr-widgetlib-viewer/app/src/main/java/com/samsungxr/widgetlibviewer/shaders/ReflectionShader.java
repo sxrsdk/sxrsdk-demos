@@ -104,7 +104,7 @@ public class ReflectionShader extends SXRShader {
             + "  outColor.rgb *= outColor.a;\n" //
             + "}\n";
 
-    public ReflectionShader(SXRContext gvrContext) {
+    public ReflectionShader(SXRContext sxrContext) {
         super("float4 u_mat1, float4 u_mat2, float4 u_mat3, float4 u_mat4, float3 u_eye, float3 u_light, float4 u_color, float u_radius",
               "sampler2D u_texture",
               "float3 a_position, float2 a_texcoord, float3 a_normal",

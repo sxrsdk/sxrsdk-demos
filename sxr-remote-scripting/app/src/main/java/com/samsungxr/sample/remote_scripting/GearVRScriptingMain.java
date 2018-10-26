@@ -34,13 +34,13 @@ public class GearVRScriptingMain extends SXRMain
     private static final String TAG = GearVRScriptingMain.class.getSimpleName();
     private static final int DEBUG_SERVER_PORT = 5000;
     DebugWebServer server;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
     @Override
     public void onInit(SXRContext context) {
-        gvrContext = context;
-        final DebugServer debug = gvrContext.startDebugServer();
-        SXRScene scene = gvrContext.getMainScene();
+        sxrContext = context;
+        final DebugServer debug = sxrContext.startDebugServer();
+        SXRScene scene = sxrContext.getMainScene();
         IErrorEvents errorHandler = new IErrorEvents()
         {
             public void onError(String message, Object source)
@@ -48,15 +48,15 @@ public class GearVRScriptingMain extends SXRMain
                 debug.logError(message);
             }
         };
-        gvrContext.getEventReceiver().addListener(errorHandler);
+        sxrContext.getEventReceiver().addListener(errorHandler);
         // get the ip address
-        GearVRScripting activity = (GearVRScripting) gvrContext.getActivity();
+        GearVRScripting activity = (GearVRScripting) sxrContext.getActivity();
         String ipAddress = activity.getIpAddress();
         String debugUrl = "http://" + ipAddress + ":" + DEBUG_SERVER_PORT;
         String telnetString = "telnet " + ipAddress + " " + DebugServer.DEFAULT_DEBUG_PORT;
 
         // create text object to tell the user where to connect
-        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(gvrContext, 2.0f,
+        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(sxrContext, 2.0f,
                 0.5f, debugUrl + "\n" + telnetString);
         textViewSceneObject.setGravity(Gravity.CENTER);
         textViewSceneObject.setTextSize(5);
@@ -70,14 +70,14 @@ public class GearVRScriptingMain extends SXRMain
         context.getInputManager().selectController();
 
         // Add display utils for scripts
-        SXRScriptManager scriptManager = (SXRScriptManager)gvrContext.getScriptManager();
-        scriptManager.addVariable("display", new DisplayUtils(gvrContext));
-        scriptManager.addVariable("editor", new EditorUtils(gvrContext));
-        scriptManager.addVariable("passthrough", new PassthroughUtils(gvrContext, activity));
-        scriptManager.addVariable("filebrowser", new FileBrowserUtils(gvrContext));
-        scriptManager.addVariable("source", new SourceUtils(gvrContext));
-        gvrContext.startDebugServer();
-        server = new DebugWebServer(gvrContext);
+        SXRScriptManager scriptManager = (SXRScriptManager)sxrContext.getScriptManager();
+        scriptManager.addVariable("display", new DisplayUtils(sxrContext));
+        scriptManager.addVariable("editor", new EditorUtils(sxrContext));
+        scriptManager.addVariable("passthrough", new PassthroughUtils(sxrContext, activity));
+        scriptManager.addVariable("filebrowser", new FileBrowserUtils(sxrContext));
+        scriptManager.addVariable("source", new SourceUtils(sxrContext));
+        sxrContext.startDebugServer();
+        server = new DebugWebServer(sxrContext);
         server.listen(DEBUG_SERVER_PORT);
     }
 
@@ -89,8 +89,8 @@ public class GearVRScriptingMain extends SXRMain
         if(server != null) {
             server.stop();
         }
-        if (null != gvrContext){
-            gvrContext.stopDebugServer();
+        if (null != sxrContext){
+            sxrContext.stopDebugServer();
         }
     }
 }

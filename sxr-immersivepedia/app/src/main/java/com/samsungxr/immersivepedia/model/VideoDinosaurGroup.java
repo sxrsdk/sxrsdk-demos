@@ -36,13 +36,13 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
 
     private VideoComponent videoComponent;
     private Dinosaur trex;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRScene scene;
 
-    public VideoDinosaurGroup(SXRContext gvrContext, SXRScene scene) throws IOException {
-        super(gvrContext);
+    public VideoDinosaurGroup(SXRContext sxrContext, SXRScene scene) throws IOException {
+        super(sxrContext);
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
         this.scene = scene;
 
         createDinosaur();
@@ -69,8 +69,8 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
     }
 
     private void createTotem() {
-        Totem totem = new Totem(this.gvrContext,
-                this.gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        Totem totem = new Totem(this.sxrContext,
+                this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.totem_tex_diffuse)));
 
         totem.getTransform().setPosition(0f, 0f, 0f);
@@ -80,7 +80,7 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
         totem.getTransform().setPosition(.3f, 0f, -5.0f);
         totem.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         totem.getTransform().setScale(1f, 1f, 1f);
-        totem.setText(gvrContext.getActivity().getResources().getString(R.string.video_totem));
+        totem.setText(sxrContext.getActivity().getResources().getString(R.string.video_totem));
         totem.getTransform().rotateByAxisWithPivot(
                 DinosaurFactory.TREX_ANGLE_AROUND_CAMERA - 35.0f, 0f, 1f, 0f, 0f, 0f, 0f);
     }
@@ -94,7 +94,7 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
 
     @Override
     public void onFinishLoadingTotem(Totem totem) {
-        gvrContext.runOnGlThread(new Runnable() {
+        sxrContext.runOnGlThread(new Runnable() {
             @Override
             public void run() {
                 createVideoComponent();
@@ -133,13 +133,13 @@ public class VideoDinosaurGroup extends SXRSceneObject implements TotemEventList
     @Override
     public void onSwipeForward() {
         AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
-        new SXRRotationByAxisAnimation(trex, 4f, 45, 0, 1, 0).start(gvrContext.getAnimationEngine());
+        new SXRRotationByAxisAnimation(trex, 4f, 45, 0, 1, 0).start(sxrContext.getAnimationEngine());
     }
 
     @Override
     public void onSwipeBack() {
         AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
-        new SXRRotationByAxisAnimation(trex, 4f, -45, 0, 1, 0).start(gvrContext.getAnimationEngine());
+        new SXRRotationByAxisAnimation(trex, 4f, -45, 0, 1, 0).start(sxrContext.getAnimationEngine());
     }
 
     @Override

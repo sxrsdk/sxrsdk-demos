@@ -49,17 +49,17 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
     private final float TITLE_HEIGHT = 1f;
     private final float TITLE_WIDTH = 6f;
     private Dinosaur ankylosaurus;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRScene scene;
     private static final float TEXT_ANIMATION_TIME = 0.2f;
     private boolean isOpen;
     private SXRTextViewSceneObject title;
     private SXRTextViewSceneObject description;
 
-    public TextDinosaurGroup(SXRContext gvrContext, SXRScene scene) throws IOException {
-        super(gvrContext);
+    public TextDinosaurGroup(SXRContext sxrContext, SXRScene scene) throws IOException {
+        super(sxrContext);
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
         this.scene = scene;
         createTotem();
         createDinosaur();
@@ -75,8 +75,8 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
     }
 
     private void createTotem() {
-        Totem totem = new Totem(this.gvrContext,
-                this.gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        Totem totem = new Totem(this.sxrContext,
+                this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.totem_tex_diffuse)));
 
         totem.getTransform().setPosition(0f, 0f, 0f);
@@ -86,14 +86,14 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
         totem.getTransform().setPosition(-.3f, 0f, -5.0f);
         totem.getTransform().rotateByAxis(180.0f, 0f, 1f, 0f);
         totem.getTransform().setScale(1f, 1f, 1f);
-        totem.setText(gvrContext.getActivity().getResources().getString(R.string.text_totem));
+        totem.setText(sxrContext.getActivity().getResources().getString(R.string.text_totem));
         totem.getTransform().rotateByAxisWithPivot(
                 DinosaurFactory.ANKYLOSAURUS_ANGLE_AROUND_CAMERA - 35.0f, 0f, 1f, 0f, 0f, 0f, 0f);
     }
 
     @Override
     public void onFinishLoadingTotem(Totem totem) {
-        gvrContext.runOnGlThread(new Runnable() {
+        sxrContext.runOnGlThread(new Runnable() {
             @Override
             public void run() {
                 AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUITextAppearSoundID(), 1.0f, 1.0f);
@@ -118,13 +118,13 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
     @Override
     public void onSwipeForward() {
         AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
-        new SXRRotationByAxisAnimation(ankylosaurus, 4f, 45, 0, 1, 0).start(gvrContext.getAnimationEngine());
+        new SXRRotationByAxisAnimation(ankylosaurus, 4f, 45, 0, 1, 0).start(sxrContext.getAnimationEngine());
     }
 
     @Override
     public void onSwipeBack() {
         AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIRotateSoundID(), 1.0f, 1.0f);
-        new SXRRotationByAxisAnimation(ankylosaurus, 4f, -45, 0, 1, 0).start(gvrContext.getAnimationEngine());
+        new SXRRotationByAxisAnimation(ankylosaurus, 4f, -45, 0, 1, 0).start(sxrContext.getAnimationEngine());
     }
 
     @Override
@@ -151,11 +151,11 @@ public class TextDinosaurGroup extends SXRSceneObject implements TotemEventListe
     }
 
     private void createDinosaurTitle() {
-        Resources resources = gvrContext.getActivity().getResources();
+        Resources resources = sxrContext.getActivity().getResources();
         String stringTitle = getSXRContext().getContext().getString(R.string.ankylosaurus_title);
         Bitmap titleBitmap = BitmapFactory.decodeResource(resources, R.drawable.title_background);
         BitmapDrawable background = new BitmapDrawable(resources, titleBitmap);
-        title = new SXRTextViewSceneObject(gvrContext, TITLE_WIDTH, TITLE_HEIGHT, stringTitle);
+        title = new SXRTextViewSceneObject(sxrContext, TITLE_WIDTH, TITLE_HEIGHT, stringTitle);
         title.setRefreshFrequency(IntervalFrequency.LOW);
         title.setTextColor(Color.BLACK);
         title.setBackGround(background);

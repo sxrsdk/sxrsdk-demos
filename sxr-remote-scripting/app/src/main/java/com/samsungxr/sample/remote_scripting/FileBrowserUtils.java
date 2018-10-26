@@ -49,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class FileBrowserUtils {
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private final SXRViewSceneObject layoutSceneObject;
     private GearVRScripting activity;
 
@@ -64,18 +64,18 @@ public class FileBrowserUtils {
 
 
     public FileBrowserUtils(SXRContext context) {
-        gvrContext = context;
+        sxrContext = context;
         activity = (GearVRScripting) context.getActivity();
 
-        layoutSceneObject = new SXRViewSceneObject(gvrContext, R.layout.filebrowser,
-                viewEventsHandler, gvrContext.createQuad(QUAD_X, QUAD_Y));
+        layoutSceneObject = new SXRViewSceneObject(sxrContext, R.layout.filebrowser,
+                viewEventsHandler, sxrContext.createQuad(QUAD_X, QUAD_Y));
 
         layoutSceneObject.getTransform().setPosition(0.0f, 0.0f, -1.0f);
         layoutSceneObject.setName("editor");
     }
 
     public void show() {
-        gvrContext.getMainScene().addSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().addSceneObject(layoutSceneObject);
     }
 
     public void setPosition(float x, float y, float z) {
@@ -87,7 +87,7 @@ public class FileBrowserUtils {
     }
 
     public void hide() {
-        gvrContext.getMainScene().removeSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().removeSceneObject(layoutSceneObject);
     }
 
     private void init() {
@@ -182,8 +182,8 @@ public class FileBrowserUtils {
                         // try to load the model
                         try {
                             SXRSceneObject
-                                model = gvrContext.getAssetLoader().loadModel("sd:/" +filename);
-                            gvrContext.getMainScene().addSceneObject(model);
+                                model = sxrContext.getAssetLoader().loadModel("sd:/" +filename);
+                            sxrContext.getMainScene().addSceneObject(model);
 
                             // base the name for the model on the filename, minus the suffix.  Also add a prefix since there may already be (and i've already seen) a node inside the model based on the filename
                             int end = filename.lastIndexOf(".");
@@ -201,7 +201,7 @@ public class FileBrowserUtils {
 
     private IViewEvents viewEventsHandler = new IViewEvents() {
         @Override
-        public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
             listView = (ListView) view.findViewById(R.id.list);
             dirView = (TextView) view.findViewById(R.id.dirname);
             spinner = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -210,7 +210,7 @@ public class FileBrowserUtils {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
 
         }
     };

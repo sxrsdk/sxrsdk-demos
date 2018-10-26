@@ -24,8 +24,8 @@ public class KeyboardSoftItem extends KeyboardItemBase {
     
     private static final int RESOURCE = 1, Mix = 2;
 
-    public KeyboardSoftItem(SXRContext gvrContext, KeyboardCharItem mCharItem, KeyboardItemStyle styleItem) {
-        super(gvrContext, styleItem);
+    public KeyboardSoftItem(SXRContext sxrContext, KeyboardCharItem mCharItem, KeyboardItemStyle styleItem) {
+        super(sxrContext, styleItem);
         setName(SceneObjectNames.KEYBOARD_ITEM);
 
         this.keyboardCharItem = mCharItem;

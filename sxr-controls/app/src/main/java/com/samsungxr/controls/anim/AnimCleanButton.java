@@ -60,8 +60,8 @@ public class AnimCleanButton extends MenuControlSceneObject {
 
     private String title;
 
-    public AnimCleanButton(SXRContext gvrContext, String title) {
-        super(gvrContext);
+    public AnimCleanButton(SXRContext sxrContext, String title) {
+        super(sxrContext);
 
         this.title = title;
 
@@ -70,9 +70,9 @@ public class AnimCleanButton extends MenuControlSceneObject {
         WIDTH = (int) (100.0f * quadWidth);
         HEIGHT = (int) (100.0f * quadHeigth);
 
-        attachRenderData(new SXRRenderData(gvrContext));
+        attachRenderData(new SXRRenderData(sxrContext));
         getRenderData().setMaterial(
-                new SXRMaterial(gvrContext, new SXRShaderId(ButtonShader.class)));
+                new SXRMaterial(sxrContext, new SXRShaderId(ButtonShader.class)));
         getRenderData().setMesh(sMesh);
 
         createTextures();
@@ -80,7 +80,7 @@ public class AnimCleanButton extends MenuControlSceneObject {
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
         getRenderData().setRenderingOrder(RenderingOrder.MOVE_BUTON);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
 
     }
 

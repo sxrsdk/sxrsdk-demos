@@ -54,19 +54,19 @@ public class SampleMain extends SXRMain {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) throws IOException {
+    public void onInit(SXRContext sxrContext) throws IOException {
 
-        SXRScene scene = gvrContext.getMainScene();
+        SXRScene scene = sxrContext.getMainScene();
 
         // load texture asynchronously
-        SXRTexture futureTexture = gvrContext
-                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture futureTexture = sxrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.gearvr_logo));
-        SXRTexture futureTextureTop = gvrContext
-                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture futureTextureTop = sxrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.top));
-        SXRTexture futureTextureBottom = gvrContext
-                .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture futureTextureBottom = sxrContext
+                .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.bottom));
         ArrayList<SXRTexture> futureTextureList = new ArrayList<SXRTexture>(
                 3);
@@ -75,32 +75,32 @@ public class SampleMain extends SXRMain {
         futureTextureList.add(futureTextureBottom);
 
         // setup material
-        SXRMaterial material = new SXRMaterial(gvrContext);
+        SXRMaterial material = new SXRMaterial(sxrContext);
         material.setMainTexture(futureTexture);
 
         // create a scene object (this constructor creates a rectangular scene
         // object that uses the standard 'unlit' shader)
-        SXRSceneObject quadObject = new SXRSceneObject(gvrContext, 4.0f, 2.0f);
-        SXRCubeSceneObject cubeObject = new SXRCubeSceneObject(gvrContext,
+        SXRSceneObject quadObject = new SXRSceneObject(sxrContext, 4.0f, 2.0f);
+        SXRCubeSceneObject cubeObject = new SXRCubeSceneObject(sxrContext,
                 true, material);
         SXRSphereSceneObject sphereObject = new SXRSphereSceneObject(
-                gvrContext, true, material);
+                sxrContext, true, material);
         SXRCylinderSceneObject cylinderObject = new SXRCylinderSceneObject(
-                gvrContext, true, material);
-        SXRConeSceneObject coneObject = new SXRConeSceneObject(gvrContext,
+                sxrContext, true, material);
+        SXRConeSceneObject coneObject = new SXRConeSceneObject(sxrContext,
                 true, material);
-        SXRViewSceneObject webViewObject = createWebViewObject(gvrContext);
+        SXRViewSceneObject webViewObject = createWebViewObject(sxrContext);
         SXRCameraSceneObject cameraObject = null;
         try {
-            cameraObject = new SXRCameraSceneObject(gvrContext, 3.6f, 2.0f);
+            cameraObject = new SXRCameraSceneObject(sxrContext, 3.6f, 2.0f);
             cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
         } catch (SXRCameraSceneObject.SXRCameraAccessException e) {
             // Cannot open camera
             Log.e(TAG, "Cannot open the camera",e);
         }
 
-        SXRVideoSceneObject videoObject = createVideoObject(gvrContext);
-        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(gvrContext, "Hello World!");
+        SXRVideoSceneObject videoObject = createVideoObject(sxrContext);
+        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(sxrContext, "Hello World!");
         textViewSceneObject.setGravity(Gravity.CENTER);
         textViewSceneObject.setTextSize(12);
         objectList.add(quadObject);
@@ -146,20 +146,20 @@ public class SampleMain extends SXRMain {
         }
     }
 
-    private SXRVideoSceneObject createVideoObject(SXRContext gvrContext) throws IOException {
-        final AssetFileDescriptor afd = gvrContext.getActivity().getAssets().openFd("tron.mp4");
+    private SXRVideoSceneObject createVideoObject(SXRContext sxrContext) throws IOException {
+        final AssetFileDescriptor afd = sxrContext.getActivity().getAssets().openFd("tron.mp4");
         final MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         mediaPlayer.prepare();
-        SXRVideoSceneObject video = new SXRVideoSceneObject(gvrContext, 8.0f,
+        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, 8.0f,
                 4.0f, mediaPlayer, SXRVideoType.MONO);
         video.setName("video");
         return video;
     }
 
-    private SXRViewSceneObject createWebViewObject(SXRContext gvrContext) {
+    private SXRViewSceneObject createWebViewObject(SXRContext sxrContext) {
         WebView webView = mActivity.getWebView();
-        SXRViewSceneObject webObject = new SXRViewSceneObject(gvrContext,
+        SXRViewSceneObject webObject = new SXRViewSceneObject(sxrContext,
                 webView, 8.0f, 4.0f);
         webObject.setName("web view object");
         webObject.getRenderData().getMaterial().setOpacity(1.0f);

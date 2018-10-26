@@ -34,10 +34,10 @@ public class MicGroupHover extends SXRSceneObject {
 
     MicItem mHover;
 
-    public MicGroupHover(SXRContext gvrContext) {
-        super(gvrContext);
+    public MicGroupHover(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.MIC_GROUP_HOVER);
-        mHover = new MicItem(gvrContext, R.drawable.mic_hover);
+        mHover = new MicItem(sxrContext, R.drawable.mic_hover);
         mHover.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_HOVER);
         mHover.getRenderData().getMaterial().setOpacity(0);
         mHover.getTransform().setScale(0.94f, 0.94f, 0.94f);

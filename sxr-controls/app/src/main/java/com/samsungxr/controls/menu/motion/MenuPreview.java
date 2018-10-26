@@ -37,10 +37,10 @@ public class MenuPreview extends SXRSceneObject {
     private SXRAnimation appleAnimation;
     private SXRInterpolator animationInterpolator = null;
 
-    public MenuPreview(SXRContext gvrContext, SXRMesh mesh, SXRTexture texture) {
-        super(gvrContext, mesh, texture);
+    public MenuPreview(SXRContext sxrContext, SXRMesh mesh, SXRTexture texture) {
+        super(sxrContext, mesh, texture);
 
-        apple = new Apple(gvrContext);
+        apple = new Apple(sxrContext);
         apple.getRenderData().getMaterial().setOpacity(0f);
         apple.getTransform().setPositionY(APPLE_INITIAL_POSITION_Y);
         apple.getTransform().setScale(APPLE_SCALE, APPLE_SCALE, APPLE_SCALE);

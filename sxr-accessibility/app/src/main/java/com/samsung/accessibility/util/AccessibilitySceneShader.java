@@ -25,9 +25,9 @@ public class AccessibilitySceneShader extends SXRShaderTemplate {
     public static final String TEXTURE_KEY = "u_texture";
     public static final String BLUR_INTENSITY = "blur";
 
-    public AccessibilitySceneShader(SXRContext gvrContext) {
+    public AccessibilitySceneShader(SXRContext sxrContext) {
         super("float blur", "sampler2D u_texture", "float3 a_position; float2 a_texcoord float3 a_normal", GLSLESVersion.VULKAN);
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.scene_shader_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context, R.raw.scene_shader_vertex));
     }

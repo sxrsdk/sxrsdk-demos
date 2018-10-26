@@ -40,9 +40,9 @@ public class BackButton extends FadeableObject implements Focusable, IViewEvents
     private FocusListener mFocusListener = null;
     private View.OnClickListener mClickListener = null;
 
-    public BackButton(final SXRContext gvrContext, int intViewId) {
-        super(gvrContext);
-        mBackButtonObject = new SXRViewSceneObject(gvrContext, intViewId, this);
+    public BackButton(final SXRContext sxrContext, int intViewId) {
+        super(sxrContext);
+        mBackButtonObject = new SXRViewSceneObject(sxrContext, intViewId, this);
         setName(getClass().getSimpleName());
     }
 
@@ -65,7 +65,7 @@ public class BackButton extends FadeableObject implements Focusable, IViewEvents
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
         mBackButton = view.findViewById(R.id.backButtonImage);
         mBackButton.setOnClickListener(mClickListener);
         mBackButton.setOnHoverListener(new View.OnHoverListener() {
@@ -88,8 +88,8 @@ public class BackButton extends FadeableObject implements Focusable, IViewEvents
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-        addChildObject(gvrViewSceneObject);
+    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        addChildObject(sxrViewSceneObject);
     }
 
     public void performClick() {

@@ -29,31 +29,31 @@ public class    AccessibilityTexture {
     private SXRTexture invertedColorsIcon;
     private SXRTexture emptyIcon;
     private SXRTexture speechIcon;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
-    private AccessibilityTexture(SXRContext gvrContext) {
+    private AccessibilityTexture(SXRContext sxrContext) {
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
         loadFiles();
     }
 
-    public static AccessibilityTexture getInstance(SXRContext gvrContext) {
+    public static AccessibilityTexture getInstance(SXRContext sxrContext) {
         if (instance == null)
-            instance = new AccessibilityTexture(gvrContext);
+            instance = new AccessibilityTexture(sxrContext);
         return instance;
     }
 
     private void loadFiles() {
-        accessibilityIcon = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_accessibility));
-        backIcon = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_back));
-        spaceTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.circle_normal));
-        talkBackMore = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_talkback_mais));
-        talkBackLess = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_talkback_menos));
-        zoomIn = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_zoom_mais));
-        invertedColorsIcon = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_inverted));
-        zoomOut = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_zoom_menos));
-        speechIcon = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.ico_speech));
-        emptyIcon = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.empty));
+        accessibilityIcon = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_accessibility));
+        backIcon = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_back));
+        spaceTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.circle_normal));
+        talkBackMore = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_talkback_mais));
+        talkBackLess = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_talkback_menos));
+        zoomIn = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_zoom_mais));
+        invertedColorsIcon = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_inverted));
+        zoomOut = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_zoom_menos));
+        speechIcon = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.ico_speech));
+        emptyIcon = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty));
     }
 
     public SXRTexture getAccessibilityIcon() {

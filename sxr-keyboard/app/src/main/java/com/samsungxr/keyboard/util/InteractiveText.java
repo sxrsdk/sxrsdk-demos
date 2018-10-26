@@ -26,16 +26,16 @@ public class InteractiveText extends SXRSceneObject {
     public Text currentText;
     private int width, height;
 
-    public InteractiveText(SXRContext gvrContext, int width, int height) {
+    public InteractiveText(SXRContext sxrContext, int width, int height) {
 
-        super(gvrContext, Util.convertPixelToVRFloatValue(width), Util
+        super(sxrContext, Util.convertPixelToVRFloatValue(width), Util
                 .convertPixelToVRFloatValue(height));
         setName(SceneObjectNames.INTERACTIVE_TEXT);
 
         currentText = new Text();
         this.width = width;
         this.height = height;
-        updateText(gvrContext);
+        updateText(sxrContext);
 
     }
 

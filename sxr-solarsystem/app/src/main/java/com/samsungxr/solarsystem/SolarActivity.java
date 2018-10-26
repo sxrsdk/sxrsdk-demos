@@ -30,7 +30,7 @@ public class SolarActivity extends SXRActivity {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         viewMain = new SolarMain();
-        setMain(viewMain, "gvr.xml");
+        setMain(viewMain, "sxr.xml");
     }
 
     @Override

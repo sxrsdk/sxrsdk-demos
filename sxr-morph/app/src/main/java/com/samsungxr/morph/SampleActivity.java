@@ -53,21 +53,21 @@ public class SampleActivity extends SXRActivity {
     private class SampleMain extends SXRMain
     {
         @Override
-        public void onInit(SXRContext gvrContext)
+        public void onInit(SXRContext sxrContext)
         {
-            SXRScene scene = gvrContext.getMainScene();
+            SXRScene scene = sxrContext.getMainScene();
             mScene = scene;
 
             SXRCameraRig rig = scene.getMainCameraRig();
-            mObjectRoot = new SXRSceneObject(gvrContext);
+            mObjectRoot = new SXRSceneObject(sxrContext);
             rig.getCenterCamera().setBackgroundColor(Color.BLACK);
             rig.getLeftCamera().setBackgroundColor(Color.BLACK);
             rig.getRightCamera().setBackgroundColor(Color.BLACK);
 
             String filePath = "/sloth/sloth.gltf";
 
-            SXRSceneObject light1 = createLight(gvrContext, 1, 1, 1, new Vector3f(0,1.8f, 0));
-            SXRSceneObject light2 = createLight(gvrContext ,1, 1, 1, new Vector3f(0,-0.8f, 0));
+            SXRSceneObject light1 = createLight(sxrContext, 1, 1, 1, new Vector3f(0,1.8f, 0));
+            SXRSceneObject light2 = createLight(sxrContext ,1, 1, 1, new Vector3f(0,-0.8f, 0));
 
             mObjectRoot.addChildObject(light1);
             mObjectRoot.addChildObject(light2);

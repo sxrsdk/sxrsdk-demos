@@ -42,14 +42,14 @@ public class ButtonBoard extends SXRSceneObject {
     private PlayPauseButton playPauseButton;
     private VideoComponent videoComponent;
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
-    public ButtonBoard(SXRContext gvrContext, float width, float height, SXRTexture texture,
+    public ButtonBoard(SXRContext sxrContext, float width, float height, SXRTexture texture,
             VideoComponent videoComponent) {
-        super(gvrContext, width, height, texture);
+        super(sxrContext, width, height, texture);
 
         this.videoComponent = videoComponent;
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
 
         getRenderData().setRenderingOrder(RenderingOrderApplication.BUTTON_BOARD);
 
@@ -57,11 +57,11 @@ public class ButtonBoard extends SXRSceneObject {
     }
 
     private void createButtonPlayAndPause() {
-        playPauseButton = new PlayPauseButton(gvrContext, WIDTH, HEIGHT,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.play)));
+        playPauseButton = new PlayPauseButton(sxrContext, WIDTH, HEIGHT,
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.play)));
         playPauseButton.getRenderData().setRenderingOrder(RenderingOrderApplication.BUTTON_BOARD + 1);
         playPauseButton.getTransform().setPosition(PLAY_PAUSE_X_POSITION, PLAY_PAUSE_Y_POSITION, PLAY_PAUSE_Z_POSITION);
-        playPauseButton.attachCollider(new SXRMeshCollider(gvrContext, false));
+        playPauseButton.attachCollider(new SXRMeshCollider(sxrContext, false));
         renderTextureButton(PlayPauseButton.PAUSE_NORMAL, playPauseButton);
         playPauseButton.focusListener = new FocusListener() {
 
@@ -113,15 +113,15 @@ public class ButtonBoard extends SXRSceneObject {
     }
 
     public void turnOffGUIButton() {
-        new SXROpacityAnimation(playPauseButton, .1f, 0).start(gvrContext.getAnimationEngine());
+        new SXROpacityAnimation(playPauseButton, .1f, 0).start(sxrContext.getAnimationEngine());
     }
 
     public void turnOnGUIButton() {
-        new SXROpacityAnimation(playPauseButton, .1f, 1).start(gvrContext.getAnimationEngine());
+        new SXROpacityAnimation(playPauseButton, .1f, 1).start(sxrContext.getAnimationEngine());
     }
 
     public void turnOffGUIButtonUpdatingTexture() {
-        new SXROpacityAnimation(playPauseButton, .1f, 0).start(gvrContext.getAnimationEngine()).setOnFinish(new SXROnFinish() {
+        new SXROpacityAnimation(playPauseButton, .1f, 0).start(sxrContext.getAnimationEngine()).setOnFinish(new SXROnFinish() {
 
             @Override
             public void finished(SXRAnimation animation) {

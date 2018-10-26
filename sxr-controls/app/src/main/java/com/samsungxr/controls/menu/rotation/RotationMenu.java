@@ -45,16 +45,16 @@ public class RotationMenu extends MenuWindow {
     private TouchableButton rightButton;
     private RadioGrupoSceneObject radioGroup;
 
-    public RotationMenu(SXRContext gvrContext) {
-        super(gvrContext);
-        addRotaionGroup(gvrContext);
+    public RotationMenu(SXRContext sxrContext) {
+        super(sxrContext);
+        addRotaionGroup(sxrContext);
 
-        addRotationButtons(gvrContext);
+        addRotationButtons(sxrContext);
         attachRadioGroup();
     }
 
-    private void addRotaionGroup(SXRContext gvrContext) {
-        rotationGroup = new RotationGroup(gvrContext);
+    private void addRotaionGroup(SXRContext sxrContext) {
+        rotationGroup = new RotationGroup(sxrContext);
 
         rotationGroup.getTransform().setRotationByAxis(10, 1, 0, 0);
         rotationGroup.getTransform().setPositionZ(0.6f);
@@ -81,24 +81,24 @@ public class RotationMenu extends MenuWindow {
         addChildObject(radioGroup);
     }
 
-    private void addRotationButtons(SXRContext gvrContext) {
-        addLeftButton(gvrContext);
-        addRightButton(gvrContext);
+    private void addRotationButtons(SXRContext sxrContext) {
+        addLeftButton(sxrContext);
+        addRightButton(sxrContext);
     }
 
-    private void addLeftButton(SXRContext gvrContext) {
+    private void addLeftButton(SXRContext sxrContext) {
         final ArrayList<SXRTexture> minusSignTextures =
 
                 createTextureList(getSXRContext(), R.drawable.rotate_left_idle, R.drawable.rotate_left_hover,
                         R.drawable.rotate_left_pressed);
-        leftButton = new TouchableButton(gvrContext, minusSignTextures);
-        addLeftTouchListener(gvrContext);
+        leftButton = new TouchableButton(sxrContext, minusSignTextures);
+        addLeftTouchListener(sxrContext);
         addLeftSignGamepadListener();
         leftButton.getTransform().setPositionX(-BUTTON_X_POSITION);
         leftButton.getTransform().setPositionY(BUTTON_Y_POSITION);
     }
 
-    private void addLeftTouchListener(SXRContext gvrContext) {
+    private void addLeftTouchListener(SXRContext sxrContext) {
         leftButton.setTouchAndGesturelistener(new TouchAndGestureImpl() {
 
             @Override
@@ -137,11 +137,11 @@ public class RotationMenu extends MenuWindow {
         });
     }
 
-    private void addRightButton(SXRContext gvrContext) {
+    private void addRightButton(SXRContext sxrContext) {
         final ArrayList<SXRTexture> plusSignTextures = createTextureList(getSXRContext(), R.drawable.rotate_right_idle,
                 R.drawable.rotate_right_hover,
                 R.drawable.rotate_right_pressed);
-        rightButton = new TouchableButton(gvrContext, plusSignTextures);
+        rightButton = new TouchableButton(sxrContext, plusSignTextures);
 
         addRightSignTouchListener();
         addRightSignGamepadListener();
@@ -188,11 +188,11 @@ public class RotationMenu extends MenuWindow {
         });
     }
 
-    private ArrayList<SXRTexture> createTextureList(SXRContext gvrContext, int res1, int res2, int res3) {
+    private ArrayList<SXRTexture> createTextureList(SXRContext sxrContext, int res1, int res2, int res3) {
         ArrayList<SXRTexture> textureList = new ArrayList<SXRTexture>();
-        textureList.add(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res1)));
-        textureList.add(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res2)));
-        textureList.add(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res3)));
+        textureList.add(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res1)));
+        textureList.add(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res2)));
+        textureList.add(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), res3)));
         return textureList;
     }
 

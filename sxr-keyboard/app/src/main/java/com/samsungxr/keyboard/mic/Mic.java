@@ -64,24 +64,24 @@ public class Mic extends SXRSceneObject implements RecognitionListener {
         this.mListnerResult = listnerResult;
     }
 
-    public Mic(SXRContext gvrContext, MainActivity mainActivity) {
-        super(gvrContext);
+    public Mic(SXRContext sxrContext, MainActivity mainActivity) {
+        super(sxrContext);
         setName(SceneObjectNames.MIC);
         mMainActivity = mainActivity;
 
-        mMicHitGroupArea = new MicGroupHitArea(gvrContext);
+        mMicHitGroupArea = new MicGroupHitArea(sxrContext);
         mMicHitGroupArea.getTransform().setPositionZ(0.0f);
 
-        mMicGroupIcons = new MicGroupIcons(gvrContext);
+        mMicGroupIcons = new MicGroupIcons(sxrContext);
         mMicGroupIcons.getTransform().setPositionZ(-0.01f);
 
-        mMicGroupHover = new MicGroupHover(gvrContext);
+        mMicGroupHover = new MicGroupHover(sxrContext);
         mMicGroupHover.getTransform().setPositionZ(-0.02f);
 
-        mMicGroupRun = new MicGroupRun(gvrContext);
+        mMicGroupRun = new MicGroupRun(sxrContext);
         mMicGroupRun.getTransform().setPositionZ(-0.03f);
 
-        mMicGroupProgress = new MicGroupProgress(gvrContext);
+        mMicGroupProgress = new MicGroupProgress(sxrContext);
         mMicGroupProgress.getTransform().setPositionZ(-0.04f);
 
         addChildObject(mMicGroupIcons);

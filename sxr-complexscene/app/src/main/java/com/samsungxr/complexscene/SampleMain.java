@@ -37,9 +37,9 @@ public class SampleMain extends SXRMain {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) throws IOException {
+    public void onInit(SXRContext sxrContext) throws IOException {
         // set background color
-        SXRScene scene = gvrContext.getMainScene();
+        SXRScene scene = sxrContext.getMainScene();
         scene.setBackgroundColor(1, 1, 1, 1);
         scene.setFrustumCulling(false);
 
@@ -47,21 +47,21 @@ public class SampleMain extends SXRMain {
         float CURSOR_Z_POSITION = -9.0f;
         int CURSOR_RENDER_ORDER = 100000;
 
-        SXRSceneObject cursor = new SXRSceneObject(gvrContext,
+        SXRSceneObject cursor = new SXRSceneObject(sxrContext,
                 NORMAL_CURSOR_SIZE, NORMAL_CURSOR_SIZE,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, "cursor_idle.png")));
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "cursor_idle.png")));
         cursor.getTransform().setPositionZ(CURSOR_Z_POSITION);
         cursor.setName("cursor");
         cursor.getRenderData()
                 .setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY)
                 .setDepthTest(false)
                 .setRenderingOrder(CURSOR_RENDER_ORDER);
-        gvrContext.getMainScene().getMainCameraRig().addChildObject(cursor);
+        sxrContext.getMainScene().getMainCameraRig().addChildObject(cursor);
 
         try {
             EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(NO_LIGHTING));
-            SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(
-                    new SXRAndroidResource(gvrContext, "bunny.obj"),
+            SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(
+                    new SXRAndroidResource(sxrContext, "bunny.obj"),
                     settings);
 
             final int OBJECTS_CNT = 8;

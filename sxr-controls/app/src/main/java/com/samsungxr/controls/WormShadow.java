@@ -25,8 +25,8 @@ import com.samsungxr.SXRTexture;
 
 public class WormShadow extends SXRSceneObject {
 
-    public WormShadow(SXRContext gvrContext, float width, float height, int renderingOrder) {
-        super(gvrContext);
+    public WormShadow(SXRContext sxrContext, float width, float height, int renderingOrder) {
+        super(sxrContext);
 
         createShadowObject(width, height, renderingOrder);
     }

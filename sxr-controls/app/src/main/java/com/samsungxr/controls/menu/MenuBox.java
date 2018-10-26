@@ -31,8 +31,8 @@ public class MenuBox extends SXRSceneObject {
     private MenuFrame frameWrapper;
     private MenuCloseButton closeButton;
 
-    public MenuBox(SXRContext gvrContext) {
-        super(gvrContext);
+    public MenuBox(SXRContext sxrContext) {
+        super(sxrContext);
 
         getTransform().setPosition(0, MENU_BOX_Y, MENU_BOX_Z);
 

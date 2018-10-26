@@ -35,15 +35,15 @@ public class MessageText extends FadeableObject implements IViewEvents {
     private final String mText;
     private OnMessageListener mMessageListener;
 
-    public MessageText(SXRContext gvrContext, String text) {
-        this(gvrContext, false, text, null);
+    public MessageText(SXRContext sxrContext, String text) {
+        this(sxrContext, false, text, null);
     }
 
-    public MessageText(SXRContext gvrContext, boolean hasBackground, String text, OnMessageListener listener) {
-        super(gvrContext);
+    public MessageText(SXRContext sxrContext, boolean hasBackground, String text, OnMessageListener listener) {
+        super(sxrContext);
         mHasBackground = hasBackground;
         mText = text;
-        mMessageTextObject = new SXRViewSceneObject(gvrContext, R.layout.message_text, this);
+        mMessageTextObject = new SXRViewSceneObject(sxrContext, R.layout.message_text, this);
         mMessageListener = listener;
     }
 
@@ -54,7 +54,7 @@ public class MessageText extends FadeableObject implements IViewEvents {
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
         TextView textView = view.findViewById(R.id.message_text);
         if (mHasBackground) {
             int[] state = {android.R.attr.state_enabled};
@@ -67,8 +67,8 @@ public class MessageText extends FadeableObject implements IViewEvents {
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-        addChildObject(gvrViewSceneObject);
+    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        addChildObject(sxrViewSceneObject);
     }
 
     @NonNull

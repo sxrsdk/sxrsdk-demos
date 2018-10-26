@@ -69,7 +69,7 @@ public class MainActivity extends SXRActivity
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         main = new Main();
-        setMain(main, "gvr.xml");
+        setMain(main, "sxr.xml");
         mDetector = new GestureDetector(getBaseContext(), swipeListener);
     }
 

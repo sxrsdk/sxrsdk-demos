@@ -42,17 +42,17 @@ public class MultiLightMain extends SXRMain {
     private SXRScene mScene;
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mSXRContext = gvrContext;
+    public void onInit(SXRContext sxrContext) {
+        mSXRContext = sxrContext;
         mScene = mSXRContext.getMainScene();
         float zdist = 2.0f;
 
-        SXRSceneObject root = new SXRSceneObject(gvrContext);
-        SXRSceneObject character = createCharacter(gvrContext);
-        SXRSceneObject light1 = createLight(gvrContext, 1, 0, 0, 0.8f);
-        SXRSceneObject light2 = createLight(gvrContext, 0, 1, 0, -0.8f);
+        SXRSceneObject root = new SXRSceneObject(sxrContext);
+        SXRSceneObject character = createCharacter(sxrContext);
+        SXRSceneObject light1 = createLight(sxrContext, 1, 0, 0, 0.8f);
+        SXRSceneObject light2 = createLight(sxrContext, 0, 1, 0, -0.8f);
         
-        backdrop = createBackdrop(gvrContext);
+        backdrop = createBackdrop(sxrContext);
         root.setName("root");
         root.getTransform().setPosition(0, 0, -zdist);
         mScene.addSceneObject(root);

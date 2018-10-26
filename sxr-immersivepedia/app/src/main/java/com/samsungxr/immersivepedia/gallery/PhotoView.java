@@ -35,7 +35,7 @@ import com.samsungxr.io.SXRTouchPadGestureListener.Action;
 
 public class PhotoView extends FocusableSceneObject implements FocusListener {
 
-    private SXRContext gvrContext = null;
+    private SXRContext sxrContext = null;
 
     public static final int PHOTO_VIEW_OPENED = 0x01;
     public static final int PHOTO_VIEW_CLOSED = 0x02;
@@ -103,21 +103,21 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
         if (animated) {
 
             new SXRPositionAnimation(this, PHOTO_VIEW_SCROLL_ANIMATION_TIME, this.gridItem.x,
-                    this.gridItem.y, this.gridItem.z).start(this.gvrContext.getAnimationEngine());
+                    this.gridItem.y, this.gridItem.z).start(this.sxrContext.getAnimationEngine());
 
         } else {
             this.getTransform().setPosition(this.gridItem.x, this.gridItem.y, this.gridItem.z);
         }
     }
 
-    public static PhotoView createPhotoView(SXRContext gvrContext, int resourceId) {
-        return new PhotoView(gvrContext, resourceId);
+    public static PhotoView createPhotoView(SXRContext sxrContext, int resourceId) {
+        return new PhotoView(sxrContext, resourceId);
     }
 
-    public PhotoView(SXRContext gvrContext, int photo) {
-        this(gvrContext, WIDTH, HEIGHT, gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+    public PhotoView(SXRContext sxrContext, int photo) {
+        this(sxrContext, WIDTH, HEIGHT, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 photo)));
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
         this.photoId = photo;
 
         this.attachCollider(new SXRMeshCollider(getSXRContext(), true));
@@ -126,8 +126,8 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
 
     }
 
-    public PhotoView(SXRContext gvrContext, float f, float g, SXRTexture t) {
-        super(gvrContext, f, g, t);
+    public PhotoView(SXRContext sxrContext, float f, float g, SXRTexture t) {
+        super(sxrContext, f, g, t);
         setName("photoview");
     }
 
@@ -148,7 +148,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
 
         PhotoView.this.PhotoItemListener.dispatchLockRequest();
 
-        new SXRScaleAnimation(this, PHOTO_VIEW_OPEN_ANIMATION_TIME, PHOTO_VIEW_FOCUS_SCALE).start(this.gvrContext
+        new SXRScaleAnimation(this, PHOTO_VIEW_OPEN_ANIMATION_TIME, PHOTO_VIEW_FOCUS_SCALE).start(this.sxrContext
                 .getAnimationEngine());
 
         new SXRPositionAnimation(this, PHOTO_VIEW_OPEN_ANIMATION_TIME, centeredGridItem.x,
@@ -165,7 +165,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
                         }
 
                     }
-                }).start(this.gvrContext.getAnimationEngine());
+                }).start(this.sxrContext.getAnimationEngine());
 
     }
 
@@ -210,10 +210,10 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
                 PhotoView.this.currentState = PHOTO_VIEW_OPENED;
 
             }
-        }).start(this.gvrContext.getAnimationEngine());
+        }).start(this.sxrContext.getAnimationEngine());
 
         new SXROpacityAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME, PHOTO_VIEW_OPACITY_VISIBLE)
-                .start(this.gvrContext
+                .start(this.sxrContext
                         .getAnimationEngine());
 
     }
@@ -238,7 +238,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
                 this.centeredGridItem.z - offsetZ);
 
         new SXRPositionAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME, x, y, z - offsetZ)
-                .start(this.gvrContext.getAnimationEngine());
+                .start(this.sxrContext.getAnimationEngine());
 
         new SXROpacityAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME, PHOTO_VIEW_OPACITY_HIDE)
                 .setOnFinish(new SXROnFinish() {
@@ -252,7 +252,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
                         PhotoView.this.currentState = PHOTO_VIEW_CLOSED;
 
                     }
-                }).start(this.gvrContext.getAnimationEngine());
+                }).start(this.sxrContext.getAnimationEngine());
 
     }
 
@@ -264,7 +264,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
             this.PhotoItemListener.dispatchLockRequest();
         }
 
-        new SXRScaleAnimation(this, PHOTO_VIEW_OPEN_ANIMATION_TIME, 1.0f).start(this.gvrContext
+        new SXRScaleAnimation(this, PHOTO_VIEW_OPEN_ANIMATION_TIME, 1.0f).start(this.sxrContext
                 .getAnimationEngine());
 
         new SXRPositionAnimation(this, PHOTO_VIEW_CLOSE_ANIMATION_TIME, gridItem.x, gridItem.y,
@@ -281,7 +281,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
                         }
 
                     }
-                }).start(this.gvrContext.getAnimationEngine());
+                }).start(this.sxrContext.getAnimationEngine());
 
     }
 
@@ -348,7 +348,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
         this.showInteractiveCursor = false;
         this.currentState = PHOTO_VIEW_HIDE;
         new SXROpacityAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME, PHOTO_VIEW_OPACITY_HIDE)
-                .start(this.gvrContext
+                .start(this.sxrContext
                         .getAnimationEngine());
     }
 
@@ -356,7 +356,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
         this.showInteractiveCursor = true;
         this.currentState = PHOTO_VIEW_CLOSED;
         new SXROpacityAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME, PHOTO_VIEW_OPACITY_VISIBLE)
-                .start(this.gvrContext
+                .start(this.sxrContext
                         .getAnimationEngine());
 
     }
@@ -378,7 +378,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
 
     protected void disappear() {
         new SXROpacityAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME,
-                PHOTO_VIEW_OPACITY_HIDE).start(this.gvrContext.getAnimationEngine());
+                PHOTO_VIEW_OPACITY_HIDE).start(this.sxrContext.getAnimationEngine());
         this.gridItem.visible = false;
         this.showInteractiveCursor = false;
     }
@@ -393,7 +393,7 @@ public class PhotoView extends FocusableSceneObject implements FocusListener {
         } else {
 
             new SXROpacityAnimation(this, PHOTO_VIEW_FADE_ANIMATION_TIME,
-                    PHOTO_VIEW_OPACITY_VISIBLE).start(this.gvrContext.getAnimationEngine());
+                    PHOTO_VIEW_OPACITY_VISIBLE).start(this.sxrContext.getAnimationEngine());
 
             this.showInteractiveCursor = true;
             this.gridItem.visible = true;

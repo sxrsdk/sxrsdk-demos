@@ -24,9 +24,9 @@ import com.samsungxr.controls.util.Util;
 
 public class WormApplyTransformAnims {
 
-    public static void moveWorm(SXRContext gvrContext, float scaleFactor) {
-        moveWormPart(gvrContext, Main.worm.getHead(), scaleFactor);
-        moveWormPart(gvrContext, Main.worm.getEnd(), scaleFactor);
+    public static void moveWorm(SXRContext sxrContext, float scaleFactor) {
+        moveWormPart(sxrContext, Main.worm.getHead(), scaleFactor);
+        moveWormPart(sxrContext, Main.worm.getEnd(), scaleFactor);
     }
 
     public static void resetScaleWorm(float[] scaleFactor) {
@@ -39,14 +39,14 @@ public class WormApplyTransformAnims {
                 .setScale(scaleFactor[2], scaleFactor[2], scaleFactor[2]);
     }
 
-    public static void scaleWorm(SXRContext gvrContext, float scaleFactor) {
+    public static void scaleWorm(SXRContext sxrContext, float scaleFactor) {
 
-        scaleWormPart(gvrContext, Main.worm.getHead(), scaleFactor);
-        scaleWormPart(gvrContext, Main.worm.getMiddle(), scaleFactor);
-        scaleWormPart(gvrContext, Main.worm.getEnd(), scaleFactor);
+        scaleWormPart(sxrContext, Main.worm.getHead(), scaleFactor);
+        scaleWormPart(sxrContext, Main.worm.getMiddle(), scaleFactor);
+        scaleWormPart(sxrContext, Main.worm.getEnd(), scaleFactor);
     }
 
-    public static void moveWormPart(SXRContext gvrContext, SXRSceneObject part, float scaleFactor) {
+    public static void moveWormPart(SXRContext sxrContext, SXRSceneObject part, float scaleFactor) {
 
         float currentScale = part.getTransform().getScaleX();
         float ratio = (currentScale + scaleFactor) / currentScale;
@@ -55,11 +55,11 @@ public class WormApplyTransformAnims {
 
         new SXRRelativeMotionAnimation(part, AnimationsTime.getScaleTime(),
                 newPartPositionX
-                        - currentPartPositionX, 0, 0).start(gvrContext
+                        - currentPartPositionX, 0, 0).start(sxrContext
                 .getAnimationEngine());
     }
 
-    public static void moveWormPartToClose(SXRContext gvrContext, SXRSceneObject moveablePart,
+    public static void moveWormPartToClose(SXRContext sxrContext, SXRSceneObject moveablePart,
             SXRSceneObject basePart) {
 
         float scaleRatio = ScaleWorm.getWorm().getHead().getTransform().getScaleX()
@@ -73,14 +73,14 @@ public class WormApplyTransformAnims {
         float newZ = newPosition[2] - moveablePart.getTransform().getPositionZ();
 
         new SXRRelativeMotionAnimation(moveablePart, AnimationsTime.getScaleTime(), newX, 0, newZ)
-                .start(gvrContext.getAnimationEngine());
+                .start(sxrContext.getAnimationEngine());
     }
 
-    private static void scaleWormPart(SXRContext gvrContext, SXRSceneObject part, float scaleFactor) {
+    private static void scaleWormPart(SXRContext sxrContext, SXRSceneObject part, float scaleFactor) {
 
         new SXRScaleAnimation(part, AnimationsTime.getScaleTime(), part.getTransform().getScaleX()
                 + scaleFactor)
-                .start(gvrContext.getAnimationEngine());
+                .start(sxrContext.getAnimationEngine());
     }
 
     public static SXRRelativeMotionAnimation moveWormPartReset(SXRSceneObject moveablePart,

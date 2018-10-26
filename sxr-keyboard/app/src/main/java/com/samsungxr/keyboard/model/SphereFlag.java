@@ -65,13 +65,13 @@ public class SphereFlag extends SXRSceneObject {
     private SXRAnimation followCursorAnimation;
 
     private boolean moveTogetherDashboard = false;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
-    public SphereFlag(SXRContext gvrContext, TypedArray sphere) {
-        super(gvrContext);
+    public SphereFlag(SXRContext sxrContext, TypedArray sphere) {
+        super(sxrContext);
         setName(SceneObjectNames.SPHERE_FLAG);
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
 
         initSphere(sphere);
 
@@ -85,7 +85,7 @@ public class SphereFlag extends SXRSceneObject {
     }
 
     private void initSphere(TypedArray sphere) {
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
 
         mCountryName = res.getString(sphere.getResourceId(0, -1));
         mTexture = sphere.getResourceId(1, -1);
@@ -127,18 +127,18 @@ public class SphereFlag extends SXRSceneObject {
     }
 
     private SXRMaterial getMaterial() {
-        SXRMaterial material = new SXRMaterial(gvrContext, new SXRShaderId(SphereShader.class));
+        SXRMaterial material = new SXRMaterial(sxrContext, new SXRShaderId(SphereShader.class));
         material.setTexture(SphereShader.TEXTURE_KEY,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, mTexture)));
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, mTexture)));
         material.setFloat("blur", 0);
         material.setFloat(SphereShader.ANIM_TEXTURE, 0.0f);
         material.setTexture(SphereShader.SECUNDARY_TEXTURE_KEY,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, mResultTexture)));
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, mResultTexture)));
         material.setVec3(SphereShader.TRANSITION_COLOR, 1, 1, 1);
         material.setVec3(SphereShader.EYE_KEY, 0, 0, 0);
 
         // Light config
-        SXRTexture hdriTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture hdriTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.hdri_reflex));
         material.setTexture(SphereShader.HDRI_TEXTURE_KEY, hdriTexture);
 
@@ -146,8 +146,8 @@ public class SphereFlag extends SXRSceneObject {
     }
 
     private SXRRenderData getRenderData(SXRMaterial material) {
-        SXRRenderData renderData = new SXRRenderData(gvrContext);
-        renderData.setMesh(gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext,
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
+        renderData.setMesh(sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                 R.raw.sphere_uv_flag)));
         renderData.setMaterial(material);
         renderData.setRenderingOrder(100);
@@ -168,12 +168,12 @@ public class SphereFlag extends SXRSceneObject {
             floatingAnimation.setInterpolator(new FloatEffectInterpolator());
             floatingAnimation.setRepeatMode(SXRRepeatMode.PINGPONG);
             floatingAnimation.setRepeatCount(-1);
-            floatingAnimation.start(gvrContext.getAnimationEngine());
+            floatingAnimation.start(sxrContext.getAnimationEngine());
         }
     }
 
     public void stopFloatingSphere() {
-        gvrContext.getAnimationEngine().stop(floatingAnimation);
+        sxrContext.getAnimationEngine().stop(floatingAnimation);
         isFloatingSphere = false;
     }
 
@@ -184,7 +184,7 @@ public class SphereFlag extends SXRSceneObject {
             stopAnimationsToSpot();
 
             spotAnimation = createSpotAnimation();
-            spotAnimation.start(gvrContext.getAnimationEngine()).setOnFinish(new SXROnFinish() {
+            spotAnimation.start(sxrContext.getAnimationEngine()).setOnFinish(new SXROnFinish() {
                 @Override
                 public void finished(SXRAnimation arg0) {
                     isSpottingSphere = false;
@@ -195,15 +195,15 @@ public class SphereFlag extends SXRSceneObject {
 
     private void stopAnimationsToSpot() {
         if (spotAnimation != null) {
-            gvrContext.getAnimationEngine().stop(spotAnimation);
-            gvrContext.getAnimationEngine().stop(scaleParentAnimation);
-            gvrContext.getAnimationEngine().stop(scaleThisAnimation);
+            sxrContext.getAnimationEngine().stop(spotAnimation);
+            sxrContext.getAnimationEngine().stop(scaleParentAnimation);
+            sxrContext.getAnimationEngine().stop(scaleThisAnimation);
             isUnspottingSphere = false;
         }
     }
 
     private SXRAnimation createSpotAnimation() {
-        SXRCameraRig cameraObject = gvrContext.getMainScene().getMainCameraRig();
+        SXRCameraRig cameraObject = sxrContext.getMainScene().getMainCameraRig();
         float distance = (float) Math.max(
                 0.7 * Util.distance(getInitialPositionVector(), cameraObject.getTransform()),
                 Constants.MINIMUM_DISTANCE_FROM_CAMERA);
@@ -213,9 +213,9 @@ public class SphereFlag extends SXRSceneObject {
         float scaleFactor = Util.getHitAreaScaleFactor(distance);
 
         scaleParentAnimation = new SXRScaleAnimation(getParent(), 1.2f, scaleFactor)
-                .start(gvrContext
+                .start(sxrContext
                         .getAnimationEngine());
-        scaleThisAnimation = new SXRScaleAnimation(this, 1.2f, 1 / scaleFactor).start(gvrContext
+        scaleThisAnimation = new SXRScaleAnimation(this, 1.2f, 1 / scaleFactor).start(sxrContext
                 .getAnimationEngine());
 
         return new SXRRelativeMotionAnimation(getParent(), 1.2f, newPosition[0]
@@ -228,14 +228,14 @@ public class SphereFlag extends SXRSceneObject {
     public void unspotSphere() {
         if (!isUnspottingSphere) {
             isUnspottingSphere = true;
-            SXRCameraRig cameraObject = gvrContext.getMainScene().getMainCameraRig();
+            SXRCameraRig cameraObject = sxrContext.getMainScene().getMainCameraRig();
             float scaleFactor = Util.getHitAreaScaleFactor((float) Util.distance(
                     getInitialPositionVector(), cameraObject.getTransform()));
 
             stopAnimationsToUnspot();
 
             spotAnimation = createUnspotAnimation(scaleFactor);
-            spotAnimation.start(gvrContext.getAnimationEngine()).setOnFinish(new SXROnFinish() {
+            spotAnimation.start(sxrContext.getAnimationEngine()).setOnFinish(new SXROnFinish() {
                 @Override
                 public void finished(SXRAnimation arg0) {
                     isUnspottingSphere = false;
@@ -246,9 +246,9 @@ public class SphereFlag extends SXRSceneObject {
 
     private SXRAnimation createUnspotAnimation(float scaleFactor) {
         scaleParentAnimation = new SXRScaleAnimation(getParent(), 1.2f, scaleFactor)
-                .start(gvrContext
+                .start(sxrContext
                         .getAnimationEngine());
-        scaleThisAnimation = new SXRScaleAnimation(this, 1.2f, 1 / scaleFactor).start(gvrContext
+        scaleThisAnimation = new SXRScaleAnimation(this, 1.2f, 1 / scaleFactor).start(sxrContext
                 .getAnimationEngine());
 
         return new SXRRelativeMotionAnimation(getParent(), 1.2f, (float) getInitialPositionVector()
@@ -262,35 +262,35 @@ public class SphereFlag extends SXRSceneObject {
 
     private void stopAnimationsToUnspot() {
         if (spotAnimation != null) {
-            gvrContext.getAnimationEngine().stop(spotAnimation);
-            gvrContext.getAnimationEngine().stop(scaleParentAnimation);
-            gvrContext.getAnimationEngine().stop(scaleThisAnimation);
+            sxrContext.getAnimationEngine().stop(spotAnimation);
+            sxrContext.getAnimationEngine().stop(scaleParentAnimation);
+            sxrContext.getAnimationEngine().stop(scaleThisAnimation);
             isSpottingSphere = false;
         }
     }
 
     public void snapSphere(float[] hit) {
         if (isUnsnappingSphere) {
-            gvrContext.getAnimationEngine().stop(snapAnimation);
+            sxrContext.getAnimationEngine().stop(snapAnimation);
             isUnsnappingSphere = false;
         }
 
         if(hit != null)
         snapAnimation = new SXRRelativeMotionAnimation(this, 1.2f, hit[0]
                 - getTransform().getPositionX(),
-                hit[1] - getTransform().getPositionY(), 0f).start(gvrContext.getAnimationEngine());
+                hit[1] - getTransform().getPositionY(), 0f).start(sxrContext.getAnimationEngine());
 
     }
 
     public void unsnapSphere(float duration) {
         if (!isUnsnappingSphere) {
             if (snapAnimation != null) {
-                gvrContext.getAnimationEngine().stop(snapAnimation);
+                sxrContext.getAnimationEngine().stop(snapAnimation);
             }
             isUnsnappingSphere = true;
             snapAnimation = new SXRRelativeMotionAnimation(this, duration, -getTransform()
                     .getPositionX(),
-                    -getTransform().getPositionY(), 0f).start(gvrContext.getAnimationEngine())
+                    -getTransform().getPositionY(), 0f).start(sxrContext.getAnimationEngine())
                     .setInterpolator(new InterpolatorExpoEaseInOut())
                     .setOnFinish(new SXROnFinish() {
                         @Override

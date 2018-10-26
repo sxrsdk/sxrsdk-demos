@@ -15,27 +15,27 @@ import com.samsungxr.SXRSceneObject;
 
 public class Utils {
 
-    public static double distance(SXRSceneObject object, SXRCameraRig gvrCameraRig) {
+    public static double distance(SXRSceneObject object, SXRCameraRig sxrCameraRig) {
         return Math.sqrt(Math.pow(object.getTransform().getPositionX()
-                - gvrCameraRig.getTransform().getPositionX(), 2)
+                - sxrCameraRig.getTransform().getPositionX(), 2)
                 +
                 Math.pow(object.getTransform().getPositionY()
-                        - gvrCameraRig.getTransform().getPositionY(), 2)
+                        - sxrCameraRig.getTransform().getPositionY(), 2)
                 +
                 Math.pow(object.getTransform().getPositionZ()
-                        - gvrCameraRig.getTransform().getPositionZ(), 2));
+                        - sxrCameraRig.getTransform().getPositionZ(), 2));
 
     }
 
     public static float[] calculatePointBetweenTwoObjects(SXRSceneObject object,
-            SXRCameraRig gvrCameraRig, float desiredDistance) {
+            SXRCameraRig sxrCameraRig, float desiredDistance) {
         float[] point = new float[3];
-        float ratio = desiredDistance / (float) distance(object, gvrCameraRig);
-        point[0] = (1 - ratio) * gvrCameraRig.getTransform().getPositionX() + (ratio)
+        float ratio = desiredDistance / (float) distance(object, sxrCameraRig);
+        point[0] = (1 - ratio) * sxrCameraRig.getTransform().getPositionX() + (ratio)
                 * object.getTransform().getPositionX();
-        point[1] = (1 - ratio) * gvrCameraRig.getTransform().getPositionY() + (ratio)
+        point[1] = (1 - ratio) * sxrCameraRig.getTransform().getPositionY() + (ratio)
                 * object.getTransform().getPositionY();
-        point[2] = (1 - ratio) * gvrCameraRig.getTransform().getPositionZ() + (ratio)
+        point[2] = (1 - ratio) * sxrCameraRig.getTransform().getPositionZ() + (ratio)
                 * object.getTransform().getPositionZ();
 
         return point;

@@ -39,7 +39,7 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     private SXRSceneObject circleAlpha;
     private SXRSceneObject plus;
     private FocusableSceneObject circle;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
     private float valueFloatTexture;
 
@@ -47,11 +47,11 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     private LoadComponentListener componentListener;
     private boolean isLoading = false;
 
-    public LoadComponent(SXRContext gvrContext, LoadComponentListener componentListener) {
-        super(gvrContext);
+    public LoadComponent(SXRContext sxrContext, LoadComponentListener componentListener) {
+        super(sxrContext);
         this.componentListener = componentListener;
-        this.gvrContext = gvrContext;
-        this.gvrContext.runOnGlThread(new Runnable() {
+        this.sxrContext = sxrContext;
+        this.sxrContext.runOnGlThread(new Runnable() {
 
             @Override
             public void run() {
@@ -63,10 +63,10 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     }
 
     private void createLoadComponent() {
-        circleAlpha = new SXRSceneObject(gvrContext, gvrContext.createQuad(.5f, .5f),
+        circleAlpha = new SXRSceneObject(sxrContext, sxrContext.createQuad(.5f, .5f),
                 circleAlphaTexture);
-        plus = new SXRSceneObject(gvrContext, gvrContext.createQuad(.5f, .5f), plusTexture);
-        circle = new FocusableSceneObject(gvrContext, gvrContext.createQuad(.5f, .5f),
+        plus = new SXRSceneObject(sxrContext, sxrContext.createQuad(.5f, .5f), plusTexture);
+        circle = new FocusableSceneObject(sxrContext, sxrContext.createQuad(.5f, .5f),
                 circleTexture);
 
         plus.getRenderData().getMaterial().setMainTexture(plusTexture);
@@ -76,7 +76,7 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
         circle.getRenderData().setRenderingOrder(RenderingOrderApplication.LOADING_COMPONENT);
         circle.focusListener = this;
 
-        circleAlpha.getRenderData().setMaterial(new SXRMaterial(gvrContext, new SXRShaderId(CutoutShader.class)));
+        circleAlpha.getRenderData().setMaterial(new SXRMaterial(sxrContext, new SXRShaderId(CutoutShader.class)));
         circleAlpha.getRenderData().getMaterial()
                 .setTexture(CutoutShader.TEXTURE_KEY, circleAlphaTexture);
         circleAlpha.getRenderData().getMaterial()
@@ -90,11 +90,11 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     }
 
     private void loadTexture() {
-        circleAlphaTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        circleAlphaTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.loading_two__colors));
-        circleTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        circleTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.loading));
-        plusTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.plus));
+        plusTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.plus));
     }
 
     public void setFloatTexture() {
@@ -117,7 +117,7 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
             }
         };
 
-        gvrContext.registerDrawFrameListener(drawFrameListener);
+        sxrContext.registerDrawFrameListener(drawFrameListener);
 
     }
 
@@ -126,15 +126,15 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     }
 
     public void finishLoadComponent() {
-        gvrContext.unregisterDrawFrameListener(drawFrameListener);
+        sxrContext.unregisterDrawFrameListener(drawFrameListener);
         isLoading = false;
-        gvrContext.getMainScene().removeSceneObject(this);
+        sxrContext.getMainScene().removeSceneObject(this);
 
         componentListener.onFinishLoadComponent();
     }
 
     public void disableListener() {
-        gvrContext.unregisterDrawFrameListener(drawFrameListener);
+        sxrContext.unregisterDrawFrameListener(drawFrameListener);
     }
     @Override
     public void gainedFocus(FocusableSceneObject object) {

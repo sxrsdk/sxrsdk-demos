@@ -38,7 +38,7 @@ public class SpinnerRoulette extends SXRSceneObject {
 
     private static final int ITEM_DEGREE = 45;
     private static final float ITEM_DEGREE_TEST = 45;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private int initialCharacterPosition;
     private static final int SPINNER_ITEM_SIZE = 8;
     private SXRAnimation swipeAnimation;
@@ -62,19 +62,19 @@ public class SpinnerRoulette extends SXRSceneObject {
         this.soudOn = soudOn;
     }
 
-    protected SpinnerRoulette(SXRContext gvrContext, int initialCharacterPosition, int mode) {
-        super(gvrContext);
+    protected SpinnerRoulette(SXRContext sxrContext, int initialCharacterPosition, int mode) {
+        super(sxrContext);
         setName(SceneObjectNames.SPINNER);
 
         this.initialCharacterPosition = initialCharacterPosition;
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
 
         CircularList<CharItem> characterList;
         CircularList<SpinnerItem> spinnerItems;
 
         spinnerItems = new CircularList<SpinnerItem>(new ArrayList<SpinnerItem>());
 
-        characterList = CharList.getInstance(gvrContext).getListCircular(mode);
+        characterList = CharList.getInstance(sxrContext).getListCircular(mode);
 
         spinnerAdapter = new SpinnerAdapter(spinnerItems, characterList);
 
@@ -222,7 +222,7 @@ public class SpinnerRoulette extends SXRSceneObject {
 
         for (int i = 0; i < SPINNER_ITEM_SIZE; i++) {
 
-            SpinnerItem item = createSpinnerItem(gvrContext, "", i);
+            SpinnerItem item = createSpinnerItem(sxrContext, "", i);
 
             spinnerAdapter.getSpinnerItems().add(item);
         }
@@ -237,54 +237,54 @@ public class SpinnerRoulette extends SXRSceneObject {
         spinnerAdapter
                 .getSpinnerItems()
                 .get(5)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getPrevious(initialCharacterPosition - 2));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(6)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getPrevious(initialCharacterPosition - 1));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(7)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getPrevious(initialCharacterPosition));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(0)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().get(initialCharacterPosition));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(1)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getNext(initialCharacterPosition));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(2)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getNext(initialCharacterPosition + 1));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(3)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getNext(initialCharacterPosition + 2));
 
         spinnerAdapter
                 .getSpinnerItems()
                 .get(4)
-                .setText(gvrContext,
+                .setText(sxrContext,
                         spinnerAdapter.getCharacterList().getNext(initialCharacterPosition + 3));
 
     }
 
-    private SpinnerItem createSpinnerItem(SXRContext gvrContext, String spinnerText, int position) {
+    private SpinnerItem createSpinnerItem(SXRContext sxrContext, String spinnerText, int position) {
 
         float sceneObjectWidth = 0.19f;
         float sceneObjectHeigth = 0.29f;
@@ -316,7 +316,7 @@ public class SpinnerRoulette extends SXRSceneObject {
 
         while (amountRotation >= ITEM_DEGREE_TEST) {
             playSpinnerSound();
-            spinnerAdapter.updateSpinnerCentral(amountRotation, this.gvrContext);
+            spinnerAdapter.updateSpinnerCentral(amountRotation, this.sxrContext);
 
             amountRotation = amountRotation - ITEM_DEGREE_TEST;
 
@@ -334,7 +334,7 @@ public class SpinnerRoulette extends SXRSceneObject {
 
             playSpinnerSound();
 
-            spinnerAdapter.updateSpinnerCentral(amountRotation, this.gvrContext);
+            spinnerAdapter.updateSpinnerCentral(amountRotation, this.sxrContext);
 
             amountRotation = amountRotation + ITEM_DEGREE_TEST;
 

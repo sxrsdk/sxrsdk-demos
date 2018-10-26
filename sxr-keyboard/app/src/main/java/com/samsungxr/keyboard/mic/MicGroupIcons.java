@@ -29,11 +29,11 @@ public class MicGroupIcons extends SXRSceneObject {
     int mOff = R.drawable.mic_icon_off;
     int mOn = R.drawable.mic_icon_on;
 
-    public MicGroupIcons(SXRContext gvrContext) {
-        super(gvrContext);
+    public MicGroupIcons(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.MIC_GROUP_ICONS);
 
-        mIcon = new MicItem(gvrContext, mOff);
+        mIcon = new MicItem(sxrContext, mOff);
         mIcon.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_ICON);
         this.addChildObject(mIcon);
     }

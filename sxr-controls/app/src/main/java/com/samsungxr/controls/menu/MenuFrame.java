@@ -47,10 +47,10 @@ public class MenuFrame extends SXRSceneObject {
 
     private SXRSceneObject pivot = null;
 
-    public MenuFrame(SXRContext gvrContext) {
-        super(gvrContext);
+    public MenuFrame(SXRContext sxrContext) {
+        super(sxrContext);
 
-        pivot = new SXRSceneObject(gvrContext);
+        pivot = new SXRSceneObject(sxrContext);
         pivot.getTransform().setPosition(0, PIVOT_OFFSET_Y,FRAME_POSITION_Z);
 
         SXRMesh mesh = getSXRContext().createQuad(3.57f, 0.01f);

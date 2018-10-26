@@ -26,12 +26,12 @@ import com.samsungxr.SXRTexture;
 
 public class DefaultFadeableObject extends FadeableObject {
 
-    public DefaultFadeableObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public DefaultFadeableObject(SXRContext sxrContext) {
+        super(sxrContext);
     }
 
-    public DefaultFadeableObject(SXRContext mContext, SXRMesh quad, SXRTexture gvrTexture) {
-        super(mContext, quad, gvrTexture);
+    public DefaultFadeableObject(SXRContext mContext, SXRMesh quad, SXRTexture sxrTexture) {
+        super(mContext, quad, sxrTexture);
     }
 
     @NonNull

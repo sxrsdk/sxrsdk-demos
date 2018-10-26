@@ -60,8 +60,8 @@ public class MotionButton extends MenuControlSceneObject {
     private String title;
     private Motion motion;
 
-    public MotionButton(SXRContext gvrContext, String title, Motion motion) {
-        super(gvrContext);
+    public MotionButton(SXRContext sxrContext, String title, Motion motion) {
+        super(sxrContext);
 
         this.motion = motion;
         this.title = title;
@@ -71,8 +71,8 @@ public class MotionButton extends MenuControlSceneObject {
         WIDTH = (int)(100.0f * quadWidth);
         HEIGHT = (int) (100.0f * quadHeigth);
 
-        attachRenderData(new SXRRenderData(gvrContext));
-        getRenderData().setMaterial(new SXRMaterial(gvrContext, new SXRShaderId(ButtonShader.class)));
+        attachRenderData(new SXRRenderData(sxrContext));
+        getRenderData().setMaterial(new SXRMaterial(sxrContext, new SXRShaderId(ButtonShader.class)));
         getRenderData().setMesh(sMesh);
 
         createTextures();
@@ -80,7 +80,7 @@ public class MotionButton extends MenuControlSceneObject {
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
         getRenderData().setRenderingOrder(RenderingOrder.MENU_FRAME_TEXT);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
     }
 
     public Motion getMotion() {

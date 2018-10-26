@@ -29,33 +29,33 @@ public class AnimButtonPlay extends ControlSceneObject {
     private final int HOVER_STATE = 1;
     private final int SELECTED_STATE = 2;
 
-    public AnimButtonPlay(SXRContext gvrContext) {
-        super(gvrContext);
+    public AnimButtonPlay(SXRContext sxrContext) {
+        super(sxrContext);
 
         SXRMesh sMesh = getSXRContext().createQuad(0.3f, 0.3f);
 
-        attachRenderData(new SXRRenderData(gvrContext));
+        attachRenderData(new SXRRenderData(sxrContext));
         SXRShaderId id = new SXRShaderId(ButtonShader.class);
         getRenderData().setMaterial(
-                new SXRMaterial(gvrContext, id));
+                new SXRMaterial(sxrContext, id));
         getRenderData().setMesh(sMesh);
-        createTextures(gvrContext);
+        createTextures(sxrContext);
 
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
         getRenderData().setRenderingOrder(RenderingOrder.MOVE_BUTON);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
 
     }
 
-    private void createTextures(SXRContext gvrContext) {
+    private void createTextures(SXRContext sxrContext) {
 
-        SXRTexture empty = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.raw.empty));
-        SXRTexture idle = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture empty = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.empty));
+        SXRTexture idle = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.bt_play_idle));
-        SXRTexture hover = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture hover = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.bt_play_hover));
-        SXRTexture selected = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture selected = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.bt_play_pressed));
 
         getRenderData().getMaterial().setTexture(ButtonShader.STATE2_TEXT_TEXTURE, hover);

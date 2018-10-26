@@ -15,7 +15,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.samsungxr.sample.gvrjavascript"
+    package="com.samsungxr.sample.sxrjavascript"
     android:versionCode="1"
     android:versionName="1.0">
     

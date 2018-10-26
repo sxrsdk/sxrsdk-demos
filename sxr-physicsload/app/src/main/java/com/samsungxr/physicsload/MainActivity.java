@@ -61,15 +61,15 @@ public class MainActivity extends SXRActivity {
 
     private final class Main extends SXRMain {
         @Override
-        public void onInit(SXRContext gvrContext) {
-            initScene(gvrContext);
-            initPhysics(gvrContext);
-            loadBlenderAssets(gvrContext);
-            complementScene(gvrContext);
+        public void onInit(SXRContext sxrContext) {
+            initScene(sxrContext);
+            initPhysics(sxrContext);
+            loadBlenderAssets(sxrContext);
+            complementScene(sxrContext);
         }
 
-        void initScene(SXRContext gvrContext) {
-            SXRScene mainScene = gvrContext.getMainScene();
+        void initScene(SXRContext sxrContext) {
+            SXRScene mainScene = sxrContext.getMainScene();
 
             // Camera and light settings were copied from Blender project available in 'extras'
             // directory
@@ -77,136 +77,136 @@ public class MainActivity extends SXRActivity {
             mainScene.getMainCameraRig().setFarClippingDistance(100f);
             mainScene.getMainCameraRig().setNearClippingDistance(0.1f);
 
-            SXRSceneObject sunObj = new SXRCubeSceneObject(gvrContext);
+            SXRSceneObject sunObj = new SXRCubeSceneObject(sxrContext);
             sunObj.getTransform().setPosition(8f, 3.4f, 41.7f);
             sunObj.getTransform().setRotation(0.8683812142694567f, -0.3738122646181239f, -0.06100199997212902f, -0.32008938364834f);
-            SXRDirectLight sun = new SXRDirectLight(gvrContext);
+            SXRDirectLight sun = new SXRDirectLight(sxrContext);
             sun.setDiffuseIntensity(1f, 1f, 1f, 1f);
             sun.setSpecularIntensity(1f, 1f, 1f, 1f);
             sunObj.attachComponent(sun);
 
-            SXRSceneObject sun1Obj = new SXRCubeSceneObject(gvrContext);
+            SXRSceneObject sun1Obj = new SXRCubeSceneObject(sxrContext);
             sun1Obj.getTransform().setPosition(-15f, -1.38f, -32f);
             sun1Obj.getTransform().setRotation(0.7071067811865476f, -0.7071067811865476f, 0.0f, 0.0f);
-            SXRDirectLight sun1 = new SXRDirectLight(gvrContext);
+            SXRDirectLight sun1 = new SXRDirectLight(sxrContext);
             sun1.setDiffuseIntensity(1f, 1f, 1f, 1f);
             sun1.setSpecularIntensity(1f, 1f, 1f, 1f);
             sun1Obj.attachComponent(sun1);
         }
 
-        void initPhysics(SXRContext gvrContext) {
-            SXRScene mainScene = gvrContext.getMainScene();
+        void initPhysics(SXRContext sxrContext) {
+            SXRScene mainScene = sxrContext.getMainScene();
 
-            SXRWorld world = new SXRWorld(gvrContext);
+            SXRWorld world = new SXRWorld(sxrContext);
             world.setGravity(0f, -10f, 0f);
             mainScene.getRoot().attachComponent(world);
         }
 
-        void loadAndAddCollider(SXRContext gvrContext, String fname) throws IOException {
-            SXRSceneObject model = gvrContext.getAssetLoader().loadModel(fname, gvrContext.getMainScene());
+        void loadAndAddCollider(SXRContext sxrContext, String fname) throws IOException {
+            SXRSceneObject model = sxrContext.getAssetLoader().loadModel(fname, sxrContext.getMainScene());
 
             // This approach works fine for simple objects exported as FBX
             SXRSceneObject object = model.getChildByIndex(0).getChildByIndex(0);
             object.attachComponent(new SXRMeshCollider(object.getSXRContext(), true));
         }
 
-        void loadBlenderAssets(SXRContext gvrContext) {
-            SXRScene mainScene = gvrContext.getMainScene();
+        void loadBlenderAssets(SXRContext sxrContext) {
+            SXRScene mainScene = sxrContext.getMainScene();
 
             try {
                 // 'Cone' and 'Cone.001' will be linked by a Hinge constraint
-                loadAndAddCollider(gvrContext,"Cone.fbx");
-                loadAndAddCollider(gvrContext,"Cone_001.fbx");
+                loadAndAddCollider(sxrContext,"Cone.fbx");
+                loadAndAddCollider(sxrContext,"Cone_001.fbx");
 
                 // 'Cube' and 'Cube.001' will be linked by a Cone-twist constraint
-                loadAndAddCollider(gvrContext,"Cube.fbx");
-                loadAndAddCollider(gvrContext,"Cube_001.fbx");
+                loadAndAddCollider(sxrContext,"Cube.fbx");
+                loadAndAddCollider(sxrContext,"Cube_001.fbx");
 
                 // 'Cube.002' and 'Cube.003' will be linked by a Generic 6DoF constraint
-                loadAndAddCollider(gvrContext,"Cube_002.fbx");
-                loadAndAddCollider(gvrContext,"Cube_003.fbx");
+                loadAndAddCollider(sxrContext,"Cube_002.fbx");
+                loadAndAddCollider(sxrContext,"Cube_003.fbx");
 
-                loadAndAddCollider(gvrContext,"Cube_004.fbx");
+                loadAndAddCollider(sxrContext,"Cube_004.fbx");
 
                 // 'Cylinder' and 'Sphere' will be linked by a Point-to-point constraint
-                loadAndAddCollider(gvrContext,"Cylinder.fbx");
-                loadAndAddCollider(gvrContext,"Sphere.fbx");
+                loadAndAddCollider(sxrContext,"Cylinder.fbx");
+                loadAndAddCollider(sxrContext,"Sphere.fbx");
 
                 // Plane object is not being loaded due to an issue when exporting this kind of
                 // object from Blender to SXRf with physics properties
-//                loadAndAddCollider(gvrContext,"Plane.fbx");
+//                loadAndAddCollider(sxrContext,"Plane.fbx");
 
                 // Up-axis must be ignored because scene objects were rotated when exported
-                SXRPhysicsLoader.loadPhysicsFile(gvrContext, "scene3.bullet", true, mainScene);
+                SXRPhysicsLoader.loadPhysicsFile(sxrContext, "scene3.bullet", true, mainScene);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        void complementScene(SXRContext gvrContext)
+        void complementScene(SXRContext sxrContext)
         {
-            SXRScene mainScene = gvrContext.getMainScene();
+            SXRScene mainScene = sxrContext.getMainScene();
 
             // 'bodyA' and 'bodyB' will be linked by a Fixed constraint
-            SXRMaterial redMat = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            SXRMaterial redMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             redMat.setDiffuseColor(1f, 0f, 0f, 1f);
-            SXRSceneObject box1 = new SXRCubeSceneObject(gvrContext, true, redMat);
+            SXRSceneObject box1 = new SXRCubeSceneObject(sxrContext, true, redMat);
             box1.getTransform().setPosition(5f, 5f, 10f);
             box1.setName("bodyA");
-            box1.attachComponent(new SXRMeshCollider(gvrContext, true));
+            box1.attachComponent(new SXRMeshCollider(sxrContext, true));
             mainScene.addSceneObject(box1);
 
-            SXRMaterial whiteMat = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            SXRMaterial whiteMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             whiteMat.setDiffuseColor(1f, 1f, 1f, 1f);
-            SXRSceneObject box2 = new SXRCubeSceneObject(gvrContext, true, whiteMat);
+            SXRSceneObject box2 = new SXRCubeSceneObject(sxrContext, true, whiteMat);
             box2.getTransform().setPosition(5f, 10f, 10f);
             box2.setName("bodyB");
-            box2.attachComponent(new SXRMeshCollider(gvrContext, true));
+            box2.attachComponent(new SXRMeshCollider(sxrContext, true));
             mainScene.addSceneObject(box2);
 
             // 'bodyP' and 'bodyQ' will be linked by a Slider constraint
-            SXRMaterial blueMat = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            SXRMaterial blueMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             blueMat.setDiffuseColor(0f, 0f, 1f, 1f);
-            SXRSceneObject box3 = new SXRCubeSceneObject(gvrContext, true, blueMat);
+            SXRSceneObject box3 = new SXRCubeSceneObject(sxrContext, true, blueMat);
             box3.getTransform().setPosition(-5f, 10f, 10f);
             box3.setName("bodyP");
-            box3.attachComponent(new SXRMeshCollider(gvrContext, true));
+            box3.attachComponent(new SXRMeshCollider(sxrContext, true));
             mainScene.addSceneObject(box3);
 
-            SXRMaterial greenMat = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            SXRMaterial greenMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             greenMat.setDiffuseColor(0f, 1f, 0f, 1f);
-            SXRSceneObject box4 = new SXRCubeSceneObject(gvrContext, true, greenMat);
+            SXRSceneObject box4 = new SXRCubeSceneObject(sxrContext, true, greenMat);
             box4.getTransform().setPosition(-10f, 10f, 10f);
             box4.setName("bodyQ");
-            box4.attachComponent(new SXRMeshCollider(gvrContext, true));
+            box4.attachComponent(new SXRMeshCollider(sxrContext, true));
             mainScene.addSceneObject(box4);
 
-            SXRMaterial yellowMat = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            SXRMaterial yellowMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             yellowMat.setDiffuseColor(1f, 1f, 0f, 1f);
-            SXRSceneObject box5 = new SXRCubeSceneObject(gvrContext, true, yellowMat);
+            SXRSceneObject box5 = new SXRCubeSceneObject(sxrContext, true, yellowMat);
             box5.getTransform().setPosition(-4.5f, 5f, 10.5f);
             box5.setName("barrier");
-            box5.attachComponent(new SXRMeshCollider(gvrContext, true));
+            box5.attachComponent(new SXRMeshCollider(sxrContext, true));
             mainScene.addSceneObject(box5);
 
             // This bullet file was created from a bullet application to add fixed and slider
             // constraints that are not available on Blender
             try {
-                SXRPhysicsLoader.loadPhysicsFile(gvrContext, "fixed_slider.bullet", mainScene);
+                SXRPhysicsLoader.loadPhysicsFile(sxrContext, "fixed_slider.bullet", mainScene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             // This object will replace the "Plane" exported by Blender as the floor of this scene
-            SXRMaterial orangeMat = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            SXRMaterial orangeMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             orangeMat.setDiffuseColor(0.7f, 0.3f, 0f, 1f);
-            SXRSceneObject floor = new SXRSceneObject(gvrContext, 100f, 100f);
+            SXRSceneObject floor = new SXRSceneObject(sxrContext, 100f, 100f);
             floor.getTransform().setPosition(0f, -10f, 0f);
             floor.getTransform().setRotationByAxis(-90f, 1f, 0f, 0f);
             floor.getRenderData().setMaterial(orangeMat);
-            floor.attachComponent(new SXRMeshCollider(gvrContext, floor.getRenderData().getMesh()));
+            floor.attachComponent(new SXRMeshCollider(sxrContext, floor.getRenderData().getMesh()));
             mainScene.addSceneObject(floor);
-            SXRRigidBody floorRb = new SXRRigidBody(gvrContext, 0f);
+            SXRRigidBody floorRb = new SXRRigidBody(sxrContext, 0f);
             floor.attachComponent(floorRb);
         }
     }

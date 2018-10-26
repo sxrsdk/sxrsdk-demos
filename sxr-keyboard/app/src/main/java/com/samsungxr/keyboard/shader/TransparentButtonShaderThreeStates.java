@@ -103,7 +103,7 @@ public class TransparentButtonShaderThreeStates extends SXRShader {
             + "}\n";
 
 
-    public TransparentButtonShaderThreeStates(SXRContext gvrContext) {
+    public TransparentButtonShaderThreeStates(SXRContext sxrContext) {
         super(" float u_opacity, float textureSwitch",
                 "sampler2D texture_t sampler2D textureHover sampler2D textTexture sampler2D textHoverTexture sampler2D textUpperTexture sampler2D textHoverUpperTexture sampler2D textSpecialTexture sampler2D textHoverSpecialTexture",
                 "float3 a_position, float2 a_texcoord", GLSLESVersion.VULKAN);

@@ -26,7 +26,7 @@ public class X3DparserActivity extends SXRActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setMain(x3dParserScript, "gvr.xml");
+        setMain(x3dParserScript, "sxr.xml");
     }
  
 }

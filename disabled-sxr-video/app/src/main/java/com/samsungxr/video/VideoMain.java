@@ -44,10 +44,10 @@ public class VideoMain extends SXRMain {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mSXRContext = gvrContext;
+    public void onInit(SXRContext sxrContext) {
+        mSXRContext = sxrContext;
 
-        SXRScene mainScene = gvrContext.getMainScene();
+        SXRScene mainScene = sxrContext.getMainScene();
 
         // focusableController
         focusableController = new FocusableController();
@@ -65,11 +65,11 @@ public class VideoMain extends SXRMain {
         }
 
         // video control
-        mOverlayUI = new OverlayUI(gvrContext, mMovieManager, mainScene);
+        mOverlayUI = new OverlayUI(sxrContext, mMovieManager, mainScene);
         mainScene.addSceneObject(mOverlayUI);
         mOverlayUI.hide();
 
-        mPicker = new SXRPicker(gvrContext, mainScene);
+        mPicker = new SXRPicker(sxrContext, mainScene);
         mainScene.getEventReceiver().addListener(focusableController);
     }
 

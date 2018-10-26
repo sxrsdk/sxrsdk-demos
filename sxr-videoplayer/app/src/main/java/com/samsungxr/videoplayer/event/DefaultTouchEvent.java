@@ -26,26 +26,26 @@ import com.samsungxr.ITouchEvents;
 public class DefaultTouchEvent implements ITouchEvents {
 
     @Override
-    public void onEnter(SXRSceneObject gvrSceneObject, SXRPicker.SXRPickedObject gvrPickedObject) {
+    public void onEnter(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onExit(SXRSceneObject gvrSceneObject, SXRPicker.SXRPickedObject gvrPickedObject) {
+    public void onExit(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onTouchStart(SXRSceneObject gvrSceneObject, SXRPicker.SXRPickedObject gvrPickedObject) {
+    public void onTouchStart(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onTouchEnd(SXRSceneObject gvrSceneObject, SXRPicker.SXRPickedObject gvrPickedObject) {
+    public void onTouchEnd(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onInside(SXRSceneObject gvrSceneObject, SXRPicker.SXRPickedObject gvrPickedObject) {
+    public void onInside(SXRSceneObject sxrSceneObject, SXRPicker.SXRPickedObject sxrPickedObject) {
     }
 
     @Override
-    public void onMotionOutside(SXRPicker gvrPicker, MotionEvent motionEvent) {
+    public void onMotionOutside(SXRPicker sxrPicker, MotionEvent motionEvent) {
     }
 }

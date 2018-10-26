@@ -28,14 +28,14 @@ public abstract class ControlSceneObject extends SXRSceneObject {
     protected TouchAndGestureImpl touchAndGesturelistener;
     protected GamepadTouchImpl gamepadActionButtonslistener;
 
-    public ControlSceneObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public ControlSceneObject(SXRContext sxrContext) {
+        super(sxrContext);
         ControlSceneObjectBehavior.interactiveObjects.add(this);
     }
 
 
-    public ControlSceneObject(SXRContext gvrContext, float f, float g, SXRTexture t) {
-        super(gvrContext, f, g, t);
+    public ControlSceneObject(SXRContext sxrContext, float f, float g, SXRTexture t) {
+        super(sxrContext, f, g, t);
         ControlSceneObjectBehavior.interactiveObjects.add(this);
     }
 

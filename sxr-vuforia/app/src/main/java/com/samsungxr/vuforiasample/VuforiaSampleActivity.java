@@ -25,7 +25,7 @@ import com.samsungxr.SXRActivity;
 public class VuforiaSampleActivity extends SXRActivity implements
         SampleApplicationControl {
 
-    private static final String TAG = "gvr-vuforia";
+    private static final String TAG = "sxr-vuforia";
     private VuforiaSampleMain main;
 
     private SampleApplicationSession vuforiaAppSession;
@@ -59,7 +59,7 @@ public class VuforiaSampleActivity extends SXRActivity implements
 
         main = new VuforiaSampleMain();
         main.vuforiaAppSession = vuforiaAppSession;
-        setMain(main, "gvr.xml");
+        setMain(main, "sxr.xml");
     }
 
     public static boolean isVuforiaActive() {

@@ -42,7 +42,7 @@ public class OutlineShader extends SXRShader {
                     + "  outColor = u_color;\n"
                     + "}\n";
 
-    public OutlineShader(SXRContext gvrcontext) {
+    public OutlineShader(SXRContext sxrcontext) {
         super("float4 u_color; float u_thickness", "", "float3 a_position float3 a_normal", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

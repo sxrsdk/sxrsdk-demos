@@ -37,9 +37,9 @@ public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeLis
     private float minRange, maxRange;
     private boolean canAnimate = false;
 
-    public SoundWave(SXRContext gvrContext, int width, float minRange, float maxRange) {
+    public SoundWave(SXRContext sxrContext, int width, float minRange, float maxRange) {
 
-        super(gvrContext);
+        super(sxrContext);
         setName(SceneObjectNames.SOUND_WAVE);
         boxes = new SXRSceneObject[width * 5];
         columns = new ArrayList<SXRSceneObject>();
@@ -47,7 +47,7 @@ public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeLis
         this.maxRange = maxRange;
 
         for (int i = 0; i < width; i++)
-            createColumn(gvrContext);
+            createColumn(sxrContext);
 
         currentColumn = 0;
         hide();

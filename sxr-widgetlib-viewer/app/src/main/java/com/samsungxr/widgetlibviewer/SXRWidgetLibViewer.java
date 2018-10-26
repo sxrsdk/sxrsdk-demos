@@ -40,7 +40,7 @@ public class SXRWidgetLibViewer extends SXRActivity
         super.onCreate(savedInstanceState);
 
         mMain = new ViewerMain(this);
-        setMain(mMain, "gvr.xml");
+        setMain(mMain, "sxr.xml");
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SXRWidgetLibViewer extends SXRActivity
                 WidgetLib.destroy();
             }
         } finally {
-            // make sure super is called last always, it clears internal gvrf
+            // make sure super is called last always, it clears internal sxr sdk
             // references and things may crash
             super.onDestroy();
         }

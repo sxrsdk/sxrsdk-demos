@@ -59,9 +59,9 @@ public class Dashboard extends SXRSceneObject {
         return false;
     }
 
-    public Dashboard(SXRContext gvrContext, int gVRAndroidResourceTexture) {
+    public Dashboard(SXRContext sxrContext, int gVRAndroidResourceTexture) {
 
-        super(gvrContext, HIGHT, WIDTH);
+        super(sxrContext, HIGHT, WIDTH);
         setName(SceneObjectNames.DASHBOARD);
 
         Dashboard.currentDashboardHashCode = this.hashCode();
@@ -71,7 +71,7 @@ public class Dashboard extends SXRSceneObject {
         originalRotationZ = getTransform().getRotationZ();
         originalRotationW = getTransform().getRotationW();
 
-        attachComponent(new SXRSphereCollider(gvrContext));
+        attachComponent(new SXRSphereCollider(sxrContext));
     }
 
     public void resetRotation() {

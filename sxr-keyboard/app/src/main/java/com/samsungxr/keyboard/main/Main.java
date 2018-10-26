@@ -129,17 +129,17 @@ public class Main extends SXRMain implements KeyboardEventListener {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) {
+    public void onInit(SXRContext sxrContext) {
 
-        mSXRContext = gvrContext;
+        mSXRContext = sxrContext;
 
-        SpinnerItemFactory.getInstance(gvrContext).init();
+        SpinnerItemFactory.getInstance(sxrContext).init();
 
-        exceptionFeedback = new ExceptionFeedback(gvrContext);
-        gvrContext.getMainScene().getMainCameraRig()
+        exceptionFeedback = new ExceptionFeedback(sxrContext);
+        sxrContext.getMainScene().getMainCameraRig()
                 .addChildObject(exceptionFeedback);
 
-        keyboard = new Keyboard(gvrContext);
+        keyboard = new Keyboard(sxrContext);
         keyboard.setOnKeyboardEventListener(this);
 
         AudioClip.getInstance(mSXRContext.getActivity());
@@ -150,7 +150,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
 
         floor.getTransform().setRotationByAxis(-90, 1, 0, 0);
         floor.getTransform().setPositionY(-10.0f);
-        gvrContext.getMainScene().addSceneObject(floor);
+        sxrContext.getMainScene().addSceneObject(floor);
         floor.getRenderData().setRenderingOrder(0);
 
         createSkybox();
@@ -171,15 +171,15 @@ public class Main extends SXRMain implements KeyboardEventListener {
 
         configureKeyboardParent();
 
-        flagListCostructor = new SphereStaticList(gvrContext);
+        flagListCostructor = new SphereStaticList(sxrContext);
 
-        SXRCameraRig cameraObject = gvrContext.getMainScene()
+        SXRCameraRig cameraObject = sxrContext.getMainScene()
                 .getMainCameraRig();
         for (SXRSceneObject spherePack : flagListCostructor.listFlag) {
-            spherePack.getRenderData().setMaterial(new SXRMaterial(gvrContext, new SXRShaderId(SphereShader.class)));
+            spherePack.getRenderData().setMaterial(new SXRMaterial(sxrContext, new SXRShaderId(SphereShader.class)));
             rotateObject(spherePack, cameraObject.getTransform());
 
-            double distance = Util.distance(spherePack, gvrContext
+            double distance = Util.distance(spherePack, sxrContext
                     .getMainScene().getMainCameraRig().getTransform());
             float scaleFactor = Util.getHitAreaScaleFactor((float) distance);
             spherePack.getTransform().setScale(scaleFactor, scaleFactor,
@@ -189,11 +189,11 @@ public class Main extends SXRMain implements KeyboardEventListener {
                     .getTransform()
                     .setScale(1 / scaleFactor, 1 / scaleFactor, 1 / scaleFactor);
 
-            gvrContext.getMainScene().addSceneObject(spherePack);
+            sxrContext.getMainScene().addSceneObject(spherePack);
         }
 
-        gvrContext.getMainScene().getEventReceiver().addListener(mPickHandler);
-        mPicker = new SXRPicker(gvrContext, gvrContext.getMainScene());
+        sxrContext.getMainScene().getEventReceiver().addListener(mPickHandler);
+        mPicker = new SXRPicker(sxrContext, sxrContext.getMainScene());
         createAndAttachAllEyePointee();
     }
 

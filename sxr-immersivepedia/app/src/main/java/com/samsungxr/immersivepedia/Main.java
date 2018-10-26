@@ -43,28 +43,28 @@ public class Main extends SXRMain {
     private PickHandler pickHandler;
 
     @Override
-    public void onInit(final SXRContext gvrContext) throws Throwable {
-        mGvrContext = gvrContext;
+    public void onInit(final SXRContext sxrContext) throws Throwable {
+        mGvrContext = sxrContext;
 
-        AudioClip.getInstance(gvrContext.getContext());
-        mediaPlayer = MediaPlayer.create(gvrContext.getContext(),
+        AudioClip.getInstance(sxrContext.getContext());
+        mediaPlayer = MediaPlayer.create(sxrContext.getContext(),
                 R.raw.sfx_ambient_1_1);
         mediaPlayer.setLooping(true);
         mediaPlayer.setVolume(1.0f, 1.0f);
         mediaPlayer.start();
 
-        dinosaurScene = new DinosaurScene(gvrContext);
-        menuScene = new MenuScene(gvrContext);
+        dinosaurScene = new DinosaurScene(sxrContext);
+        menuScene = new MenuScene(sxrContext);
         pickHandler = new PickHandler();
         closeSplashScreen();
 
-        gvrContext.runOnGlThreadPostRender(64, new Runnable() {
+        sxrContext.runOnGlThreadPostRender(64, new Runnable() {
             @Override
             public void run() {
                 setMainScene(menuScene);
             }
         });
-        gvrContext.getInputManager().selectController(new SXRInputManager.ICursorControllerSelectListener()
+        sxrContext.getInputManager().selectController(new SXRInputManager.ICursorControllerSelectListener()
         {
             public void onCursorControllerSelected(SXRCursorController newController, SXRCursorController oldController)
             {

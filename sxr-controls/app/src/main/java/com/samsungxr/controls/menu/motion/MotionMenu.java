@@ -43,8 +43,8 @@ public class MotionMenu extends MenuWindow {
     private GridSceneObjects mGrid;
     private RadioGrupoSceneObject radioGroup;
 
-    public MotionMenu(SXRContext gvrContext) {
-        super(gvrContext);
+    public MotionMenu(SXRContext sxrContext) {
+        super(sxrContext);
 
         createPreviewBox();
 

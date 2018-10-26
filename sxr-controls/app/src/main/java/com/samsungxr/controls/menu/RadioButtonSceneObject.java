@@ -61,8 +61,8 @@ public class RadioButtonSceneObject extends MenuControlSceneObject {
 
     private float second;
 
-    public RadioButtonSceneObject(SXRContext gvrContext, String title, float second) {
-        super(gvrContext);
+    public RadioButtonSceneObject(SXRContext sxrContext, String title, float second) {
+        super(sxrContext);
 
         this.title = title;
         this.second = second;
@@ -72,9 +72,9 @@ public class RadioButtonSceneObject extends MenuControlSceneObject {
         WIDTH = (int) (100.0f * quadWidth);
         HEIGHT = (int) (100.0f * quadHeigth);
 
-        attachRenderData(new SXRRenderData(gvrContext));
+        attachRenderData(new SXRRenderData(sxrContext));
         getRenderData().setMaterial(
-                new SXRMaterial(gvrContext, new SXRShaderId(ButtonShader.class)));
+                new SXRMaterial(sxrContext, new SXRShaderId(ButtonShader.class)));
         getRenderData().setMesh(sMesh);
 
         createTextures();
@@ -82,7 +82,7 @@ public class RadioButtonSceneObject extends MenuControlSceneObject {
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
         getRenderData().setRenderingOrder(RenderingOrder.MENU_FRAME_TEXT);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
 
     }
 

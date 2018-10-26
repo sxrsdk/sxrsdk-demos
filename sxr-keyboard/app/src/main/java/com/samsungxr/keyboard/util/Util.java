@@ -269,8 +269,8 @@ public class Util {
         return (float) (d * ratio);
     }
 
-    public static boolean checkcheckEyePointeeHolder(SXRContext gvrContext, Object... varargsObject) {
-        SXRPicker.SXRPickedObject[] pickedObjects = SXRPicker.pickObjects(gvrContext.getMainScene(), 0, 0, 0, 0, 0, -1);
+    public static boolean checkcheckEyePointeeHolder(SXRContext sxrContext, Object... varargsObject) {
+        SXRPicker.SXRPickedObject[] pickedObjects = SXRPicker.pickObjects(sxrContext.getMainScene(), 0, 0, 0, 0, 0, -1);
 
         if (pickedObjects.length != 0 && varargsObject.length >= 1) {
             for (SXRPicker.SXRPickedObject pickedObject : pickedObjects) {

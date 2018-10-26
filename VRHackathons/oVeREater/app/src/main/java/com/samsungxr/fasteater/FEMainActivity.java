@@ -19,7 +19,7 @@ public class FEMainActivity extends SXRActivity {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         viewManager = new FEViewManager();
-        setScript(viewManager, "gvr.xml");
+        setScript(viewManager, "sxr.xml");
     }
     
     @Override

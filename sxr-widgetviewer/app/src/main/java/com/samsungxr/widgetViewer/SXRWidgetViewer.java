@@ -67,7 +67,7 @@ public class SXRWidgetViewer extends SXRActivity
         mMain = new ViewerMain(mPlugin);
         mPlugin.setMain(mMain);
         mWidget.mMain = mMain;
-        setMain(mMain, "gvr.xml");
+        setMain(mMain, "sxr.xml");
     }
 
     @Override

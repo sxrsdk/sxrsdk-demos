@@ -32,9 +32,9 @@ public class OverlayTitle extends FadeableObject implements Focusable, IViewEven
 
     private SXRViewSceneObject mTitleObject;
 
-    public OverlayTitle(SXRContext gvrContext) {
-        super(gvrContext);
-        mTitleObject = new SXRViewSceneObject(gvrContext, R.layout.layout_title_image, this);
+    public OverlayTitle(SXRContext sxrContext) {
+        super(sxrContext);
+        mTitleObject = new SXRViewSceneObject(sxrContext, R.layout.layout_title_image, this);
     }
 
     @NonNull
@@ -44,12 +44,12 @@ public class OverlayTitle extends FadeableObject implements Focusable, IViewEven
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-        addChildObject(gvrViewSceneObject);
+    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        addChildObject(sxrViewSceneObject);
     }
 
     @Override

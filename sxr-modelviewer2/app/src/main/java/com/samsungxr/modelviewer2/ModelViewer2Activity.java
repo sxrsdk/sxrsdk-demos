@@ -78,7 +78,7 @@ public class ModelViewer2Activity extends SXRActivity
         mPlugin.setMain(mManager);
         mWidget.mManager = mManager;
 
-        setMain(mManager, "gvr.xml");
+        setMain(mManager, "sxr.xml");
     }
 
 

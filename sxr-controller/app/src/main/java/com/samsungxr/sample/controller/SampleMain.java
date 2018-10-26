@@ -75,9 +75,9 @@ public class SampleMain extends SXRMain
     }
 
     @Override
-    public void onInit(SXRContext gvrContext)
+    public void onInit(SXRContext sxrContext)
     {
-        mSXRContext = gvrContext;
+        mSXRContext = sxrContext;
         mainScene = mSXRContext.getMainScene();
         mainScene.getEventReceiver().addListener(mPickHandler);
         SXRInputManager inputManager = mSXRContext.getInputManager();
@@ -202,11 +202,11 @@ public class SampleMain extends SXRMain
         object.setName("MeshBunny4");
         mainScene.addSceneObject(object);
 
-        SXRAssetLoader assetLoader = gvrContext.getAssetLoader();
+        SXRAssetLoader assetLoader = sxrContext.getAssetLoader();
         SXRTexture texture = assetLoader.loadTexture(
-                new SXRAndroidResource(gvrContext, R.drawable.skybox_gridroom));
-        SXRMaterial material = new SXRMaterial(gvrContext);
-        SXRSphereSceneObject skyBox = new SXRSphereSceneObject(gvrContext, false, material);
+                new SXRAndroidResource(sxrContext, R.drawable.skybox_gridroom));
+        SXRMaterial material = new SXRMaterial(sxrContext);
+        SXRSphereSceneObject skyBox = new SXRSphereSceneObject(sxrContext, false, material);
         skyBox.getTransform().setScale(SCALE, SCALE, SCALE);
         skyBox.getRenderData().getMaterial().setMainTexture(texture);
         mainScene.addSceneObject(skyBox);

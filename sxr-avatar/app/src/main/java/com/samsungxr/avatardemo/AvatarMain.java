@@ -95,13 +95,13 @@ public class AvatarMain extends SXRMain
 
 
     @Override
-    public void onInit(SXRContext gvrContext)
+    public void onInit(SXRContext sxrContext)
     {
-        mContext = gvrContext;
-        mScene = gvrContext.getMainScene();
+        mContext = sxrContext;
+        mScene = sxrContext.getMainScene();
         SXRCameraRig rig = mScene.getMainCameraRig();
-        SXRDirectLight topLight = new SXRDirectLight(gvrContext);
-        SXRSceneObject topLightObj = new SXRSceneObject(gvrContext);
+        SXRDirectLight topLight = new SXRDirectLight(sxrContext);
+        SXRSceneObject topLightObj = new SXRSceneObject(sxrContext);
 
         topLightObj.attachComponent(topLight);
         topLightObj.getTransform().rotateByAxis(-90, 1, 0, 0);
@@ -110,12 +110,12 @@ public class AvatarMain extends SXRMain
         rig.getRightCamera().setBackgroundColor(Color.LTGRAY);
         rig.getOwnerObject().attachComponent(new SXRDirectLight(mContext));
 
-        mAvatar = new SXRAvatar(gvrContext, "YBot");
+        mAvatar = new SXRAvatar(sxrContext, "YBot");
         mAvatar.getEventReceiver().addListener(mAvatarListener);
         mBoneMap = readFile(mBoneMapPath);
         try
         {
-            mAvatar.loadModel(new SXRAndroidResource(gvrContext, mModelPath));
+            mAvatar.loadModel(new SXRAndroidResource(sxrContext, mModelPath));
         }
         catch (IOException e)
         {
@@ -123,7 +123,7 @@ public class AvatarMain extends SXRMain
             mActivity.finish();
             mActivity = null;
         }
-        gvrContext.getInputManager().selectController();
+        sxrContext.getInputManager().selectController();
     }
 
     private void loadNextAnimation(SXRAvatar avatar, String bonemap)

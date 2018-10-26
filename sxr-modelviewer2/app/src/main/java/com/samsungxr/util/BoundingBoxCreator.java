@@ -9,8 +9,8 @@ import org.joml.Vector3f;
 public class BoundingBoxCreator {
     private SXRMesh mesh;
 
-    public BoundingBoxCreator(SXRContext gvrContext, SXRSceneObject.BoundingVolume bv){
-        mesh = new SXRMesh(gvrContext);
+    public BoundingBoxCreator(SXRContext sxrContext, SXRSceneObject.BoundingVolume bv){
+        mesh = new SXRMesh(sxrContext);
 
         Vector3f min_corner = bv.minCorner;
         Vector3f max_corner = bv.maxCorner;

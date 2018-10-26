@@ -31,8 +31,8 @@ public class SampleScript extends SXRMain {
     private SXRContext mSXRContext = null;
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        SXRScene scene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) {
+        SXRScene scene = sxrContext.getMainScene();
         scene.getMainCameraRig().getLeftCamera().setBackgroundColor(1.0f, 1.0f, 0, 1.0f);
         scene.getMainCameraRig().getRightCamera().setBackgroundColor(1.0f, 1.0f, 0, 1.0f);
         float Z = -4;
@@ -42,17 +42,17 @@ public class SampleScript extends SXRMain {
         float[] E = { 2.5f, 1, Z, 1.5f, 1, Z, 1.5f, -1, Z,
                       2.5f, -1, Z, 2.5f, 0, Z, 1.5f, 0, Z,
                       1.5f, 1, Z, 1.5f, -1, Z};
-    	SXRMaterial redMaterial = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRMaterial blueMaterial = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRMesh mesh = new SXRMesh(gvrContext);
-        SXRRenderData rd = new SXRRenderData(gvrContext);
+    	SXRMaterial redMaterial = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
+        SXRMaterial blueMaterial = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
+        SXRMesh mesh = new SXRMesh(sxrContext);
+        SXRRenderData rd = new SXRRenderData(sxrContext);
 
         redMaterial.setDiffuseColor(1, 0, 0, 1);
         redMaterial.setLineWidth(4.0f);
         blueMaterial.setDiffuseColor(0, 0, 1, 0.5f);
         blueMaterial.setLineWidth(8.0f);
         
-        SXRSceneObject Lobj = new SXRSceneObject(gvrContext);
+        SXRSceneObject Lobj = new SXRSceneObject(sxrContext);
         mesh.setVertices(L);
     	rd.setMesh(mesh);
     	rd.setDrawMode(GLES20.GL_LINE_STRIP);
@@ -60,9 +60,9 @@ public class SampleScript extends SXRMain {
     	Lobj.attachRenderData(rd);
     	scene.addSceneObject(Lobj);
 
-        SXRSceneObject Iobj = new SXRSceneObject(gvrContext);
-    	mesh = new SXRMesh(gvrContext);
-    	rd = new SXRRenderData(gvrContext);
+        SXRSceneObject Iobj = new SXRSceneObject(sxrContext);
+    	mesh = new SXRMesh(sxrContext);
+    	rd = new SXRRenderData(sxrContext);
     	mesh.setVertices(I);
         rd.setMesh(mesh);
         rd.setDrawMode(GLES20.GL_LINES);
@@ -70,20 +70,20 @@ public class SampleScript extends SXRMain {
         Iobj.attachRenderData(rd);
         scene.addSceneObject(Iobj);
 
-        SXRSceneObject Nobj = new SXRSceneObject(gvrContext);
-        mesh = new SXRMesh(gvrContext);
+        SXRSceneObject Nobj = new SXRSceneObject(sxrContext);
+        mesh = new SXRMesh(sxrContext);
         mesh.setVertices(N);
-        rd = new SXRRenderData(gvrContext);
+        rd = new SXRRenderData(sxrContext);
         rd.setMesh(mesh);
         rd.setDrawMode(GLES20.GL_LINE_STRIP);
         rd.setMaterial(redMaterial);
         Nobj.attachRenderData(rd);
         scene.addSceneObject(Nobj);
         
-        SXRSceneObject Eobj = new SXRSceneObject(gvrContext);
-        mesh = new SXRMesh(gvrContext);
+        SXRSceneObject Eobj = new SXRSceneObject(sxrContext);
+        mesh = new SXRMesh(sxrContext);
         mesh.setVertices(E);
-        rd = new SXRRenderData(gvrContext);
+        rd = new SXRRenderData(sxrContext);
         rd.setMesh(mesh);
         rd.setDrawMode(GLES20.GL_LINES);
         rd.setMaterial(blueMaterial);
@@ -91,7 +91,7 @@ public class SampleScript extends SXRMain {
         Eobj.attachRenderData(rd);
         scene.addSceneObject(Eobj);
         
-        SXRSceneObject sphere = new SXRSphereSceneObject(gvrContext);
+        SXRSceneObject sphere = new SXRSphereSceneObject(sxrContext);
         rd = sphere.getRenderData();
         rd.setAlphaBlend(true);
         rd.setMaterial(blueMaterial);

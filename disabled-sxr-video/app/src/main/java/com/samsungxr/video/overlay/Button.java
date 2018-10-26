@@ -24,8 +24,8 @@ import com.samsungxr.video.focus.FocusableSceneObject;
 
 public class Button extends FocusableSceneObject {
 
-    public Button(SXRContext gvrContext, SXRMesh mesh, SXRTexture active, SXRTexture inactive) {
-        super(gvrContext, mesh, inactive);
+    public Button(SXRContext sxrContext, SXRMesh mesh, SXRTexture active, SXRTexture inactive) {
+        super(sxrContext, mesh, inactive);
         this.getRenderData().getMaterial().setTexture("active_texture", active);
         this.getRenderData().getMaterial().setTexture("inactive_texture", inactive);
         this.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT + 1);

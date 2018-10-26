@@ -75,7 +75,7 @@ public class DiffuseShader extends SXRShader {
             + "  outColor = vec4( color, 1.0 );\n" //
             + "}\n";
 
-    public DiffuseShader(SXRContext gvrContext) {
+    public DiffuseShader(SXRContext sxrContext) {
         super("float3 u_eye, float3 u_light, float4 u_color ", "sampler2D u_texture", "float3 a_position, float2 a_texcoord, float3 a_normal ", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

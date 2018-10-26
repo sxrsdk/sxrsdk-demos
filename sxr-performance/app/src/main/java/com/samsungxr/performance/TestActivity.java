@@ -25,7 +25,7 @@ public class TestActivity extends SXRActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setMain(new TestMain(this), "gvr.xml");
+        setMain(new TestMain(this), "sxr.xml");
     }
 
 }

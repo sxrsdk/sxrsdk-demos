@@ -25,8 +25,8 @@ public class ModelViewer extends BaseContentScene {
         Points
     };
 
-    ModelViewer(SXRContext gvrContext, Widget.OnTouchListener homeListener) {
-        super(gvrContext);
+    ModelViewer(SXRContext sxrContext, Widget.OnTouchListener homeListener) {
+        super(sxrContext);
 
         JSONObject properties = WidgetLib.getPropertyManager().getInstanceProperties(getClass(), TAG);
         final float zoom_step = optFloat(properties, Properties.zoom_step, ZOOM_STEP);
@@ -49,12 +49,12 @@ public class ModelViewer extends BaseContentScene {
         final JSONObject labelProperties = optJSONObject(listProperties, CheckList.Properties.label);
 
         List<CheckList.Item> shaders = new ArrayList<>();
-        shaders.add(new CheckList.Item(gvrContext, "Original", labelProperties, new ShaderAction(SHADER.Original)));
-        shaders.add(new CheckList.Item(gvrContext, "No Texture", labelProperties, new ShaderAction(SHADER.NoTexture)));
-        shaders.add(new CheckList.Item(gvrContext, "Lines", labelProperties, new ShaderAction(SHADER.Lines)));
-        shaders.add(new CheckList.Item(gvrContext, "Lines_Loop", labelProperties, new ShaderAction(SHADER.LinesLoop)));
-        shaders.add(new CheckList.Item(gvrContext, "Points", labelProperties, new ShaderAction(SHADER.Points)));
-        mShaderList = new CheckList(gvrContext, "ShaderList", shaders);
+        shaders.add(new CheckList.Item(sxrContext, "Original", labelProperties, new ShaderAction(SHADER.Original)));
+        shaders.add(new CheckList.Item(sxrContext, "No Texture", labelProperties, new ShaderAction(SHADER.NoTexture)));
+        shaders.add(new CheckList.Item(sxrContext, "Lines", labelProperties, new ShaderAction(SHADER.Lines)));
+        shaders.add(new CheckList.Item(sxrContext, "Lines_Loop", labelProperties, new ShaderAction(SHADER.LinesLoop)));
+        shaders.add(new CheckList.Item(sxrContext, "Points", labelProperties, new ShaderAction(SHADER.Points)));
+        mShaderList = new CheckList(sxrContext, "ShaderList", shaders);
     }
 
     private final static SHADER DEFAULT_SHADER_ID = SHADER.Original;
@@ -90,8 +90,8 @@ public class ModelViewer extends BaseContentScene {
     }
 
     class ModelBox extends GroupWidget {
-        ModelBox(SXRContext gvrContext, Model model) {
-            super(gvrContext);
+        ModelBox(SXRContext sxrContext, Model model) {
+            super(sxrContext);
             OrientedLayout layout = new com.samsungxr.widgetlib.widget.layout.basic.LinearLayout();
             getDefaultLayout().setDividerPadding(mPadding, Layout.Axis.X);
             applyLayout(layout);

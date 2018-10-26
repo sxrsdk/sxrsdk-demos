@@ -34,16 +34,16 @@ public class StarBoxSceneObject extends SXRSceneObject {
     private float evPositionX, evPositionY, evPositionZ, evRotationW;
     private SXRRotationByAxisAnimation rotationAnimation;
 
-    public StarBoxSceneObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public StarBoxSceneObject(SXRContext sxrContext) {
+        super(sxrContext);
 
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         String clearButtonText = res.getString(R.string.clear_button);
 
         createStar();
 
-        playButton = new AnimButtonPlay(gvrContext);
-        cleanButton = new AnimCleanButton(gvrContext, clearButtonText);
+        playButton = new AnimButtonPlay(sxrContext);
+        cleanButton = new AnimCleanButton(sxrContext, clearButtonText);
 
         float starX = star.getTransform().getPositionX();
         float starY = star.getTransform().getPositionY();

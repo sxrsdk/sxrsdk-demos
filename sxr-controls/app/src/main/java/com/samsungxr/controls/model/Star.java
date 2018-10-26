@@ -31,38 +31,38 @@ public class Star extends SXRSceneObject {
     private static final float Y_ANIMATION_DELTA = 10;
     private static final float STAR_SCALE = 0.75f;
 
-    public Star(SXRContext gvrContext) {
-        super(gvrContext, gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext,
+    public Star(SXRContext sxrContext) {
+        super(sxrContext, sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                         R.raw.star)),
-                gvrContext
-                        .getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.star_diffuse)));
+                sxrContext
+                        .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.star_diffuse)));
         this.getRenderData().getMaterial().setOpacity(0);
         this.getTransform().setScale(STAR_SCALE, STAR_SCALE, STAR_SCALE);
 
     }
 
-    public void playMoveAnimation(SXRContext gvrContext, SXRSceneObject returnTarget) {
+    public void playMoveAnimation(SXRContext sxrContext, SXRSceneObject returnTarget) {
         getTransform().setPosition(returnTarget.getTransform().getPositionX(),
                 returnTarget.getTransform().getPositionY(),
                 returnTarget.getTransform().getPositionZ());
         getTransform().setRotationByAxis(
                 0, 1, 1, 1);
         getTransform().rotateByAxis(
-                MathUtils.getYRotationAngle(this, gvrContext.getMainScene().getMainCameraRig()), 0,
+                MathUtils.getYRotationAngle(this, sxrContext.getMainScene().getMainCameraRig()), 0,
                 1, 0);
         SXRAnimation anim = new SXRRelativeMotionAnimation(this, ANIMATION_DURATION, 0,
                 Y_ANIMATION_DELTA, 0);
-        anim.start(gvrContext.getAnimationEngine());
-        playOpacityAnimation(gvrContext);
+        anim.start(sxrContext.getAnimationEngine());
+        playOpacityAnimation(sxrContext);
 
     }
 
-    public void playOpacityAnimation(SXRContext gvrContext) {
+    public void playOpacityAnimation(SXRContext sxrContext) {
 
         this.getRenderData().getMaterial().setOpacity(1);
         SXRAnimation anim = new SXROpacityAnimation(this, OPACITY_ANIMATION_DURATION, 0);
 
-        anim.start(gvrContext.getAnimationEngine());
+        anim.start(sxrContext.getAnimationEngine());
 
     }
 

@@ -51,16 +51,16 @@ public class PlayNextDialog extends FadeableObject implements View.OnClickListen
     private RelativeLayout OverlayScene;
     private SXRViewSceneObject mPlayNextObject;
 
-    public PlayNextDialog(SXRContext gvrContext, @NonNull OnPlayNextListener listener) {
-        super(gvrContext);
-        mPlayNextObject = new SXRViewSceneObject(gvrContext, R.layout.layout_play_next, this);
+    public PlayNextDialog(SXRContext sxrContext, @NonNull OnPlayNextListener listener) {
+        super(sxrContext);
+        mPlayNextObject = new SXRViewSceneObject(sxrContext, R.layout.layout_play_next, this);
         setName(getClass().getSimpleName());
         mOnPlayNextListener = listener;
         mCountdownTimer = new CountdownTimer(this);
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
         mThumbnail = view.findViewById(R.id.thumbnail);
         mTime = view.findViewById(R.id.time);
         mTitle = view.findViewById(R.id.title);
@@ -88,8 +88,8 @@ public class PlayNextDialog extends FadeableObject implements View.OnClickListen
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-        addChildObject(gvrViewSceneObject);
+    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        addChildObject(sxrViewSceneObject);
     }
 
     private void setTime(final int time) {

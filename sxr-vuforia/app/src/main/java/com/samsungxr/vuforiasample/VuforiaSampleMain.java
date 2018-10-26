@@ -35,9 +35,9 @@ import android.util.Log;
 
 public class VuforiaSampleMain extends SXRMain {
 
-    private static final String TAG = "gvr-vuforia";
+    private static final String TAG = "sxr-vuforia";
 
-    private SXRContext gvrContext = null;
+    private SXRContext sxrContext = null;
     private SXRSceneObject teapot = null;
     private SXRSceneObject passThroughObject = null;
     private Renderer mRenderer = null;
@@ -63,9 +63,9 @@ public class VuforiaSampleMain extends SXRMain {
     SXRTexture passThroughTexture;
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        this.gvrContext = gvrContext;
-        mainScene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) {
+        this.sxrContext = sxrContext;
+        mainScene = sxrContext.getMainScene();
         mainScene.getMainCameraRig().setFarClippingDistance(20000);
 
         createTeaPotObject();
@@ -96,7 +96,7 @@ public class VuforiaSampleMain extends SXRMain {
     }
 
     void onVuforiaInitialized() {
-        gvrContext.runOnGlThread(new Runnable() {
+        sxrContext.runOnGlThread(new Runnable() {
             @Override
             public void run() {
                 createCameraPassThrough();
@@ -109,13 +109,13 @@ public class VuforiaSampleMain extends SXRMain {
     }
 
     private void createCameraPassThrough() {
-        passThroughObject = new SXRSceneObject(gvrContext, 1.0f, 1.0f);
+        passThroughObject = new SXRSceneObject(sxrContext, 1.0f, 1.0f);
 
         passThroughObject.getTransform().setPosition(0.0f, 0.0f, -100.0f);
         passThroughObject.getTransform().setScaleX(200f);
         passThroughObject.getTransform().setScaleY(200f);
 
-        passThroughTexture = new SXRRenderTexture(gvrContext,
+        passThroughTexture = new SXRRenderTexture(sxrContext,
                 VUFORIA_CAMERA_WIDTH, VUFORIA_CAMERA_HEIGHT);
 
         mTextureUnit = new GLTextureUnit(0);
@@ -123,11 +123,11 @@ public class VuforiaSampleMain extends SXRMain {
         final boolean result = Renderer.getInstance().setVideoBackgroundTexture(textureData);
         if (!result) {
             Log.e(TAG, "Vuforia's setVideoBackgroundTexture failed");
-            gvrContext.getActivity().finish();
+            sxrContext.getActivity().finish();
             return;
         }
 
-        gvrContext.registerDrawFrameListener(new SXRDrawFrameListener() {
+        sxrContext.registerDrawFrameListener(new SXRDrawFrameListener() {
             @Override
             public void onDrawFrame(float frameTime) {
                 Renderer.getInstance().begin();
@@ -151,7 +151,7 @@ public class VuforiaSampleMain extends SXRMain {
                             .getTextureSize().getData()[1]);
 
                     SXRRenderData renderData = passThroughObject.getRenderData();
-                    SXRMaterial material = new SXRMaterial(gvrContext, SXRShaderType.Texture.ID);
+                    SXRMaterial material = new SXRMaterial(sxrContext, SXRShaderType.Texture.ID);
 
                     material.setMainTexture(passThroughTexture);
                     renderData.setMaterial(material);
@@ -174,14 +174,14 @@ public class VuforiaSampleMain extends SXRMain {
 
     private void createTeaPotObject() {
         try {
-            //modelShader = new ModelShader(gvrContext);
-            SXRMesh teapotMesh = gvrContext.getAssetLoader().loadMesh(
-                    new SXRAndroidResource(gvrContext, "teapot.obj"));
-            SXRTexture teapotTexture = gvrContext.getAssetLoader().loadTexture(
-                    new SXRAndroidResource(gvrContext.getContext(), "teapot_tex1.jpg"));
-            teapot = new SXRSceneObject(gvrContext, teapotMesh);
+            //modelShader = new ModelShader(sxrContext);
+            SXRMesh teapotMesh = sxrContext.getAssetLoader().loadMesh(
+                    new SXRAndroidResource(sxrContext, "teapot.obj"));
+            SXRTexture teapotTexture = sxrContext.getAssetLoader().loadTexture(
+                    new SXRAndroidResource(sxrContext.getContext(), "teapot_tex1.jpg"));
+            teapot = new SXRSceneObject(sxrContext, teapotMesh);
 
-            SXRMaterial material = new SXRMaterial(gvrContext, new SXRShaderId(ModelShader.class));
+            SXRMaterial material = new SXRMaterial(sxrContext, new SXRShaderId(ModelShader.class));
             material.setTexture(ModelShader.TEXTURE_KEY, teapotTexture);
 
             teapot.getRenderData().setMaterial(material);

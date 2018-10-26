@@ -30,6 +30,6 @@ public class SampleActivity extends SXRActivity {
 
         Log.d(TAG, "onCreate");
         mMain = new SampleMain();
-        setMain(mMain, "gvr.xml");
+        setMain(mMain, "sxr.xml");
     }
 }

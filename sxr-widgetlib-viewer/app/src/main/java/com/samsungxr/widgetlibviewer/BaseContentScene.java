@@ -17,12 +17,12 @@ import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.optFloat;
 import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.optJSONObject;
 
 public abstract class BaseContentScene extends ScrollableContentScene {
-    public BaseContentScene(SXRContext gvrContext) {
-        mGvrContext = gvrContext;
+    public BaseContentScene(SXRContext sxrContext) {
+        mGvrContext = sxrContext;
         JSONObject properties = WidgetLib.getPropertyManager().getInstanceProperties(getClass(), TAG);
         final float padding = optFloat(properties, Properties.padding, CONTROL_BAR_PADDING);
 
-        mMainWidget = new GroupWidget(gvrContext, 0, 0);
+        mMainWidget = new GroupWidget(sxrContext, 0, 0);
         mMainWidget.setName("MainWidget < " + TAG + " >");
 
         LinearLayout mainLayout = new LinearLayout();
@@ -33,8 +33,8 @@ public abstract class BaseContentScene extends ScrollableContentScene {
 
         JSONObject controlBarProperties = optJSONObject(properties, Properties.control_bar);
         mControlBar = controlBarProperties != null ?
-                new ControlBar(gvrContext, controlBarProperties):
-                new ControlBar(gvrContext);
+                new ControlBar(sxrContext, controlBarProperties):
+                new ControlBar(sxrContext);
     }
 
     abstract protected Widget createContent();

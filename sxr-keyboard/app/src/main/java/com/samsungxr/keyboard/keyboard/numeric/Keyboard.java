@@ -68,8 +68,8 @@ public class Keyboard extends SXRSceneObject {
 
     private KeyboardEventListener keyboardEventListener;
 
-    public Keyboard(SXRContext gvrContext) {
-        super(gvrContext);
+    public Keyboard(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.KEYBOARD);
         keyboardAlphabetic = new KeyboardAlphabetic(getSXRContext());
         numericKeyboard = new NumericKeyboard(getSXRContext());

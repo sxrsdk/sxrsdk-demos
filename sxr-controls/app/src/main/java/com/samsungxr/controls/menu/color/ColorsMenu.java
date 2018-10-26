@@ -45,8 +45,8 @@ public class ColorsMenu extends MenuWindow {
     private GridSceneObjects mGrid;
     private RadioGrupoSceneObject radioGroup;
 
-    public ColorsMenu(SXRContext gvrContext) {
-        super(gvrContext);
+    public ColorsMenu(SXRContext sxrContext) {
+        super(sxrContext);
 
         createPreviewBox();
 

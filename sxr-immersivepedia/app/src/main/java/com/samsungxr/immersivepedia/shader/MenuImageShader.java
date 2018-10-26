@@ -29,10 +29,10 @@ public class MenuImageShader extends SXRShaderTemplate {
     public static final String STATE2_TEXTURE = "state2";
     public static final String TEXTURE_SWITCH = "textureSwitch";
 
-    public MenuImageShader(SXRContext gvrContext) {
+    public MenuImageShader(SXRContext sxrContext) {
         super("float textureSwitch float u_opacity", "sampler2D state1 sampler2D state2 ", "float4 a_position, float2 a_texcoord", GLSLESVersion.VULKAN);
 
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.menu_image_shader_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context,R.raw.menu_image_shader_vertex));
 

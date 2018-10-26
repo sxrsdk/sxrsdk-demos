@@ -38,45 +38,45 @@ public class Seekbar extends SXRSceneObject {
     private SXRSceneObject mCurrentTime = null;
     private SXRSceneObject mDuration = null;
 
-    public Seekbar(SXRContext gvrContext) throws FileNotFoundException {
-        super(gvrContext);
+    public Seekbar(SXRContext sxrContext) throws FileNotFoundException {
+        super(sxrContext);
         getTransform().setPosition(-0.1f, Y, -DEPTH);
 
-        mPlayedSide = new SXRSceneObject(gvrContext, gvrContext.createQuad(
-                1.0f, 0.1f), gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/dark-gray.png")));
+        mPlayedSide = new SXRSceneObject(sxrContext, sxrContext.createQuad(
+                1.0f, 0.1f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/dark-gray.png")));
         mPlayedSide.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 2);
         mPlayedSide.getRenderData().setOffset(true);
         mPlayedSide.getRenderData().setOffsetFactor(-2.0f);
         mPlayedSide.getRenderData().setOffsetUnits(-2.0f);
 
-        mLeftSide = new SXRSceneObject(gvrContext, gvrContext.createQuad(1.0f,
-                0.1f), gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/light-gray.png")));
+        mLeftSide = new SXRSceneObject(sxrContext, sxrContext.createQuad(1.0f,
+                0.1f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/light-gray.png")));
         mLeftSide.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 2);
         mLeftSide.getRenderData().setOffset(true);
         mLeftSide.getRenderData().setOffsetFactor(-2.0f);
         mLeftSide.getRenderData().setOffsetUnits(-2.0f);
 
-        mPointer = new SXRSceneObject(gvrContext, gvrContext.createQuad(0.08f,
-                0.3f), gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/dark-gray-circle.png")));
+        mPointer = new SXRSceneObject(sxrContext, sxrContext.createQuad(0.08f,
+                0.3f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/dark-gray-circle.png")));
         mPointer.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 3);
         mPointer.getRenderData().setOffset(true);
         mPointer.getRenderData().setOffsetFactor(-3.0f);
         mPointer.getRenderData().setOffsetUnits(-3.0f);
 
-        mGlow = new SXRSceneObject(gvrContext,
-                gvrContext.createQuad(8.8f, 0.5f),
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/seekbar-glow.png")));
+        mGlow = new SXRSceneObject(sxrContext,
+                sxrContext.createQuad(8.8f, 0.5f),
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/seekbar-glow.png")));
         mGlow.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 1);
         mGlow.getRenderData().setOffset(true);
         mGlow.getRenderData().setOffsetFactor(-1.0f);
         mGlow.getRenderData().setOffsetUnits(-1.0f);
 
-        mCurrentTime = new SXRSceneObject(gvrContext, gvrContext.createQuad(
-                2.4f, 0.3f), TextFactory.create(gvrContext, "1111"));
+        mCurrentTime = new SXRSceneObject(sxrContext, sxrContext.createQuad(
+                2.4f, 0.3f), TextFactory.create(sxrContext, "1111"));
         mCurrentTime.getTransform().setPosition(-3.2f, -0.3f, 0.0f);
         mCurrentTime.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 2);
@@ -84,8 +84,8 @@ public class Seekbar extends SXRSceneObject {
         mCurrentTime.getRenderData().setOffsetFactor(-2.0f);
         mCurrentTime.getRenderData().setOffsetUnits(-2.0f);
 
-        mDuration = new SXRSceneObject(gvrContext, gvrContext.createQuad(2.4f,
-                0.3f), TextFactory.create(gvrContext, "2222"));
+        mDuration = new SXRSceneObject(sxrContext, sxrContext.createQuad(2.4f,
+                0.3f), TextFactory.create(sxrContext, "2222"));
         mDuration.getTransform().setPosition(3.2f, -0.3f, 0.0f);
         mDuration.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 2);
@@ -120,7 +120,7 @@ public class Seekbar extends SXRSceneObject {
     }
 
     @SuppressLint("DefaultLocale")
-    public void setTime(SXRContext gvrContext, int current, int duration) {
+    public void setTime(SXRContext sxrContext, int current, int duration) {
         float ratio = (float) current / (float) duration;
         float left = -WIDTH * 0.5f;
         float center = ratio * WIDTH + left;
@@ -142,9 +142,9 @@ public class Seekbar extends SXRSceneObject {
         String durationText = String.format("%02d:%02d:%02d", duration / 3600,
                 (duration % 3600) / 60, duration % 60);
         mCurrentTime.getRenderData().getMaterial()
-                .setMainTexture(TextFactory.create(gvrContext, currentText));
+                .setMainTexture(TextFactory.create(sxrContext, currentText));
         mDuration.getRenderData().getMaterial()
-                .setMainTexture(TextFactory.create(gvrContext, durationText));
+                .setMainTexture(TextFactory.create(sxrContext, durationText));
     }
 
     public void glow() {

@@ -48,19 +48,19 @@ public class GamepadButton extends SXRSceneObject {
     private SXRTexture eventTexture;
     private boolean isDown = false;
 
-    public GamepadButton(SXRContext gvrContext, TypedArray array) {
-        super(gvrContext);
+    public GamepadButton(SXRContext sxrContext, TypedArray array) {
+        super(sxrContext);
 
         setName(array.getString(0));
         SXRTextureParameters parameters = new SXRTextureParameters(getSXRContext());
         parameters.setAnisotropicValue(16);
         parameters.setMinFilterType(TextureFilterType.GL_NEAREST_MIPMAP_NEAREST);
         parameters.setMagFilterType(TextureFilterType.GL_NEAREST_MIPMAP_NEAREST);
-        buttonTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                gvrContext, R.drawable.gamepad_diffuse), parameters);
+        buttonTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                sxrContext, R.drawable.gamepad_diffuse), parameters);
 
-        eventTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                gvrContext, R.drawable.event_color));
+        eventTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                sxrContext, R.drawable.event_color));
 
         attachButton(array.getResourceId(1, -0));
         attachEvent(array.getResourceId(2, -0));
@@ -138,7 +138,7 @@ public class GamepadButton extends SXRSceneObject {
         animOpacity.setRepeatCount(1);
         animOpacity.setOnFinish(new SXROnFinish() {
             @Override
-            public void finished(SXRAnimation gvrAnimation) {
+            public void finished(SXRAnimation sxrAnimation) {
                 buttonHover.getRenderData().getMaterial().setOpacity(0);
             }
         });
@@ -213,7 +213,7 @@ public class GamepadButton extends SXRSceneObject {
         animOpacity.setRepeatCount(1);
         animOpacity.setOnFinish(new SXROnFinish() {
             @Override
-            public void finished(SXRAnimation gvrAnimation) {
+            public void finished(SXRAnimation sxrAnimation) {
                 buttonHover.getRenderData().getMaterial().setOpacity(0);
             }
         });

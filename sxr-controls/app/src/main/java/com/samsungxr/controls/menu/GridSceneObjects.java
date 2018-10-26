@@ -38,9 +38,9 @@ public class GridSceneObjects extends SXRSceneObject {
     private TypedArray grid;
     private int gridConfig;
 
-    public GridSceneObjects(SXRContext gvrContext, ArrayList<MenuControlSceneObject> listItens,
+    public GridSceneObjects(SXRContext sxrContext, ArrayList<MenuControlSceneObject> listItens,
                             int gridConfig, ItemSelectedListener listener) {
-        super(gvrContext);
+        super(sxrContext);
 
         this.gridConfig = gridConfig;
         this.listItens = listItens;

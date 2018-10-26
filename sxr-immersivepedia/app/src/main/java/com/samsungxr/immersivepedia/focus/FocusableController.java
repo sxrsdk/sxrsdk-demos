@@ -58,8 +58,8 @@ public final class FocusableController {
         return false;
     }
 
-    private static boolean isAVisibleObjectBeingSeen(SXRContext gvrContext, SXRSceneObject object) {
-        return (isVisible(object) && !hasEmptyTexture(gvrContext, object));
+    private static boolean isAVisibleObjectBeingSeen(SXRContext sxrContext, SXRSceneObject object) {
+        return (isVisible(object) && !hasEmptyTexture(sxrContext, object));
     }
 
     private static boolean isVisible(SXRSceneObject object) {
@@ -67,10 +67,10 @@ public final class FocusableController {
                 && object.getRenderData().getMaterial().getOpacity() > 0;
     }
 
-    private static boolean hasEmptyTexture(SXRContext gvrContext, SXRSceneObject object) {
+    private static boolean hasEmptyTexture(SXRContext sxrContext, SXRSceneObject object) {
         return object.getRenderData().getMaterial().getMainTexture() != null
                 && object.getRenderData().getMaterial().getMainTexture()
-                .equals(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.empty)));
+                .equals(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty)));
     }
 
 }

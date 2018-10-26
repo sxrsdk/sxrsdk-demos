@@ -36,8 +36,8 @@ public class Cloud extends SXRSceneObject {
     private float originalScaleZ;
     private int originalTexture;
 
-    public Cloud(SXRContext gvrContext, SXRMesh mesh, float cloudDistance, TypedArray array, float angle) {
-        super(gvrContext);
+    public Cloud(SXRContext sxrContext, SXRMesh mesh, float cloudDistance, TypedArray array, float angle) {
+        super(sxrContext);
 
         populateArray(array);
 
@@ -47,7 +47,7 @@ public class Cloud extends SXRSceneObject {
 
         setPosition(angle, cloudDistance);
 
-        createRendereData(gvrContext, mesh);
+        createRendereData(sxrContext, mesh);
 
     }
 
@@ -61,15 +61,15 @@ public class Cloud extends SXRSceneObject {
         this.getTransform().rotateByAxisWithPivot(angle, 0, 1, 0, 0, 0, 0);
     }
 
-    private void createRendereData(SXRContext gvrContext, SXRMesh mesh) {
+    private void createRendereData(SXRContext sxrContext, SXRMesh mesh) {
 
-        SXRTexture cloudTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture cloudTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 originalTexture));
 
-        SXRMaterial material = new SXRMaterial(gvrContext);
+        SXRMaterial material = new SXRMaterial(sxrContext);
         material.setMainTexture(cloudTexture);
 
-        SXRRenderData renderData = new SXRRenderData(gvrContext);
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
         renderData.setMesh(mesh);
         renderData.setMaterial(material);
         renderData.setRenderingOrder(RenderingOrder.CLOUDS);

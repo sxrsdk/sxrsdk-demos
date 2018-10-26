@@ -31,8 +31,8 @@ public class IndicatorLongPress extends SXRSceneObject {
     private SXROpacityAnimation opacityAnimationOff;
     private SXRScaleAnimation scaleAnimationSmaller;
 
-    public IndicatorLongPress(SXRContext gvrContext, float width, float height, SXRTexture texture) {
-        super(gvrContext, width, height, texture);
+    public IndicatorLongPress(SXRContext sxrContext, float width, float height, SXRTexture texture) {
+        super(sxrContext, width, height, texture);
 
         this.getTransform().setPositionZ(0.1f);
         this.getTransform().setScale(SCALE_OBJECT, SCALE_OBJECT, SCALE_OBJECT);

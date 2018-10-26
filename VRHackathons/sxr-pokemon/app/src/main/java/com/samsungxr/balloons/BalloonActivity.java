@@ -38,7 +38,7 @@ public class BalloonActivity extends SXRActivity {
         super.onCreate(icicle);
         createCameraView();
         main = new BalloonMain(this);
-        setMain(main, "gvr.xml");
+        setMain(main, "sxr.xml");
     }
 
     @Override

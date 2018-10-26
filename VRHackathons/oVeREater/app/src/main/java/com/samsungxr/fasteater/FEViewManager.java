@@ -78,9 +78,9 @@ public class FEViewManager extends SXRScript {
 	}
 
 	@Override
-	public void onInit(SXRContext gvrContext) throws IOException, InterruptedException {
+	public void onInit(SXRContext sxrContext) throws IOException, InterruptedException {
         gameState = new GameStateMachine();
-		mSXRContext = gvrContext;
+		mSXRContext = sxrContext;
 		mAnimationEngine = mSXRContext.getAnimationEngine();
 		mMainScene = mSXRContext.getNextMainScene();
 		mMainScene.setFrustumCulling(true);
@@ -89,12 +89,12 @@ public class FEViewManager extends SXRScript {
 	}
 
     @Override
-    public SXRTexture getSplashTexture(SXRContext gvrContext) {
+    public SXRTexture getSplashTexture(SXRContext sxrContext) {
         Bitmap bitmap = BitmapFactory.decodeResource(
-                gvrContext.getContext().getResources(),
+                sxrContext.getContext().getResources(),
                 R.drawable.boot_screen);
         //Bitmap scaledBitmap = bitmap.createScaledBitmap(bitmap, 2, 2, true);
-        return new SXRBitmapTexture(gvrContext, bitmap);
+        return new SXRBitmapTexture(sxrContext, bitmap);
     }
 
     private void loadGameScene(SXRContext context, SXRScene scene) throws IOException {

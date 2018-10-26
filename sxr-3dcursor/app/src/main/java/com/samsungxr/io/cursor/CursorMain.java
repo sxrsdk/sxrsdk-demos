@@ -125,7 +125,7 @@ public class CursorMain extends SXRMain {
             CUBE_TEXTURES, CLOUD_1_MESHES, CLOUD_2_MESHES, CLOUD_3_MESHES, CLOUD_TEXTURES,
             BUTTON_MESHES, BUTTON_TEXTURES, SWORD_MESHES, SWORD_TEXTURES;
 
-    private SXRContext gvrContext = null;
+    private SXRContext sxrContext = null;
     private SXRScene mainScene;
 
     // FPS variables
@@ -206,14 +206,14 @@ public class CursorMain extends SXRMain {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) {
-        this.gvrContext = gvrContext;
-        mainScene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) {
+        this.sxrContext = sxrContext;
+        mainScene = sxrContext.getMainScene();
         meshMap = new HashMap<String, SXRMesh>();
         materialMap = new HashMap<String, SXRMaterial>();
-        addSurroundings(gvrContext, mainScene);
+        addSurroundings(sxrContext, mainScene);
         try {
-            ZipLoader.load(gvrContext, MESH_FILE, new ZipLoader
+            ZipLoader.load(sxrContext, MESH_FILE, new ZipLoader
                     .ZipEntryProcessor<SXRMesh>() {
                 @Override
                 public SXRMesh getItem(SXRContext context, SXRAndroidResource resource) {
@@ -226,7 +226,7 @@ public class CursorMain extends SXRMain {
                 }
             });
 
-            ZipLoader.load(gvrContext, TEXTURE_FILE, new
+            ZipLoader.load(sxrContext, TEXTURE_FILE, new
                     ZipLoader
                             .ZipEntryProcessor<SXRTexture>() {
 
@@ -247,23 +247,23 @@ public class CursorMain extends SXRMain {
         mainScene.getMainCameraRig().getLeftCamera().setBackgroundColor(Color.BLACK);
         mainScene.getMainCameraRig().getRightCamera().setBackgroundColor(Color.BLACK);
 
-        SXRInputManager inputManager = gvrContext.getInputManager();
+        SXRInputManager inputManager = sxrContext.getInputManager();
         List<IoDevice> devices = new ArrayList<IoDevice>();
 
         //_VENDOR_TODO_ register the devices with Cursor Manager here.
         /*
-        TemplateDevice device1 = new TemplateDevice(gvrContext, "template_1", "Right controller");
-        TemplateDevice device2 = new TemplateDevice(gvrContext, "template_2", "Left controller");
+        TemplateDevice device1 = new TemplateDevice(sxrContext, "template_1", "Right controller");
+        TemplateDevice device2 = new TemplateDevice(sxrContext, "template_2", "Left controller");
         devices.add(device1);
         devices.add(device2);
         */
 
         /*
-        HandTemplateDevice device = new HandTemplateDevice(gvrContext, mainScene);
+        HandTemplateDevice device = new HandTemplateDevice(sxrContext, mainScene);
         devices.addAll(device.getDeviceList());
         */
 
-        gearWearableDevice = new GearWearableDevice(gvrContext, GEARS2_DEVICE_ID, "Gear Wearable");
+        gearWearableDevice = new GearWearableDevice(sxrContext, GEARS2_DEVICE_ID, "Gear Wearable");
         devices.add(gearWearableDevice);
         inputManager.getEventReceiver().addListener(
                 new SXRInputManager.ICursorControllerSelectListener()
@@ -275,7 +275,7 @@ public class CursorMain extends SXRMain {
                     }
                 });
 
-        cursorManager = new CursorManager(gvrContext, mainScene, devices);
+        cursorManager = new CursorManager(sxrContext, mainScene, devices);
         List<CursorTheme> themes = cursorManager.getCursorThemes();
         laserCursorThemes = new ArrayList<CursorTheme>();
         pointCursorThemes = new ArrayList<CursorTheme>();
@@ -387,8 +387,8 @@ public class CursorMain extends SXRMain {
         position.set(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         addSpaceObject(new ResetButton(cursorManager, getButtonAsset(), "reset", position, 2.5f,
                 SETTINGS_ROTATION_X, SETTINGS_ROTATION_Y - 2.0f));
-        SXRViewSceneObject resetText = new SXRViewSceneObject(gvrContext, resetTextView,
-                gvrContext.createQuad(TEXT_QUAD_WIDTH, TEXT_QUAD_HEIGHT));
+        SXRViewSceneObject resetText = new SXRViewSceneObject(sxrContext, resetTextView,
+                sxrContext.createQuad(TEXT_QUAD_WIDTH, TEXT_QUAD_HEIGHT));
         resetText.getTransform().setPosition(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         resetText.getTransform().rotateByAxisWithPivot(SETTINGS_ROTATION_X, 0, 1, 0, 0, 0, 0);
         resetText.getTransform().rotateByAxisWithPivot(SETTINGS_ROTATION_Y +
@@ -398,8 +398,8 @@ public class CursorMain extends SXRMain {
         position.set(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         addSpaceObject(new SettingsObject(cursorManager, getSettingAsset(), "settings", position,
                 2.0f, -SETTINGS_ROTATION_X, SETTINGS_ROTATION_Y, 0.0f));
-        SXRViewSceneObject settingsText = new SXRViewSceneObject(gvrContext, settingsTextView,
-                gvrContext.createQuad(TEXT_QUAD_WIDTH, TEXT_QUAD_HEIGHT));
+        SXRViewSceneObject settingsText = new SXRViewSceneObject(sxrContext, settingsTextView,
+                sxrContext.createQuad(TEXT_QUAD_WIDTH, TEXT_QUAD_HEIGHT));
         settingsText.getTransform().setPosition(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         settingsText.getTransform().rotateByAxisWithPivot(-SETTINGS_ROTATION_X, 0, 1, 0, 0, 0, 0);
         settingsText.getTransform().rotateByAxisWithPivot(SETTINGS_ROTATION_Y +
@@ -416,8 +416,8 @@ public class CursorMain extends SXRMain {
     }
 
     private void createTextViewSceneObject(int index) {
-        SXRViewSceneObject text = new SXRViewSceneObject(gvrContext, textViewList.get(index),
-                gvrContext.createQuad(TEXT_QUAD_WIDTH, getTextQuadHeightFromIndex(index)));
+        SXRViewSceneObject text = new SXRViewSceneObject(sxrContext, textViewList.get(index),
+                sxrContext.createQuad(TEXT_QUAD_WIDTH, getTextQuadHeightFromIndex(index)));
         text.getTransform().setPosition(TEXT_POSITION_X, TEXT_POSITION_Y +
                 getTextViewYOffsetFromIndex(index), TEXT_POSITION_Z);
         rotateTextViewSceneObject(text, getRotationFromIndex(index));
@@ -431,8 +431,8 @@ public class CursorMain extends SXRMain {
     }
 
     private void createCircleTextViewSceneObject(int index) {
-        SXRViewSceneObject text = new SXRViewSceneObject(gvrContext, circleTextViewList.get(index),
-                gvrContext.createQuad(CIRCLE_TEXT_QUAD_WIDTH, CIRCLE_TEXT_QUAD_HEIGHT));
+        SXRViewSceneObject text = new SXRViewSceneObject(sxrContext, circleTextViewList.get(index),
+                sxrContext.createQuad(CIRCLE_TEXT_QUAD_WIDTH, CIRCLE_TEXT_QUAD_HEIGHT));
         text.getTransform().setPosition(TEXT_POSITION_X, TEXT_POSITION_Y +
                 getTextViewYOffsetFromIndex(index), TEXT_POSITION_Z);
         rotateTextViewSceneObject(text, getRotationFromIndex(index) + CIRCLE_TEXT_ROTATION_OFFSET);
@@ -527,7 +527,7 @@ public class CursorMain extends SXRMain {
     }
 
     private void setTextOnMainThread(final TextView textView, final String text) {
-        gvrContext.getActivity().runOnUiThread(new Runnable() {
+        sxrContext.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 textView.setText(text);
@@ -579,24 +579,24 @@ public class CursorMain extends SXRMain {
     // The assets for the Cubemap are taken from the Samsung Developers website:
     // http://www.samsung.com/us/samsungdeveloperconnection/developer-resources/
     // gear-vr/apps-and-games/exercise-2-creating-the-splash-scene.html
-    private void addSurroundings(SXRContext gvrContext, SXRScene scene) {
-        SXRMesh quadMesh = new SXRMesh(gvrContext, "float3 a_position float2 a_texcoord");
-        SXRTexture cubemapTexture = gvrContext.getAssetLoader()
-                .loadCubemapTexture(new SXRAndroidResource(gvrContext, R.raw.earth));
+    private void addSurroundings(SXRContext sxrContext, SXRScene scene) {
+        SXRMesh quadMesh = new SXRMesh(sxrContext, "float3 a_position float2 a_texcoord");
+        SXRTexture cubemapTexture = sxrContext.getAssetLoader()
+                .loadCubemapTexture(new SXRAndroidResource(sxrContext, R.raw.earth));
 
-        SXRMaterial cubemapMaterial = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Cubemap.ID);
+        SXRMaterial cubemapMaterial = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Cubemap.ID);
         cubemapMaterial.setMainTexture(cubemapTexture);
         quadMesh.createQuad(CUBE_WIDTH, CUBE_WIDTH);
 
         // surrounding cube
-        SXRSceneObject frontFace = new SXRSceneObject(gvrContext, quadMesh, cubemapTexture);
+        SXRSceneObject frontFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
         frontFace.getRenderData().setMaterial(cubemapMaterial);
         frontFace.setName("front");
         frontFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         scene.addSceneObject(frontFace);
         frontFace.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.5f);
 
-        SXRSceneObject backFace = new SXRSceneObject(gvrContext, quadMesh, cubemapTexture);
+        SXRSceneObject backFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
         backFace.getRenderData().setMaterial(cubemapMaterial);
         backFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         backFace.setName("back");
@@ -604,7 +604,7 @@ public class CursorMain extends SXRMain {
         backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
         backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject leftFace = new SXRSceneObject(gvrContext, quadMesh, cubemapTexture);
+        SXRSceneObject leftFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
         leftFace.getRenderData().setMaterial(cubemapMaterial);
         leftFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         leftFace.setName("left");
@@ -612,7 +612,7 @@ public class CursorMain extends SXRMain {
         leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject rightFace = new SXRSceneObject(gvrContext, quadMesh, cubemapTexture);
+        SXRSceneObject rightFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
         rightFace.getRenderData().setMaterial(cubemapMaterial);
         rightFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         rightFace.setName("right");
@@ -620,7 +620,7 @@ public class CursorMain extends SXRMain {
         rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject topFace = new SXRSceneObject(gvrContext, quadMesh, cubemapTexture);
+        SXRSceneObject topFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
         topFace.getRenderData().setMaterial(cubemapMaterial);
         topFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         topFace.setName("top");
@@ -628,7 +628,7 @@ public class CursorMain extends SXRMain {
         topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
         topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-        SXRSceneObject bottomFace = new SXRSceneObject(gvrContext, quadMesh, cubemapTexture);
+        SXRSceneObject bottomFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
         bottomFace.getRenderData().setMaterial(cubemapMaterial);
         bottomFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         bottomFace.setName("bottom");
@@ -942,8 +942,8 @@ public class CursorMain extends SXRMain {
     }
 
     private SXRSceneObject getAsset(String[] meshes, String[] textures, boolean useMesh) {
-        SXRSceneObject root = new SXRSceneObject(gvrContext);
-        SXRMeshCollider collider = new SXRMeshCollider(gvrContext, true);
+        SXRSceneObject root = new SXRSceneObject(sxrContext);
+        SXRMeshCollider collider = new SXRMeshCollider(sxrContext, true);
 
         collider.setMesh(meshMap.get(meshes[0]));
         root.setName(meshes[0]);
@@ -953,7 +953,7 @@ public class CursorMain extends SXRMain {
              ++state)
         {
             SXRMesh mesh = meshMap.get(meshes[state]);
-            SXRSceneObject child = new SXRSceneObject(gvrContext, mesh);
+            SXRSceneObject child = new SXRSceneObject(sxrContext, mesh);
 
             child.getRenderData().setMaterial(materialMap.get(textures[state]));
             child.setName(meshes[state]);
@@ -963,13 +963,13 @@ public class CursorMain extends SXRMain {
     }
 
     @Override
-    public SXRTexture getSplashTexture(SXRContext gvrContext) {
+    public SXRTexture getSplashTexture(SXRContext sxrContext) {
         Bitmap bitmap = BitmapFactory.decodeResource(
-                gvrContext.getContext().getResources(),
+                sxrContext.getContext().getResources(),
                 R.mipmap.ic_launcher);
-        SXRTexture splashScreen = new SXRTexture(gvrContext);
+        SXRTexture splashScreen = new SXRTexture(sxrContext);
         // return the correct splash screen bitmap
-        splashScreen.setImage(new SXRBitmapImage(gvrContext, bitmap));
+        splashScreen.setImage(new SXRBitmapImage(sxrContext, bitmap));
         return splashScreen;
     }
 }

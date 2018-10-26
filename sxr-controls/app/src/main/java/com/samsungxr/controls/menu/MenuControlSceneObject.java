@@ -19,8 +19,8 @@ import com.samsungxr.controls.focus.ControlSceneObject;
 
 public abstract class MenuControlSceneObject extends ControlSceneObject{
 
-    public MenuControlSceneObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public MenuControlSceneObject(SXRContext sxrContext) {
+        super(sxrContext);
     }
     
     public abstract void unselect();

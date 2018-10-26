@@ -31,7 +31,7 @@ public class TextFactory {
     private TextFactory() {
     }
 
-    public static SXRTexture create(SXRContext gvrContext, String text) {
+    public static SXRTexture create(SXRContext sxrContext, String text) {
         Bitmap bitmap = Bitmap.createBitmap(256, 23, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
@@ -46,8 +46,8 @@ public class TextFactory {
         canvas.drawColor(Color.TRANSPARENT);
         canvas.drawText(text, x, y, p);
 
-        SXRBitmapTexture tex = new SXRBitmapTexture(gvrContext, bitmap);
-        SXRTexture texture = new SXRTexture(gvrContext);
+        SXRBitmapTexture tex = new SXRBitmapTexture(sxrContext, bitmap);
+        SXRTexture texture = new SXRTexture(sxrContext);
         texture.setImage(tex);
         return  texture;
     }

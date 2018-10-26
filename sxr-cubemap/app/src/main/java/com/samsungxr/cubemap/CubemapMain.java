@@ -72,15 +72,15 @@ public final class CubemapMain extends SXRMain {
         return SplashMode.NONE;
     }
     @Override
-    public void onInit(SXRContext gvrContext) {
-        mSXRContext = gvrContext;
+    public void onInit(SXRContext sxrContext) {
+        mSXRContext = sxrContext;
 
         SXRScene scene = mSXRContext.getMainScene();
         SXRAssetLoader loader = mSXRContext.getAssetLoader();
         scene.setFrustumCulling(true);
 
         boolean usingSdcard = false;
-        final File file = new File(Environment.getExternalStorageDirectory()+"/gvr-cubemap");
+        final File file = new File(Environment.getExternalStorageDirectory()+"/sxr-cubemap");
         if (file.exists()) {
             final File[] files = file.listFiles();
             if (0 < files.length) {
@@ -102,28 +102,28 @@ public final class CubemapMain extends SXRMain {
             scene.setStatsEnabled(true);
             // Uncompressed cubemap texture
             mCubemapTexture = loader.loadCubemapTexture(new SXRAndroidResource(mSXRContext, R.raw.beach));
-            mCubemapMaterial = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Cubemap.ID);
+            mCubemapMaterial = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Cubemap.ID);
             mCubemapMaterial.setMainTexture(mCubemapTexture);
 
             // Compressed cubemap texture
             final SXRTexture compressedCubemapTexture = loader.loadCompressedCubemapTexture(new SXRAndroidResource(mSXRContext,
                     R.raw.museum));
-            mCompressedCubemapMaterial = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Cubemap.ID);
+            mCompressedCubemapMaterial = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Cubemap.ID);
             mCompressedCubemapMaterial.setMainTexture(compressedCubemapTexture);
 
             // List of textures (one per face)
             mTextureList = new ArrayList<SXRTexture>(6);
-            mTextureList.add(loader.loadTexture(new SXRAndroidResource(gvrContext,
+            mTextureList.add(loader.loadTexture(new SXRAndroidResource(sxrContext,
                     R.drawable.back)));
-            mTextureList.add(loader.loadTexture(new SXRAndroidResource(gvrContext,
+            mTextureList.add(loader.loadTexture(new SXRAndroidResource(sxrContext,
                     R.drawable.right)));
-            mTextureList.add(loader.loadTexture(new SXRAndroidResource(gvrContext,
+            mTextureList.add(loader.loadTexture(new SXRAndroidResource(sxrContext,
                     R.drawable.front)));
-            mTextureList.add(loader.loadTexture(new SXRAndroidResource(gvrContext,
+            mTextureList.add(loader.loadTexture(new SXRAndroidResource(sxrContext,
                     R.drawable.left)));
-            mTextureList.add(loader.loadTexture(new SXRAndroidResource(gvrContext,
+            mTextureList.add(loader.loadTexture(new SXRAndroidResource(sxrContext,
                     R.drawable.top)));
-            mTextureList.add(loader.loadTexture(new SXRAndroidResource(gvrContext,
+            mTextureList.add(loader.loadTexture(new SXRAndroidResource(sxrContext,
                     R.drawable.bottom)));
             applyCubemap(scene);
         } else {

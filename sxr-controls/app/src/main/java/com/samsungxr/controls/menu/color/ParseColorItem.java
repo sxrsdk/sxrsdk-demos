@@ -28,14 +28,14 @@ public class ParseColorItem {
 
     private List<MenuControlSceneObject> listItens = new ArrayList<MenuControlSceneObject>();
 
-    public ParseColorItem(SXRContext gvrContext) {
+    public ParseColorItem(SXRContext sxrContext) {
 
-        ColorControls color = new ColorControls(gvrContext.getContext());
+        ColorControls color = new ColorControls(sxrContext.getContext());
         
         List<Color> colorList = color.parseColorArray(R.array.worm_colors);
         
         for(Color c : colorList){
-            ColorsButton button = new ColorsButton(gvrContext, c);
+            ColorsButton button = new ColorsButton(sxrContext, c);
             listItens.add(button);
         }
     }

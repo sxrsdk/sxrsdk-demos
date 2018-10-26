@@ -26,13 +26,13 @@ public class MicGroupHitArea extends SXRSceneObject {
 
     MicItem mHitArea;
 
-    public MicGroupHitArea(SXRContext gvrContext) {
-        super(gvrContext);
+    public MicGroupHitArea(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.MIC_GROUP_HIT_AREA);
 
-        mHitArea = new MicItem(gvrContext, R.raw.empty);
+        mHitArea = new MicItem(sxrContext, R.raw.empty);
         this.addChildObject(mHitArea);
-        enableHitArea(gvrContext, mHitArea);
+        enableHitArea(sxrContext, mHitArea);
 
     }
 
@@ -41,7 +41,7 @@ public class MicGroupHitArea extends SXRSceneObject {
         return mHitArea;
     }
 
-    private void enableHitArea(SXRContext gvrContext, MicItem hitArea) {
+    private void enableHitArea(SXRContext sxrContext, MicItem hitArea) {
         attachDefaultEyePointee(hitArea);
     }
 

@@ -35,19 +35,19 @@ public class LoadingAsset extends SXRSceneObject implements IViewEvents {
     LinearLayout mLoading;
     SXRAnimation mAnimation;
 
-    public LoadingAsset(SXRContext gvrContext) {
-        super(gvrContext);
-        mLoadingObject = new SXRViewSceneObject(gvrContext, R.layout.layout_loading, this);
+    public LoadingAsset(SXRContext sxrContext) {
+        super(sxrContext);
+        mLoadingObject = new SXRViewSceneObject(sxrContext, R.layout.layout_loading, this);
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
         mLoading = view.findViewById(R.id.loading);
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
-        addChildObject(gvrViewSceneObject);
+    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        addChildObject(sxrViewSceneObject);
         mAnimation = new SXRRotationByAxisWithPivotAnimation(this, 2, -360f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f, 0.0f).start(getSXRContext().getAnimationEngine());
         mAnimation.setRepeatMode(1);

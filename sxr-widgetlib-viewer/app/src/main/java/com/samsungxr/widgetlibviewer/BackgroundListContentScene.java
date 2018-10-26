@@ -29,9 +29,9 @@ import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.optFloat;
 import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.optInt;
 
 public class BackgroundListContentScene extends BaseContentScene {
-    BackgroundListContentScene(SXRContext gvrContext,
+    BackgroundListContentScene(SXRContext sxrContext,
                                ViewerMain.BackgroundWidget bgWidget, Widget.OnTouchListener homeListener) {
-        super(gvrContext);
+        super(sxrContext);
         mBgWidget = bgWidget;
         mControlBar.addControlListener("Home", homeListener);
     }

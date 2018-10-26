@@ -27,7 +27,7 @@ public class CubemapActivity extends SXRActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setMain(main, "gvr.xml");
+        setMain(main, "sxr.xml");
     }
 
     @Override

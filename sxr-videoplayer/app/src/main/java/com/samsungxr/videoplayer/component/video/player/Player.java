@@ -79,10 +79,10 @@ public class Player extends FadeableObject {
     private SXRVideoSceneObject mFlatVideo;
     private SXRVideoSceneObject m360Video;
 
-    public Player(final SXRContext gvrContext) {
-        super(gvrContext);
+    public Player(final SXRContext sxrContext) {
+        super(sxrContext);
 
-        this.mGvrContext = gvrContext;
+        this.mGvrContext = sxrContext;
 
         this.mFileDataSourceFactory = new DataSource.Factory() {
             @Override

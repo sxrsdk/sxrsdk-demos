@@ -42,9 +42,9 @@ public class CharList {
     private CircularList<CharItem> softKeyboardListSpecialCircular = new CircularList<CharItem>(
             new ArrayList<CharItem>());
 
-    private CharList(SXRContext gvrContext) {
+    private CharList(SXRContext sxrContext) {
 
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         TypedArray softKeyboard = res.obtainTypedArray(R.array.soft_keyboard);
         TypedArray numericKeyboard = res.obtainTypedArray(R.array.soft_keyboard_number);
         TypedArray specialKeyboard = res.obtainTypedArray(R.array.soft_keyboard_special);
@@ -88,9 +88,9 @@ public class CharList {
         }
     }
 
-    public static synchronized CharList getInstance(SXRContext gvrContext) {
+    public static synchronized CharList getInstance(SXRContext sxrContext) {
         if (instance == null) {
-            instance = new CharList(gvrContext);
+            instance = new CharList(sxrContext);
         }
         return instance;
     }

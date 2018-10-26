@@ -44,45 +44,45 @@ public class RagdollMain extends SXRMain {
     public RagdollMain() {}
 
     @Override
-    public void onInit(final SXRContext gvrContext) throws Throwable {
-        super.onInit(gvrContext);
+    public void onInit(final SXRContext sxrContext) throws Throwable {
+        super.onInit(sxrContext);
 
-        final SXRScene scene = gvrContext.getMainScene();
+        final SXRScene scene = sxrContext.getMainScene();
 
         scene.setBackgroundColor(0,0,0,0);
 
         Log.d(TAG, "Loading Rag Doll mesh...");
-        SXRSceneObject model = gvrContext.getAssetLoader().loadModel("models/ragdoll.fbx", scene);
+        SXRSceneObject model = sxrContext.getAssetLoader().loadModel("models/ragdoll.fbx", scene);
 
         model.getTransform().setPosition(0,0, -3);
         scene.addSceneObject(model);
 
-        mWorld = new SXRWorld(gvrContext);
+        mWorld = new SXRWorld(sxrContext);
         mWorld.setGravity(0f, -1f, 0f);
         scene.getRoot().attachComponent(mWorld);
 
         Log.d(TAG, "Loading Rag Doll physics...");
-        SXRPhysicsLoader.loadPhysicsFile(gvrContext,
+        SXRPhysicsLoader.loadPhysicsFile(sxrContext,
                 "models/ragdoll.bullet", true, scene);
 
-        initCursorController(gvrContext);
+        initCursorController(sxrContext);
     }
 
     /**
      * Initialize GearVR controller handler.
      *
-     * @param gvrContext SXRf context.
+     * @param sxrContext SXRf context.
      */
-    private void initCursorController(SXRContext gvrContext) {
-        SXRScene scene = gvrContext.getMainScene();
+    private void initCursorController(SXRContext sxrContext) {
+        SXRScene scene = sxrContext.getMainScene();
         mTouchHandler = new TouchHandler();
 
         scene.getEventReceiver().addListener(mTouchHandler);
-        SXRInputManager inputManager = gvrContext.getInputManager();
-        mCursor = new SXRSceneObject(gvrContext,
-                gvrContext.createQuad(0.2f * CURSOR_DEPTH,
+        SXRInputManager inputManager = sxrContext.getInputManager();
+        mCursor = new SXRSceneObject(sxrContext,
+                sxrContext.createQuad(0.2f * CURSOR_DEPTH,
                         0.2f * CURSOR_DEPTH),
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.raw.cursor)));
         mCursor.getRenderData().setDepthTest(false);
         mCursor.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);

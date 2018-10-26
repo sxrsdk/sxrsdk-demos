@@ -43,15 +43,15 @@ public class DinosaurScene extends SXRScene {
 
     private VideoDinosaurGroup videoDinosaur;
     private GalleryDinosaurGroup galleryDinosaur = null;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private TextDinosaurGroup textDinosaur;
 
     private RotateDinosaurGroup rotateDinosaur;
 
-    public DinosaurScene(SXRContext gvrContext) throws IOException {
-        super(gvrContext);
-        this.gvrContext = gvrContext;
-        DinosaurFactory.getInstance(gvrContext);
+    public DinosaurScene(SXRContext sxrContext) throws IOException {
+        super(sxrContext);
+        this.sxrContext = sxrContext;
+        DinosaurFactory.getInstance(sxrContext);
         getMainCameraRig().getTransform().setPositionY(CAMERA_Y);
 
         createVideoDinosauGroup(); // TRex
@@ -95,7 +95,7 @@ public class DinosaurScene extends SXRScene {
     }
 
     private void createGalleryDinosaurGroup() throws IOException {
-        galleryDinosaur = new GalleryDinosaurGroup(gvrContext, this);
+        galleryDinosaur = new GalleryDinosaurGroup(sxrContext, this);
         addSceneObject(galleryDinosaur);
     }
 
@@ -149,20 +149,20 @@ public class DinosaurScene extends SXRScene {
         SXRAssetLoader loader = getSXRContext().getAssetLoader();
         SXRMesh mesh = loader.loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.environment_walls_mesh));
         SXRTexture texture = loader.loadTexture(new
-                SXRAndroidResource(gvrContext, R.raw.environment_walls_tex_diffuse));
+                SXRAndroidResource(sxrContext, R.raw.environment_walls_tex_diffuse));
         final SXRSceneObject skybox = new SXRSceneObject(getSXRContext(), mesh, texture);
 
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshGround = loader.loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.environment_ground_mesh));
-        SXRTexture textureGround = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.raw.environment_ground_tex_diffuse));
+        SXRTexture textureGround = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.environment_ground_tex_diffuse));
         final SXRSceneObject skyboxGround = new SXRSceneObject(getSXRContext(), meshGround, textureGround);
 
         skyboxGround.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshFx = loader.loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.windows_fx_mesh));
-        SXRTexture textureFx = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.windows_fx_tex_diffuse));
+        SXRTexture textureFx = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
         SXRSceneObject skyboxFx = new SXRSceneObject(getSXRContext(), meshFx, textureFx);
         skyboxGround.getRenderData().setRenderingOrder(0);
 

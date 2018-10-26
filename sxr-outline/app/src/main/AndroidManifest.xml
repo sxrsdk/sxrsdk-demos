@@ -15,7 +15,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.samsungxr.gvroutline"
+    package="com.samsungxr.sxroutline"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -28,7 +28,7 @@
         android:label="@string/app_name">
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
         <activity
-            android:name="com.samsungxr.gvroutline.OutlineActivity"
+            android:name="com.samsungxr.sxroutline.OutlineActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask"
             android:label="@string/app_name" >

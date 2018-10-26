@@ -31,18 +31,18 @@ public class VirtualObject extends SXRSceneObject {
 
     private SXRSceneObject m3dModel;
 
-    public VirtualObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public VirtualObject(SXRContext sxrContext) {
+        super(sxrContext);
 
         try {
-            load3dModel(gvrContext);
+            load3dModel(sxrContext);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void load3dModel(final SXRContext gvrContext) throws IOException {
-        final SXRSceneObject sceneObject = gvrContext.getAssetLoader().loadModel("objects/andy.obj");
+    private void load3dModel(final SXRContext sxrContext) throws IOException {
+        final SXRSceneObject sceneObject = sxrContext.getAssetLoader().loadModel("objects/andy.obj");
         addChildObject(sceneObject);
 
         sceneObject.forAllDescendants(new SXRSceneObject.SceneVisitor() {
@@ -53,7 +53,7 @@ public class VirtualObject extends SXRSceneObject {
                 if (renderData == null || renderData.getMesh() == null)
                     return true;
 
-                final SXRCollider collider = new SXRMeshCollider(gvrContext,
+                final SXRCollider collider = new SXRMeshCollider(sxrContext,
                         renderData.getMesh());
 
                 VirtualObject.this.attachComponent(collider);

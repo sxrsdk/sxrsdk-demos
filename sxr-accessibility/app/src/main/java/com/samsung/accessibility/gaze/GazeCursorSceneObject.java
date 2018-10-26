@@ -32,24 +32,24 @@ public class GazeCursorSceneObject extends SXRSceneObject {
     private SXRSceneObject leftCursor;
     private static GazeCursorSceneObject sInstance;
 
-    public static GazeCursorSceneObject getInstance(SXRContext gvrContext) {
+    public static GazeCursorSceneObject getInstance(SXRContext sxrContext) {
         if (sInstance == null) {
-            sInstance = new GazeCursorSceneObject(gvrContext);
+            sInstance = new GazeCursorSceneObject(sxrContext);
         }
         return sInstance;
     }
 
-    private GazeCursorSceneObject(SXRContext gvrContext) {
-        super(gvrContext);
+    private GazeCursorSceneObject(SXRContext sxrContext) {
+        super(sxrContext);
 
-        float xRightCursor = gvrContext.getMainScene().getMainCameraRig().getRightCamera().getTransform().getPositionX();
-        float xLeftCursor = gvrContext.getMainScene().getMainCameraRig().getLeftCamera().getTransform().getPositionX();
+        float xRightCursor = sxrContext.getMainScene().getMainCameraRig().getRightCamera().getTransform().getPositionX();
+        float xLeftCursor = sxrContext.getMainScene().getMainCameraRig().getLeftCamera().getTransform().getPositionX();
         float zRightCursor, zLeftCursor;
         try {
-            zRightCursor = -(((SXRPerspectiveCamera) gvrContext.getMainScene()
+            zRightCursor = -(((SXRPerspectiveCamera) sxrContext.getMainScene()
                     .getMainCameraRig().getRightCamera()).getNearClippingDistance() +
                     NEAR_CLIPPING_OFFSET);
-            zLeftCursor = -(((SXRPerspectiveCamera) gvrContext.getMainScene()
+            zLeftCursor = -(((SXRPerspectiveCamera) sxrContext.getMainScene()
                     .getMainCameraRig().getLeftCamera()).getNearClippingDistance() +
                     NEAR_CLIPPING_OFFSET);
         } catch (ClassCastException e) {
@@ -59,24 +59,24 @@ public class GazeCursorSceneObject extends SXRSceneObject {
             zLeftCursor = -(DEFAULT_NEAR_CLIPPING_DISTANCE + NEAR_CLIPPING_OFFSET);
         }
 
-        rightCursor = new SXRSceneObject(gvrContext);
-        rightCursor.attachRenderData(createRenderData(gvrContext));
+        rightCursor = new SXRSceneObject(sxrContext);
+        rightCursor.attachRenderData(createRenderData(sxrContext));
         rightCursor.getRenderData().setRenderMask(SXRRenderMaskBit.Right);
         rightCursor.getTransform().setPosition(xRightCursor, 0, zRightCursor);
         addChildObject(rightCursor);
 
-        leftCursor = new SXRSceneObject(gvrContext);
-        leftCursor.attachRenderData(createRenderData(gvrContext));
+        leftCursor = new SXRSceneObject(sxrContext);
+        leftCursor.attachRenderData(createRenderData(sxrContext));
         leftCursor.getRenderData().setRenderMask(SXRRenderMaskBit.Left);
         leftCursor.getTransform().setPosition(xLeftCursor, 0, zLeftCursor);
         addChildObject(leftCursor);
     }
 
-    private SXRRenderData createRenderData(SXRContext gvrContext) {
-        SXRMaterial material = new SXRMaterial(gvrContext);
-        SXRMesh mesh = gvrContext.createQuad(NORMAL_CURSOR_SIZE, NORMAL_CURSOR_SIZE);
-        material.setMainTexture(gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.head_tracker)));
-        SXRRenderData renderData = new SXRRenderData(gvrContext);
+    private SXRRenderData createRenderData(SXRContext sxrContext) {
+        SXRMaterial material = new SXRMaterial(sxrContext);
+        SXRMesh mesh = sxrContext.createQuad(NORMAL_CURSOR_SIZE, NORMAL_CURSOR_SIZE);
+        material.setMainTexture(sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.head_tracker)));
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
         renderData.setMaterial(material);
         renderData.setMesh(mesh);
         renderData.setDepthTest(false);

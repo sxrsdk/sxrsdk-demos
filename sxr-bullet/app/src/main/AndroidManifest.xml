@@ -15,7 +15,7 @@
  */-->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.samsungxr.gvrbullet"
+    package="com.samsungxr.sxrbullet"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -28,7 +28,7 @@
         android:label="@string/app_name">
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
         <activity
-            android:name="com.samsungxr.gvrbullet.BulletSampleActivity"
+            android:name="com.samsungxr.sxrbullet.BulletSampleActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask"
             android:label="@string/app_name" >

@@ -28,15 +28,15 @@ import com.samsungxr.keyboard.util.SceneObjectNames;
 
 public class SpinnerSkeleton extends SXRSceneObject {
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRSceneObject spinnerBox;
     private SXRSceneObject spinnerShadow;
 
-    public SpinnerSkeleton(SXRContext gvrContext) {
-        super(gvrContext);
+    public SpinnerSkeleton(SXRContext sxrContext) {
+        super(sxrContext);
 
         setName(SceneObjectNames.SPINNER_SKELETON);
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
         createSkeletonSpinner();
     }
 
@@ -58,10 +58,10 @@ public class SpinnerSkeleton extends SXRSceneObject {
 
     private SXRSceneObject getSpinnerBackground(int resourceTextureID) {
 
-        SXRSceneObject object = new SXRSceneObject(gvrContext);
-        SXRRenderData renderData = new SXRRenderData(gvrContext);
-        SXRMaterial material = new SXRMaterial(gvrContext);
-        SXRMesh mesh = gvrContext.createQuad(0.49f / 2, 1.63f / 2 /**
+        SXRSceneObject object = new SXRSceneObject(sxrContext);
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
+        SXRMaterial material = new SXRMaterial(sxrContext);
+        SXRMesh mesh = sxrContext.createQuad(0.49f / 2, 1.63f / 2 /**
          * - 0.01f
          * 1.1f
          */
@@ -73,7 +73,7 @@ public class SpinnerSkeleton extends SXRSceneObject {
         object.getRenderData()
                 .getMaterial()
                 .setMainTexture(
-                        gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext.getActivity(),
+                        sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext.getActivity(),
                                 resourceTextureID)));
         return object;
 

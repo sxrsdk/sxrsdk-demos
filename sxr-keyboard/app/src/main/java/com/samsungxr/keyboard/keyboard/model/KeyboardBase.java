@@ -27,8 +27,8 @@ public class KeyboardBase extends SXRSceneObject {
     private List<SXRSceneObject> objects = null;
     private List<KeyboardLine> mListKeyboardLine = new ArrayList<>();
 
-    public KeyboardBase(SXRContext gvrContext) {
-        super(gvrContext);
+    public KeyboardBase(SXRContext sxrContext) {
+        super(sxrContext);
         setName("KEYBOARD_BASE");
     }
 

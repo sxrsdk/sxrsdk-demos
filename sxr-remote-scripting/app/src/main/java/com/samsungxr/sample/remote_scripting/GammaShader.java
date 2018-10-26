@@ -52,7 +52,7 @@ public class GammaShader extends SXRShader {
             "  outColor = vec4(color, tex.a);\n" +
             "}\n";
 
-    public GammaShader(SXRContext gvrContext) {
+    public GammaShader(SXRContext sxrContext) {
         super("float u_gamma", "sampler2D u_texture", "float3 a_position float2 a_texcoord", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

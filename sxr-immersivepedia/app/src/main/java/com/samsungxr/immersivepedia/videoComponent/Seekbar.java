@@ -34,11 +34,11 @@ public class Seekbar extends FocusableSceneObject {
     private SXRSceneObject playedSide;
     private FocusableSceneObject seekbarHover;
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
-    public Seekbar(SXRContext gvrContext, float width, float height, SXRTexture texture) {
-        super(gvrContext, width, height, texture);
-        this.gvrContext = gvrContext;
+    public Seekbar(SXRContext sxrContext, float width, float height, SXRTexture texture) {
+        super(sxrContext, width, height, texture);
+        this.sxrContext = sxrContext;
 
         addChildObject(createPlaySide());
         addChildObject(createSeekbarHover());
@@ -48,16 +48,16 @@ public class Seekbar extends FocusableSceneObject {
 
     private SXRSceneObject createSeekbarHover() {
 
-        seekbarHover = new FocusableSceneObject(gvrContext, gvrContext.createQuad(WIDTH, HEIGHT),
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                        gvrContext.getActivity(), R.drawable.timelime_hover_mask)));
+        seekbarHover = new FocusableSceneObject(sxrContext, sxrContext.createQuad(WIDTH, HEIGHT),
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                        sxrContext.getActivity(), R.drawable.timelime_hover_mask)));
         seekbarHover.getTransform().setPositionZ(.1f);
 
         return seekbarHover;
     }
 
     private void createCollider() {
-        attachCollider(new SXRMeshCollider(gvrContext, false));
+        attachCollider(new SXRMeshCollider(sxrContext, false));
         seekbarHover.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -71,8 +71,8 @@ public class Seekbar extends FocusableSceneObject {
     }
 
     private SXRSceneObject createPlaySide() {
-        playedSide = new SXRSceneObject(gvrContext, gvrContext.createQuad(1.0f, HEIGHT / 2), gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                gvrContext.getActivity(), R.drawable.timeline_watched)));
+        playedSide = new SXRSceneObject(sxrContext, sxrContext.createQuad(1.0f, HEIGHT / 2), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                sxrContext.getActivity(), R.drawable.timeline_watched)));
 
         playedSide.getRenderData().setRenderingOrder(SXRRenderingOrder.TRANSPARENT + 2);
         playedSide.getRenderData().setOffset(true);
@@ -94,16 +94,16 @@ public class Seekbar extends FocusableSceneObject {
 
     public void turnOffGUISeekbar() {
         seekbarHover.detachCollider();
-        new SXROpacityAnimation(this, .1f, 0).start(gvrContext.getAnimationEngine());
-        new SXROpacityAnimation(seekbarHover, .1f, 0).start(gvrContext.getAnimationEngine());
-        new SXROpacityAnimation(playedSide, .1f, 0).start(gvrContext.getAnimationEngine());
+        new SXROpacityAnimation(this, .1f, 0).start(sxrContext.getAnimationEngine());
+        new SXROpacityAnimation(seekbarHover, .1f, 0).start(sxrContext.getAnimationEngine());
+        new SXROpacityAnimation(playedSide, .1f, 0).start(sxrContext.getAnimationEngine());
     }
 
     public void turnOnGUISeekbar() {
-        seekbarHover.attachCollider(new SXRMeshCollider(gvrContext, false));
-        new SXROpacityAnimation(this, .1f, 1).start(gvrContext.getAnimationEngine());
-        new SXROpacityAnimation(seekbarHover, .1f, 1).start(gvrContext.getAnimationEngine());
-        new SXROpacityAnimation(playedSide, .1f, 1).start(gvrContext.getAnimationEngine());
+        seekbarHover.attachCollider(new SXRMeshCollider(sxrContext, false));
+        new SXROpacityAnimation(this, .1f, 1).start(sxrContext.getAnimationEngine());
+        new SXROpacityAnimation(seekbarHover, .1f, 1).start(sxrContext.getAnimationEngine());
+        new SXROpacityAnimation(playedSide, .1f, 1).start(sxrContext.getAnimationEngine());
     }
 
 }

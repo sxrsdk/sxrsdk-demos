@@ -39,8 +39,8 @@ public abstract class KeyboardItemBase extends SXRSceneObject {
     protected KeyboardItemStyle styleItem;
     protected KeyboardCharItem keyboardCharItem;
 
-    public KeyboardItemBase(SXRContext gvrContext, KeyboardItemStyle styleItem) {
-        super(gvrContext);
+    public KeyboardItemBase(SXRContext sxrContext, KeyboardItemStyle styleItem) {
+        super(sxrContext);
         setName(SceneObjectNames.KEYBOARD_ITEM);
 
         this.styleItem = styleItem;

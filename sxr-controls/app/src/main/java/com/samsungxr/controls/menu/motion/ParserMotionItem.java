@@ -31,9 +31,9 @@ public class ParserMotionItem {
     private Resources res;
     private List<MenuControlSceneObject> listItens = new ArrayList<MenuControlSceneObject>();
 
-    public ParserMotionItem(SXRContext gvrContext) {
+    public ParserMotionItem(SXRContext sxrContext) {
 
-        res = gvrContext.getContext().getResources();
+        res = sxrContext.getContext().getResources();
         grid = res.obtainTypedArray(R.array.menu_motion_item);
 
         for(int i = 0; i < grid.length(); i ++){
@@ -41,7 +41,7 @@ public class ParserMotionItem {
             String title = grid.getString(i);
             Motion motion = getMotionForTitle(title);
 
-            MotionButton button = new MotionButton(gvrContext, title, motion);
+            MotionButton button = new MotionButton(sxrContext, title, motion);
             listItens.add(button);
         }
     }

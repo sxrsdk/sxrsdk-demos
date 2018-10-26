@@ -28,10 +28,10 @@ public class CutoutShader extends SXRShaderTemplate {
     public static final String TEXTURE_KEY = "u_texture";
     public static final String CUTOUT = "cutout";
 
-    public CutoutShader(SXRContext gvrContext) {
+    public CutoutShader(SXRContext sxrContext) {
         super("float cutout", "sampler2D u_texture", "float4 a_position, float2 a_texcoord", GLSLESVersion.VULKAN);
 
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.cutout_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context,R.raw.cutout_vertex));
 

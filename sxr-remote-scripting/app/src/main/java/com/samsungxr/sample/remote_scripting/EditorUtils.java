@@ -33,7 +33,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 public class EditorUtils {
-    private final SXRContext gvrContext;
+    private final SXRContext sxrContext;
     private final SXRViewSceneObject layoutSceneObject;
     private GearVRScripting activity;
 
@@ -45,20 +45,20 @@ public class EditorUtils {
 
 
     public EditorUtils(SXRContext context) {
-        gvrContext = context;
+        sxrContext = context;
         activity = (GearVRScripting) context.getActivity();
 
-        layoutSceneObject = new SXRViewSceneObject(gvrContext, R.layout.main, viewEventsHandler,
-                gvrContext.createQuad(QUAD_X, QUAD_Y));
+        layoutSceneObject = new SXRViewSceneObject(sxrContext, R.layout.main, viewEventsHandler,
+                sxrContext.createQuad(QUAD_X, QUAD_Y));
 
         layoutSceneObject.getTransform().setPosition(0.0f, 0.0f, -1.0f);
         layoutSceneObject.setName("editor");
 
-        mScriptHandler = new ScriptHandler(gvrContext);
+        mScriptHandler = new ScriptHandler(sxrContext);
     }
 
     public void show() {
-        gvrContext.getMainScene().addSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().addSceneObject(layoutSceneObject);
     }
 
     public void setPosition(float x, float y, float z) {
@@ -70,13 +70,13 @@ public class EditorUtils {
     }
 
     public void hide() {
-        gvrContext.getMainScene().removeSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().removeSceneObject(layoutSceneObject);
     }
 
 
     private IViewEvents viewEventsHandler = new IViewEvents() {
         @Override
-        public void onInitView(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
             final EditText editor = (EditText) view.findViewById(R.id.editor);
             editor.requestFocus();
             editor.setDrawingCacheEnabled(false);
@@ -95,7 +95,7 @@ public class EditorUtils {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject gvrViewSceneObject, View view) {
+        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
 
         }
     };
@@ -106,9 +106,9 @@ public class EditorUtils {
         protected ScriptContext mScriptContext;
         protected StringWriter mWriter;
 
-        public ScriptHandler(SXRContext gvrContext) {
+        public ScriptHandler(SXRContext sxrContext) {
             prompt = "";
-            mScriptEngine = gvrContext.getScriptManager().getEngine(SXRScriptManager.LANG_JAVASCRIPT);
+            mScriptEngine = sxrContext.getScriptManager().getEngine(SXRScriptManager.LANG_JAVASCRIPT);
             mScriptContext = mScriptEngine.getContext();
 
             mWriter = new StringWriter();

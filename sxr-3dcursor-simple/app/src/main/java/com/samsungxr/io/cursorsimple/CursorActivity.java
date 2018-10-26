@@ -27,7 +27,7 @@ public class CursorActivity extends SXRActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         cursorMain = new CursorMain();
-        setMain(cursorMain, "gvr.xml");
+        setMain(cursorMain, "sxr.xml");
     }
 
     @Override

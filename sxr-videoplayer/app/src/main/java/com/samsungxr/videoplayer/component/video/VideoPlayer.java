@@ -75,12 +75,12 @@ public class VideoPlayer extends SXRSceneObject {
     private boolean mIsPaused = false;
 
 
-    public VideoPlayer(SXRContext gvrContext) {
-        super(gvrContext);
+    public VideoPlayer(SXRContext sxrContext) {
+        super(sxrContext);
 
         mHideControlTimer = new HideControlWidgetTimer(this);
 
-        SXRInputManager inputManager = gvrContext.getInputManager();
+        SXRInputManager inputManager = sxrContext.getInputManager();
         inputManager.selectController(new SXRInputManager.ICursorControllerSelectListener() {
 
             PickEventHandler mPickEventHandler = new PickEventHandler();
@@ -94,7 +94,7 @@ public class VideoPlayer extends SXRSceneObject {
             }
         });
 
-        mWidgetsContainer = new SXRSceneObject(gvrContext);
+        mWidgetsContainer = new SXRSceneObject(sxrContext);
         mWidgetsContainer.getTransform().setPositionZ(-8.1f);
         addChildObject(mWidgetsContainer);
         addPlayer();

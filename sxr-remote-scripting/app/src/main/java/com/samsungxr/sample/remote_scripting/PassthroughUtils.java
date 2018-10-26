@@ -24,7 +24,7 @@ import android.hardware.Camera;
 import android.os.Handler;
 
 public class PassthroughUtils {
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRCameraSceneObject cameraObject;
     private GearVRScripting activity;
     private Camera camera;
@@ -32,7 +32,7 @@ public class PassthroughUtils {
     private Handler handler;
 
     public PassthroughUtils(SXRContext context, GearVRScripting activity) {
-        gvrContext = context;
+        sxrContext = context;
         this.activity = activity;
         camera = activity.getCamera();
         handler = activity.getHandler();
@@ -50,7 +50,7 @@ public class PassthroughUtils {
         handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    gvrContext.runOnGlThread(createCameraObject);
+                    sxrContext.runOnGlThread(createCameraObject);
                 }
             }, 100);
     }
@@ -64,13 +64,13 @@ public class PassthroughUtils {
         @Override
         public void run() {
             if(cameraObject == null) {
-                cameraObject = new SXRCameraSceneObject(gvrContext, PASSTHROUGH_WIDTH, PASSTHROUGH_HEIGHT, camera);
+                cameraObject = new SXRCameraSceneObject(sxrContext, PASSTHROUGH_WIDTH, PASSTHROUGH_HEIGHT, camera);
                 cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
                 cameraObject.getTransform().setPosition(0.0f, 0.0f, PASSTHROUGH_Z);
                 cameraObject.getRenderData().setRenderingOrder(SXRRenderingOrder.BACKGROUND);
                 cameraObject.setName("passthrough");
             }
-            gvrContext.getMainScene().getMainCameraRig().addChildObject(cameraObject);
+            sxrContext.getMainScene().getMainCameraRig().addChildObject(cameraObject);
         }
     };
 
@@ -83,11 +83,11 @@ public class PassthroughUtils {
                 }
             });
 
-        gvrContext.runOnGlThread(new Runnable() {
+        sxrContext.runOnGlThread(new Runnable() {
                 @Override
                 public void run() {
                     if(cameraObject != null) {
-                        gvrContext.getMainScene().removeSceneObject(cameraObject);
+                        sxrContext.getMainScene().removeSceneObject(cameraObject);
                     }
                 }
             });

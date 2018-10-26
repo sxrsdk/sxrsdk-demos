@@ -42,7 +42,7 @@ public class DinosaurFactory {
     public static float TREX_ANGLE_AROUND_CAMERA = (1 * NEGATIVE_DEGRES_90) + adjustAngleArroundCamera;
 
     private static DinosaurFactory instance;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
     EnumSet<SXRImportSettings> additionalSettings = EnumSet
             .of(SXRImportSettings.CALCULATE_SMOOTH_NORMALS);
@@ -54,8 +54,8 @@ public class DinosaurFactory {
     private Dinosaur apatosaurus;
     private Dinosaur tRex;
 
-    private DinosaurFactory(SXRContext gvrContext) {
-        this.gvrContext = gvrContext;
+    private DinosaurFactory(SXRContext sxrContext) {
+        this.sxrContext = sxrContext;
         styracosaurus = createStyrocosaurus();
         ankylosaurus = createAnkylosaurus();
         apatosaurus = createApatosaurus();
@@ -63,9 +63,9 @@ public class DinosaurFactory {
 
     }
 
-    public static synchronized DinosaurFactory getInstance(SXRContext gvrContext) {
+    public static synchronized DinosaurFactory getInstance(SXRContext sxrContext) {
         if (instance == null) {
-            instance = new DinosaurFactory(gvrContext);
+            instance = new DinosaurFactory(sxrContext);
         }
         return instance;
     }
@@ -77,29 +77,29 @@ public class DinosaurFactory {
         FocusableSceneObject base = createDinosaurBase(baseMeshId);
         FocusableSceneObject ground = createDinosaurGround(groundMeshId);
 
-        return new Dinosaur(gvrContext, dino, base, ground);
+        return new Dinosaur(sxrContext, dino, base, ground);
     }
 
     private FocusableSceneObject createDinosaur(int dinoMeshId, int dinoTextureId) {
-        SXRMesh baseMesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, dinoMeshId), settings);
-        SXRTexture baseTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, dinoTextureId));
-        final FocusableSceneObject dino = new FocusableSceneObject(gvrContext, baseMesh, baseTexture);
+        SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, dinoMeshId), settings);
+        SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, dinoTextureId));
+        final FocusableSceneObject dino = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
 
         return dino;
     }
 
     private FocusableSceneObject createDinosaurBase(int baseMeshId) {
-        SXRMesh baseMesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, baseMeshId), settings);
-        SXRTexture baseTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.base_tex_diffuse));
-        FocusableSceneObject dinosaurBase = new FocusableSceneObject(gvrContext, baseMesh, baseTexture);
+        SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, baseMeshId), settings);
+        SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.base_tex_diffuse));
+        FocusableSceneObject dinosaurBase = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
         return dinosaurBase;
     }
 
     private FocusableSceneObject createDinosaurGround(int groundMesh) {
 
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext, groundMesh), settings);
-        SXRTexture groundTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.raw.ground_tex_diffuse));
-        final FocusableSceneObject dinosaurGround = new FocusableSceneObject(gvrContext, mesh, groundTexture);
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, groundMesh), settings);
+        SXRTexture groundTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.ground_tex_diffuse));
+        final FocusableSceneObject dinosaurGround = new FocusableSceneObject(sxrContext, mesh, groundTexture);
 
         return dinosaurGround;
     }

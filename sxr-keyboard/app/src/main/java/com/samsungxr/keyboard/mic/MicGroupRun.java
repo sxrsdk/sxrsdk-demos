@@ -38,8 +38,8 @@ public class MicGroupRun extends SXRSceneObject {
 
     private static final int NUMBER_OF_WAVES = 3;
 
-    public MicGroupRun(SXRContext gvrContext) {
-        super(gvrContext);
+    public MicGroupRun(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.MIC_GROUP_RUN);
 
         mMicRunItens = new MicItem[NUMBER_OF_WAVES];
@@ -48,7 +48,7 @@ public class MicGroupRun extends SXRSceneObject {
 
         for (int i = 0; i < NUMBER_OF_WAVES; i++) {
 
-            mMicRunItens[i] = new MicItem(gvrContext, R.drawable.mic_active);
+            mMicRunItens[i] = new MicItem(sxrContext, R.drawable.mic_active);
             mMicRunItens[i].getRenderData().getMaterial().setOpacity(0);
             mMicRunItens[i].getRenderData().setRenderingOrder(
                     RenderingOrder.ORDER_RENDERING_RUN - i);

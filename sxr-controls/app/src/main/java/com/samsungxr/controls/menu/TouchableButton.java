@@ -34,21 +34,21 @@ public class TouchableButton extends ControlSceneObject {
 
     private ArrayList<SXRTexture> textures;
 
-    public TouchableButton(SXRContext gvrContext, ArrayList<SXRTexture> textures) {
-        super(gvrContext);
+    public TouchableButton(SXRContext sxrContext, ArrayList<SXRTexture> textures) {
+        super(sxrContext);
 
         this.textures = textures;
         SXRMesh sMesh = getSXRContext().createQuad(0.4f, 0.4f);
 
-        attachRenderData(new SXRRenderData(gvrContext));
-        getRenderData().setMaterial(new SXRMaterial(gvrContext));
+        attachRenderData(new SXRRenderData(sxrContext));
+        getRenderData().setMaterial(new SXRMaterial(sxrContext));
         getRenderData().setMesh(sMesh);
 
         getRenderData().getMaterial().setMainTexture(textures.get(IDLE));
 
         getRenderData().setRenderingOrder(RenderingOrder.MENU_FRAME_TEXT);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
 
     }
 

@@ -33,13 +33,13 @@ public class SXRFPSCounter extends SXRSceneObject {
     private float mSumFrameTime;
     private int mFps;
 
-    public SXRFPSCounter(final SXRContext gvrContext) {
-        super(gvrContext, gvrContext.createQuad(1.0f, 1.0f));
+    public SXRFPSCounter(final SXRContext sxrContext) {
+        super(sxrContext, sxrContext.createQuad(1.0f, 1.0f));
 
-        final SXRTexture texture = new SXRExternalTexture(gvrContext);
-        final SXRMaterial material = new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.OES.ID);
+        final SXRTexture texture = new SXRExternalTexture(sxrContext);
+        final SXRMaterial material = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.OES.ID);
 
-        mActivity = gvrContext.getActivity();
+        mActivity = sxrContext.getActivity();
 
         mSurfaceTexture = new SurfaceTexture(texture.getId());
         mSurfaceTexture.setDefaultBufferSize(SIZE, SIZE);
@@ -74,7 +74,7 @@ public class SXRFPSCounter extends SXRSceneObject {
             }
         };
 
-        gvrContext.registerDrawFrameListener(mDrawFrameListener);
+        sxrContext.registerDrawFrameListener(mDrawFrameListener);
 
         mSurfaceTexture.setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
             SXRDrawFrameListener drawFrameListener = new SXRDrawFrameListener() {
@@ -82,13 +82,13 @@ public class SXRFPSCounter extends SXRSceneObject {
                 public void onDrawFrame(float frameTime) {
                     mSurfaceTexture.updateTexImage();
 
-                    gvrContext.unregisterDrawFrameListener(this);
+                    sxrContext.unregisterDrawFrameListener(this);
                 }
             };
 
             @Override
             public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-                gvrContext.registerDrawFrameListener(drawFrameListener);
+                sxrContext.registerDrawFrameListener(drawFrameListener);
             }
         });
 

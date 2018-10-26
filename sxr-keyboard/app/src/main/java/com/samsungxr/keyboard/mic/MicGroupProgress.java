@@ -40,10 +40,10 @@ public class MicGroupProgress extends SXRSceneObject {
     public static float TIME_ANIMATION_ROTATION_OUT = 3f;
     public static float ROTATION = -360;
 
-    public MicGroupProgress(SXRContext gvrContext) {
-        super(gvrContext);
+    public MicGroupProgress(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.MIC_GROUP_PROGRESS);
-        mProgress = new MicItem(gvrContext, R.drawable.mic_loading);
+        mProgress = new MicItem(sxrContext, R.drawable.mic_loading);
         mProgress.getRenderData().getMaterial().setOpacity(0);
         mProgress.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_PROGRESS);
         this.addChildObject(mProgress);

@@ -26,7 +26,7 @@ public class MainActivity extends SXRActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMain = new Main();
-        setMain(mMain, "gvr.xml");
+        setMain(mMain, "sxr.xml");
         enableGestureDetector();
     }
 

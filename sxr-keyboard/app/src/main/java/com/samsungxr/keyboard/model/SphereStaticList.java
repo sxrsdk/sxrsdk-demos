@@ -35,8 +35,8 @@ public class SphereStaticList {
     public static int ANSWERING = 1;
     public static int RESTORING = 2;
 
-    public SphereStaticList(SXRContext gvrContext) {
-        getSpheres(gvrContext, R.array.spheres);
+    public SphereStaticList(SXRContext sxrContext) {
+        getSpheres(sxrContext, R.array.spheres);
     }
 
     public void updateSpheresMaterial() {
@@ -80,19 +80,19 @@ public class SphereStaticList {
 
     }
 
-    private void getSpheres(SXRContext gvrContext, int array) {
+    private void getSpheres(SXRContext sxrContext, int array) {
         listFlag = new ArrayList<SXRSceneObject>();
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         TypedArray spheres = res.obtainTypedArray(array);
 
         for (int i = 0; i < spheres.length(); i++) {
             int type = spheres.getResourceId(i, -1);
             TypedArray sphere = res.obtainTypedArray(type);
-            SphereFlag objectSphere = new SphereFlag(gvrContext, sphere);
+            SphereFlag objectSphere = new SphereFlag(sxrContext, sphere);
             Vector3D parentPosition = objectSphere.getInitialPositionVector();
 
-            SXRSceneObject parent = new SXRSceneObject(gvrContext, new SXRAndroidResource(
-                    gvrContext, R.raw.hit_area_half), new SXRAndroidResource(gvrContext,
+            SXRSceneObject parent = new SXRSceneObject(sxrContext, new SXRAndroidResource(
+                    sxrContext, R.raw.hit_area_half), new SXRAndroidResource(sxrContext,
                     R.raw.empty));
             parent.setName(SceneObjectNames.SPHERE_FLAG_PARENT);
             parent.getTransform().setPosition((float) parentPosition.getX(),

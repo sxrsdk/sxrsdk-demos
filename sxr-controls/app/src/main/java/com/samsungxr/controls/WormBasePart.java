@@ -34,8 +34,8 @@ public class WormBasePart extends SXRSceneObject {
     private final float WORM_INITIAL_Y = -0.83f;
     private SXRSceneObject segment;
 
-    public WormBasePart(SXRContext gvrContext, int meshResId, int textureResId, Color color) {
-        super(gvrContext);
+    public WormBasePart(SXRContext sxrContext, int meshResId, int textureResId, Color color) {
+        super(sxrContext);
         this.color = color;
 
         getTransform().setPosition(0, WORM_INITIAL_Y, WORM_INITIAL_Z);
@@ -46,31 +46,31 @@ public class WormBasePart extends SXRSceneObject {
 
     private void build(int meshResId, int textureResId) {
 
-        SXRContext gvrContext = getSXRContext();
+        SXRContext sxrContext = getSXRContext();
 
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(
-                new SXRAndroidResource(gvrContext, meshResId));
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(
+                new SXRAndroidResource(sxrContext, meshResId));
 
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(
-                new SXRAndroidResource(gvrContext, textureResId));
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(
+                new SXRAndroidResource(sxrContext, textureResId));
 
-        segment = new SXRSceneObject(gvrContext, mesh, texture, new SXRShaderId(ColorSwapShader.class));
+        segment = new SXRSceneObject(sxrContext, mesh, texture, new SXRShaderId(ColorSwapShader.class));
 
         segment.getRenderData().setRenderingOrder(RenderingOrder.WORM);
 
-        applyShader(gvrContext, segment, color);
+        applyShader(sxrContext, segment, color);
         addChildObject(segment);
     }
 
-    private void applyShader(SXRContext gvrContext, SXRSceneObject wormPiece, Color color) {
+    private void applyShader(SXRContext sxrContext, SXRSceneObject wormPiece, Color color) {
 
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.wormy_diffuse_light));
 
         wormPiece.getRenderData().getMaterial()
                 .setTexture(ColorSwapShader.TEXTURE_GRAYSCALE, texture);
 
-        texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.wormy_diffuse_2));
 
         wormPiece.getRenderData().getMaterial()

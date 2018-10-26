@@ -65,8 +65,8 @@ public class ViewerMain extends SXRMain {
 
         private List<String> mThumbnailsList = new ArrayList<>();
 
-        BackgroundWidget(final SXRContext gvrContext) {
-            super(gvrContext);
+        BackgroundWidget(final SXRContext sxrContext) {
+            super(sxrContext);
             setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND - 1);
             setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
             JSONObject metadata = getObjectMetadata();
@@ -95,10 +95,10 @@ public class ViewerMain extends SXRMain {
 
     // WidgetLib members
     @Override
-    public void onInit(final SXRContext gvrContext) {
-        mSXRContext = gvrContext;
+    public void onInit(final SXRContext sxrContext) {
+        mSXRContext = sxrContext;
         try {
-            mWidgetLib = WidgetLib.init(gvrContext, "app_metadata.json");
+            mWidgetLib = WidgetLib.init(sxrContext, "app_metadata.json");
             mContentSceneController = WidgetLib.getContentSceneController();
 
             mMainScene = WidgetLib.getMainScene();
@@ -106,7 +106,7 @@ public class ViewerMain extends SXRMain {
 
             // initialize lights
             mLight = new Lights();
-            mLight.loadLights(gvrContext);
+            mLight.loadLights(sxrContext);
             mLight.getLightScene().getTransform().setPosition(0, 10, 0);
             mLight.getLightScene().getTransform().rotateByAxis(-90, 1, 0, 0);
             mMainScene.addSceneObject(mLight.getLightScene());
@@ -124,7 +124,7 @@ public class ViewerMain extends SXRMain {
 
         mBackgroundWidget = new BackgroundWidget(mSXRContext);
 
-        mModelsList = new ModelsListContentScene(gvrContext, mSettingsButtonTouchListener);
+        mModelsList = new ModelsListContentScene(sxrContext, mSettingsButtonTouchListener);
 
         mNotificationList = new NotificationsContentScene(mSXRContext, mHomeButtonTouchListener);
 
@@ -142,7 +142,7 @@ public class ViewerMain extends SXRMain {
                 mBackgroundWidget, mHomeButtonTouchListener);
         WidgetLib.getTouchManager().setDefaultRightClickAction(defaultBackAction);
 
-        Log.init(gvrContext.getContext(), true);
+        Log.init(sxrContext.getContext(), true);
 //        Log.enableSubsystem(Log.SUBSYSTEM.FOCUS, true);
 //        Log.enableSubsystem(Log.SUBSYSTEM.WIDGET, true);
 //        Log.enableSubsystem(Log.SUBSYSTEM.INPUT, true);

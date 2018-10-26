@@ -125,21 +125,21 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     };
 
     @Override
-    public void onInit(SXRContext gvrContext) throws Throwable {
-        mScene = gvrContext.getMainScene();
+    public void onInit(SXRContext sxrContext) throws Throwable {
+        mScene = sxrContext.getMainScene();
         mCamera = mScene.getMainCameraRig();
         mCamera.getTransform().setPosition(0.0f, 6.0f, 20f);
 
-        mCursor = MainHelper.createGaze(gvrContext, 0.0f, 0.0f, 0.0f);
-        mBallProto = new SXRSphereSceneObject(gvrContext, true, new SXRMaterial(gvrContext, SXRMaterial.SXRShaderType.Phong.ID));
+        mCursor = MainHelper.createGaze(sxrContext, 0.0f, 0.0f, 0.0f);
+        mBallProto = new SXRSphereSceneObject(sxrContext, true, new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID));
 
-        initScene(gvrContext, mScene);
-        initLabels(gvrContext, mScene);
+        initScene(sxrContext, mScene);
+        initLabels(sxrContext, mScene);
 
-        addPhysicsWorld(gvrContext, mScene);
+        addPhysicsWorld(sxrContext, mScene);
 
         mScene.getEventReceiver().addListener(this);
-        gvrContext.getInputManager().selectController(mControllerSelector);
+        sxrContext.getInputManager().selectController(mControllerSelector);
     }
 
     private void initScene(SXRContext context, SXRScene scene) {
@@ -309,10 +309,10 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     }
 
     @Override
-    public boolean visit(SXRComponent gvrComponent) {
-        if (gvrComponent.getTransform().getPositionY() < SCORE_OFFSET) {
-            mScene.removeSceneObject(gvrComponent.getOwnerObject());
-            doScore((SXRRigidBody) gvrComponent);
+    public boolean visit(SXRComponent sxrComponent) {
+        if (sxrComponent.getTransform().getPositionY() < SCORE_OFFSET) {
+            mScene.removeSceneObject(sxrComponent.getOwnerObject());
+            doScore((SXRRigidBody) sxrComponent);
         }
 
         return false;

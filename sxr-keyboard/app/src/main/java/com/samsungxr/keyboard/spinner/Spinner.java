@@ -42,11 +42,11 @@ public class Spinner extends SXRSceneObject {
         return active;
     }
 
-    public Spinner(SXRContext gvrContext, int initialCharacterPosition, int mode) {
-        super(gvrContext);
+    public Spinner(SXRContext sxrContext, int initialCharacterPosition, int mode) {
+        super(sxrContext);
 
-        spinnerRoulette = new SpinnerRoulette(gvrContext, initialCharacterPosition, mode);
-        spinnerSkeleton = new SpinnerSkeleton(gvrContext);
+        spinnerRoulette = new SpinnerRoulette(sxrContext, initialCharacterPosition, mode);
+        spinnerSkeleton = new SpinnerSkeleton(sxrContext);
 
         addChildObject(spinnerRoulette);
         addChildObject(spinnerSkeleton);

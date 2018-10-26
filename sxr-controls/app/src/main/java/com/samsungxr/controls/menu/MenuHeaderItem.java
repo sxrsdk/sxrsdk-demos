@@ -66,8 +66,8 @@ class MenuHeaderItem extends ControlSceneObject {
         MOTION, COLOR, SCALE, ROTATION
     }
 
-    public MenuHeaderItem(SXRContext gvrContext, String title, headerType type, ItemSelectedListener onTapListener) {
-        super(gvrContext);
+    public MenuHeaderItem(SXRContext sxrContext, String title, headerType type, ItemSelectedListener onTapListener) {
+        super(sxrContext);
 
         this.onTapListener = onTapListener;
         this.type = type;
@@ -77,29 +77,29 @@ class MenuHeaderItem extends ControlSceneObject {
         WIDTH = (int)(100.0f * quadWidth);
         HEIGHT = (int) (100.0f * quadHeigth);
 
-        attachRenderData(new SXRRenderData(gvrContext));
-        getRenderData().setMaterial(new SXRMaterial(gvrContext, new SXRShaderId(ButtonShader.class)));
+        attachRenderData(new SXRRenderData(sxrContext));
+        getRenderData().setMaterial(new SXRMaterial(sxrContext, new SXRShaderId(ButtonShader.class)));
         getRenderData().setMesh(sMesh);
 
-        createTextures(gvrContext, title);
+        createTextures(sxrContext, title);
 
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
 
         attachComponent(new SXRMeshCollider(getSXRContext(), false));
     }
 
-    private void createTextures(SXRContext gvrContext, String title) {
+    private void createTextures(SXRContext sxrContext, String title) {
 
         Text text = new Text(title, Align.CENTER, 2.8f, Color.parseColor("#4b4b4b"), Color.parseColor("#ffffff"), 255);
         SXRMaterial material = getRenderData().getMaterial();
-        SXRAssetLoader importer = gvrContext.getAssetLoader();
+        SXRAssetLoader importer = sxrContext.getAssetLoader();
         SXRBitmapImage bitmapIdle = new SXRBitmapImage(getSXRContext());
 
         bitmapIdle.setFileName(title + "_idle");
         bitmapIdle.setBitmap(createText(text, false));
         material.setTexture(ButtonShader.STATE1_BACKGROUND_TEXTURE,
-                            importer.loadTexture(new SXRAndroidResource(gvrContext, R.raw.empty)));
-        SXRTexture tex1 = new SXRTexture(gvrContext);
+                            importer.loadTexture(new SXRAndroidResource(sxrContext, R.raw.empty)));
+        SXRTexture tex1 = new SXRTexture(sxrContext);
         tex1.setImage(bitmapIdle);
         material.setTexture(ButtonShader.STATE1_TEXT_TEXTURE, tex1);
         text.textColor = 0xffff6f54;
@@ -108,8 +108,8 @@ class MenuHeaderItem extends ControlSceneObject {
         bitmapHover.setFileName(title + "_hover");
         bitmapHover.setBitmap(createText(text, false));
         material.setTexture(ButtonShader.STATE2_BACKGROUND_TEXTURE,
-                            importer.loadTexture(new SXRAndroidResource(gvrContext, R.raw.empty)));
-        SXRTexture tex2 = new SXRTexture(gvrContext);
+                            importer.loadTexture(new SXRAndroidResource(sxrContext, R.raw.empty)));
+        SXRTexture tex2 = new SXRTexture(sxrContext);
         tex2.setImage(bitmapHover);
         material.setTexture(ButtonShader.STATE2_TEXT_TEXTURE, tex2);
 
@@ -117,9 +117,9 @@ class MenuHeaderItem extends ControlSceneObject {
         bitmapSelected.setFileName(title + "_selected");
         bitmapSelected.setBitmap(createText(text, true));
         material.setTexture(ButtonShader.STATE3_BACKGROUND_TEXTURE,
-                            importer.loadTexture(new SXRAndroidResource(gvrContext, R.raw.empty)));
+                            importer.loadTexture(new SXRAndroidResource(sxrContext, R.raw.empty)));
 
-        SXRTexture tex3 = new SXRTexture(gvrContext);
+        SXRTexture tex3 = new SXRTexture(sxrContext);
         tex3.setImage(bitmapSelected);
         material.setTexture(ButtonShader.STATE3_TEXT_TEXTURE, tex3);
         getRenderData().setRenderingOrder(RenderingOrder.MENU_HEADER_TEXT);

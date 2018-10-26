@@ -105,7 +105,7 @@ public class PhongShader3 extends SXRShader {
             + "  FragColor = vec4( 0.1*color + 0.9*color1, 1.0 );\n" //
             + "}\n";
 
-    public PhongShader3(SXRContext gvrContext) {
+    public PhongShader3(SXRContext sxrContext) {
         super("float4 u_mat1, float4 u_mat2, float4 u_mat3, float4 u_mat4, float3 u_eye, float3 u_light, float u_radius",
               "sampler2D u_texture, sampler2D env",
                "float3 a_position, float2 a_texcoord, float3 a_normal",

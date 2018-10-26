@@ -40,14 +40,14 @@ public class SpinnerAdapter {
         updateTextOnRig(actualRotation, context);
     }
 
-    private void updateTextOnRig(float degree, SXRContext gvrContext) {
+    private void updateTextOnRig(float degree, SXRContext sxrContext) {
 
         if (degree < 0.0f) {
             int howFar = 1;
             int upSpinnerPosition = spinnerItems.getNextPosition(centralPosition + howFar + 1);
             int upCharacterPosition = characterList.getNextPosition(centralPositionCharacter
                     + howFar + 1);
-            spinnerItems.get(upSpinnerPosition).setText(gvrContext,
+            spinnerItems.get(upSpinnerPosition).setText(sxrContext,
                     characterList.get(upCharacterPosition));
             Log.d("SpinnerTest", "upSpinnerPosition" + upSpinnerPosition);
         } else {
@@ -56,7 +56,7 @@ public class SpinnerAdapter {
                     .getPreviousPosition(centralPosition - howFar - 1);
             int downCharacterPosition = characterList.getPreviousPosition(centralPositionCharacter
                     - howFar - 1);
-            spinnerItems.get(downSpinnerPosition).setText(gvrContext,
+            spinnerItems.get(downSpinnerPosition).setText(sxrContext,
                     characterList.get(downCharacterPosition));
             Log.d("SpinnerTest", "downSpinnerPosition" + downSpinnerPosition);
         }

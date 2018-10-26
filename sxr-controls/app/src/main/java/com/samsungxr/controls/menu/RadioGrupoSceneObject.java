@@ -31,17 +31,17 @@ public class RadioGrupoSceneObject extends SXRSceneObject {
 
     private ItemSelectedListener mItemSelectedListener;
 
-    public RadioGrupoSceneObject(SXRContext gvrContext, ItemSelectedListener mItemSelectedListener,
+    public RadioGrupoSceneObject(SXRContext sxrContext, ItemSelectedListener mItemSelectedListener,
                                  float time1, float time2, float time3) {
-        super(gvrContext);
+        super(sxrContext);
 
         this.mItemSelectedListener = mItemSelectedListener;
 
-        button1 = new RadioButtonSceneObject(gvrContext, time1 >= 1 ? (int) time1 + "s" : time1
+        button1 = new RadioButtonSceneObject(sxrContext, time1 >= 1 ? (int) time1 + "s" : time1
                 + "s", time1);
-        button2 = new RadioButtonSceneObject(gvrContext, time2 >= 1 ? (int) time2 + "s" : time2
+        button2 = new RadioButtonSceneObject(sxrContext, time2 >= 1 ? (int) time2 + "s" : time2
                 + "s", time2);
-        button3 = new RadioButtonSceneObject(gvrContext, time3 >= 1 ? (int) time3 + "s" : time3
+        button3 = new RadioButtonSceneObject(sxrContext, time3 >= 1 ? (int) time3 + "s" : time3
                 + "s", time3);
 
         buttonSelected = button1;

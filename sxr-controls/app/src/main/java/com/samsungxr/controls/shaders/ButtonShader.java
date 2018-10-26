@@ -34,11 +34,11 @@ public class ButtonShader extends SXRShader{
     public static final String TEXTURE_SWITCH = "textureSwitch";
 
 
-    public ButtonShader(SXRContext gvrContext) {
+    public ButtonShader(SXRContext sxrContext) {
         super("float textureSwitch float u_opacity",
               "sampler2D state1Text sampler2D state2Text sampler2D state3Text sampler2D state1Background sampler2D state2Background  sampler2D state3Background",
               "float3 a_position, float3 a_normal, float2 a_texcoord", GLSLESVersion.VULKAN);
-        Context context = gvrContext.getContext();
+        Context context = sxrContext.getContext();
         setSegment("FragmentTemplate", TextFile.readTextFile(context, R.raw.buttonshader_fragment));
         setSegment("VertexTemplate", TextFile.readTextFile(context,R.raw.buttonshader_vertex));
     }

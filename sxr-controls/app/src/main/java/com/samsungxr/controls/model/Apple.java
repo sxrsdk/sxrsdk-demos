@@ -71,23 +71,23 @@ public class Apple extends SXRSceneObject {
 
     public static Motion motion = Motion.Linear;
 
-    public Apple(SXRContext gvrContext) {
-        super(gvrContext);
+    public Apple(SXRContext sxrContext) {
+        super(sxrContext);
         this.getTransform().setScale(APPLE_SCALE, APPLE_SCALE, APPLE_SCALE);
-        setAppleRenderData(gvrContext);
-        setAppleShaderParameters(gvrContext);
-        star = new Star(gvrContext);
-        shadow = new WormShadow(gvrContext, 0.27f, 0.27f, RenderingOrder.APPLE_SHADOW);
+        setAppleRenderData(sxrContext);
+        setAppleShaderParameters(sxrContext);
+        star = new Star(sxrContext);
+        shadow = new WormShadow(sxrContext, 0.27f, 0.27f, RenderingOrder.APPLE_SHADOW);
         shadow.getTransform().setScale(2, 2, 2);
-        gvrContext.getMainScene().addSceneObject(star);
+        sxrContext.getMainScene().addSceneObject(star);
     }
 
-    public void setAppleRenderData(SXRContext gvrContext) {
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(new SXRAndroidResource(gvrContext,
+    public void setAppleRenderData(SXRContext sxrContext) {
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                 R.raw.apple));
 
-        SXRMaterial material = new SXRMaterial(gvrContext, new SXRShaderId(ColorSwapShader.class));
-        SXRRenderData renderData = new SXRRenderData(gvrContext);
+        SXRMaterial material = new SXRMaterial(sxrContext, new SXRShaderId(ColorSwapShader.class));
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
         renderData.setMesh(mesh);
         renderData.setMaterial(material);
         this.attachRenderData(renderData);
@@ -95,10 +95,10 @@ public class Apple extends SXRSceneObject {
         getRenderData().setRenderingOrder(RenderingOrder.APPLE);
     }
 
-    public void setAppleShaderParameters(SXRContext gvrContext) {
-        SXRTexture grayScaleTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+    public void setAppleShaderParameters(SXRContext sxrContext) {
+        SXRTexture grayScaleTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.apple_diffuse));
-        SXRTexture detailsTexture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture detailsTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.apple_details));
 
         this.getRenderData().getMaterial().setOpacity(0);
@@ -113,9 +113,9 @@ public class Apple extends SXRSceneObject {
         appleList.add(apple);
     }
 
-    public static float[] getColor(SXRContext gvrContext) {
+    public static float[] getColor(SXRContext sxrContext) {
 
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         TypedArray colorArray = res.obtainTypedArray(R.array.colors);
         TypedArray colorTypeValues;
         float[] appleColor = new float[3];
@@ -179,14 +179,14 @@ public class Apple extends SXRSceneObject {
 
     }
 
-    public void playAnimation(SXRContext gvrContext) {
+    public void playAnimation(SXRContext sxrContext) {
 
         SXRAnimation anim = new SXRRelativeMotionAnimation(this, AnimationsTime.getDropTime(), 0,
                 -Constants.APPLE_INICIAL_YPOS - 1, 0);
         anim.setInterpolator(defineInterpolator(motion));
-        anim.start(gvrContext.getAnimationEngine());
+        anim.start(sxrContext.getAnimationEngine());
         playShadowAnimation();
-        playOpacityAnimation(gvrContext);
+        playOpacityAnimation(sxrContext);
     }
 
     private void playShadowAnimation() {
@@ -194,20 +194,20 @@ public class Apple extends SXRSceneObject {
                 getSXRContext().getAnimationEngine());
     }
 
-    public void playOpacityAnimation(SXRContext gvrContext) {
+    public void playOpacityAnimation(SXRContext sxrContext) {
 
         SXRAnimation anim = new SXROpacityAnimation(this, OPACITY_ANIMATION_DURATION, 1);
-        anim.start(gvrContext.getAnimationEngine());
+        anim.start(sxrContext.getAnimationEngine());
 
     }
 
-    public void resetPosition(SXRContext gvrContext) {
+    public void resetPosition(SXRContext sxrContext) {
 
         updateAppleColor();
-        star.playMoveAnimation(gvrContext, this);
-        setApplePositionInsideFrustum(gvrContext);
+        star.playMoveAnimation(sxrContext, this);
+        setApplePositionInsideFrustum(sxrContext);
         this.getTransform().setPositionY(Constants.APPLE_INICIAL_YPOS);
-        playAnimation(gvrContext);
+        playAnimation(sxrContext);
 
     }
 

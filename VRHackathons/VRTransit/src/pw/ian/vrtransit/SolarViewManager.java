@@ -46,10 +46,10 @@ public class SolarViewManager extends SXRScript {
     }
 
     @Override
-    public void onInit(SXRContext gvrContext) throws IOException {
-        mAnimationEngine = gvrContext.getAnimationEngine();
+    public void onInit(SXRContext sxrContext) throws IOException {
+        mAnimationEngine = sxrContext.getAnimationEngine();
 
-        SXRScene mainScene = gvrContext.getNextMainScene(new Runnable() {
+        SXRScene mainScene = sxrContext.getNextMainScene(new Runnable() {
 
             @Override
             public void run() {
@@ -70,70 +70,70 @@ public class SolarViewManager extends SXRScript {
         mainScene.getMainCameraRig().getTransform()
                 .setPosition(0.0f, 0.0f, 0.0f);
 
-        SXRSceneObject solarSystemObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject solarSystemObject = new SXRSceneObject(sxrContext);
         mainScene.addSceneObject(solarSystemObject);
 
-        SXRSceneObject sunRotationObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject sunRotationObject = new SXRSceneObject(sxrContext);
         solarSystemObject.addChildObject(sunRotationObject);
 
-        SXRAndroidResource meshResource = new SXRAndroidResource(gvrContext,
+        SXRAndroidResource meshResource = new SXRAndroidResource(sxrContext,
                 "sphere.obj");
 
-        SXRSceneObject sunMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject sunMeshObject = asyncSceneObject(sxrContext,
                 meshResource, "sunmap.astc");
         sunMeshObject.getTransform().setPosition(0.0f, 0.0f, 0.0f);
         sunMeshObject.getTransform().setScale(10.0f, 10.0f, 10.0f);
         sunRotationObject.addChildObject(sunMeshObject);
 
-        SXRSceneObject mercuryRevolutionObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject mercuryRevolutionObject = new SXRSceneObject(sxrContext);
         mercuryRevolutionObject.getTransform().setPosition(14.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(mercuryRevolutionObject);
 
-        SXRSceneObject mercuryRotationObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject mercuryRotationObject = new SXRSceneObject(sxrContext);
         mercuryRevolutionObject.addChildObject(mercuryRotationObject);
 
-        SXRSceneObject mercuryMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject mercuryMeshObject = asyncSceneObject(sxrContext,
                 meshResource, "mercurymap.jpg");
         mercuryMeshObject.getTransform().setScale(0.3f, 0.3f, 0.3f);
         mercuryRotationObject.addChildObject(mercuryMeshObject);
 
-        SXRSceneObject venusRevolutionObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject venusRevolutionObject = new SXRSceneObject(sxrContext);
         venusRevolutionObject.getTransform().setPosition(17.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(venusRevolutionObject);
 
-        SXRSceneObject venusRotationObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject venusRotationObject = new SXRSceneObject(sxrContext);
         venusRevolutionObject.addChildObject(venusRotationObject);
 
-        SXRSceneObject venusMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject venusMeshObject = asyncSceneObject(sxrContext,
                 meshResource, "venusmap.jpg");
         venusMeshObject.getTransform().setScale(0.8f, 0.8f, 0.8f);
         venusRotationObject.addChildObject(venusMeshObject);
 
-        SXRSceneObject earthRevolutionObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject earthRevolutionObject = new SXRSceneObject(sxrContext);
         earthRevolutionObject.getTransform().setPosition(22.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(earthRevolutionObject);
 
-        SXRSceneObject earthRotationObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject earthRotationObject = new SXRSceneObject(sxrContext);
         earthRevolutionObject.addChildObject(earthRotationObject);
 
-        SXRSceneObject earthMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject earthMeshObject = asyncSceneObject(sxrContext,
                 meshResource, "earthmap1k.jpg");
         earthMeshObject.getTransform().setScale(1.0f, 1.0f, 1.0f);
         earthRotationObject.addChildObject(earthMeshObject);
 
-        SXRSceneObject moonRevolutionObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject moonRevolutionObject = new SXRSceneObject(sxrContext);
         moonRevolutionObject.getTransform().setPosition(4.0f, 0.0f, 0.0f);
         earthRevolutionObject.addChildObject(moonRevolutionObject);
         moonRevolutionObject.addChildObject(mainScene.getMainCameraRig());
 
-        SXRSceneObject marsRevolutionObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject marsRevolutionObject = new SXRSceneObject(sxrContext);
         marsRevolutionObject.getTransform().setPosition(30.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(marsRevolutionObject);
 
-        SXRSceneObject marsRotationObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject marsRotationObject = new SXRSceneObject(sxrContext);
         marsRevolutionObject.addChildObject(marsRotationObject);
 
-        SXRSceneObject marsMeshObject = asyncSceneObject(gvrContext,
+        SXRSceneObject marsMeshObject = asyncSceneObject(sxrContext,
                 meshResource, "mars_1k_color.jpg");
         marsMeshObject.getTransform().setScale(0.6f, 0.6f, 0.6f);
         marsRotationObject.addChildObject(marsMeshObject);

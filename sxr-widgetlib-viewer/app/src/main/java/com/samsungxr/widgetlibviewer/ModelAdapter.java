@@ -14,11 +14,11 @@ import java.util.List;
 public class ModelAdapter extends BaseAdapter {
     protected float mSizeQuad = 4;
 
-    public ModelAdapter(SXRContext gvrContext,
+    public ModelAdapter(SXRContext sxrContext,
                          final List<String> modelsList) {
         Log.d(TAG, "CTOR(): items: %d", modelsList.size());
         mModelsPath = modelsList;
-        mGvrContext = gvrContext;
+        mGvrContext = sxrContext;
     }
 
     @Override

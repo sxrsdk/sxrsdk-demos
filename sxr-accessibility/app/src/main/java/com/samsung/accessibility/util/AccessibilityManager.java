@@ -25,9 +25,9 @@ public class AccessibilityManager {
     private SXRAccessibilityInvertedColors mInvertedColors;
     private SXRAccessibilityZoom mZoom;
 
-    public AccessibilityManager(SXRContext gvrContext) {
+    public AccessibilityManager(SXRContext sxrContext) {
         mTalkBacks = new ArrayList<SXRAccessibilityTalkBack>();
-        mInvertedColors = new SXRAccessibilityInvertedColors(gvrContext);
+        mInvertedColors = new SXRAccessibilityInvertedColors(sxrContext);
         mZoom = new SXRAccessibilityZoom();
     }
 

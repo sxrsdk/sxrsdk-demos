@@ -63,17 +63,17 @@ public class MenuHeader extends ControlSceneObject implements ItemSelectedListen
     private Resources res;
     private boolean isSentToFront = false;
 
-    public MenuHeader(SXRContext gvrContext, FrameListener frameListener) {
-        super(gvrContext, MENU_WIDTH, MENU_HEIGHT, Util.whiteTexture(gvrContext));
+    public MenuHeader(SXRContext sxrContext, FrameListener frameListener) {
+        super(sxrContext, MENU_WIDTH, MENU_HEIGHT, Util.whiteTexture(sxrContext));
 
-        res = gvrContext.getContext().getResources();
+        res = sxrContext.getContext().getResources();
 
         this.frameListener = frameListener;
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
 
         createMenuTypes();
-        createMenuItems(gvrContext);
+        createMenuItems(sxrContext);
         organizeItens();
         attachMenuItens();
         setOriginalPosition();
@@ -88,12 +88,12 @@ public class MenuHeader extends ControlSceneObject implements ItemSelectedListen
         menus.add(new RotationMenu(getSXRContext()));
     }
 
-    private void createMenuItems(SXRContext gvrContext) {
+    private void createMenuItems(SXRContext sxrContext) {
 
-        motion = new MenuHeaderItem(gvrContext, res.getString(R.string.motion), headerType.MOTION, this);
-        color = new MenuHeaderItem(gvrContext, res.getString(R.string.color), headerType.COLOR, this);
-        scale = new MenuHeaderItem(gvrContext, res.getString(R.string.scale), headerType.SCALE, this);
-        rotation = new MenuHeaderItem(gvrContext, res.getString(R.string.rotation), headerType.ROTATION, this);
+        motion = new MenuHeaderItem(sxrContext, res.getString(R.string.motion), headerType.MOTION, this);
+        color = new MenuHeaderItem(sxrContext, res.getString(R.string.color), headerType.COLOR, this);
+        scale = new MenuHeaderItem(sxrContext, res.getString(R.string.scale), headerType.SCALE, this);
+        rotation = new MenuHeaderItem(sxrContext, res.getString(R.string.rotation), headerType.ROTATION, this);
 
         setGamePadListener(motion);
         setGamePadListener(color);

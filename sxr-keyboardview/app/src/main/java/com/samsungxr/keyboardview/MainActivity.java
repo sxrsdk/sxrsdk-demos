@@ -27,7 +27,7 @@ public class MainActivity extends SXRActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setMain(new Main(this), "gvr.xml");
+        setMain(new Main(this), "sxr.xml");
     }
 
     @Override

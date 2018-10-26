@@ -49,7 +49,7 @@ public class GearVRScripting extends SXRActivity
         ipAddress = getWifiIpAddress(this);
         createCameraView();
         main = new GearVRScriptingMain();
-        setMain(main, "gvr.xml");
+        setMain(main, "sxr.xml");
     }
 
     @Override

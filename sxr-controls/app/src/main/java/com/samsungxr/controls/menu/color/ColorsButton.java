@@ -38,21 +38,21 @@ public class ColorsButton extends MenuControlSceneObject {
 
     private SXRSceneObject checkObject, hoverObject;
 
-    public ColorsButton(SXRContext gvrContext, Color color) {
-        super(gvrContext);
+    public ColorsButton(SXRContext sxrContext, Color color) {
+        super(sxrContext);
 
         this.color = color;
 
         SXRMesh sMesh = getSXRContext().createQuad(BUTTON_SIZE, BUTTON_SIZE);
 
-        attachRenderData(new SXRRenderData(gvrContext));
+        attachRenderData(new SXRRenderData(sxrContext));
         getRenderData().setMaterial(
-                new SXRMaterial(gvrContext, new SXRShaderId(ColorSwapShader.class)));
+                new SXRMaterial(sxrContext, new SXRShaderId(ColorSwapShader.class)));
         getRenderData().setMesh(sMesh);
 
-        setTextures(gvrContext);
+        setTextures(sxrContext);
 
-        attachComponent(new SXRMeshCollider(gvrContext, false));
+        attachComponent(new SXRMeshCollider(sxrContext, false));
 
         createCheckObject();
         createHoverObject();
@@ -87,14 +87,14 @@ public class ColorsButton extends MenuControlSceneObject {
         addChildObject(hoverObject);
     }
 
-    private void setTextures(SXRContext gvrContext) {
+    private void setTextures(SXRContext sxrContext) {
 
-        SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.grayscale_circle));
 
         getRenderData().getMaterial().setTexture(ColorSwapShader.TEXTURE_GRAYSCALE, texture);
 
-        texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.raw.empty));
 
         getRenderData().getMaterial().setTexture(ColorSwapShader.TEXTURE_DETAILS, texture);

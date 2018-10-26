@@ -27,8 +27,8 @@ public class KeyboardLine extends SXRSceneObject {
     public float softLineWidth = 0;
     protected int LINE_MARGINT_TOP = 164;
 
-    public KeyboardLine(SXRContext gvrContext) {
-        super(gvrContext);
+    public KeyboardLine(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.KEYBOARD_LINE);
     }
 

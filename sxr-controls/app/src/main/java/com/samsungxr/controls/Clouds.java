@@ -35,14 +35,14 @@ public class Clouds extends SXRSceneObject {
 
     private final int CLOUD_ROTATION_DURATION = 1800;
 
-    public Clouds(SXRContext gvrContext, float cloudDistance, int numberOfClouds) {
-        super(gvrContext);
+    public Clouds(SXRContext sxrContext, float cloudDistance, int numberOfClouds) {
+        super(sxrContext);
 
-        SXRMesh mesh = gvrContext.getAssetLoader().loadMesh(
-                new SXRAndroidResource(gvrContext, R.raw.cloud_mesh));
+        SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(
+                new SXRAndroidResource(sxrContext, R.raw.cloud_mesh));
 
         clouds = new Cloud[numberOfClouds];
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         TypedArray cloudArray = res.obtainTypedArray(R.array.clouds);
         TypedArray cloudTypeValues;
 
@@ -52,21 +52,21 @@ public class Clouds extends SXRSceneObject {
 
             cloudTypeValues = res.obtainTypedArray(cloudArray.getResourceId(currentCloudIndex, 0));
 
-            clouds[i] = new Cloud(gvrContext, mesh, -cloudDistance, cloudTypeValues, angle * i);
+            clouds[i] = new Cloud(sxrContext, mesh, -cloudDistance, cloudTypeValues, angle * i);
 
-            gvrContext.getMainScene().addSceneObject(clouds[i]);
+            sxrContext.getMainScene().addSceneObject(clouds[i]);
 
-            rotateCloudsAroundCameraAnimation(gvrContext, clouds[i]);
+            rotateCloudsAroundCameraAnimation(sxrContext, clouds[i]);
 
         }
 
     }
 
-    private void rotateCloudsAroundCameraAnimation(SXRContext gvrContext, Cloud cloud) {
+    private void rotateCloudsAroundCameraAnimation(SXRContext sxrContext, Cloud cloud) {
         SXRAnimation anim = new SXRRotationByAxisWithPivotAnimation(
                 cloud, CLOUD_ROTATION_DURATION, FULL_ROTATION, 0, 1, 0, 0, 0, 0);
         anim.setRepeatCount(-1);
         anim.setRepeatMode(SXRRepeatMode.REPEATED);
-        anim.start(gvrContext.getAnimationEngine());
+        anim.start(sxrContext.getAnimationEngine());
     }
 }

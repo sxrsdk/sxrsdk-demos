@@ -31,8 +31,8 @@ public class IndicatorTap extends SXRSceneObject {
     private SXROpacityAnimation opacityAnimationOff;
     private SXRScaleAnimation scaleAnimationSmaller;
 
-    public IndicatorTap(SXRContext gvrContext, float width, float height, SXRTexture texture) {
-        super(gvrContext, width, height, texture);
+    public IndicatorTap(SXRContext sxrContext, float width, float height, SXRTexture texture) {
+        super(sxrContext, width, height, texture);
 
         this.getTransform().setPositionZ(0.2f);
         this.getTransform().setScale(SCALE_OBJECT, SCALE_OBJECT, SCALE_OBJECT);

@@ -46,7 +46,7 @@ public class ModelShader extends SXRShader{
             + "  outColor = texture(texSampler2D, v_tex_coord);\n"
             + "}\n";
 
-    public ModelShader(SXRContext gvrContext) {
+    public ModelShader(SXRContext sxrContext) {
         super("mat4 modelViewProjectionMatrix", "sampler2D texSampler2D ", "float3 a_position, float4 a_normal, float2 a_tex_coord", GLSLESVersion.VULKAN);
 
         setSegment("FragmentTemplate", FRAGMENT_SHADER);

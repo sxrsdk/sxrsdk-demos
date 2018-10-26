@@ -68,8 +68,8 @@ public class ControlWidget extends FadeableObject implements Focusable, View.OnC
     private final AlphaAnimation mFadeIn;
     private FadeableObject mCursor;
 
-    public ControlWidget(final SXRContext gvrContext) {
-        super(gvrContext);
+    public ControlWidget(final SXRContext sxrContext) {
+        super(sxrContext);
 
         mFadeIn = new AlphaAnimation(0, 1);
         mFadeIn.setInterpolator(new DecelerateInterpolator());
@@ -79,7 +79,7 @@ public class ControlWidget extends FadeableObject implements Focusable, View.OnC
         mFadeOut.setInterpolator(new AccelerateInterpolator());
         mFadeOut.setDuration(200);
 
-        mMainSceneObject = new SXRViewSceneObject(gvrContext, R.layout.layout_player_controller, this);
+        mMainSceneObject = new SXRViewSceneObject(sxrContext, R.layout.layout_player_controller, this);
         setName(getClass().getSimpleName());
     }
 

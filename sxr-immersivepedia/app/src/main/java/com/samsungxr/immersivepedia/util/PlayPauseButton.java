@@ -34,21 +34,21 @@ public class PlayPauseButton extends FocusableSceneObject {
 
     private SXRTexture playHover;
     private SXRTexture playNormal;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
-    public PlayPauseButton(SXRContext gvrContext, float f, float g, SXRTexture t) {
-        super(gvrContext, f, g, t);
-        this.gvrContext = gvrContext;
+    public PlayPauseButton(SXRContext sxrContext, float f, float g, SXRTexture t) {
+        super(sxrContext, f, g, t);
+        this.sxrContext = sxrContext;
         loadTexture();
         setTextures();
         setName("playpause");
     }
 
     private void loadTexture() {
-        pauseHover = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.pause_hover));
-        playHover = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.play_hover));
-        pauseNormal = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.pause));
-        playNormal = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.play));
+        pauseHover = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.pause_hover));
+        playHover = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.play_hover));
+        pauseNormal = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.pause));
+        playNormal = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.play));
     }
 
     private void setTextures() {

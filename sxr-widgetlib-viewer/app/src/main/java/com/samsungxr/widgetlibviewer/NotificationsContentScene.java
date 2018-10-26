@@ -27,8 +27,8 @@ import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.getFloat;
 import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.getJSONObject;
 import static com.samsungxr.widgetlib.widget.properties.JSONHelpers.optPointF;
 public class NotificationsContentScene extends BaseContentScene {
-    NotificationsContentScene(SXRContext gvrContext, Widget.OnTouchListener homeListener) {
-        super(gvrContext);
+    NotificationsContentScene(SXRContext sxrContext, Widget.OnTouchListener homeListener) {
+        super(sxrContext);
         mControlBar.addControlListener("Home", homeListener);
     }
 
@@ -187,8 +187,8 @@ public class NotificationsContentScene extends BaseContentScene {
     public class NotificationAdapter extends BaseAdapter {
         private SXRContext mGvrContext;
 
-        public NotificationAdapter(SXRContext gvrContext) {
-            mGvrContext = gvrContext;
+        public NotificationAdapter(SXRContext sxrContext) {
+            mGvrContext = sxrContext;
         }
 
         @Override

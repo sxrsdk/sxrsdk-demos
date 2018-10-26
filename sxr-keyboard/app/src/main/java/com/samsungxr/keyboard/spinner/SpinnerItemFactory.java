@@ -34,16 +34,16 @@ public class SpinnerItemFactory {
     private List<Bitmap> alphaLowerBitmapList = new ArrayList<Bitmap>();
     private List<Bitmap> alphaUpperBitmapList = new ArrayList<Bitmap>();
     private List<Bitmap> specialBitmapList = new ArrayList<Bitmap>();
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
-    public SpinnerItemFactory(SXRContext gvrContext) {
-        this.gvrContext = gvrContext;
+    public SpinnerItemFactory(SXRContext sxrContext) {
+        this.sxrContext = sxrContext;
     }
 
-    public static synchronized SpinnerItemFactory getInstance(SXRContext gvrContext) {
+    public static synchronized SpinnerItemFactory getInstance(SXRContext sxrContext) {
 
         if (instance == null) {
-            instance = new SpinnerItemFactory(gvrContext);
+            instance = new SpinnerItemFactory(sxrContext);
         }
 
         return instance;
@@ -60,36 +60,36 @@ public class SpinnerItemFactory {
         text.backgroundColor = Color.parseColor("#00204d");
         text.text = spinnerText;
 
-        return SXRTextBitmapFactory.create(gvrContext.getContext(), bitmapWidth, bitmapHeigth,
+        return SXRTextBitmapFactory.create(sxrContext.getContext(), bitmapWidth, bitmapHeigth,
                 text, 0);
     }
 
     public void init() {
 
-        for (int i = 0; i < CharList.getInstance(gvrContext)
+        for (int i = 0; i < CharList.getInstance(sxrContext)
                 .getList(Keyboard.SOFT_KEYBOARD_LOWERCASE).size(); i++) {
             alphaLowerBitmapList
-                    .add(createSpinnerItem(CharList.getInstance(gvrContext)
+                    .add(createSpinnerItem(CharList.getInstance(sxrContext)
                             .getList(Keyboard.SOFT_KEYBOARD_LOWERCASE).get(i)));
 
         }
 
-        for (int i = 0; i < CharList.getInstance(gvrContext)
+        for (int i = 0; i < CharList.getInstance(sxrContext)
                 .getList(Keyboard.SOFT_KEYBOARD_UPPERCASE).size(); i++) {
-            alphaUpperBitmapList.add(createSpinnerItem(CharList.getInstance(gvrContext)
+            alphaUpperBitmapList.add(createSpinnerItem(CharList.getInstance(sxrContext)
                     .getList(Keyboard.SOFT_KEYBOARD_UPPERCASE).get(i)
                     .toUpperCase()));
         }
 
-        for (int i = 0; i < CharList.getInstance(gvrContext).getList(Keyboard.NUMERIC_KEYBOARD)
+        for (int i = 0; i < CharList.getInstance(sxrContext).getList(Keyboard.NUMERIC_KEYBOARD)
                 .size(); i++) {
-            numericBitmapList.add(createSpinnerItem(CharList.getInstance(gvrContext)
+            numericBitmapList.add(createSpinnerItem(CharList.getInstance(sxrContext)
                     .getList(Keyboard.NUMERIC_KEYBOARD).get(i)));
         }
 
-        for (int i = 0; i < CharList.getInstance(gvrContext)
+        for (int i = 0; i < CharList.getInstance(sxrContext)
                 .getList(Keyboard.SOFT_KEYBOARD_SPECIAL).size(); i++) {
-            specialBitmapList.add(createSpinnerItem(CharList.getInstance(gvrContext)
+            specialBitmapList.add(createSpinnerItem(CharList.getInstance(sxrContext)
                     .getList(Keyboard.SOFT_KEYBOARD_SPECIAL).get(i)));
         }
 

@@ -38,7 +38,7 @@ public class MainActivity extends SXRActivity {
         createView();
 
         mMain = new Main(this);
-        setMain(mMain, "gvr.xml");
+        setMain(mMain, "sxr.xml");
     }
 
     private void createView() {

@@ -33,7 +33,7 @@ public class MainActivity extends SXRActivity {
         super.onCreate(bundle);
         Firebase.setAndroidContext(this);
         s = new MUNIVisualizerScript(this);
-        setScript(s, "gvr_note4.xml");
+        setScript(s, "sxr.xml");
         Log.i("VRTransit", "Init application");
     }
     

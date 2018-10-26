@@ -31,7 +31,7 @@ public class EventsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         main = new EventsMain();
-        application = new SXRApplication(this, main, "gvr.xml");
+        application = new SXRApplication(this, main, "sxr.xml");
 
 
     }

@@ -31,10 +31,10 @@ public class RotationGroup extends SXRSceneObject {
     SXRSceneObject base;
     private SXRSceneObject place;
 
-    public RotationGroup(SXRContext gvrContext) {
-        super(gvrContext);
+    public RotationGroup(SXRContext sxrContext) {
+        super(sxrContext);
 
-        place = new SXRSceneObject(gvrContext);
+        place = new SXRSceneObject(sxrContext);
 
         addChildObject(place);
         createStar();

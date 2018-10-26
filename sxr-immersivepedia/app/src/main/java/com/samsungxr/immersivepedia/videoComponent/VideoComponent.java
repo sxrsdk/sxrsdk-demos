@@ -35,7 +35,7 @@ public class VideoComponent extends SXRSceneObject {
     private Seekbar seekbar;
     private ButtonBoard buttonBoard;
     private MediaPlayer mediaPlayer;
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
 
     public static float INITIAL_POSITION_X = .0f;
     public static float INITIAL_POSITION_Y = .5f;
@@ -50,10 +50,10 @@ public class VideoComponent extends SXRSceneObject {
     private SXRVideoSceneObject video;
     private FocusableSceneObject focus;
 
-    public VideoComponent(SXRContext gvrContext, float WIDTH, float HEIGHT) {
-        super(gvrContext, 0, 0);
+    public VideoComponent(SXRContext sxrContext, float WIDTH, float HEIGHT) {
+        super(sxrContext, 0, 0);
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
 
         setVideoAttribute();
         createVideo();
@@ -64,15 +64,15 @@ public class VideoComponent extends SXRSceneObject {
     }
 
     private void createSeekbar() {
-        seekbar = new Seekbar(gvrContext, Seekbar.WIDTH, 0.05f, gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                gvrContext, R.drawable.timeline_towatch)));
+        seekbar = new Seekbar(sxrContext, Seekbar.WIDTH, 0.05f, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                sxrContext, R.drawable.timeline_towatch)));
         seekbar.getTransform().setPosition(0.0f, -1.5f, video.getTransform().getPositionZ() + 0.1f);
         addChildObject(seekbar);
     }
 
     private void createButtonBoard() {
-        buttonBoard = new ButtonBoard(gvrContext, 1.7f, .4f,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext.getActivity(),
+        buttonBoard = new ButtonBoard(sxrContext, 1.7f, .4f,
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext.getActivity(),
                         R.drawable.empty)), this);
         buttonBoard.getTransform().setPosition(0f, 0f, video.getTransform().getPositionZ() + 0.1f);
         addChildObject(buttonBoard);
@@ -80,11 +80,11 @@ public class VideoComponent extends SXRSceneObject {
 
     private void createVideo() {
 
-        mediaPlayer = MediaPlayer.create(gvrContext.getContext(), R.raw.dinos_videos_wip);
-        video = new SXRVideoSceneObject(gvrContext, WIDTH, HEIGHT, mediaPlayer, SXRVideoType.MONO);
-        focus = new FocusableSceneObject(gvrContext, WIDTH, HEIGHT, gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        mediaPlayer = MediaPlayer.create(sxrContext.getContext(), R.raw.dinos_videos_wip);
+        video = new SXRVideoSceneObject(sxrContext, WIDTH, HEIGHT, mediaPlayer, SXRVideoType.MONO);
+        focus = new FocusableSceneObject(sxrContext, WIDTH, HEIGHT, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.empty_clickable)));
-        focus.attachCollider(new SXRMeshCollider(gvrContext, false));
+        focus.attachCollider(new SXRMeshCollider(sxrContext, false));
         focus.setName("video");
         focus.focusListener = new FocusListener() {
 
@@ -176,7 +176,7 @@ public class VideoComponent extends SXRSceneObject {
     }
 
     public void showVideo() {
-        new SXROpacityAnimation(this, DURATION, 1).start(gvrContext.getAnimationEngine());
+        new SXROpacityAnimation(this, DURATION, 1).start(sxrContext.getAnimationEngine());
         active = true;
     }
 
@@ -185,8 +185,8 @@ public class VideoComponent extends SXRSceneObject {
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
-        new SXROpacityAnimation(this, .1f, 0).start(gvrContext.getAnimationEngine());
-        gvrContext.getMainScene().removeSceneObject(this);
+        new SXROpacityAnimation(this, .1f, 0).start(sxrContext.getAnimationEngine());
+        sxrContext.getMainScene().removeSceneObject(this);
     }
 
     public boolean isActive() {

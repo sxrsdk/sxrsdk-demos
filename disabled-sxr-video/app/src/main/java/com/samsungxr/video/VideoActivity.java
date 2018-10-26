@@ -28,7 +28,7 @@ public class VideoActivity extends SXRActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMain = new VideoMain(this);
-        setMain(mMain, "gvr.xml");
+        setMain(mMain, "sxr.xml");
     }
 
     @Override

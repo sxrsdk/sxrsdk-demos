@@ -54,7 +54,7 @@ public class AdditiveShader extends SXRShader{
             + "  FragColor = vec4( u_fade*color, alpha );\n" //
             + "}\n";
 
-    public AdditiveShader(SXRContext gvrContext) {
+    public AdditiveShader(SXRContext sxrContext) {
         super("float u_weight, float u_fade", "sampler2D u_texture", "float3 a_position, float2 a_tex_coord", GLSLESVersion.VULKAN);
         setSegment("FragmentTemplate", FRAGMENT_SHADER);
         setSegment("VertexTemplate", VERTEX_SHADER);

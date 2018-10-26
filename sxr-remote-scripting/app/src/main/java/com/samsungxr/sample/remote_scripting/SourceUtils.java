@@ -32,17 +32,17 @@ import com.samsungxr.IErrorEvents;
 import com.samsungxr.SXRResourceVolume;
 
 public class SourceUtils {
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRScriptManager mScriptManager;
 
     public SourceUtils(SXRContext context) {
-        gvrContext = context;
-        mScriptManager = (SXRScriptManager)gvrContext.getScriptManager();
+        sxrContext = context;
+        mScriptManager = (SXRScriptManager)sxrContext.getScriptManager();
     }
 
     private void logError(String message)
     {
-        gvrContext.logError(message, this);
+        sxrContext.logError(message, this);
     }
     
     // from assets directory 
@@ -61,7 +61,7 @@ public class SourceUtils {
             {
                 volType = SXRResourceVolume.VolumeType.NETWORK;
             }
-            SXRResourceVolume volume = new SXRResourceVolume(gvrContext, volType);
+            SXRResourceVolume volume = new SXRResourceVolume(sxrContext, volType);
             SXRAndroidResource resource = volume.openResource(filename);
             SXRScriptFile script = (SXRScriptFile)mScriptManager.loadScript(resource, language);
             script.invoke();
@@ -88,7 +88,7 @@ public class SourceUtils {
         {
             volType = SXRResourceVolume.VolumeType.NETWORK;
         }
-        SXRResourceVolume volume = new SXRResourceVolume(gvrContext, volType, filename);
+        SXRResourceVolume volume = new SXRResourceVolume(sxrContext, volType, filename);
         try
         {
             mScriptManager.loadScriptBundle(filename, volume);
@@ -101,14 +101,14 @@ public class SourceUtils {
     
     public void attachScript(String filename, String sceneObjName)
     {
-        SXRSceneObject sceneObj = gvrContext.getMainScene().getSceneObjectByName(sceneObjName);
+        SXRSceneObject sceneObj = sxrContext.getMainScene().getSceneObjectByName(sceneObjName);
         if (sceneObj == null)
         {
             logError("attachScript: scene object not found " + sceneObjName);
         }
         try
         {
-            sceneObj.attachComponent(new SXRScriptBehavior(gvrContext, filename));
+            sceneObj.attachComponent(new SXRScriptBehavior(sxrContext, filename));
         }
         catch (IOException e)
         {

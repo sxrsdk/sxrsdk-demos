@@ -27,12 +27,12 @@ public class GamepadObject extends SXRSceneObject {
 
     private GamepadVirtual gamepadVirtual;
 
-    public GamepadObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public GamepadObject(SXRContext sxrContext) {
+        super(sxrContext);
 
-        gamepadVirtual = new GamepadVirtual(gvrContext);
+        gamepadVirtual = new GamepadVirtual(sxrContext);
 
-        SXRSceneObject mSXRSceneObject = new SXRSceneObject(gvrContext);
+        SXRSceneObject mSXRSceneObject = new SXRSceneObject(sxrContext);
         mSXRSceneObject.addChildObject(gamepadVirtual);
         addChildObject(mSXRSceneObject);
     }

@@ -89,15 +89,15 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     private ArrayList<PhotoView> photos = new ArrayList<PhotoView>();
     private ArrayList<PhotoGridItem> gridItems = new ArrayList<PhotoGridItem>();
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRCollider galleryCollider;
     private int[] photoIds;
 
     private SXRSceneObject leftArrow;
     private SXRSceneObject rightArrow;
 
-    public Gallery(SXRContext gvrContext, int[] resources) {
-        this(gvrContext);
+    public Gallery(SXRContext sxrContext, int[] resources) {
+        this(sxrContext);
         this.insertPhotos(resources);
 
         this.createHighlightGridItem();
@@ -114,9 +114,9 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
 
         float height = GALLERY_SCROLLBAR_AREA_HEIGHT / this.getNumberOfPages();
 
-        scrollbar = new SXRSceneObject(gvrContext, Gallery.GALLERY_SCROLLBAR_WIDTH,
+        scrollbar = new SXRSceneObject(sxrContext, Gallery.GALLERY_SCROLLBAR_WIDTH,
                 height,
-                this.gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(this.gvrContext,
+                this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(this.sxrContext,
                         R.drawable.scrollbar)));
         scrollbar.getTransform().setPositionX(GALLERY_SCROLLBAR_X_POSITION);
         scrollbar.getTransform().setPositionY(GALLERY_SCROLLBAR_Y_INITIAL_POSITION);
@@ -136,7 +136,7 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
         if (animated) {
             new SXRPositionAnimation(this.scrollbar, GALLERY_SCROLLBAR_ANIMATION_TIME,
                     this.scrollbar.getTransform().getPositionX(), newYPosition, this.scrollbar
-                            .getTransform().getPositionZ()).start(this.gvrContext
+                            .getTransform().getPositionZ()).start(this.sxrContext
                     .getAnimationEngine());
 
         } else {
@@ -180,9 +180,9 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
         }
     }
 
-    public Gallery(SXRContext gvrContext) {
-        super(gvrContext, GALLERY_WIDTH, GALLERY_HEIGHT, gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.empty_clickable)));
-        this.gvrContext = gvrContext;
+    public Gallery(SXRContext sxrContext) {
+        super(sxrContext, GALLERY_WIDTH, GALLERY_HEIGHT, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty_clickable)));
+        this.sxrContext = sxrContext;
         this.getRenderData().setRenderingOrder(RenderingOrderApplication.GALLERY);
         this.setName("gallery");
         galleryCollider = new SXRMeshCollider(getSXRContext(), true);
@@ -233,9 +233,9 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     }
 
     private void createHighlightGridItem() {
-        this.highlightPhotoView = new SXRSceneObject(this.gvrContext);
-        this.highlightLeftPhotoView = new SXRSceneObject(this.gvrContext);
-        this.highlightRightPhotoView = new SXRSceneObject(this.gvrContext);
+        this.highlightPhotoView = new SXRSceneObject(this.sxrContext);
+        this.highlightLeftPhotoView = new SXRSceneObject(this.sxrContext);
+        this.highlightRightPhotoView = new SXRSceneObject(this.sxrContext);
 
         this.highlightPhotoView.getTransform().setPosition(GALLERY_HIGHLIGHT_PHOTO_POSITION_X,
                 GALLERY_HIGHLIGHT_PHOTO_POSITION_Y, GALLERY_HIGHLIGHT_PHOTO_POSITION_Z);
@@ -266,7 +266,7 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
 
         for (PhotoGridItem item : this.gridItems) {
 
-            PhotoView photo = PhotoView.createPhotoView(this.gvrContext, this.photoIds[index]);
+            PhotoView photo = PhotoView.createPhotoView(this.sxrContext, this.photoIds[index]);
             this.addChildObject(photo);
             this.photos.add(photo);
             photo.getTransform().setPosition(item.x, item.y, item.z);
@@ -510,13 +510,13 @@ public class Gallery extends FocusableSceneObject implements PhotoEventListener,
     }
 
     private void createArrows() {
-        this.leftArrow = new SXRSceneObject(this.gvrContext, GALLERY_ARROW_WIDTH,
-                GALLERY_ARROW_HEIGHT, this.gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                        this.gvrContext, R.drawable.arrowleft)));
+        this.leftArrow = new SXRSceneObject(this.sxrContext, GALLERY_ARROW_WIDTH,
+                GALLERY_ARROW_HEIGHT, this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                        this.sxrContext, R.drawable.arrowleft)));
 
-        this.rightArrow = new SXRSceneObject(this.gvrContext, GALLERY_ARROW_WIDTH,
-                GALLERY_ARROW_HEIGHT, this.gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                        this.gvrContext, R.drawable.arrowright)));
+        this.rightArrow = new SXRSceneObject(this.sxrContext, GALLERY_ARROW_WIDTH,
+                GALLERY_ARROW_HEIGHT, this.sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                        this.sxrContext, R.drawable.arrowright)));
 
         this.addChildObject(this.leftArrow);
         this.addChildObject(this.rightArrow);

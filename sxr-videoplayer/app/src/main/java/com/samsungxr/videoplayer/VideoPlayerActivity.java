@@ -78,7 +78,7 @@ public class VideoPlayerActivity extends SXRActivity {
     }
 
     private void showMainSXRF() {
-        setMain(mMain = new VideoPlayerMain(), "gvr.xml");
+        setMain(mMain = new VideoPlayerMain(), "sxr.xml");
     }
 
     @Override

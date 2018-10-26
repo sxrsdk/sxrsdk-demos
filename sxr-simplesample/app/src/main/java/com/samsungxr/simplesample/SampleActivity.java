@@ -36,15 +36,15 @@ public class SampleActivity extends SXRActivity {
 
     private static class SampleMain extends SXRMain {
         @Override
-        public void onInit(SXRContext gvrContext) {
-            SXRScene scene = gvrContext.getMainScene();
+        public void onInit(SXRContext sxrContext) {
+            SXRScene scene = sxrContext.getMainScene();
             scene.setBackgroundColor(1, 1, 1, 1);
 
-            SXRTexture texture = gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.gearvr_logo));
+            SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.gearvr_logo));
 
             // create a scene object (this constructor creates a rectangular scene
             // object that uses the standard texture shader
-            SXRSceneObject sceneObject = new SXRSceneObject(gvrContext, 4.0f, 2.0f, texture);
+            SXRSceneObject sceneObject = new SXRSceneObject(sxrContext, 4.0f, 2.0f, texture);
 
             // set the scene object position
             sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);

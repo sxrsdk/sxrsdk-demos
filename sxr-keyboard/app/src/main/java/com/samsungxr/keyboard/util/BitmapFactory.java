@@ -43,19 +43,19 @@ public class BitmapFactory {
             new ArrayList<SpinnerItem>());;
     private static final int SPINNER_ITEM_SIZE = 8;
 
-    public BitmapFactory(SXRContext gvrContext) {
+    public BitmapFactory(SXRContext sxrContext) {
     }
 
-    public static synchronized BitmapFactory getInstance(SXRContext gvrContext) {
+    public static synchronized BitmapFactory getInstance(SXRContext sxrContext) {
 
         if (instance == null) {
-            instance = new BitmapFactory(gvrContext);
+            instance = new BitmapFactory(sxrContext);
         }
 
         return instance;
     }
 
-    private SpinnerItem createSpinnerItem(SXRContext gvrContext, String spinnerText, int position,
+    private SpinnerItem createSpinnerItem(SXRContext sxrContext, String spinnerText, int position,
             int mode) {
 
         float sceneObjectWidth = 0.19f;
@@ -67,54 +67,54 @@ public class BitmapFactory {
         text.textSize = 75;
         text.backgroundColor = Color.BLACK;
 
-        SpinnerItem textSpinner = new SpinnerItem(gvrContext, sceneObjectWidth, sceneObjectHeigth,
+        SpinnerItem textSpinner = new SpinnerItem(sxrContext, sceneObjectWidth, sceneObjectHeigth,
                 bitmapWidth, bitmapHeigth, position, text);
-        textSpinner.setText(gvrContext, new CharItem(mode, position, spinnerText));
+        textSpinner.setText(sxrContext, new CharItem(mode, position, spinnerText));
 
         return textSpinner;
     }
 
-    public void init(SXRContext gvrContext) {
+    public void init(SXRContext sxrContext) {
 
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         TypedArray softKeyboard = res.obtainTypedArray(R.array.soft_keyboard);
         TypedArray numericKeyboard = res.obtainTypedArray(R.array.soft_keyboard_number);
 
         for (int i = 0; i < softKeyboard.length(); i++) {
-            alphaLowerCaseSpinnerItems.add(createSpinnerItem(gvrContext, softKeyboard.getString(i),
+            alphaLowerCaseSpinnerItems.add(createSpinnerItem(sxrContext, softKeyboard.getString(i),
                     i, Keyboard.SOFT_KEYBOARD_LOWERCASE));
 
         }
 
         for (int i = 0; i < softKeyboard.length(); i++) {
             alphaUpperCaseSpinnerItems
-                    .add(createSpinnerItem(gvrContext, softKeyboard.getString(i).toUpperCase(), i,
+                    .add(createSpinnerItem(sxrContext, softKeyboard.getString(i).toUpperCase(), i,
                             Keyboard.SOFT_KEYBOARD_UPPERCASE));
         }
 
         for (int i = 0; i < numericKeyboard.length(); i++) {
-            numericSpinnerItems.add(createSpinnerItem(gvrContext, numericKeyboard.getString(i)
+            numericSpinnerItems.add(createSpinnerItem(sxrContext, numericKeyboard.getString(i)
                     .toUpperCase(), i, Keyboard.NUMERIC_KEYBOARD));
         }
 
         for (int i = 0; i < SPINNER_ITEM_SIZE; i++) {
-            defaultSpinnerItem.add(createSpinnerItem(gvrContext, numericKeyboard.getString(i)
+            defaultSpinnerItem.add(createSpinnerItem(sxrContext, numericKeyboard.getString(i)
                     .toUpperCase(), i, Keyboard.NUMERIC_KEYBOARD));
         }
 
-        populateSpecialList(gvrContext);
+        populateSpecialList(sxrContext);
     }
 
-    private void populateSpecialList(SXRContext gvrContext) {
+    private void populateSpecialList(SXRContext sxrContext) {
 
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         TypedArray specialKeyboard = res.obtainTypedArray(R.array.soft_keyboard_special);
 
         int n = specialKeyboard.length();
 
         for (int i = 0; i < n; i++) {
 
-            specialCharacterSpinnerItems.add(createSpinnerItem(gvrContext, res.getString(i), i,
+            specialCharacterSpinnerItems.add(createSpinnerItem(sxrContext, res.getString(i), i,
                     Keyboard.SOFT_KEYBOARD_SPECIAL));
         }
 

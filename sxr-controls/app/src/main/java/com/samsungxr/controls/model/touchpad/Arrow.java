@@ -40,8 +40,8 @@ public class Arrow extends SXRSceneObject {
     private long lastSwip;
     SXRScaleAnimation scaleAnimation;
 
-    public Arrow(SXRContext gvrContext, float width, float height, SXRTexture texture, float angle) {
-        super(gvrContext, width, height, texture);
+    public Arrow(SXRContext sxrContext, float width, float height, SXRTexture texture, float angle) {
+        super(sxrContext, width, height, texture);
         createAroow(angle);
 
     }

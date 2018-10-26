@@ -21,10 +21,10 @@ import com.samsungxr.widgetlibviewer.SXRWidgetViewer.R;
 public class NoTextureShader extends SXRPhongShader {
     private static String surfShader = null;
 
-    public NoTextureShader(SXRContext gvrContext) {
-        super(gvrContext);
+    public NoTextureShader(SXRContext sxrContext) {
+        super(sxrContext);
         if (surfShader == null) {
-            Context context = gvrContext.getContext();
+            Context context = sxrContext.getContext();
             surfShader = TextFile.readTextFile(context, R.raw.notexture_surface);
             setSegment("FragmentSurface", surfShader);
         }

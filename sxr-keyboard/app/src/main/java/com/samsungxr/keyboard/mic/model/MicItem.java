@@ -25,9 +25,9 @@ public class MicItem extends SXRSceneObject {
     public static final float WIDTH = 1.2f;
     public static float HIGHT = 1.2f;
 
-    public MicItem(SXRContext gvrContext, int gVRAndroidResourceTexture) {
+    public MicItem(SXRContext sxrContext, int gVRAndroidResourceTexture) {
 
-        super(gvrContext, HIGHT, WIDTH, gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext,
+        super(sxrContext, HIGHT, WIDTH, sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 gVRAndroidResourceTexture)));
         setName(SceneObjectNames.MIC_ITEM);
 

@@ -33,12 +33,12 @@ public abstract class FadeableObject extends SXRSceneObject {
 
     private static final float FADE_DURATION = .2F;
 
-    public FadeableObject(SXRContext gvrContext) {
-        super(gvrContext);
+    public FadeableObject(SXRContext sxrContext) {
+        super(sxrContext);
     }
 
-    public FadeableObject(SXRContext mContext, SXRMesh quad, SXRTexture gvrTexture) {
-        super(mContext, quad, gvrTexture);
+    public FadeableObject(SXRContext mContext, SXRMesh quad, SXRTexture sxrTexture) {
+        super(mContext, quad, sxrTexture);
     }
 
     @NonNull
@@ -85,7 +85,7 @@ public abstract class FadeableObject extends SXRSceneObject {
                 getFadeable(), FADE_DURATION, 1);
         animation.setOnFinish(new SXROnFinish() {
             @Override
-            public void finished(SXRAnimation gvrAnimation) {
+            public void finished(SXRAnimation sxrAnimation) {
                 if (callback != null) {
                     callback.onFadeFinished();
                 }
@@ -99,7 +99,7 @@ public abstract class FadeableObject extends SXRSceneObject {
                 getFadeable(), FADE_DURATION, 0);
         animation.setOnFinish(new SXROnFinish() {
             @Override
-            public void finished(SXRAnimation gvrAnimation) {
+            public void finished(SXRAnimation sxrAnimation) {
                 if (callback != null) {
                     callback.onFadeFinished();
                 }

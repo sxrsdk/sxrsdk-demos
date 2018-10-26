@@ -27,7 +27,7 @@ import com.samsungxr.immersivepedia.R;
 
 public class SwipeIndicator extends SXRSceneObject {
 
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private SXRSceneObject swipeIndicator;
     private SXRSceneObject hand;
     private FocusableSceneObject dino;
@@ -37,16 +37,16 @@ public class SwipeIndicator extends SXRSceneObject {
     private long currentSecond;
     private boolean isStoping;
 
-    public SwipeIndicator(SXRContext gvrContext, FocusableSceneObject dino) {
-        super(gvrContext);
-        this.gvrContext = gvrContext;
+    public SwipeIndicator(SXRContext sxrContext, FocusableSceneObject dino) {
+        super(sxrContext);
+        this.sxrContext = sxrContext;
 
         this.dino = dino;
-        swipeIndicator = new SXRSceneObject(gvrContext, .6f, .1f,
-                gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(gvrContext, R.drawable.swipe_trace)));
+        swipeIndicator = new SXRSceneObject(sxrContext, .6f, .1f,
+                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.swipe_trace)));
 
-        hand = new SXRSceneObject(gvrContext, gvrContext.createQuad(.2f, .3f), gvrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
-                gvrContext, R.drawable.swipe_hand)));
+        hand = new SXRSceneObject(sxrContext, sxrContext.createQuad(.2f, .3f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+                sxrContext, R.drawable.swipe_hand)));
 
         setAttribute();
 
@@ -100,10 +100,10 @@ public class SwipeIndicator extends SXRSceneObject {
 
             @Override
             public void finished(SXRAnimation arg0) {
-                new SXROpacityAnimation(swipeIndicator, 1, 0).start(gvrContext.getAnimationEngine());
-                new SXROpacityAnimation(hand, 1, 0).start(gvrContext.getAnimationEngine());
+                new SXROpacityAnimation(swipeIndicator, 1, 0).start(sxrContext.getAnimationEngine());
+                new SXROpacityAnimation(hand, 1, 0).start(sxrContext.getAnimationEngine());
             }
-        }).start(gvrContext.getAnimationEngine());
+        }).start(sxrContext.getAnimationEngine());
 
     }
 

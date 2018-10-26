@@ -18,7 +18,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.samsungxr.gvreyepicking"
+    package="com.samsungxr.sxreyepicking"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -31,7 +31,7 @@
         android:label="@string/app_name">
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
         <activity
-            android:name="com.samsungxr.gvreyepicking.SampleActivity"
+            android:name="com.samsungxr.sxreyepicking.SampleActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask"
             android:label="@string/app_name" >

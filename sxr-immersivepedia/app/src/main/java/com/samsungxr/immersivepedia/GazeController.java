@@ -36,16 +36,16 @@ public class GazeController {
     private static GazeController mSingleton = null;
 
     public  GazeController(SXRCursorController controller) {
-        SXRContext gvrContext = controller.getSXRContext();
+        SXRContext sxrContext = controller.getSXRContext();
 
-        cursorRoot = new SXRSceneObject(gvrContext);
-        cursorSelector = new SXRSwitch(gvrContext);
+        cursorRoot = new SXRSceneObject(sxrContext);
+        cursorSelector = new SXRSwitch(sxrContext);
         cursorRoot.attachComponent(cursorSelector);
-        cursor = new SXRSceneObject(gvrContext,
-                                    gvrContext.createQuad(NORMAL_CURSOR_SIZE,
+        cursor = new SXRSceneObject(sxrContext,
+                                    sxrContext.createQuad(NORMAL_CURSOR_SIZE,
                                                           NORMAL_CURSOR_SIZE),
-                                    gvrContext.getAssetLoader().loadTexture(
-                                            new SXRAndroidResource(gvrContext,
+                                    sxrContext.getAssetLoader().loadTexture(
+                                            new SXRAndroidResource(sxrContext,
                                                                    R.drawable.head_tracker)));
         cursor.getTransform().setPositionZ(CURSOR_Z_POSITION);
         cursor.getRenderData().setRenderingOrder(
@@ -53,11 +53,11 @@ public class GazeController {
         cursor.getRenderData().setDepthTest(false);
         cursor.getRenderData().setRenderingOrder(CURSOR_RENDER_ORDER);
         cursorRoot.addChildObject(cursor);
-        highlightCursor = new SXRSceneObject(gvrContext,
-                                             gvrContext.createQuad(HIGHLIGHT_CURSOR_SIZE,
+        highlightCursor = new SXRSceneObject(sxrContext,
+                                             sxrContext.createQuad(HIGHLIGHT_CURSOR_SIZE,
                                                                    HIGHLIGHT_CURSOR_SIZE),
-                                             gvrContext.getAssetLoader().loadTexture(
-                                                     new SXRAndroidResource(gvrContext,
+                                             sxrContext.getAssetLoader().loadTexture(
+                                                     new SXRAndroidResource(sxrContext,
                                                                             R.drawable.highlightcursor)));
         highlightCursor.getTransform().setPositionZ(CURSOR_Z_POSITION);
         highlightCursor.getRenderData().setRenderingOrder(

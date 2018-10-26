@@ -43,17 +43,17 @@ public abstract class BaseVideoPlayerMain extends SXRMain {
     }
 
     @Override
-    public SXRMesh getSplashMesh(SXRContext gvrContext) {
-        return gvrContext.createQuad(IMAGE_WIDTH, IMAGE_HEIGHT);
+    public SXRMesh getSplashMesh(SXRContext sxrContext) {
+        return sxrContext.createQuad(IMAGE_WIDTH, IMAGE_HEIGHT);
     }
 
     @Override
-    public SXRTexture getSplashTexture(SXRContext gvrContext) {
+    public SXRTexture getSplashTexture(SXRContext sxrContext) {
         Bitmap bitmap = BitmapFactory.decodeResource(
-                gvrContext.getContext().getResources(),
+                sxrContext.getContext().getResources(),
                 R.drawable.ic_app_name_highlight);
-        SXRTexture splashScreen = new SXRTexture(gvrContext);
-        splashScreen.setImage(new SXRBitmapImage(gvrContext, bitmap));
+        SXRTexture splashScreen = new SXRTexture(sxrContext);
+        splashScreen.setImage(new SXRBitmapImage(sxrContext, bitmap));
         return splashScreen;
     }
 }

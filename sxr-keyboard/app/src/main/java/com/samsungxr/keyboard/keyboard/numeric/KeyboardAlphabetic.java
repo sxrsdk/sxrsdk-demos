@@ -34,16 +34,16 @@ public class KeyboardAlphabetic extends KeyboardBase {
 
     private Resources res = null;
     private static final String RESOURCE_TYPE = "array";
-    private SXRContext gvrContext;
+    private SXRContext sxrContext;
     private int notFoundResource = -1;
 
-    public KeyboardAlphabetic(SXRContext gvrContext) {
-        super(gvrContext);
+    public KeyboardAlphabetic(SXRContext sxrContext) {
+        super(sxrContext);
         setName(SceneObjectNames.KEYBOARD_ALPHABETIC);
 
-        this.gvrContext = gvrContext;
+        this.sxrContext = sxrContext;
 
-        res = gvrContext.getContext().getResources();
+        res = sxrContext.getContext().getResources();
         TypedArray softKeyboard = res.obtainTypedArray(R.array.new_soft_lines);
 
         int n = softKeyboard.length();
@@ -51,7 +51,7 @@ public class KeyboardAlphabetic extends KeyboardBase {
         for (int lineIndex = 0; lineIndex < n; ++lineIndex) {
 
             int lineId = softKeyboard.getResourceId(lineIndex, notFoundResource);
-            int keyId = getResourceId(res.getResourceEntryName(lineId), RESOURCE_TYPE, gvrContext
+            int keyId = getResourceId(res.getResourceEntryName(lineId), RESOURCE_TYPE, sxrContext
                     .getContext().getPackageName());
 
             parserLinesArray(keyId, lineIndex);
@@ -92,7 +92,7 @@ public class KeyboardAlphabetic extends KeyboardBase {
     private KeyboardItemStyle getStyleFromTypedArray(TypedArray key) {
 
         TypedArray styles = res.obtainTypedArray(key.getResourceId(2, notFoundResource));
-        KeyboardItemStyle keyStyle = new KeyboardItemStyle(this.gvrContext.getContext(), styles);
+        KeyboardItemStyle keyStyle = new KeyboardItemStyle(this.sxrContext.getContext(), styles);
 
         return keyStyle;
     }

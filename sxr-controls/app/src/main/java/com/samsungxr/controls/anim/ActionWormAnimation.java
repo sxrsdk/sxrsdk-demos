@@ -44,14 +44,14 @@ public class ActionWormAnimation extends SXRSceneObject {
     private boolean animColorPlaying = false;
     private boolean animScalePlaying = false;
 
-    public ActionWormAnimation(SXRContext gvrContext) {
-        super(gvrContext);
+    public ActionWormAnimation(SXRContext sxrContext) {
+        super(sxrContext);
 
-        Resources res = gvrContext.getContext().getResources();
+        Resources res = sxrContext.getContext().getResources();
         String clearButtonText = res.getString(R.string.clear_button);
 
-        playButton = new AnimButtonPlay(gvrContext);
-        cleanButton = new AnimCleanButton(gvrContext, clearButtonText);
+        playButton = new AnimButtonPlay(sxrContext);
+        cleanButton = new AnimCleanButton(sxrContext, clearButtonText);
 
         playButton.getTransform().setPosition(0, 0, 0);
         playButton.getTransform().setRotationByAxis(16, 0, 1, 0);

@@ -45,19 +45,19 @@ public final class RenderToTextureActivity extends SXRActivity {
 
     final class RenderToTextureMain extends SXRMain {
         @Override
-        public void onInit(final SXRContext gvrContext) {
+        public void onInit(final SXRContext sxrContext) {
             if (!SXRShader.isVulkanInstance()) {
                 addLight();
             }
             final SXRSceneObject cube = addCube();
             final SXRScene scene = createRenderToTextureScene();
 
-            gvrContext.runOnGlThread(new Runnable()
+            sxrContext.runOnGlThread(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    mRenderTexture = new SXRRenderTexture(gvrContext, 512, 512);
+                    mRenderTexture = new SXRRenderTexture(sxrContext, 512, 512);
                     SXRRenderTarget renderTarget = new SXRRenderTarget(mRenderTexture, scene);
 
                     scene.getMainCameraRig().getOwnerObject().attachComponent(renderTarget);

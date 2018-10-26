@@ -47,8 +47,8 @@ public class TextField extends SXRSceneObject {
     protected int currentCharPosition;
     private Spinner spinner;
 
-    public TextField(SXRContext gvrContext, Main main) {
-        super(gvrContext);
+    public TextField(SXRContext sxrContext, Main main) {
+        super(sxrContext);
         setName(SceneObjectNames.TEXT_FIELD);
 
         mListFieldItems = new ArrayList<TextFieldItem>();

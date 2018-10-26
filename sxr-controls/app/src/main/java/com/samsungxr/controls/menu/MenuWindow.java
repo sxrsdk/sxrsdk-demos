@@ -20,8 +20,8 @@ import com.samsungxr.SXRSceneObject;
 
 public abstract class MenuWindow extends SXRSceneObject {
 
-    public MenuWindow(SXRContext gvrContext) {
-        super(gvrContext);
+    public MenuWindow(SXRContext sxrContext) {
+        super(sxrContext);
     }
 
     protected abstract void show();
