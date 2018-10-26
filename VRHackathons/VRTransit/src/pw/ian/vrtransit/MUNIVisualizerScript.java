@@ -8,56 +8,56 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 
-import org.gearvrf.GVRAndroidResource;
-import org.gearvrf.GVRBitmapTexture;
-import org.gearvrf.GVRCameraRig;
-import org.gearvrf.GVRContext;
-import org.gearvrf.GVRMesh;
-import org.gearvrf.GVRScene;
-import org.gearvrf.GVRSceneObject;
-import org.gearvrf.GVRScript;
-import org.gearvrf.GVRTexture;
-import org.gearvrf.animation.GVRAnimation;
-import org.gearvrf.animation.GVRRelativeMotionAnimation;
-import org.gearvrf.scene_objects.GVRTextViewSceneObject;
+import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRBitmapTexture;
+import com.samsungxr.SXRCameraRig;
+import com.samsungxr.SXRContext;
+import com.samsungxr.SXRMesh;
+import com.samsungxr.SXRScene;
+import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRScript;
+import com.samsungxr.SXRTexture;
+import com.samsungxr.animation.SXRAnimation;
+import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.scene_objects.SXRTextViewSceneObject;
 
 import pw.ian.vrtransit.data.BusUpdate;
 import pw.ian.vrtransit.data.TransitDataAccessor;
 import android.graphics.Color;
 import android.util.Log;
 
-public class MUNIVisualizerScript extends GVRScript {
+public class MUNIVisualizerScript extends SXRScript {
 
 	private MainActivity core;
 
-	private GVRContext mCtx;
+	private SXRContext mCtx;
 
-	private GVRMesh busMesh;
+	private SXRMesh busMesh;
 
-	private GVRTexture busTex;
+	private SXRTexture busTex;
 
-	private GVRTexture trainTex;
+	private SXRTexture trainTex;
 
-	private GVRTexture mapTex;
+	private SXRTexture mapTex;
 
 	private TransitDataAccessor tda;
 
-	private GVRSceneObject root;
+	private SXRSceneObject root;
 
-	private GVRSceneObject map;
+	private SXRSceneObject map;
 
-	private Map<String, GVRSceneObject> vehicles = new HashMap<>();
+	private Map<String, SXRSceneObject> vehicles = new HashMap<>();
 
 	public MUNIVisualizerScript(MainActivity core) {
 		this.core = core;
 	}
 
 	@Override
-	public void onInit(GVRContext ctx) throws Throwable {
+	public void onInit(SXRContext ctx) throws Throwable {
 
 		mCtx = ctx;
 
-		GVRScene scene = ctx.getMainScene();
+		SXRScene scene = ctx.getMainScene();
 		scene.setFrustumCulling(true);
 
 		float r = 126f / 255f;
@@ -71,20 +71,20 @@ public class MUNIVisualizerScript extends GVRScript {
 		scene.getMainCameraRig().getTransform()
 				.setPosition(0f, 0f, 0f);
 
-		busMesh = ctx.loadMesh(new GVRAndroidResource(ctx, "cube.obj"));
+		busMesh = ctx.loadMesh(new SXRAndroidResource(ctx, "cube.obj"));
 
-		busTex = ctx.loadTexture(new GVRAndroidResource(ctx, "bus.jpg"));
+		busTex = ctx.loadTexture(new SXRAndroidResource(ctx, "bus.jpg"));
 		busTex.setKeepWrapper(true);
 
-		trainTex = ctx.loadTexture(new GVRAndroidResource(ctx, "train.jpg"));
+		trainTex = ctx.loadTexture(new SXRAndroidResource(ctx, "train.jpg"));
 		trainTex.setKeepWrapper(true);
 
-		mapTex = ctx.loadTexture(new GVRAndroidResource(ctx, "map.jpg"));
+		mapTex = ctx.loadTexture(new SXRAndroidResource(ctx, "map.jpg"));
 
-		root = new GVRSceneObject(ctx);
+		root = new SXRSceneObject(ctx);
 		scene.addSceneObject(root);
 
-		map = new GVRSceneObject(ctx, 10f, 10f, mapTex);
+		map = new SXRSceneObject(ctx, 10f, 10f, mapTex);
 		map.getTransform().setPosition(0f, 0f, -5f);
 		root.addChildObject(map);
 
@@ -101,18 +101,18 @@ public class MUNIVisualizerScript extends GVRScript {
 			if (vehicles.containsKey(bu.getId())) {
 
 				if (bu.remove) {
-					GVRSceneObject bus = vehicles.remove(bu.getId());
+					SXRSceneObject bus = vehicles.remove(bu.getId());
 				} else {
-					GVRSceneObject bus = vehicles.get(bu.getId());
+					SXRSceneObject bus = vehicles.get(bu.getId());
 					smoothSetBusPos(bus, bu.getLat(), bu.getLon());
 				}
 
 			} else {
-				GVRSceneObject bus = setBusPos(nextBus(), bu.getLat(),
+				SXRSceneObject bus = setBusPos(nextBus(), bu.getLat(),
 						bu.getLon());
 				if (vehicles.containsValue(bus)) {
 					String key = null;
-					for (Entry<String, GVRSceneObject> e : vehicles.entrySet()) {
+					for (Entry<String, SXRSceneObject> e : vehicles.entrySet()) {
 						if (e.getValue().equals(bus)) {
 							key = e.getKey();
 							break;
@@ -132,7 +132,7 @@ public class MUNIVisualizerScript extends GVRScript {
 		}
 	}
 
-	private Queue<GVRSceneObject> busPool = new LinkedList<>();
+	private Queue<SXRSceneObject> busPool = new LinkedList<>();
 
 	private void initBusObjectPool(int amt) {
 		for (int i = 0; i < amt; i++) {
@@ -140,24 +140,24 @@ public class MUNIVisualizerScript extends GVRScript {
 		}
 	}
 
-	private GVRSceneObject resetPos(GVRSceneObject bus) {
+	private SXRSceneObject resetPos(SXRSceneObject bus) {
 		bus.getTransform().setPosition(-1000f, -1000f, -1000f);
 		return bus;
 	}
 
-	private GVRSceneObject nextBus() {
-		GVRSceneObject bus = busPool.poll();
+	private SXRSceneObject nextBus() {
+		SXRSceneObject bus = busPool.poll();
 		busPool.add(bus);
 		return bus;
 	}
 
-	private GVRSceneObject constructBus(GVRContext ctx) {
-		GVRSceneObject bus = new GVRSceneObject(ctx, busMesh, busTex);
+	private SXRSceneObject constructBus(SXRContext ctx) {
+		SXRSceneObject bus = new SXRSceneObject(ctx, busMesh, busTex);
 		root.addChildObject(bus);
 		return bus;
 	}
 
-	public GVRSceneObject smoothSetBusPos(GVRSceneObject bus, double lat,
+	public SXRSceneObject smoothSetBusPos(SXRSceneObject bus, double lat,
 			double lon) {
 
 		// 37.809607, -122.387515
@@ -168,13 +168,13 @@ public class MUNIVisualizerScript extends GVRScript {
 		float dy = scaleCoordY((float) lon, 5f)
 				- bus.getTransform().getPositionY();
 
-		GVRAnimation anim = new GVRRelativeMotionAnimation(bus, 1.0f, dx, dy,
+		SXRAnimation anim = new SXRRelativeMotionAnimation(bus, 1.0f, dx, dy,
 				0f);
 		anim.start(mCtx.getAnimationEngine());
 		return bus;
 	}
 
-	public GVRSceneObject setBusPos(GVRSceneObject bus, double lat, double lon) {
+	public SXRSceneObject setBusPos(SXRSceneObject bus, double lat, double lon) {
 
 		// 37.809607, -122.387515
 		// 37.734027, -122.514716
@@ -217,7 +217,7 @@ public class MUNIVisualizerScript extends GVRScript {
 	float yc;
 	float zc;
 
-	GVRAnimation zoomAnim;
+	SXRAnimation zoomAnim;
 
 	public void handleTap() {
 		if (zoomAnim != null && !zoomAnim.isFinished()) {
@@ -225,7 +225,7 @@ public class MUNIVisualizerScript extends GVRScript {
 		}
 
 		Log.i("VRTransit", "Event fired");
-		GVRCameraRig rig = mCtx.getMainScene().getMainCameraRig();
+		SXRCameraRig rig = mCtx.getMainScene().getMainCameraRig();
 		if (zoom) {
 			float[] look = rig.getLookAt();
 
@@ -252,12 +252,12 @@ public class MUNIVisualizerScript extends GVRScript {
 
 			Log.i("VRTransit", "Move to " + xc + " " + yc + " " + zc);
 
-			zoomAnim = new GVRRelativeMotionAnimation(rig.getTransform(),
+			zoomAnim = new SXRRelativeMotionAnimation(rig.getTransform(),
 					1.0f, xc, yc, zc);
 			zoomAnim.start(mCtx.getAnimationEngine());
 		} else {
 			Log.i("VRTransit", "Move to " + -xc + " " + -yc + " " + -zc);
-			zoomAnim = new GVRRelativeMotionAnimation(rig.getTransform(),
+			zoomAnim = new SXRRelativeMotionAnimation(rig.getTransform(),
 					1.0f, -xc, -yc, -zc);
 			zoomAnim.start(mCtx.getAnimationEngine());
 		}
@@ -276,7 +276,7 @@ public class MUNIVisualizerScript extends GVRScript {
 	}
 
 	public void initVehicles() {
-		for (Entry<String, GVRSceneObject> e : vehicles.entrySet()) {
+		for (Entry<String, SXRSceneObject> e : vehicles.entrySet()) {
 			resetPos(e.getValue());
 		}
 		vehicles.clear();

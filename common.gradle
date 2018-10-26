@@ -18,7 +18,7 @@ allprojects {
             url "http://google.bintray.com/googlevr"
         }
         flatDir {
-            dirs '../../GearVRf/GVRf/gearvrf-libs', '../../../GearVRf/GVRf/gearvrf-libs', '../../../../GearVRf/GVRf/gearvrf-libs'
+            dirs '../../sxrsdk/SXR/sxr-libs', '../../../sxrsdk/SXR/sxr-libs', '../../../../sxrsdk/SXR/sxr-libs'
         }
     }
 }
@@ -82,7 +82,7 @@ task copyOculusSignature(type: Copy) {
 preBuild {}.dependsOn copyOculusSignature
 
 file("../../..").eachDir {
-    def fn = it.toString() + "/GearVRf-Demos_build.gradle"
+    def fn = it.toString() + "/sxrsdk-demos_build.gradle"
     if (file(fn).exists()) {
         apply from: fn
         println "importing build file from " + it.toString()
@@ -96,7 +96,7 @@ eg. ~/.gradle/gradle.properties:
 useLocalDependencies=true
 
  */
-ext.gearvrfVersion = '4.0.1-SNAPSHOT'
+ext.sxrVersion = '4.0.1-SNAPSHOT'
 project.ext.daydreamVersion = '1.130.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
@@ -119,14 +119,14 @@ dependencies {
     implementation "org.joml:joml-android:${jomlVersion}"
 
     if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':framework')) {
-            implementation project(':framework')
+        if (findProject(':sxrsdk')) {
+            implementation project(':sxrsdk')
         } else {
-            debugImplementation(name: 'framework-debug', ext: 'aar')
-            releaseImplementation(name: 'framework-release', ext: 'aar')
+            debugImplementation(name: 'sxrsdk-debug', ext: 'aar')
+            releaseImplementation(name: 'sxrsdk-release', ext: 'aar')
         }
     } else {
-        implementation "org.gearvrf:framework:$gearvrfVersion"
+        implementation "com.samsungxr:sxrsdk:$sxrVersion"
     }
 
     if (project.hasProperty("backend_monoscopic") && project.property("backend_monoscopic")) {
@@ -138,7 +138,7 @@ dependencies {
                 releaseImplementation(name: 'backend_monoscopic-release', ext: 'aar')
             }
         } else {
-            implementation "org.gearvrf:backend_monoscopic:$gearvrfVersion"
+            implementation "com.samsungxr:backend_monoscopic:$sxrVersion"
         }
     }
 
@@ -151,7 +151,7 @@ dependencies {
                 releaseImplementation(name: 'backend_daydream-release', ext: 'aar')
             }
         } else {
-            implementation "org.gearvrf:backend_daydream:$gearvrfVersion"
+            implementation "com.samsungxr:backend_daydream:$sxrVersion"
         }
         implementation "com.google.vr:sdk-base:${daydreamVersion}"
         implementation "com.google.vr:sdk-controller:${daydreamVersion}"
@@ -166,7 +166,7 @@ dependencies {
                 releaseImplementation(name: 'backend_oculus-release', ext: 'aar')
             }
         } else {
-            implementation "org.gearvrf:backend_oculus:$gearvrfVersion"
+            implementation "com.samsungxr:backend_oculus:$sxrVersion"
         }
     }
 }

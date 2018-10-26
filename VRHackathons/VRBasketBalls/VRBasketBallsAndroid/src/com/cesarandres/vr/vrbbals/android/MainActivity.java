@@ -1,12 +1,12 @@
 package com.cesarandres.vr.vrbbals.android;
 
-import org.gearvrf.GVRActivity;
+import com.samsungxr.SXRActivity;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class MainActivity extends GVRActivity {
+public class MainActivity extends SXRActivity {
 	private long lastDownTime = 0;
 
 	private BallSpinnerScript script;
@@ -24,7 +24,7 @@ public class MainActivity extends GVRActivity {
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		script = new BallSpinnerScript(this);
-		setScript(script, "gvr_note4.xml");
+		setScript(script, "sxr.xml");
 		Log.i("VRBasketBall", "Init application");
 
 		new LeapClientThread(this).start();

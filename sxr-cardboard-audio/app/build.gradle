@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+System.setProperty("appName", "sxr-cardboard-audio")
+
+if(file("../../common.gradle").exists()) {
+    apply from: '../../common.gradle'
+}
+else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../../sxrsdk-demos/common.gradle'
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        flatDir {
+            dirs 'src/main/libs'
+        }
+    }
+}
+
+android {
+    defaultConfig {
+        applicationId "org.gearvrf.sample.gvrcardboardaudio"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets.main {
+        jni.srcDirs = [] // no auto generation of Android.mk
+        jniLibs.srcDir 'libs' // pre-compiled libraries
+    }
+
+    // ignore the x86 and arm-v8 files from the google audio libraries
+    packagingOptions {
+        exclude 'lib/x86/libgvr_audio.so'
+        exclude 'lib/arm64-v8a/libgvr_audio.so'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'src/main/libs', include: ['*.jar'])
+
+    implementation "com.google.vr:sdk-audio:$daydreamVersion"
+    if(project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':ResonanceAudio')) {
+            implementation project(':ResonanceAudio')
+        } else {
+            debugImplementation(name: 'ResonanceAudio-debug', ext: 'aar')
+            releaseImplementation(name: 'ResonanceAudio-release', ext: 'aar')
+        }
+    } else {
+        implementation "org.gearvrf:ResonanceAudio:$gearvrfVersion"
+    }
+}

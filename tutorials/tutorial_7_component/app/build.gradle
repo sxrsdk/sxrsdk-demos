@@ -16,7 +16,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "26.0.3"
     defaultConfig {
-        applicationId "com.samsung.sample.gvrf.component"
+        applicationId "com.samsung.sample.sxr.component"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
@@ -37,14 +37,14 @@ android {
     }
 }
 
-ext.gearvrfVersion='4.0.1-SNAPSHOT'
+ext.sxrVersion='4.0.1-SNAPSHOT'
 project.ext.jomlVersion = "1.9.1-SNAPSHOT"
 
 dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile "org.joml:joml-android:${jomlVersion}"
-    compile "org.gearvrf:framework:$gearvrfVersion"
-    compile "org.gearvrf:backend_daydream:$gearvrfVersion"
-    compile "org.gearvrf:backend_oculus:$gearvrfVersion"
+    compile "com.samsungxr:sxrsdk:$sxrVersion"
+    compile "com.samsungxr:backend_daydream:$sxrVersion"
+    compile "com.samsungxr:backend_oculus:$sxrVersion"
     compile 'com.google.vr:sdk-base:1.120.0'
 }

@@ -1,4 +1,4 @@
-new File(".").eachDirMatch(~"gvr-*.*") {
+new File(".").eachDirMatch(~"sxr-*.*") {
     def name = ':' + it.name
     def path = '' + it.name + '/app'
 

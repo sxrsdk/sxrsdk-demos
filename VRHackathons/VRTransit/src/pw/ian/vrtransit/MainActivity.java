@@ -16,7 +16,7 @@
 
 package pw.ian.vrtransit;
 
-import org.gearvrf.GVRActivity;
+import com.samsungxr.SXRActivity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +24,7 @@ import android.view.MotionEvent;
 
 import com.firebase.client.Firebase;
 
-public class MainActivity extends GVRActivity {
+public class MainActivity extends SXRActivity {
     private long lastDownTime = 0;
     private MUNIVisualizerScript s;
 	
@@ -33,7 +33,7 @@ public class MainActivity extends GVRActivity {
         super.onCreate(bundle);
         Firebase.setAndroidContext(this);
         s = new MUNIVisualizerScript(this);
-        setScript(s, "gvr_note4.xml");
+        setScript(s, "sxr.xml");
         Log.i("VRTransit", "Init application");
     }
     
