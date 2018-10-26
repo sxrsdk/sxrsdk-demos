@@ -24,9 +24,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 import com.samsungxr.videoplayer.component.FadeableObject;
 import com.samsungxr.videoplayer.focus.FocusListener;
@@ -35,14 +35,14 @@ import com.samsungxr.videoplayer.focus.Focusable;
 @SuppressLint("InflateParams")
 public class BackButton extends FadeableObject implements Focusable, IViewEvents {
 
-    private SXRViewSceneObject mBackButtonObject;
+    private SXRViewNode mBackButtonObject;
     private ImageView mBackButton;
     private FocusListener mFocusListener = null;
     private View.OnClickListener mClickListener = null;
 
     public BackButton(final SXRContext sxrContext, int intViewId) {
         super(sxrContext);
-        mBackButtonObject = new SXRViewSceneObject(sxrContext, intViewId, this);
+        mBackButtonObject = new SXRViewNode(sxrContext, intViewId, this);
         setName(getClass().getSimpleName());
     }
 
@@ -60,12 +60,12 @@ public class BackButton extends FadeableObject implements Focusable, IViewEvents
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mBackButtonObject;
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+    public void onInitView(SXRViewNode sxrViewNode, View view) {
         mBackButton = view.findViewById(R.id.backButtonImage);
         mBackButton.setOnClickListener(mClickListener);
         mBackButton.setOnHoverListener(new View.OnHoverListener() {
@@ -88,8 +88,8 @@ public class BackButton extends FadeableObject implements Focusable, IViewEvents
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-        addChildObject(sxrViewSceneObject);
+    public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+        addChildObject(sxrViewNode);
     }
 
     public void performClick() {

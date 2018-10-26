@@ -37,13 +37,13 @@ import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.shaders.ButtonShader;
 import com.samsungxr.controls.util.SXRTextBitmapFactory;
 import com.samsungxr.controls.util.RenderingOrder;
 import com.samsungxr.controls.util.Text;
 
-class MenuHeaderItem extends ControlSceneObject {
+class MenuHeaderItem extends ControlNode {
 
     private final int IDLE_STATE = 0;
     private final int HOVER_STATE = 1;

@@ -18,7 +18,7 @@ package com.samsungxr.controls.menu;
 import android.content.res.TypedArray;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.controls.focus.GamepadTouchImpl;
 import com.samsungxr.controls.focus.TouchAndGestureImpl;
 import com.samsungxr.controls.input.GamepadMap;
@@ -26,19 +26,19 @@ import com.samsungxr.controls.input.GamepadMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GridSceneObjects extends SXRSceneObject {
+public class GridNodes extends SXRNode {
 
     private float horizontalSpacing;
     private int numColumns;
     private int numLines;
     private float verticalSpacing;
-    private MenuControlSceneObject buttonSelected = null;
+    private MenuControlNode buttonSelected = null;
     private ItemSelectedListener listener;
-    private List<MenuControlSceneObject> listItens = new ArrayList<MenuControlSceneObject>();
+    private List<MenuControlNode> listItens = new ArrayList<MenuControlNode>();
     private TypedArray grid;
     private int gridConfig;
 
-    public GridSceneObjects(SXRContext sxrContext, ArrayList<MenuControlSceneObject> listItens,
+    public GridNodes(SXRContext sxrContext, ArrayList<MenuControlNode> listItens,
                             int gridConfig, ItemSelectedListener listener) {
         super(sxrContext);
 
@@ -86,13 +86,13 @@ public class GridSceneObjects extends SXRSceneObject {
     }
 
     private void selectFirstItem() {
-        buttonSelected = ((MenuControlSceneObject) getChildren().get(0));
+        buttonSelected = ((MenuControlNode) getChildren().get(0));
         buttonSelected.select();
     }
 
     private void attachGridItem(int index, float vertical, float horizontal, float z) {
 
-        final MenuControlSceneObject item = listItens.get(index);
+        final MenuControlNode item = listItens.get(index);
 
         item.setTouchAndGesturelistener(new TouchAndGestureImpl() {
 
@@ -126,7 +126,7 @@ public class GridSceneObjects extends SXRSceneObject {
         this.addChildObject(item);
     }
 
-    private void handleUISelection(MenuControlSceneObject object) {
+    private void handleUISelection(MenuControlNode object) {
 
         if (buttonSelected != null) {
 

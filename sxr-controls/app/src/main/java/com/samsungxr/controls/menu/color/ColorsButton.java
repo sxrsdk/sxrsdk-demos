@@ -20,23 +20,23 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.menu.MenuControlSceneObject;
+import com.samsungxr.controls.menu.MenuControlNode;
 import com.samsungxr.controls.shaders.ColorSwapShader;
 import com.samsungxr.controls.util.ColorControls.Color;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class ColorsButton extends MenuControlSceneObject {
+public class ColorsButton extends MenuControlNode {
 
     private boolean select = false;
     private final float BUTTON_SIZE = 0.22f;
     private final float SELECTED_SIZE = 1.18f;
     private Color color;
 
-    private SXRSceneObject checkObject, hoverObject;
+    private SXRNode checkObject, hoverObject;
 
     public ColorsButton(SXRContext sxrContext, Color color) {
         super(sxrContext);
@@ -64,7 +64,7 @@ public class ColorsButton extends MenuControlSceneObject {
         SXRTexture checkTexture = getSXRContext().getAssetLoader().loadTexture(
                 new SXRAndroidResource(getSXRContext(), R.drawable.ic_selected_color));
 
-        checkObject = new SXRSceneObject(getSXRContext(), checkMesh, checkTexture);
+        checkObject = new SXRNode(getSXRContext(), checkMesh, checkTexture);
         checkObject.getRenderData().getMaterial().setOpacity(0);
         checkObject.getTransform().setPositionZ(0.01f);
         checkObject.getRenderData().setRenderingOrder(RenderingOrder.MENU_BUTTON_COLOR - 1);
@@ -78,7 +78,7 @@ public class ColorsButton extends MenuControlSceneObject {
         SXRTexture checkTexture = getSXRContext().getAssetLoader().loadTexture(
                 new SXRAndroidResource(getSXRContext(), R.drawable.ic_hover_color));
 
-        hoverObject = new SXRSceneObject(getSXRContext(), checkMesh, checkTexture);
+        hoverObject = new SXRNode(getSXRContext(), checkMesh, checkTexture);
         hoverObject.getTransform().setScale(SELECTED_SIZE + 0.1f, SELECTED_SIZE + 0.1f, SELECTED_SIZE + 0.1f);
         hoverObject.getRenderData().getMaterial().setOpacity(0);
         hoverObject.getTransform().setPositionZ(0.011f);

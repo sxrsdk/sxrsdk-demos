@@ -25,9 +25,9 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 
-import com.samsungxr.scene_objects.SXRVideoSceneObjectPlayer;
+import com.samsungxr.nodes.SXRVideoNodePlayer;
 
-public class DefaultExoPlayer implements SXRVideoSceneObjectPlayer<ExoPlayer> {
+public class DefaultExoPlayer implements SXRVideoNodePlayer<ExoPlayer> {
 
     private SimpleExoPlayer mSimpleExoPlayer;
 

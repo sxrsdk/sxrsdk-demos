@@ -37,24 +37,24 @@ import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRMain;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRVideoNode;
 import com.samsungxr.utility.Log;
 
 public class Minimal360PhotoScript extends SXRMain {
 
-    SXRSceneObject photo;
+    SXRNode photo;
     SXRScene scene;
     SXRContext gContext;
 
     private final String sEnvironmentPath = Environment.getExternalStorageDirectory().getPath();
     ArrayList<String> photoNames = new ArrayList<String>();
-    ArrayList<SXRSceneObject> photoSceneArray = new ArrayList<SXRSceneObject>();
-    SXRSceneObject currentShown = null;
+    ArrayList<SXRNode> photoSceneArray = new ArrayList<SXRNode>();
+    SXRNode currentShown = null;
     final String photoDirectory = "DCIM/Camera";
     int photoIndex = 0;
     boolean mIsSingleTapped = false;
@@ -64,8 +64,8 @@ public class Minimal360PhotoScript extends SXRMain {
 
 
 
-    private SXRSphereSceneObject loadSkyBoxModel(SXRContext sxrContext) {
-        SXRSphereSceneObject sphereObject = null;
+    private SXRSphereNode loadSkyBoxModel(SXRContext sxrContext) {
+        SXRSphereNode sphereObject = null;
 
         // load texture
         Future<SXRTexture> texture = null;
@@ -75,13 +75,13 @@ public class Minimal360PhotoScript extends SXRMain {
             e.printStackTrace();
         }
         // create a sphere scene object with the specified texture and triangles facing inward (the 'false' argument)
-        sphereObject = new SXRSphereSceneObject(sxrContext, false, texture);
+        sphereObject = new SXRSphereNode(sxrContext, false, texture);
         sphereObject.getTransform().setScale(100, 100, 100);
         return sphereObject;
     }
 
     void addSkyBox(){
-        scene.addSceneObject(loadSkyBoxModel(gContext));
+        scene.addNode(loadSkyBoxModel(gContext));
     }
 
     void getNamesOfPhotos(){
@@ -133,8 +133,8 @@ public class Minimal360PhotoScript extends SXRMain {
 
 
         // Removing Ealier Photos from Scene
-        for(SXRSceneObject remov : photoSceneArray)
-            scene.removeSceneObject(remov);
+        for(SXRNode remov : photoSceneArray)
+            scene.removeNode(remov);
 
         photoSceneArray.clear();
 
@@ -152,8 +152,8 @@ public class Minimal360PhotoScript extends SXRMain {
                 }
 
 
-                SXRSceneObject frame = new SXRSceneObject(gContext, gContext.createQuad(15.0f, 10.0f), null);
-                SXRSphereSceneObject sphereObject = new SXRSphereSceneObject(gContext, true, photoTexture);
+                SXRNode frame = new SXRNode(gContext, gContext.createQuad(15.0f, 10.0f), null);
+                SXRSphereNode sphereObject = new SXRSphereNode(gContext, true, photoTexture);
 
                 sphereObject.getTransform().setScale(0.5f, 0.5f, 0.5f);
                 sphereObject.getRenderData().setMesh(frame.getRenderData().getMesh());
@@ -183,7 +183,7 @@ public class Minimal360PhotoScript extends SXRMain {
                 currentDegree = 0;
             }
 
-            scene.addSceneObject(photoSceneArray.get(i));
+            scene.addNode(photoSceneArray.get(i));
             photoSceneArray.get(i).getTransform().setPosition(0, yCoordinate, -25.0f);
 
             Log.d("", "Photo added to Scene");
@@ -207,9 +207,9 @@ public class Minimal360PhotoScript extends SXRMain {
 
     private void addHeadTracker() {
         // Head Tracker
-        SXRSceneObject headTracker;
+        SXRNode headTracker;
         SXRTexture headTrackerTexture = loadTexture(gContext, "head-tracker.png");
-        headTracker = new SXRSceneObject(gContext,
+        headTracker = new SXRNode(gContext,
                 gContext.createQuad(1.0f, 1.0f), headTrackerTexture);
         headTracker.getTransform().setPositionZ(-10.0f);
         headTracker.getRenderData().setDepthTest(false);
@@ -267,14 +267,14 @@ public class Minimal360PhotoScript extends SXRMain {
     void hidePhotos(int index){
         for(int i = 0; i < photoSceneArray.size(); i++){
             if(i != index)
-            scene.removeSceneObject(photoSceneArray.get(i));
+            scene.removeNode(photoSceneArray.get(i));
         }
     }
 
     void showBackPhotos(int index){
         for(int i = 0; i < photoSceneArray.size(); i++){
             if(i != index)
-            scene.addSceneObject(photoSceneArray.get(i));
+            scene.addNode(photoSceneArray.get(i));
         }
     }
 
@@ -318,7 +318,7 @@ public class Minimal360PhotoScript extends SXRMain {
                     }
                 }
                 //else{
-                //    scene.removeSceneObject(photoSceneArray.get(i));
+                //    scene.removeNode(photoSceneArray.get(i));
                 //}
             }
         }

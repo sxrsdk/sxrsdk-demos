@@ -4,7 +4,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.particlesystem.SXRPlaneEmitter;
 import com.samsungxr.particlesystem.SXRSphericalEmitter;
@@ -24,7 +24,7 @@ public class SampleMain extends SXRMain {
 
     //for fireworks, have more than one emitter with different textures
     ArrayList<SXRSphericalEmitter> fwEmitters;
-    SXRSceneObject fw;
+    SXRNode fw;
 
     private boolean enableFireworks = false;
     private long mElapsedTime = 0;
@@ -48,7 +48,7 @@ public class SampleMain extends SXRMain {
         stars = createstars();
         stars.getTransform().setPosition(0,0,-50);
         stars.getTransform().setRotationByAxis(90, 1,0,0);
-        scene.addSceneObject(stars);
+        scene.addNode(stars);
 
         mElapsedTime = System.currentTimeMillis();
     }
@@ -84,7 +84,7 @@ public class SampleMain extends SXRMain {
     private void switchSystem()
     {
         clearSystems();
-        mSXRContext.getMainScene().removeAllSceneObjects();
+        mSXRContext.getMainScene().removeAllNodes();
 
         if ( counter == 2 )
         {
@@ -93,8 +93,8 @@ public class SampleMain extends SXRMain {
             fire.getTransform().setPosition(0,-3.5f,-9);
             smoke.getTransform().setPosition(0,-3.0f,-9.0f);
 
-            mSXRContext.getMainScene().addSceneObject(fire);
-            mSXRContext.getMainScene().addSceneObject(smoke);
+            mSXRContext.getMainScene().addNode(fire);
+            mSXRContext.getMainScene().addNode(smoke);
             enableFireworks = false;
         }
 
@@ -102,7 +102,7 @@ public class SampleMain extends SXRMain {
         {
             fw = createFireworks();
             fw.getTransform().setPosition(0, 10, -20.0f);
-            mSXRContext.getMainScene().addSceneObject(fw);
+            mSXRContext.getMainScene().addNode(fw);
             enableFireworks = true;
         }
 
@@ -112,7 +112,7 @@ public class SampleMain extends SXRMain {
             stars.getTransform().setPosition(0,0,-50);
             stars.getTransform().setRotationByAxis(90, 1,0,0);
 
-            mSXRContext.getMainScene().addSceneObject(stars);
+            mSXRContext.getMainScene().addNode(stars);
             enableFireworks = false;
         }
     }
@@ -126,12 +126,12 @@ public class SampleMain extends SXRMain {
             long currTime = System.currentTimeMillis();
 
             if ( currTime - mElapsedTime > 6000 ) {
-                mSXRContext.getMainScene().removeAllSceneObjects();
+                mSXRContext.getMainScene().removeAllNodes();
                 clearSystems();
                 fw = null;
                 fw = createFireworks();
                 fw.getTransform().setPosition(0,10, -20);
-                mSXRContext.getMainScene().addSceneObject(fw);
+                mSXRContext.getMainScene().addNode(fw);
                 mElapsedTime = currTime;
             }
         }
@@ -211,10 +211,10 @@ public class SampleMain extends SXRMain {
 
 
     //---------------------------------------------FIREWORKS----------------------------------
-    private SXRSceneObject createFireworks()
+    private SXRNode createFireworks()
     {
         ArrayList<SXRSphericalEmitter> fwEmits = createFireworkEmitters();
-        SXRSceneObject fw = new SXRSceneObject(mSXRContext);
+        SXRNode fw = new SXRNode(mSXRContext);
         for ( SXRSphericalEmitter emitter : fwEmits )
             fw.addChildObject(emitter);
 

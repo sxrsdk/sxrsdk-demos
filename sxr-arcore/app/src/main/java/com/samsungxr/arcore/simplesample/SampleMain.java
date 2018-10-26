@@ -22,7 +22,7 @@ import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.mixedreality.SXRAnchor;
 import com.samsungxr.mixedreality.SXRHitResult;
 import com.samsungxr.mixedreality.SXRMixedReality;
@@ -76,7 +76,7 @@ public class SampleMain extends SXRMain {
     public void onStep() {
         super.onStep();
         for (SXRAnchor anchor: mVirtualObjects) {
-            for (SXRSceneObject obj: anchor.getChildren()) {
+            for (SXRNode obj: anchor.getChildren()) {
                 ((VirtualObject)obj).reactToLightEnvironment(
                         mixedReality.getLightEstimate().getPixelIntensity());
             }
@@ -86,8 +86,8 @@ public class SampleMain extends SXRMain {
     private IPlaneEventsListener planeEventsListener = new IPlaneEventsListener() {
         @Override
         public void onPlaneDetection(SXRPlane sxrPlane) {
-            sxrPlane.setSceneObject(helper.createQuadPlane(getSXRContext()));
-            mainScene.addSceneObject(sxrPlane);
+            sxrPlane.setNode(helper.createQuadPlane(getSXRContext()));
+            mainScene.addNode(sxrPlane);
         }
 
         @Override
@@ -118,7 +118,7 @@ public class SampleMain extends SXRMain {
     };
 
     public class TouchHandler extends SXREventListeners.TouchEvents {
-        private SXRSceneObject mDraggingObject = null;
+        private SXRNode mDraggingObject = null;
         private float mHitX;
         private float mHitY;
         private float mYaw;
@@ -126,7 +126,7 @@ public class SampleMain extends SXRMain {
 
 
         @Override
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             super.onEnter(sceneObj, pickInfo);
 
             if (sceneObj == mixedReality.getPassThroughObject() || mDraggingObject != null) {
@@ -137,7 +137,7 @@ public class SampleMain extends SXRMain {
         }
 
         @Override
-        public void onExit(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onExit(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             super.onExit(sceneObj, pickInfo);
 
             if (sceneObj == mixedReality.getPassThroughObject()) {
@@ -154,7 +154,7 @@ public class SampleMain extends SXRMain {
         }
 
         @Override
-        public void onTouchStart(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onTouchStart(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             super.onTouchStart(sceneObj, pickInfo);
 
             if (sceneObj == mixedReality.getPassThroughObject()) {
@@ -176,14 +176,14 @@ public class SampleMain extends SXRMain {
         }
 
         @Override
-        public void onTouchEnd(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onTouchEnd(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             super.onTouchEnd(sceneObj, pickInfo);
 
 
             if (mDraggingObject != null) {
                 Log.d(TAG, "onStopDragging");
 
-                if (pickSceneObject(mDraggingObject) == null) {
+                if (pickNode(mDraggingObject) == null) {
                     ((VirtualObject) mDraggingObject).onPickExit();
                 } else {
                     ((VirtualObject)mDraggingObject).onTouchEnd();
@@ -195,7 +195,7 @@ public class SampleMain extends SXRMain {
         }
 
         @Override
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             super.onInside(sceneObj, pickInfo);
 
             if (mDraggingObject == null) {
@@ -224,7 +224,7 @@ public class SampleMain extends SXRMain {
             }
 
 
-            pickInfo = pickSceneObject(mixedReality.getPassThroughObject());
+            pickInfo = pickNode(mixedReality.getPassThroughObject());
             if (pickInfo != null) {
                 SXRHitResult sxrHitResult = mixedReality.hitTest(
                         mixedReality.getPassThroughObject(), pickInfo);
@@ -236,17 +236,17 @@ public class SampleMain extends SXRMain {
             }
         }
 
-        private SXRPicker.SXRPickedObject pickSceneObject(SXRSceneObject sceneObject) {
+        private SXRPicker.SXRPickedObject pickNode(SXRNode sceneObject) {
             Vector3f origin = new Vector3f();
             Vector3f direction = new Vector3f();
 
             helper.getCursorController().getPicker().getWorldPickRay(origin, direction);
 
-            return SXRPicker.pickSceneObject(sceneObject, origin.x, origin.y, origin.z,
+            return SXRPicker.pickNode(sceneObject, origin.x, origin.y, origin.z,
                     direction.x, direction.y, direction.z);
         }
 
-        private void onSingleTap(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject collision) {
+        private void onSingleTap(SXRNode sceneObj, SXRPicker.SXRPickedObject collision) {
             SXRHitResult sxrHitResult = mixedReality.hitTest(sceneObj, collision);
             VirtualObject andy = new VirtualObject(mSXRContext);
 
@@ -264,7 +264,7 @@ public class SampleMain extends SXRMain {
         if (mVirtObjCount < MAX_VIRTUAL_OBJECTS) {
              anchor = mixedReality.createAnchor(pose, andy);
 
-            mainScene.addSceneObject(anchor);
+            mainScene.addNode(anchor);
             mVirtualObjects.add(anchor);
         }
         else {

@@ -11,18 +11,18 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.util.AssetsReader;
 import com.samsungxr.util.Banner;
 import com.samsungxr.util.NoTextureShader;
 import com.samsungxr.util.OutlineShader;
-import com.samsungxr.widgetplugin.SXRWidgetSceneObject;
+import com.samsungxr.widgetplugin.SXRWidgetNode;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -37,7 +37,7 @@ public class Controller {
     private ArrayList<SkyBox> aOSDSkyBox;
     private final String sSDSkyBoxDirectory = "SceneEditor/environments/";
     private final String sDefaultSkyBoxDirectory = "skybox";
-    private SXRSphereSceneObject currentSkyBox;
+    private SXRSphereNode currentSkyBox;
 
     // Variables related to Camera
     private ArrayList<CameraPosition> oDefaultCameraPosition;
@@ -173,10 +173,10 @@ public class Controller {
     public void addLight(SXRScene scene) {
         oLight.getLightScene().getTransform().setPosition(0, 10, 0);
         oLight.getLightScene().getTransform().rotateByAxis(-90, 1, 0, 0);
-        scene.addSceneObject(oLight.getLightScene());
+        scene.addNode(oLight.getLightScene());
     }
 
-    public void enableDisableLightOnModel(SXRSceneObject model, boolean flag) {
+    public void enableDisableLightOnModel(SXRNode model, boolean flag) {
         ArrayList<SXRRenderData> rdata = model.getAllComponents(SXRRenderData.getComponentType());
         for (SXRRenderData r : rdata) {
 
@@ -285,7 +285,7 @@ public class Controller {
                     10, Color.BLUE, defaultCenterPosition.x - 2, defaultCenterPosition.y + 5,
                     defaultCenterPosition.z);
         }
-        room.addSceneObject(oBannerCount.getBanner());
+        room.addNode(oBannerCount.getBanner());
     }
 
     void displayLoadingInRoom(SXRScene room) {
@@ -293,14 +293,14 @@ public class Controller {
             oBannerLoading = new Banner(context, "Loading", 10, Color.BLUE, defaultCenterPosition
                     .x, defaultCenterPosition.y, defaultCenterPosition.z);
         }
-        room.addSceneObject(oBannerLoading.getBanner());
+        room.addNode(oBannerLoading.getBanner());
     }
 
     void removeLoadingInRoom(SXRScene room) {
         if (oBannerLoading == null) {
             return;
         }
-        room.removeSceneObject(oBannerLoading.getBanner());
+        room.removeNode(oBannerLoading.getBanner());
     }
     // END Banner Feature
 
@@ -350,13 +350,13 @@ public class Controller {
         oDefaultCameraPosition.get(0).loadNavigator(context);
 
         for (int i = 1; i < oDefaultCameraPosition.size(); i++) {
-            SXRSceneObject temp = oDefaultCameraPosition.get(i).loadNavigator(context);
-            room.addSceneObject(temp);
+            SXRNode temp = oDefaultCameraPosition.get(i).loadNavigator(context);
+            room.addNode(temp);
             enableDisableLightOnModel(temp, false);
         }
     }
 
-    protected void lookAt(SXRTransform modeltransform, SXRTransform camera, SXRSceneObject
+    protected void lookAt(SXRTransform modeltransform, SXRTransform camera, SXRNode
             mCharacter) {
         Vector3f cameraV = new Vector3f(camera.getPositionX(), camera.getPositionY(), camera
                 .getPositionZ());
@@ -395,7 +395,7 @@ public class Controller {
     }
 
     public void setCameraPositionByNavigator(SXRCollider picked, SXRScene scene, SXRScene
-            room, SXRWidgetSceneObject widget, float original[]) {
+            room, SXRWidgetNode widget, float original[]) {
         CameraPosition campos = null;
         int camIndex = 0;
         if (picked != null) {
@@ -416,7 +416,7 @@ public class Controller {
         }
 
         // START Code to Attach Menu According to Camera Position
-        scene.removeSceneObject(widget);
+        scene.removeNode(widget);
         widget.getTransform().setModelMatrix(original);
         campos.cameraModel.addChildObject(widget);
         Vector3f axis = campos.getRotationAxis();
@@ -425,7 +425,7 @@ public class Controller {
         float temp[] = widget.getTransform().getModelMatrix();
         widget.getTransform().setModelMatrix(temp);
         campos.cameraModel.removeChildObject(widget);
-        scene.addSceneObject(widget);
+        scene.addNode(widget);
 
         // END Code to Attach Menu According to Camera Position
 
@@ -437,11 +437,11 @@ public class Controller {
         scene.getMainCameraRig().getTransform().setRotationByAxis(campos.getCameraAngle(), axis.x, axis.y, axis.z);
 
         if (oCurrentPosition != null) {
-            room.addSceneObject(oCurrentPosition.loadNavigator(context));
+            room.addNode(oCurrentPosition.loadNavigator(context));
         }
 
         Log.i(TAG, "Removing navigator " + Integer.toString(camIndex));
-        room.removeSceneObject(campos.cameraModel);
+        room.removeNode(campos.cameraModel);
         oCurrentPosition = campos;
 
         for (int j = 0; j < oDefaultCameraPosition.size(); j++) {
@@ -551,17 +551,17 @@ public class Controller {
 
     void setModelWithIndex(int index, SXRScene room) {
         if (currentDisplayedModel != null) {
-            room.removeSceneObject(currentDisplayedModel.getModel(context));
+            room.removeNode(currentDisplayedModel.getModel(context));
         }
 
         displayLoadingInRoom(room);
-        SXRSceneObject tempModelSO = aModel.get(index).getModel(context);
+        SXRNode tempModelSO = aModel.get(index).getModel(context);
 
         Log.d(TAG, "Loading Done");
         if (tempModelSO != null) {
             tempModelSO.getTransform().setPosition(defaultCenterPosition.x, defaultCenterPosition
                     .y, defaultCenterPosition.z);
-            room.addSceneObject(tempModelSO);
+            room.addNode(tempModelSO);
             enableDisableLightOnModel(tempModelSO, oLightFlag);
 
             removeLoadingInRoom(room);
@@ -663,9 +663,9 @@ public class Controller {
 
     void addSkyBox(int index, SXRScene scene) {
         Log.d(TAG, "Adding SkyBox");
-        SXRSphereSceneObject current = null;
+        SXRSphereNode current = null;
         if (currentSkyBox != null)
-            scene.removeSceneObject(currentSkyBox);
+            scene.removeNode(currentSkyBox);
 
         int count = aODefaultSkyBox.size();
         if (index < count) {
@@ -676,7 +676,7 @@ public class Controller {
         }
 
         if (current != null) {
-            scene.addSceneObject(current);
+            scene.addNode(current);
             currentSkyBox = current;
             current.getTransform().setPosition(defaultCenterPosition.x, defaultCenterPosition.y,
                     defaultCenterPosition.z);

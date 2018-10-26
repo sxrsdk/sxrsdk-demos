@@ -5,28 +5,28 @@ import android.media.MediaPlayer;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObjectPlayer;
+import com.samsungxr.SXRNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNodePlayer;
 
 import java.io.IOException;
 
-public class SXRVideoPlayerObject extends SXRSceneObject{
+public class SXRVideoPlayerObject extends SXRNode{
 
-    private final SXRVideoSceneObjectPlayer<?> mPlayer;
+    private final SXRVideoNodePlayer<?> mPlayer;
     private final MediaPlayer mMediaPlayer;
 
     public SXRVideoPlayerObject(SXRContext sxrContext) {
         super(sxrContext);
 
-        SXRSphereSceneObject sphere = new SXRSphereSceneObject(sxrContext, 72, 144, false);
+        SXRSphereNode sphere = new SXRSphereNode(sxrContext, 72, 144, false);
         SXRMesh mesh = sphere.getRenderData().getMesh();
 
         mMediaPlayer = new MediaPlayer();
-        mPlayer = SXRVideoSceneObject.makePlayerInstance(mMediaPlayer);
+        mPlayer = SXRVideoNode.makePlayerInstance(mMediaPlayer);
 
-        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, mesh, mPlayer, SXRVideoSceneObject.SXRVideoType.MONO);
+        SXRVideoNode video = new SXRVideoNode(sxrContext, mesh, mPlayer, SXRVideoNode.SXRVideoType.MONO);
         video.getTransform().setScale(100f, 100f, 100f);
 
         addChildObject(video);

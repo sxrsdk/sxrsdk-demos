@@ -19,7 +19,7 @@ package com.samsungxr.videoplayer.focus;
 
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.utility.Log;
 
 public class PickEventHandler extends SXREventListeners.PickEvents {
@@ -27,7 +27,7 @@ public class PickEventHandler extends SXREventListeners.PickEvents {
     private static final String TAG = PickEventHandler.class.getSimpleName();
 
     @Override
-    public void onEnter(SXRSceneObject sceneObject, SXRPicker.SXRPickedObject pickedObject) {
+    public void onEnter(SXRNode sceneObject, SXRPicker.SXRPickedObject pickedObject) {
 
         if (sceneObject instanceof Focusable) {
             Log.d(TAG, "onEnter: " + sceneObject.getName());
@@ -36,7 +36,7 @@ public class PickEventHandler extends SXREventListeners.PickEvents {
     }
 
     @Override
-    public void onExit(SXRSceneObject sceneObject) {
+    public void onExit(SXRNode sceneObject) {
 
         if (sceneObject instanceof Focusable) {
             Log.d(TAG, "onExit: " + sceneObject.getName());

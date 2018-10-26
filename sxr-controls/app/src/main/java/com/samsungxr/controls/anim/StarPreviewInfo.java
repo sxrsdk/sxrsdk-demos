@@ -15,7 +15,7 @@
 
 package com.samsungxr.controls.anim;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 public class StarPreviewInfo {
 
@@ -23,7 +23,7 @@ public class StarPreviewInfo {
         right, left
     }
 
-    public static SXRSceneObject star;
+    public static SXRNode star;
     private static float rotation = 0;
     static Direction direction;
     private static float evPositionZ;
@@ -31,7 +31,7 @@ public class StarPreviewInfo {
     private static float evPositionY;
     private static float evRotationW;
 
-    public static void putStarReference(SXRSceneObject star) {
+    public static void putStarReference(SXRNode star) {
         StarPreviewInfo.star = star;
 
         evPositionX = star.getTransform().getRotationX();

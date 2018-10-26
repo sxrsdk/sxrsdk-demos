@@ -19,17 +19,17 @@ import com.samsungxr.SXRCollider;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.io.IOException;
 
-public class VirtualObject extends SXRSceneObject {
+public class VirtualObject extends SXRNode {
     private static final float[] UNPICKED_COLOR = {0.7f, 0.7f, 0.7f, 1.0f};
     private static final float[] PICKED_COLOR = {1.0f, 0.0f, 0.0f, 1.0f};
     private static final float[] CLICKED_COLOR = {0.5f, 0.5f, 1.0f, 1.0f};
     private float[] current_color = UNPICKED_COLOR;
 
-    private SXRSceneObject m3dModel;
+    private SXRNode m3dModel;
 
     public VirtualObject(SXRContext sxrContext) {
         super(sxrContext);
@@ -42,12 +42,12 @@ public class VirtualObject extends SXRSceneObject {
     }
 
     private void load3dModel(final SXRContext sxrContext) throws IOException {
-        final SXRSceneObject sceneObject = sxrContext.getAssetLoader().loadModel("objects/andy.obj");
+        final SXRNode sceneObject = sxrContext.getAssetLoader().loadModel("objects/andy.obj");
         addChildObject(sceneObject);
 
-        sceneObject.forAllDescendants(new SXRSceneObject.SceneVisitor() {
+        sceneObject.forAllDescendants(new SXRNode.SceneVisitor() {
             @Override
-            public boolean visit(SXRSceneObject childObject) {
+            public boolean visit(SXRNode childObject) {
                 SXRRenderData renderData
                         = (SXRRenderData) childObject.getComponent(SXRRenderData.getComponentType());
                 if (renderData == null || renderData.getMesh() == null)

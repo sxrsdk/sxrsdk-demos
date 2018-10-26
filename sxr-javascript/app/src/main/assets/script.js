@@ -1,5 +1,5 @@
 importPackage(org.gearvrf)
-importPackage(org.gearvrf.scene_objects)
+importPackage(org.gearvrf.nodes)
 importPackage(org.gearvrf.script)
 importPackage(org.gearvrf.animation)
 
@@ -14,9 +14,9 @@ function onInit(gvrf) {
   boat.getTransform().setPosition(20, -20, -40);
 
   // Text
-  var textView = new GVRTextViewSceneObject(gvrf);
+  var textView = new GVRTextViewNode(gvrf);
   textView.setText("GVRf scripting in Javascript");
-  textView.setRefreshFrequency(GVRTextViewSceneObject.IntervalFrequency.REALTIME);
+  textView.setRefreshFrequency(GVRTextViewNode.IntervalFrequency.REALTIME);
   textView.setName("text");
   textView.setTextSize(6);
   textView.getTransform().setPosition(0, 0, -100);
@@ -27,7 +27,7 @@ function onInit(gvrf) {
   textView.attachComponent(textSensor);
   var script = new GVRScriptBehavior(gvrf, "text.js");
   textView.attachComponent(script);
-  mainScene.addSceneObject(textView);
+  mainScene.addNode(textView);
 
   // Animation
   var animation = boat.getComponent(GVRAnimator.getComponentType());

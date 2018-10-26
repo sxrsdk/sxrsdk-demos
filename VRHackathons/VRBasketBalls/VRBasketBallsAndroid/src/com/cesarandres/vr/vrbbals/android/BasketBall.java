@@ -6,7 +6,7 @@ import java.util.Random;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
@@ -15,11 +15,11 @@ import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 
 public class BasketBall {
 
-	protected SXRSceneObject vrObject;
+	protected SXRNode vrObject;
 	protected SXRMesh mesh;
 	protected SXRTexture texture;
 
-	protected SXRSceneObject vrpObject;
+	protected SXRNode vrpObject;
 	protected SXRMesh pmesh;
 	protected SXRTexture ptexture;
 
@@ -40,14 +40,14 @@ public class BasketBall {
 					"sphere.obj"));
 			texture = vrcontext.loadTexture(new SXRAndroidResource(vrcontext,
 					"basketbal.jpg"));
-			vrObject = new SXRSceneObject(vrcontext, mesh, texture);
+			vrObject = new SXRNode(vrcontext, mesh, texture);
 			vrObject.getTransform().setScale(0.2f, 0.2f, 0.2f);
 
 			pmesh = vrcontext.loadMesh(new SXRAndroidResource(vrcontext,
 					"cube.obj"));
 			ptexture = vrcontext.loadTexture(new SXRAndroidResource(vrcontext,
 					"mars_1k_color.jpg"));
-			vrpObject = new SXRSceneObject(vrcontext, pmesh, ptexture);
+			vrpObject = new SXRNode(vrcontext, pmesh, ptexture);
 			vrpObject.getTransform().setScale(0.1f, 4f, 0.1f);
 			vrpObject.getTransform().setPosition(0f, -4f, 0f);
 
@@ -87,7 +87,7 @@ public class BasketBall {
 		this.vrObject.getTransform().setPositionZ(z);
 	}
 
-	public SXRSceneObject getVrObject() {
+	public SXRNode getVrObject() {
 		return vrObject;
 	}
 
@@ -96,7 +96,7 @@ public class BasketBall {
 		mAnimationEngine.start(animation);
 	}
 
-	public void counterClockwise(SXRSceneObject object, float duration) {
+	public void counterClockwise(SXRNode object, float duration) {
 		setup(new SXRRotationByAxisWithPivotAnimation( //
 				object, duration, 360.0f, //
 				0.0f, 1.0f, 0.0f, //
@@ -104,7 +104,7 @@ public class BasketBall {
 						.getPositionY(), object.getTransform().getPositionZ()));
 	}
 
-	public void clockwise(SXRSceneObject object, float duration) {
+	public void clockwise(SXRNode object, float duration) {
 		setup(new SXRRotationByAxisWithPivotAnimation( //
 				object, duration, -360.0f, //
 				0.0f, 1.0f, 0.0f, //

@@ -22,14 +22,14 @@ import android.support.annotation.NonNull;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 
-public abstract class FadeableObject extends SXRSceneObject {
+public abstract class FadeableObject extends SXRNode {
 
     private static final float FADE_DURATION = .2F;
 
@@ -42,7 +42,7 @@ public abstract class FadeableObject extends SXRSceneObject {
     }
 
     @NonNull
-    protected abstract SXRSceneObject getFadeable();
+    protected abstract SXRNode getFadeable();
 
     public final void fadeIn() {
         fadeIn(null);
@@ -54,7 +54,7 @@ public abstract class FadeableObject extends SXRSceneObject {
 
     @CallSuper
     public final void fadeIn(final OnFadeFinish callback) {
-        if (getFadeable() instanceof SXRViewSceneObject) {
+        if (getFadeable() instanceof SXRViewNode) {
             getSXRContext().getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -68,7 +68,7 @@ public abstract class FadeableObject extends SXRSceneObject {
 
     @CallSuper
     public final void fadeOut(final OnFadeFinish callback) {
-        if (getFadeable() instanceof SXRViewSceneObject) {
+        if (getFadeable() instanceof SXRViewNode) {
             getSXRContext().getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

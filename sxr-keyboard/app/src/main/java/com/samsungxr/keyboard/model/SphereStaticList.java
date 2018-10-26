@@ -21,16 +21,16 @@ import android.content.res.TypedArray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.shader.SphereShader;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
 import java.util.ArrayList;
 
 public class SphereStaticList {
 
-    public ArrayList<SXRSceneObject> listFlag;
+    public ArrayList<SXRNode> listFlag;
     public static int MOVEABLE = 0;
     public static int ANSWERING = 1;
     public static int RESTORING = 2;
@@ -41,7 +41,7 @@ public class SphereStaticList {
 
     public void updateSpheresMaterial() {
 
-        for (SXRSceneObject sphereFlag : listFlag) {
+        for (SXRNode sphereFlag : listFlag) {
 
             float[] mat = sphereFlag.getTransform().getModelMatrix();
 
@@ -81,7 +81,7 @@ public class SphereStaticList {
     }
 
     private void getSpheres(SXRContext sxrContext, int array) {
-        listFlag = new ArrayList<SXRSceneObject>();
+        listFlag = new ArrayList<SXRNode>();
         Resources res = sxrContext.getContext().getResources();
         TypedArray spheres = res.obtainTypedArray(array);
 
@@ -91,10 +91,10 @@ public class SphereStaticList {
             SphereFlag objectSphere = new SphereFlag(sxrContext, sphere);
             Vector3D parentPosition = objectSphere.getInitialPositionVector();
 
-            SXRSceneObject parent = new SXRSceneObject(sxrContext, new SXRAndroidResource(
+            SXRNode parent = new SXRNode(sxrContext, new SXRAndroidResource(
                     sxrContext, R.raw.hit_area_half), new SXRAndroidResource(sxrContext,
                     R.raw.empty));
-            parent.setName(SceneObjectNames.SPHERE_FLAG_PARENT);
+            parent.setName(NodeNames.SPHERE_FLAG_PARENT);
             parent.getTransform().setPosition((float) parentPosition.getX(),
                     (float) parentPosition.getY(), (float) parentPosition.getZ());
             parent.addChildObject(objectSphere);

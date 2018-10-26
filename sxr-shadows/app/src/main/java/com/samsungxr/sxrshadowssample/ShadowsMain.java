@@ -10,24 +10,24 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.shaders.SXRPhongShader;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSpotLight;
 
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 import android.graphics.Color;
 import android.view.MotionEvent;
 
 public class ShadowsMain extends SXRMain {
 
     private SXRContext mSXRContext = null;
-    private SXRSceneObject cubeObject = null;
-    private SXRSceneObject rotateObject = null;
-    private SXRSceneObject lightObject = null;
+    private SXRNode cubeObject = null;
+    private SXRNode rotateObject = null;
+    private SXRNode lightObject = null;
 
     @Override
     public void onInit(SXRContext sxrContext) throws Throwable {
@@ -41,23 +41,23 @@ public class ShadowsMain extends SXRMain {
         mainCameraRig.setFarClippingDistance(100.0f);
         mainCameraRig.getTransform().setPosition(0.0f, 6.0f, 8.0f);
 
-        SXRSceneObject groundScene = createBackdrop(sxrContext);
+        SXRNode groundScene = createBackdrop(sxrContext);
         groundScene.getTransform().setRotationByAxis(-80.0f, 1.0f, 0.0f, 0.0f);
         groundScene.getTransform().setPosition(0.0f, 0.0f, 0.0f);
-        scene.addSceneObject(groundScene);
+        scene.addNode(groundScene);
 
         addSphere(scene, 1.0f, 0, 1.0f, -1.0f);
         addSphere(scene, 2, -4, 2.0f, -2.0f);
         addCube(scene, 2, 6f, 2, -3.0f);
         addStormtrooper(scene, 0, 2.6f, -2.0f);
         lightObject = createSpotLight(sxrContext);
-        scene.addSceneObject(lightObject);
+        scene.addNode(lightObject);
     }
 
-    private SXRSceneObject createBackdrop(SXRContext context) throws IOException
+    private SXRNode createBackdrop(SXRContext context) throws IOException
     {
         SXRTexture tex = context.getAssetLoader().loadTexture(new SXRAndroidResource(mSXRContext, "floor.jpg"));
-        SXRSceneObject backdrop = new SXRSceneObject(context, 100.0f, 100.0f, tex);
+        SXRNode backdrop = new SXRNode(context, 100.0f, 100.0f, tex);
         SXRRenderData rdata = backdrop.getRenderData();
         SXRMaterial material = new SXRMaterial(context,new SXRShaderId(SXRPhongShader.class));
 
@@ -72,9 +72,9 @@ public class ShadowsMain extends SXRMain {
         return backdrop;
     }
 
-    private SXRSceneObject createDirectLight(SXRContext context)
+    private SXRNode createDirectLight(SXRContext context)
     {
-        SXRSceneObject lightNode = new SXRSceneObject(context);
+        SXRNode lightNode = new SXRNode(context);
         SXRDirectLight light = new SXRDirectLight(context);
 
         light.setCastShadow(true);
@@ -89,9 +89,9 @@ public class ShadowsMain extends SXRMain {
         return lightNode;
     }
 
-    private SXRSceneObject createSpotLight(SXRContext context)
+    private SXRNode createSpotLight(SXRContext context)
     {
-        SXRSceneObject lightNode = new SXRSceneObject(context);
+        SXRNode lightNode = new SXRNode(context);
         SXRSpotLight light = new SXRSpotLight(context);
 
         light.setCastShadow(true);
@@ -184,26 +184,26 @@ public class ShadowsMain extends SXRMain {
 
     private void addCube(SXRScene scene, float size, float x, float y, float z) throws IOException
     {
-        cubeObject = new SXRCubeSceneObject(mSXRContext, true, createCustomMaterial(mSXRContext, "cube.jpg"));
+        cubeObject = new SXRCubeNode(mSXRContext, true, createCustomMaterial(mSXRContext, "cube.jpg"));
         cubeObject.getTransform().setPosition(x, y, z);
         cubeObject.getTransform().setScale(size, size, size);
         cubeObject.setName("cube");
-        scene.addSceneObject(cubeObject);
+        scene.addNode(cubeObject);
     }
 
     private void addSphere(SXRScene scene, float radius, float x, float y, float z) throws IOException
     {
-        SXRSceneObject sphereObject  = new SXRSphereSceneObject(mSXRContext, true, createCustomMaterial(mSXRContext, "sphere.jpg"));
+        SXRNode sphereObject  = new SXRSphereNode(mSXRContext, true, createCustomMaterial(mSXRContext, "sphere.jpg"));
 
         sphereObject.setName("sphere");
         sphereObject.getTransform().setPosition(x, y, z);
         sphereObject.getTransform().setScale(radius, radius, radius);
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
     }
 
-    private SXRSceneObject addStormtrooper(SXRScene scene, float x, float y, float z) throws IOException
+    private SXRNode addStormtrooper(SXRScene scene, float x, float y, float z) throws IOException
     {
-        SXRSceneObject model = mSXRContext.getAssetLoader().loadModel("storm.obj", scene);
+        SXRNode model = mSXRContext.getAssetLoader().loadModel("storm.obj", scene);
         model.getTransform().setPosition(x, y, z);
         model.getTransform().setScale(1.5f, 1.5f, 1.5f);
         model.getTransform().setRotationByAxis((float) -90, 0, 1, 0);

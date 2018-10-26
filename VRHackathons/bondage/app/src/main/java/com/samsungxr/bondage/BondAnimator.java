@@ -4,7 +4,7 @@ import com.samsungxr.SXRBehavior;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.IPickEvents;
 import com.samsungxr.utility.Log;
@@ -23,8 +23,8 @@ class BondAnimator extends SXRBehavior implements IPickEvents
     private String          mElementName;
     private Vector3f        mTargetPos = new Vector3f(0, 0, 0);
     private Vector3f        mCurPos = new Vector3f(0, 0, 0);
-    private SXRSceneObject  mClosest = null;
-    private SXRSceneObject  mTarget = null;
+    private SXRNode  mClosest = null;
+    private SXRNode  mTarget = null;
     private HashMap<String, String> mMoleculeMap;
     private SoundEffect mGoodSound;
     private SoundEffect mBadSound;
@@ -42,19 +42,19 @@ class BondAnimator extends SXRBehavior implements IPickEvents
 
     static public long getComponentType() { return TYPE_BOND_ANIMATOR; }
 
-    public void setTarget(SXRSceneObject target)
+    public void setTarget(SXRNode target)
     {
         mTarget = target;
         mElementName = getElementName(target);
         WrongAnswer = false;
     }
 
-    SXRSceneObject getTarget()
+    SXRNode getTarget()
     {
         return mTarget;
     }
 
-    public SXRSceneObject getBondPoint(SXRSceneObject srcObj)
+    public SXRNode getBondPoint(SXRNode srcObj)
     {
         String name = srcObj.getName();
         int i = name.indexOf("_");
@@ -75,7 +75,7 @@ class BondAnimator extends SXRBehavior implements IPickEvents
                 {
                     objName = objName.substring(0, j);
                 }
-                SXRSceneObject found = getOwnerObject().getSceneObjectByName(objName);
+                SXRNode found = getOwnerObject().getNodeByName(objName);
                 if (found != null)
                 {
                     partners = partners.replace(objName, "").trim();
@@ -94,7 +94,7 @@ class BondAnimator extends SXRBehavior implements IPickEvents
         return null;
     }
 
-    static public String getElementName(SXRSceneObject srcObj)
+    static public String getElementName(SXRNode srcObj)
     {
         String name = srcObj.getName();
         String elemName = null;
@@ -110,9 +110,9 @@ class BondAnimator extends SXRBehavior implements IPickEvents
         return null;
     }
 
-    private void makeBond(SXRSceneObject sceneObj)
+    private void makeBond(SXRNode sceneObj)
     {
-        SXRSceneObject partner = getBondPoint(sceneObj);
+        SXRNode partner = getBondPoint(sceneObj);
         if (partner != null)
         {
             String name = partner.getName();
@@ -144,21 +144,21 @@ class BondAnimator extends SXRBehavior implements IPickEvents
         }
     }
 
-    public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
-    public void onExit(SXRSceneObject sceneObj) { }
-    public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+    public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+    public void onExit(SXRNode sceneObj) { }
+    public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
     public void onNoPick(SXRPicker picker) { }
 
     public void onPick(SXRPicker picker)
     {
-        SXRSceneObject owner = getOwnerObject();
+        SXRNode owner = getOwnerObject();
         if ((owner == null) || !isEnabled() || (mTarget == null))
         {
             return;
         }
         for (SXRPicker.SXRPickedObject picked : picker.getPicked())
         {
-            SXRSceneObject hit = picked.hitObject;
+            SXRNode hit = picked.hitObject;
             SXRRenderData rdata = hit.getRenderData();
             if ((rdata != null) && rdata.isEnabled())
             {

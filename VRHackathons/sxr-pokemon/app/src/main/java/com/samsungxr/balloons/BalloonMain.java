@@ -31,13 +31,13 @@ import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPicker.SXRPickedObject;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.IPickEvents;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.utility.Log;
 import org.joml.Vector2f;
 
@@ -52,11 +52,11 @@ public class BalloonMain extends SXRMain {
 
     public class PickHandler implements IPickEvents
     {
-        public SXRSceneObject   PickedObject = null;
+        public SXRNode   PickedObject = null;
 
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
-        public void onExit(SXRSceneObject sceneObj) { }
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onExit(SXRNode sceneObj) { }
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
         public void onNoPick(SXRPicker picker)
         {
             PickedObject = null;
@@ -77,13 +77,13 @@ public class BalloonMain extends SXRMain {
     private SoundPool   mAudioEngine;
     private SoundEffect mPopSound;
     public static MediaPlayer sMediaPlayer;
-    private SXRTextViewSceneObject mScoreBoard;
+    private SXRTextViewNode mScoreBoard;
     private boolean     mGameOver = false;
     private Integer     mScore = 0;
 	private Timer		mTimer;
 
     private BalloonActivity mActivity;
-    private SXRCameraSceneObject cameraObject;
+    private SXRCameraNode cameraObject;
 
     private String [] pokemon_imgs = new String[] {
             "amphaos.png",
@@ -141,7 +141,7 @@ public class BalloonMain extends SXRMain {
         /*
          * Set the camera passthrough
          */
-        cameraObject = new SXRCameraSceneObject(
+        cameraObject = new SXRCameraNode(
                 context, 18f, 10f, mActivity.getCamera());
         cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
         cameraObject.getTransform().setPosition(0.0f, -1.8f, -10.0f);
@@ -150,7 +150,7 @@ public class BalloonMain extends SXRMain {
         /*
          * Set up a head-tracking pointer
          */
-        SXRSceneObject headTracker = new SXRSceneObject(context,
+        SXRNode headTracker = new SXRNode(context,
                 context.createQuad(0.1f, 0.1f),
                 context.loadTexture(new SXRAndroidResource(context, R.drawable.headtrackingpointer)));
         headTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
@@ -165,22 +165,22 @@ public class BalloonMain extends SXRMain {
         /*
          * Add the environment
          */
-//        SXRSceneObject environment = makeEnvironment(context);
-//        mScene.addSceneObject(environment);
+//        SXRNode environment = makeEnvironment(context);
+//        mScene.addNode(environment);
         /*
          * Make balloon prototype sphere mesh
          */
         mMaterials = makeMaterials(context);
-        mSphereMesh = new SXRSphereSceneObject(context, true).getRenderData().getMesh();
+        mSphereMesh = new SXRSphereNode(context, true).getRenderData().getMesh();
 
         /*
          * Start the particle emitter making balloons
          */
-        SXRSceneObject particleRoot = new SXRSceneObject(context);
+        SXRNode particleRoot = new SXRNode(context);
         particleRoot.setName("ParticleSystem");
         ParticleEmitter.MakeParticle particleCreator = new ParticleEmitter.MakeParticle()
         {
-            public SXRSceneObject create(SXRContext context, Integer index) { return makeBalloon(context, index); }
+            public SXRNode create(SXRContext context, Integer index) { return makeBalloon(context, index); }
         };
         mParticleSystem = new ParticleEmitter(context, mScene, particleCreator);
         mParticleSystem.MaxDistance = 10.0f;
@@ -191,7 +191,7 @@ public class BalloonMain extends SXRMain {
         particleRoot.getTransform().setRotationByAxis(-90.0f, 1, 0, 0);
         particleRoot.getTransform().setPosition(0, -3.0f, -3.0f);
         particleRoot.attachComponent(mParticleSystem);
-        mScene.addSceneObject(particleRoot);
+        mScene.addNode(particleRoot);
         /*
          * Respond to picking events
          */
@@ -226,7 +226,7 @@ public class BalloonMain extends SXRMain {
         mGameOver = true;
     }
 
-    SXRSceneObject makeBalloon(SXRContext context, Integer index)
+    SXRNode makeBalloon(SXRContext context, Integer index)
     {
         //String Tag = "makeBalloon";
         //android.util.Log.e(Tag, "enter make ballon...");
@@ -241,7 +241,7 @@ public class BalloonMain extends SXRMain {
         SXRTexture texture = context.loadTexture(pokemon_imgs[index]);
         // create a a scene object (this constructor creates a rectangular scene*
         // object that uses the standard 'unlit' shader)*
-        SXRSceneObject sceneObject = new SXRSceneObject(context, 2.0f, 2.0f, texture);
+        SXRNode sceneObject = new SXRNode(context, 2.0f, 2.0f, texture);
         // set the scene object position*
         sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
         SXRSphereCollider collider = new SXRSphereCollider(context);
@@ -249,12 +249,12 @@ public class BalloonMain extends SXRMain {
         return sceneObject;
     }
 
-    SXRSceneObject makeEnvironment(SXRContext context)
+    SXRNode makeEnvironment(SXRContext context)
     {
         Future<SXRTexture> tex = context.loadFutureCubemapTexture(new SXRAndroidResource(context, R.raw.lycksele3));
         SXRMaterial material = new SXRMaterial(context, SXRMaterial.SXRShaderType.Cubemap.ID);
         material.setMainTexture(tex);
-        SXRSphereSceneObject environment = new SXRSphereSceneObject(context, 18, 36, false, material, 4, 4);
+        SXRSphereNode environment = new SXRSphereNode(context, 18, 36, false, material, 4, 4);
         environment.getTransform().setScale(20.0f, 20.0f, 20.0f);
 
         SXRDirectLight sunLight = new SXRDirectLight(context);
@@ -291,9 +291,9 @@ public class BalloonMain extends SXRMain {
     /*
      * Make the scoreboard
      */
-    SXRTextViewSceneObject makeScoreboard(SXRContext ctx)
+    SXRTextViewNode makeScoreboard(SXRContext ctx)
     {
-        SXRTextViewSceneObject scoreBoard = new SXRTextViewSceneObject(ctx, 5, 0.7f, "Score: 0");
+        SXRTextViewNode scoreBoard = new SXRTextViewNode(ctx, 5, 0.7f, "Score: 0");
         SXRRenderData rdata = scoreBoard.getRenderData();
         scoreBoard.getTransform().setPosition(0.3f, 1.8f, -3.0f);
         scoreBoard.setTextColor(Color.BLACK);
@@ -318,7 +318,7 @@ public class BalloonMain extends SXRMain {
         }
     }
 
-    private void onHit(SXRSceneObject sceneObj)
+    private void onHit(SXRNode sceneObj)
     {
         Particle particle = (Particle) sceneObj.getComponent(Particle.getComponentType());
         if (!mGameOver && (particle != null))

@@ -27,10 +27,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 import com.samsungxr.videoplayer.component.FadeableObject;
 import com.samsungxr.videoplayer.component.MessageText;
@@ -52,7 +52,7 @@ public class Gallery extends FadeableObject implements OnItemsSelectionListener 
 
     private static final String TAG = Gallery.class.getSimpleName();
     private RecyclerView mRecyclerView;
-    private SXRViewSceneObject mObjectViewGallery;
+    private SXRViewNode mObjectViewGallery;
     private List<GalleryItem> mItemList = new LinkedList<>();
     private Breadcrumb mBreadcrumb;
     private OnGalleryEventListener mOnGalleryEventListener;
@@ -64,20 +64,20 @@ public class Gallery extends FadeableObject implements OnItemsSelectionListener 
     public Gallery(SXRContext sxrContext) {
         super(sxrContext);
 
-        mObjectViewGallery = new SXRViewSceneObject(sxrContext, R.layout.gallery_layout,
+        mObjectViewGallery = new SXRViewNode(sxrContext, R.layout.gallery_layout,
                 new IViewEvents() {
                     @Override
-                    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+                    public void onInitView(SXRViewNode sxrViewNode, View view) {
                         onInitRecyclerView(view);
                         onInitBreadcrumb(view);
                     }
 
                     @Override
-                    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-                        sxrViewSceneObject.getTransform().setScale(6f, 6, 1);
+                    public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+                        sxrViewNode.getTransform().setScale(6f, 6, 1);
                         // Set the texture buffer to maximum value to avoid anti-aliasing issue
-                        sxrViewSceneObject.setTextureBufferSize(1024);
-                        addChildObject(sxrViewSceneObject);
+                        sxrViewNode.setTextureBufferSize(1024);
+                        addChildObject(sxrViewNode);
                     }
                 });
 
@@ -229,7 +229,7 @@ public class Gallery extends FadeableObject implements OnItemsSelectionListener 
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mObjectViewGallery;
     }
 

@@ -28,9 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 import com.samsungxr.videoplayer.component.FadeableObject;
 import com.samsungxr.videoplayer.component.video.player.Player;
@@ -49,18 +49,18 @@ public class PlayNextDialog extends FadeableObject implements View.OnClickListen
     private CountdownTimer mCountdownTimer;
     private OnPlayNextListener mOnPlayNextListener;
     private RelativeLayout OverlayScene;
-    private SXRViewSceneObject mPlayNextObject;
+    private SXRViewNode mPlayNextObject;
 
     public PlayNextDialog(SXRContext sxrContext, @NonNull OnPlayNextListener listener) {
         super(sxrContext);
-        mPlayNextObject = new SXRViewSceneObject(sxrContext, R.layout.layout_play_next, this);
+        mPlayNextObject = new SXRViewNode(sxrContext, R.layout.layout_play_next, this);
         setName(getClass().getSimpleName());
         mOnPlayNextListener = listener;
         mCountdownTimer = new CountdownTimer(this);
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+    public void onInitView(SXRViewNode sxrViewNode, View view) {
         mThumbnail = view.findViewById(R.id.thumbnail);
         mTime = view.findViewById(R.id.time);
         mTitle = view.findViewById(R.id.title);
@@ -88,8 +88,8 @@ public class PlayNextDialog extends FadeableObject implements View.OnClickListen
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-        addChildObject(sxrViewSceneObject);
+    public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+        addChildObject(sxrViewNode);
     }
 
     private void setTime(final int time) {
@@ -130,7 +130,7 @@ public class PlayNextDialog extends FadeableObject implements View.OnClickListen
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mPlayNextObject;
     }
 

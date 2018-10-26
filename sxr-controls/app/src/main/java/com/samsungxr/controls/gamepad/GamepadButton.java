@@ -20,7 +20,7 @@ import android.content.res.TypedArray;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.SXRTextureParameters.TextureFilterType;
@@ -33,7 +33,7 @@ import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class GamepadButton extends SXRSceneObject {
+public class GamepadButton extends SXRNode {
 
     private static final float DOWN_SIMPLE_BUTTON_TIME = 0.01f;
     private static final float DOWN_SIMPLE_BUTTON = 0.02f;
@@ -41,8 +41,8 @@ public class GamepadButton extends SXRSceneObject {
     private float pivotX;
     private float pivotY;
     private float pivotZ;
-    private SXRSceneObject buttonHover;
-    private SXRSceneObject buttonNormal;
+    private SXRNode buttonHover;
+    private SXRNode buttonNormal;
     private SXROpacityAnimation animOpacity;
     private float evPositionX, evPositionY, evPositionZ, evRotationW;
     private SXRTexture eventTexture;
@@ -77,7 +77,7 @@ public class GamepadButton extends SXRSceneObject {
         SXRMesh buttonMesh = getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(
                 getSXRContext(), drawable));
 
-        buttonNormal = new SXRSceneObject(getSXRContext(), buttonMesh,
+        buttonNormal = new SXRNode(getSXRContext(), buttonMesh,
                 buttonTexture);
         buttonNormal.getRenderData().setRenderingOrder(
                 RenderingOrder.ORDER_RENDERING_GAMEPAD_BUTTONS);
@@ -94,7 +94,7 @@ public class GamepadButton extends SXRSceneObject {
         SXRMesh dpadEventMesh = getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(
                 getSXRContext(), drawable));
 
-        buttonHover = new SXRSceneObject(getSXRContext(), dpadEventMesh, eventTexture);
+        buttonHover = new SXRNode(getSXRContext(), dpadEventMesh, eventTexture);
         buttonHover.getRenderData().getMaterial().setOpacity(0);
 
         evPositionX = buttonHover.getTransform().getPositionX();

@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 import com.samsung.accessibility.shortcut.ShortcutMenuItem.TypeItem;
 import com.samsung.accessibility.util.AccessibilityTexture;
 
-public class ShortcutMenu extends SXRSceneObject {
+public class ShortcutMenu extends SXRNode {
 
     private SXRContext mGvrContext;
     private static final int LOST_FOCUS_COLOR = 6186095;

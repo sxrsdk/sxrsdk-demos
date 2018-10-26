@@ -28,7 +28,7 @@ import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSharedTexture;
 import com.samsungxr.SXRSpotLight;
@@ -37,11 +37,11 @@ import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRWidgetViewer.R;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.utility.Log;
 import com.samsungxr.widgetplugin.SXRWidgetPlugin;
-import com.samsungxr.widgetplugin.SXRWidgetSceneObject;
-import com.samsungxr.widgetplugin.SXRWidgetSceneObjectMeshInfo;
+import com.samsungxr.widgetplugin.SXRWidgetNode;
+import com.samsungxr.widgetplugin.SXRWidgetNodeMeshInfo;
 
 import java.io.IOException;
 
@@ -54,15 +54,15 @@ public class ViewerMain extends SXRMain {
 
     private final float EYE_TO_OBJECT = 2.4f;
     public int ThumbnailSelected = 2;
-    private SXRSceneObject mWidgetButtonObject;
-    private SXRSceneObject mWdgetButtonObject2;
+    private SXRNode mWidgetButtonObject;
+    private SXRNode mWdgetButtonObject2;
     public boolean mButtonPointed = false;
     public boolean mObjectPointed = true;
 
     private PickHandler mPickHandler = new PickHandler();
 
-    public SXRSceneObject mObjectPos;
-    public SXRSceneObject mObjectRot;
+    public SXRNode mObjectPos;
+    public SXRNode mObjectRot;
     public float mRotateX = 0.0f;
     public float mRotateY = 0.0f;
     public float mRotateZ = 0.0f;
@@ -83,7 +83,7 @@ public class ViewerMain extends SXRMain {
     SXRMaterial mWidgetMaterial;
     SXRMaterial mWidgetMaterial2;
 
-    private SXRSceneObject mLightNode;
+    private SXRNode mLightNode;
 
     @Override
     public SplashMode getSplashMode() {
@@ -92,7 +92,7 @@ public class ViewerMain extends SXRMain {
 
     public class PickHandler extends SXREventListeners.TouchEvents
     {
-        public void onExit(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onExit(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             if ((mWidgetButtonObject == sceneObj) ||
                 (mWdgetButtonObject2 == sceneObj))
             {
@@ -101,7 +101,7 @@ public class ViewerMain extends SXRMain {
             mObjectPointed = true;
         }
 
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             mButtonPointed = false;
             if ((mWidgetButtonObject == sceneObj) ||
                 (mWdgetButtonObject2 == sceneObj))
@@ -111,7 +111,7 @@ public class ViewerMain extends SXRMain {
             }
         }
 
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
             if (pickInfo.isTouched())
             {
                 updateState();
@@ -145,14 +145,14 @@ public class ViewerMain extends SXRMain {
         mScene.setBackgroundColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         sxrContext.getInputManager().selectController(mControllerSelector);
-        mScene.addSceneObject(addEnvironment());
+        mScene.addNode(addEnvironment());
 
         mLightNode = createLight(mSXRContext, 1, 1, 1, 2.8f);
-        mScene.addSceneObject(mLightNode);
+        mScene.addNode(mLightNode);
 
         try
         {
-            mScene.addSceneObject(makeObjects(sxrContext));
+            mScene.addNode(makeObjects(sxrContext));
             makeWidgetButtons();
         }
         catch (IOException e)
@@ -172,12 +172,12 @@ public class ViewerMain extends SXRMain {
 
 
     private SXRTexture mEnvTex;
-    private SXRSceneObject addEnvironment()
+    private SXRNode addEnvironment()
     {
         mEnvTex = mSXRContext.getAssetLoader().loadCubemapTexture(new SXRAndroidResource(mSXRContext, R.raw.envmap));
         SXRMaterial mtl = new SXRMaterial(mSXRContext, SXRMaterial.SXRShaderType.Cubemap.ID);
         mtl.setMainTexture(mEnvTex);
-        SXRSceneObject env = new SXRCubeSceneObject(mSXRContext, false, mtl);
+        SXRNode env = new SXRCubeNode(mSXRContext, false, mtl);
         env.getRenderData().disableLight();
         env.getTransform().setScale(100, 100, 100);
 
@@ -249,11 +249,11 @@ public class ViewerMain extends SXRMain {
             mLookInside = false;
     }
 
-    private SXRSceneObject makeObjects(SXRContext ctx) throws IOException
+    private SXRNode makeObjects(SXRContext ctx) throws IOException
     {
-        mObjectPos = new SXRSceneObject(ctx);
+        mObjectPos = new SXRNode(ctx);
         mObjectPos.getTransform().setPositionZ(-EYE_TO_OBJECT);
-        mObjectRot = new SXRSceneObject(ctx);
+        mObjectRot = new SXRNode(ctx);
         SXRSwitch selector = new SXRSwitch(ctx);
         mObjectRot.attachComponent(selector);
         mObjectPos.addChildObject(mObjectRot);
@@ -269,9 +269,9 @@ public class ViewerMain extends SXRMain {
 
     private void addModeltoScene(String filePath, float scaleX, float scaleY, float scaleZ, boolean hasSpecularEnv) throws IOException {
 
-        SXRSceneObject.BoundingVolume bv;
+        SXRNode.BoundingVolume bv;
         SXRAssetLoader loader = mSXRContext.getAssetLoader();
-        SXRSceneObject root = loader.loadModel(filePath);
+        SXRNode root = loader.loadModel(filePath);
         if(hasSpecularEnv)
             setEnvironmentTex(root, mEnvTex);
         root.getTransform().setScale(scaleX,scaleY,scaleZ);
@@ -281,19 +281,19 @@ public class ViewerMain extends SXRMain {
     }
 
 
-    private void setEnvironmentTex( SXRSceneObject obj, SXRTexture tex)
+    private void setEnvironmentTex( SXRNode obj, SXRTexture tex)
     {
         if(obj.getRenderData() != null)
             if(obj.getRenderData().getMaterial()!= null)
                 obj.getRenderData().getMaterial().setTexture("specularEnvTexture", tex);
 
-        for (SXRSceneObject child: obj.getChildren())
+        for (SXRNode child: obj.getChildren())
             setEnvironmentTex(child, tex);
     }
 
-    private SXRSceneObject createLight(SXRContext context, float r, float g, float b, float y)
+    private SXRNode createLight(SXRContext context, float r, float g, float b, float y)
     {
-        SXRSceneObject lightNode = new SXRSceneObject(context);
+        SXRNode lightNode = new SXRNode(context);
         SXRSpotLight light = new SXRSpotLight(context);
 
         lightNode.attachLight(light);
@@ -306,7 +306,7 @@ public class ViewerMain extends SXRMain {
         return lightNode;
     }
 
-    private void setLightColor( SXRSceneObject lightNode, float r, float g, float b)
+    private void setLightColor( SXRNode lightNode, float r, float g, float b)
     {
         SXRPointLight light = (SXRPointLight)lightNode.getLight();
         light.setAmbientIntensity(0.4f * r, 0.4f * g, 0.4f * b, 1);
@@ -321,16 +321,16 @@ public class ViewerMain extends SXRMain {
 
         mWidgetTexture = new SXRSharedTexture(mSXRContext, mPlugin.getTextureId());
 
-        SXRWidgetSceneObjectMeshInfo info = new SXRWidgetSceneObjectMeshInfo(
+        SXRWidgetNodeMeshInfo info = new SXRWidgetNodeMeshInfo(
                 -2.5f, 1.0f, -1.5f, -1.0f, new int[]{0, 0}, new int[]{1280, 1440});
 
-        SXRWidgetSceneObjectMeshInfo info2 =new SXRWidgetSceneObjectMeshInfo(
+        SXRWidgetNodeMeshInfo info2 =new SXRWidgetNodeMeshInfo(
                 1.5f,1.0f,2.5f,-1.0f,new int[] { 1281, 0 },new int[] { 2560, 1440 });
 
-        mWidgetButtonObject = new SXRWidgetSceneObject(mSXRContext,
+        mWidgetButtonObject = new SXRWidgetNode(mSXRContext,
                                                        mPlugin.getTextureId(), info, mPlugin.getWidth(),
                                                        mPlugin.getHeight());
-        mWdgetButtonObject2 = new SXRWidgetSceneObject(mSXRContext,
+        mWdgetButtonObject2 = new SXRWidgetNode(mSXRContext,
                                                        mPlugin.getTextureId(), info2, mPlugin.getWidth(),
                                                        mPlugin.getHeight());
         SXRRenderData ldata = new SXRRenderData(mSXRContext);
@@ -380,12 +380,12 @@ public class ViewerMain extends SXRMain {
         mWdgetButtonObject2.getTransform().setPosition(0, 0, -EYE_TO_OBJECT - 1.5f);
         mWdgetButtonObject2.getTransform().rotateByAxis(-40.0f, 0.0f, 1.0f, 0.0f);
         mWdgetButtonObject2.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
-        mScene.addSceneObject(mWidgetButtonObject);
+        mScene.addNode(mWidgetButtonObject);
 
         //@todo currently nothing shown in the second pane; the demo needs rework to actually take
         //advantage of a second panel
         mWdgetButtonObject2.setEnable(false);
-        mScene.addSceneObject(mWdgetButtonObject2);
+        mScene.addNode(mWdgetButtonObject2);
     }
 
 }

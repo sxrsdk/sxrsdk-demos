@@ -16,7 +16,7 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.accessibility.SXRAccessiblityObject;
 
-public class FocusableSceneObject extends SXRAccessiblityObject {
+public class FocusableNode extends SXRAccessiblityObject {
 
     private boolean focus = false;
     private OnFocusListener onFocusListener = null;
@@ -25,16 +25,16 @@ public class FocusableSceneObject extends SXRAccessiblityObject {
     private OnClickListener onClickListener;
     private int focusCount = 0;
 
-    public FocusableSceneObject(SXRContext sxrContext) {
+    public FocusableNode(SXRContext sxrContext) {
         super(sxrContext);
     }
 
-    public FocusableSceneObject(SXRContext sxrContext, SXRMesh sxrMesh,
+    public FocusableNode(SXRContext sxrContext, SXRMesh sxrMesh,
             SXRTexture sxrTexture) {
         super(sxrContext, sxrMesh, sxrTexture);
     }
 
-    public FocusableSceneObject(SXRContext sxrContext, float width,
+    public FocusableNode(SXRContext sxrContext, float width,
             float height, SXRTexture t) {
         super(sxrContext, width, height, t);
     }

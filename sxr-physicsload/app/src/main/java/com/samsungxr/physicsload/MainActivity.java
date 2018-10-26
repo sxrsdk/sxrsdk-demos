@@ -24,11 +24,11 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.physics.SXRPhysicsLoader;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.physics.SXRWorld;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 
 import java.io.IOException;
 
@@ -77,7 +77,7 @@ public class MainActivity extends SXRActivity {
             mainScene.getMainCameraRig().setFarClippingDistance(100f);
             mainScene.getMainCameraRig().setNearClippingDistance(0.1f);
 
-            SXRSceneObject sunObj = new SXRCubeSceneObject(sxrContext);
+            SXRNode sunObj = new SXRCubeNode(sxrContext);
             sunObj.getTransform().setPosition(8f, 3.4f, 41.7f);
             sunObj.getTransform().setRotation(0.8683812142694567f, -0.3738122646181239f, -0.06100199997212902f, -0.32008938364834f);
             SXRDirectLight sun = new SXRDirectLight(sxrContext);
@@ -85,7 +85,7 @@ public class MainActivity extends SXRActivity {
             sun.setSpecularIntensity(1f, 1f, 1f, 1f);
             sunObj.attachComponent(sun);
 
-            SXRSceneObject sun1Obj = new SXRCubeSceneObject(sxrContext);
+            SXRNode sun1Obj = new SXRCubeNode(sxrContext);
             sun1Obj.getTransform().setPosition(-15f, -1.38f, -32f);
             sun1Obj.getTransform().setRotation(0.7071067811865476f, -0.7071067811865476f, 0.0f, 0.0f);
             SXRDirectLight sun1 = new SXRDirectLight(sxrContext);
@@ -103,10 +103,10 @@ public class MainActivity extends SXRActivity {
         }
 
         void loadAndAddCollider(SXRContext sxrContext, String fname) throws IOException {
-            SXRSceneObject model = sxrContext.getAssetLoader().loadModel(fname, sxrContext.getMainScene());
+            SXRNode model = sxrContext.getAssetLoader().loadModel(fname, sxrContext.getMainScene());
 
             // This approach works fine for simple objects exported as FBX
-            SXRSceneObject object = model.getChildByIndex(0).getChildByIndex(0);
+            SXRNode object = model.getChildByIndex(0).getChildByIndex(0);
             object.attachComponent(new SXRMeshCollider(object.getSXRContext(), true));
         }
 
@@ -150,44 +150,44 @@ public class MainActivity extends SXRActivity {
             // 'bodyA' and 'bodyB' will be linked by a Fixed constraint
             SXRMaterial redMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             redMat.setDiffuseColor(1f, 0f, 0f, 1f);
-            SXRSceneObject box1 = new SXRCubeSceneObject(sxrContext, true, redMat);
+            SXRNode box1 = new SXRCubeNode(sxrContext, true, redMat);
             box1.getTransform().setPosition(5f, 5f, 10f);
             box1.setName("bodyA");
             box1.attachComponent(new SXRMeshCollider(sxrContext, true));
-            mainScene.addSceneObject(box1);
+            mainScene.addNode(box1);
 
             SXRMaterial whiteMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             whiteMat.setDiffuseColor(1f, 1f, 1f, 1f);
-            SXRSceneObject box2 = new SXRCubeSceneObject(sxrContext, true, whiteMat);
+            SXRNode box2 = new SXRCubeNode(sxrContext, true, whiteMat);
             box2.getTransform().setPosition(5f, 10f, 10f);
             box2.setName("bodyB");
             box2.attachComponent(new SXRMeshCollider(sxrContext, true));
-            mainScene.addSceneObject(box2);
+            mainScene.addNode(box2);
 
             // 'bodyP' and 'bodyQ' will be linked by a Slider constraint
             SXRMaterial blueMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             blueMat.setDiffuseColor(0f, 0f, 1f, 1f);
-            SXRSceneObject box3 = new SXRCubeSceneObject(sxrContext, true, blueMat);
+            SXRNode box3 = new SXRCubeNode(sxrContext, true, blueMat);
             box3.getTransform().setPosition(-5f, 10f, 10f);
             box3.setName("bodyP");
             box3.attachComponent(new SXRMeshCollider(sxrContext, true));
-            mainScene.addSceneObject(box3);
+            mainScene.addNode(box3);
 
             SXRMaterial greenMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             greenMat.setDiffuseColor(0f, 1f, 0f, 1f);
-            SXRSceneObject box4 = new SXRCubeSceneObject(sxrContext, true, greenMat);
+            SXRNode box4 = new SXRCubeNode(sxrContext, true, greenMat);
             box4.getTransform().setPosition(-10f, 10f, 10f);
             box4.setName("bodyQ");
             box4.attachComponent(new SXRMeshCollider(sxrContext, true));
-            mainScene.addSceneObject(box4);
+            mainScene.addNode(box4);
 
             SXRMaterial yellowMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             yellowMat.setDiffuseColor(1f, 1f, 0f, 1f);
-            SXRSceneObject box5 = new SXRCubeSceneObject(sxrContext, true, yellowMat);
+            SXRNode box5 = new SXRCubeNode(sxrContext, true, yellowMat);
             box5.getTransform().setPosition(-4.5f, 5f, 10.5f);
             box5.setName("barrier");
             box5.attachComponent(new SXRMeshCollider(sxrContext, true));
-            mainScene.addSceneObject(box5);
+            mainScene.addNode(box5);
 
             // This bullet file was created from a bullet application to add fixed and slider
             // constraints that are not available on Blender
@@ -200,12 +200,12 @@ public class MainActivity extends SXRActivity {
             // This object will replace the "Plane" exported by Blender as the floor of this scene
             SXRMaterial orangeMat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
             orangeMat.setDiffuseColor(0.7f, 0.3f, 0f, 1f);
-            SXRSceneObject floor = new SXRSceneObject(sxrContext, 100f, 100f);
+            SXRNode floor = new SXRNode(sxrContext, 100f, 100f);
             floor.getTransform().setPosition(0f, -10f, 0f);
             floor.getTransform().setRotationByAxis(-90f, 1f, 0f, 0f);
             floor.getRenderData().setMaterial(orangeMat);
             floor.attachComponent(new SXRMeshCollider(sxrContext, floor.getRenderData().getMesh()));
-            mainScene.addSceneObject(floor);
+            mainScene.addNode(floor);
             SXRRigidBody floorRb = new SXRRigidBody(sxrContext, 0f);
             floor.attachComponent(floorRb);
         }

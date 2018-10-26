@@ -1,6 +1,6 @@
 package com.gearvrf.fasteater;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 /**
  * Created by b1.miller on 7/29/2016.
@@ -17,10 +17,10 @@ public class FlyingItem {
     private String name;
     private String assetFilename;
 
-    private SXRSceneObject object;
+    private SXRNode object;
     private ItemStatus currentStatus;
 
-    public FlyingItem(String name, SXRSceneObject object) {
+    public FlyingItem(String name, SXRNode object) {
         this.name = name;
         this.object = object;
         this.currentStatus = ItemStatus.HIDDEN;
@@ -34,11 +34,11 @@ public class FlyingItem {
         this.name = name;
     }
 
-    public SXRSceneObject getSceneObject() {
+    public SXRNode getNode() {
         return object;
     }
 
-    public void setSceneObject(SXRSceneObject object) {
+    public void setNode(SXRNode object) {
         this.object = object;
     }
 

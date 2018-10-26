@@ -16,9 +16,9 @@
 package com.samsungxr.controls.menu;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
-public abstract class MenuWindow extends SXRSceneObject {
+public abstract class MenuWindow extends SXRNode {
 
     public MenuWindow(SXRContext sxrContext) {
         super(sxrContext);

@@ -13,7 +13,7 @@ import com.samsungxr.SXRExternalTexture;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial.SXRShaderType;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +44,7 @@ public class Camera2RenderscriptManager extends SXRMain {
 		SXRExternalTexture passThroughTexture = new SXRExternalTexture(sxrContext);
 		mSurfaceTexture = new SurfaceTexture(passThroughTexture.getId());
 
-		SXRSceneObject passThroughObject = new SXRSceneObject(sxrContext, sxrContext.createQuad(3.0f, 1.5f), passThroughTexture,SXRShaderType.OES.ID);
+		SXRNode passThroughObject = new SXRNode(sxrContext, sxrContext.createQuad(3.0f, 1.5f), passThroughTexture,SXRShaderType.OES.ID);
 		passThroughObject.getTransform().setPositionY(-0.7f);
 		passThroughObject.getTransform().setPositionZ(-3.0f);
 		mainScene.getMainCameraRig().addChildObject(passThroughObject);
@@ -52,7 +52,7 @@ public class Camera2RenderscriptManager extends SXRMain {
 		SXRExternalTexture effectTexture = new SXRExternalTexture(sxrContext);
 		mEffectTexture = new SurfaceTexture(effectTexture.getId());
 
-		SXRSceneObject effectObject = new SXRSceneObject(sxrContext, sxrContext.createQuad(3.0f, 1.5f), effectTexture,SXRShaderType.OES.ID);
+		SXRNode effectObject = new SXRNode(sxrContext, sxrContext.createQuad(3.0f, 1.5f), effectTexture,SXRShaderType.OES.ID);
 		effectObject.getTransform().setPositionY(0.8f);
 		effectObject.getTransform().setPositionZ(-3.0f);
 

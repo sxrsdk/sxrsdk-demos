@@ -25,7 +25,7 @@ import com.samsungxr.keyboard.keyboard.model.KeyboardItemStyle;
 import com.samsungxr.keyboard.keyboard.model.KeyboardLine;
 import com.samsungxr.keyboard.keyboard.model.KeyboardSoftItem;
 import com.samsungxr.keyboard.model.KeyboardCharItem;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
 /**
  * @author Douglas
@@ -39,7 +39,7 @@ public class KeyboardAlphabetic extends KeyboardBase {
 
     public KeyboardAlphabetic(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.KEYBOARD_ALPHABETIC);
+        setName(NodeNames.KEYBOARD_ALPHABETIC);
 
         this.sxrContext = sxrContext;
 

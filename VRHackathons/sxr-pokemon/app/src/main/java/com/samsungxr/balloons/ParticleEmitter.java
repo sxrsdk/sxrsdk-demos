@@ -19,7 +19,7 @@ import android.util.Log;
 import com.samsungxr.SXRBehavior;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -53,7 +53,7 @@ public class ParticleEmitter extends SXRBehavior
 
     public interface MakeParticle
     {
-        SXRSceneObject create(SXRContext ctx, Integer index);
+        SXRNode create(SXRContext ctx, Integer index);
     }
 
     /**
@@ -125,7 +125,7 @@ public class ParticleEmitter extends SXRBehavior
     {
         synchronized (mActiveParticles)
         {
-            SXRSceneObject owner = particle.getOwnerObject();
+            SXRNode owner = particle.getOwnerObject();
             owner.setEnable(false);
             mActiveParticles.remove(particle);
             mFreeParticles.add(particle);
@@ -194,7 +194,7 @@ public class ParticleEmitter extends SXRBehavior
     protected void emit()
     {
         Particle particle = null;
-        SXRSceneObject sceneObj = null;
+        SXRNode sceneObj = null;
 
 
         String TAG = "xun";
@@ -233,7 +233,7 @@ public class ParticleEmitter extends SXRBehavior
         particle.setPosition(getNextPosition());
         mActiveParticles.add(particle);
         //Log.e(TAG, "particle added to mActiveParticles");
-        SXRSceneObject owner = particle.getOwnerObject();
+        SXRNode owner = particle.getOwnerObject();
         owner.setEnable(true);
     }
  }

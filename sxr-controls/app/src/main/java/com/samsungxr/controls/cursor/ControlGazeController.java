@@ -18,13 +18,13 @@ package com.samsungxr.controls.cursor;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.controls.R;
 
 public class ControlGazeController {
 
-    private static SXRSceneObject cursor;
-    private static SXRSceneObject highlightCursor;
+    private static SXRNode cursor;
+    private static SXRNode highlightCursor;
 
     private static float CURSOR_HIGH_OPACITY = 1.0f;
     private static float CURSOR_LOW_OPACITY = 0.0f;
@@ -37,7 +37,7 @@ public class ControlGazeController {
 
     public static void setupGazeCursor(SXRContext context) {
 
-        cursor = new SXRSceneObject(context,
+        cursor = new SXRNode(context,
                 context.createQuad(NORMAL_CURSOR_SIZE, NORMAL_CURSOR_SIZE),
                 context.getAssetLoader().loadTexture(new SXRAndroidResource(context,
                         R.drawable.cursor_idle)));
@@ -48,7 +48,7 @@ public class ControlGazeController {
         cursor.getRenderData().setRenderingOrder(CURSOR_RENDER_ORDER);
         context.getMainScene().getMainCameraRig().addChildObject(cursor);
 
-        highlightCursor = new SXRSceneObject(context,
+        highlightCursor = new SXRNode(context,
                 context.createQuad(HIGHLIGHT_CURSOR_SIZE, HIGHLIGHT_CURSOR_SIZE),
                 context.getAssetLoader().loadTexture(new SXRAndroidResource(context,
                         R.drawable.cursor_hover)));

@@ -24,7 +24,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
@@ -50,7 +50,7 @@ import com.samsungxr.controls.util.Util;
 
 import java.util.ArrayList;
 
-public class Apple extends SXRSceneObject {
+public class Apple extends SXRNode {
 
     // public final float ANIMATION_DURATION =
     // AnimationsTime.getDropTime();//2.5f;
@@ -79,7 +79,7 @@ public class Apple extends SXRSceneObject {
         star = new Star(sxrContext);
         shadow = new WormShadow(sxrContext, 0.27f, 0.27f, RenderingOrder.APPLE_SHADOW);
         shadow.getTransform().setScale(2, 2, 2);
-        sxrContext.getMainScene().addSceneObject(star);
+        sxrContext.getMainScene().addNode(star);
     }
 
     public void setAppleRenderData(SXRContext sxrContext) {
@@ -259,7 +259,7 @@ public class Apple extends SXRSceneObject {
             if (!appleList.contains(this)) {
                 addApple(this);
                 shadow.getTransform().setPosition((float) instanceApple.getX(), -0.9999f, (float) instanceApple.getZ());
-                getSXRContext().getMainScene().addSceneObject(shadow);
+                getSXRContext().getMainScene().addNode(shadow);
             }
         }
     }

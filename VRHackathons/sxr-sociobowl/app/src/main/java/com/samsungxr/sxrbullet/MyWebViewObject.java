@@ -11,7 +11,7 @@ import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRExternalTexture;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 
@@ -21,7 +21,7 @@ import com.samsungxr.SXRExternalTexture;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMaterial.SXRShaderType;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 import android.graphics.Canvas;
@@ -31,10 +31,10 @@ import android.view.Surface;
 import android.webkit.WebView;
 
 /**
- * {@linkplain SXRSceneObject Scene object} that shows a web page, using the
+ * {@linkplain SXRNode Scene object} that shows a web page, using the
  * Android {@link WebView}.
  */
-public class MyWebViewObject extends SXRSceneObject implements
+public class MyWebViewObject extends SXRNode implements
         SXRDrawFrameListener {
 
     private static final String TAG = "MyWebViewObject";
@@ -48,7 +48,7 @@ public class MyWebViewObject extends SXRSceneObject implements
     private final WebView mWebView;
 
     /**
-     * Shows a web page on a {@linkplain SXRSceneObject scene object} with an
+     * Shows a web page on a {@linkplain SXRNode scene object} with an
      * arbitrarily complex geometry.
      *
      * @param sxrContext
@@ -79,7 +79,7 @@ public class MyWebViewObject extends SXRSceneObject implements
     }
 
     /**
-     * Shows a web page in a 2D, rectangular {@linkplain SXRSceneObject scene
+     * Shows a web page in a 2D, rectangular {@linkplain SXRNode scene
      * object.}
      *
      * @param sxrContext

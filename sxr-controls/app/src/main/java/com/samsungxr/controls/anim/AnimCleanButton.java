@@ -40,13 +40,13 @@ import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.menu.MenuControlSceneObject;
+import com.samsungxr.controls.menu.MenuControlNode;
 import com.samsungxr.controls.shaders.ButtonShader;
 import com.samsungxr.controls.shaders.ColorSwapShader;
 import com.samsungxr.controls.util.RenderingOrder;
 import com.samsungxr.controls.util.Text;
 
-public class AnimCleanButton extends MenuControlSceneObject {
+public class AnimCleanButton extends MenuControlNode {
 
     private final int IDLE_STATE = 0;
     private final int HOVER_STATE = 1;

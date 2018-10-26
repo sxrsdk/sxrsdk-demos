@@ -10,12 +10,12 @@ import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRRenderTarget;
 import com.samsungxr.SXRRenderTexture;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderData;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSwitch;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
 import com.samsungxr.utility.Log;
 
 
@@ -29,7 +29,7 @@ public class TestMain extends SXRMain
     {
         mContext = context;
         SXRScene scene = context.getMainScene();
-        SXRCameraSceneObject cameraObject = null;
+        SXRCameraNode cameraObject = null;
 
         //
         // Create a camera scene object.
@@ -37,10 +37,10 @@ public class TestMain extends SXRMain
         //
         try
         {
-            cameraObject = new SXRCameraSceneObject(context, 3.6f, 2.0f);
+            cameraObject = new SXRCameraNode(context, 3.6f, 2.0f);
             cameraObject.setUpCameraForVrMode(1); // set up 60 fps camera preview.
         }
-        catch (SXRCameraSceneObject.SXRCameraAccessException e)
+        catch (SXRCameraNode.SXRCameraAccessException e)
         {
             // Cannot open camera
             Log.e("Test", "Cannot open the camera",e);
@@ -79,7 +79,7 @@ public class TestMain extends SXRMain
     public void createBlurTexture(SXRTexture texture, final SXRMaterial material)
     {
         SXRScene blurScene = new SXRScene(mContext);
-        SXRSceneObject blurryQuad = createBlurScene(blurScene, texture);
+        SXRNode blurryQuad = createBlurScene(blurScene, texture);
         blurScene.getMainCameraRig().addChildObject(blurryQuad);
         //
         // Set up a texture to render into and a SXRRenderTarget
@@ -97,9 +97,9 @@ public class TestMain extends SXRMain
      * of the input texture when rendered. This quad has two render passes, each of which
      * each of which performs a gaussian blur in a single direction.
      */
-    public SXRSceneObject createBlurScene(SXRScene scene, SXRTexture texture)
+    public SXRNode createBlurScene(SXRScene scene, SXRTexture texture)
     {
-        final SXRSceneObject blurryQuad = new SXRSceneObject(mContext, 2.0f, 2.0f, texture, SXRMaterial.SXRShaderType.OES.ID);
+        final SXRNode blurryQuad = new SXRNode(mContext, 2.0f, 2.0f, texture, SXRMaterial.SXRShaderType.OES.ID);
         SXRCamera camera = scene.getMainCameraRig().getCenterCamera();
 
         SXRMaterial horzBlurMtl = new SXRMaterial(mContext, new SXRShaderId(HorzBlurShader.class));
@@ -122,11 +122,11 @@ public class TestMain extends SXRMain
     //
     public SXRMaterial createDisplayScene(SXRScene scene, SXRTexture cameraTex)
     {
-        SXRSceneObject normalCamera = new SXRSceneObject(mContext, 3.6f, 2.0f, cameraTex, SXRMaterial.SXRShaderType.OES.ID);
+        SXRNode normalCamera = new SXRNode(mContext, 3.6f, 2.0f, cameraTex, SXRMaterial.SXRShaderType.OES.ID);
         SXRTexture tempTex = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.checker));
-        SXRSceneObject blurryCamera = new SXRSceneObject(mContext, 3.6f, 2.0f, tempTex);
+        SXRNode blurryCamera = new SXRNode(mContext, 3.6f, 2.0f, tempTex);
         final SXRMaterial blurryMtl = blurryCamera.getRenderData().getMaterial();
-        SXRSceneObject cameraRoot = new SXRSceneObject(mContext);
+        SXRNode cameraRoot = new SXRNode(mContext);
 
         blurryCamera.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
         normalCamera.getTransform().setPositionX(-2);

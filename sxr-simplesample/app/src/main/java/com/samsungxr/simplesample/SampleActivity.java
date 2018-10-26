@@ -23,7 +23,7 @@ import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 public class SampleActivity extends SXRActivity {
@@ -44,13 +44,13 @@ public class SampleActivity extends SXRActivity {
 
             // create a scene object (this constructor creates a rectangular scene
             // object that uses the standard texture shader
-            SXRSceneObject sceneObject = new SXRSceneObject(sxrContext, 4.0f, 2.0f, texture);
+            SXRNode sceneObject = new SXRNode(sxrContext, 4.0f, 2.0f, texture);
 
             // set the scene object position
             sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
 
             // add the scene object to the scene graph
-            scene.addSceneObject(sceneObject);
+            scene.addNode(sceneObject);
         }
     }
 }

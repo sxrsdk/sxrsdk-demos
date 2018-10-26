@@ -12,10 +12,10 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRExternalTexture;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
-public class SXRFPSCounter extends SXRSceneObject {
+public class SXRFPSCounter extends SXRNode {
     private static final int SIZE = 100;
     private final Activity mActivity;
     private Surface mSurface;

@@ -17,7 +17,7 @@ package com.samsungxr.controls.menu.motion;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRInterpolator;
@@ -27,7 +27,7 @@ import com.samsungxr.controls.anim.AnimationsTime;
 import com.samsungxr.controls.model.Apple;
 import com.samsungxr.controls.shaders.ColorSwapShader;
 
-public class MenuPreview extends SXRSceneObject {
+public class MenuPreview extends SXRNode {
 
     private final float APPLE_SCALE = 0.5f;
     private final float APPLE_INITIAL_POSITION_Y = 0.2f;

@@ -25,15 +25,15 @@ import com.samsungxr.io.SXRTouchPadGestureListener;
 
 import java.util.ArrayList;
 
-public class ControlSceneObjectBehavior {
+public class ControlNodeBehavior {
 
-    public static ArrayList<ControlSceneObject> interactiveObjects = new ArrayList<ControlSceneObject>();
+    public static ArrayList<ControlNode> interactiveObjects = new ArrayList<ControlNode>();
 
     public static void process(SXRContext context) {
 
         SXRPicker.SXRPickedObject[] pickedObjects = SXRPicker.pickObjects(context.getMainScene(), 0,0,0,0,0,-1);
-        ArrayList<ControlSceneObject> needToDisableFocus = new ArrayList<ControlSceneObject>();
-        for (ControlSceneObject obj : interactiveObjects) {
+        ArrayList<ControlNode> needToDisableFocus = new ArrayList<ControlNode>();
+        for (ControlNode obj : interactiveObjects) {
             obj.onStep();
             needToDisableFocus.add(obj);
         }
@@ -42,7 +42,7 @@ public class ControlSceneObjectBehavior {
             ControlGazeController.disableInteractiveCursor();
         } else {
             for (SXRPicker.SXRPickedObject po : pickedObjects) {
-                for (ControlSceneObject object : interactiveObjects) {
+                for (ControlNode object : interactiveObjects) {
                     if (po.getHitObject().equals(object)) {
                         object.setFocus(true);
                         needToDisableFocus.remove(object);
@@ -51,7 +51,7 @@ public class ControlSceneObjectBehavior {
             }
         }
 
-        for (ControlSceneObject obj : needToDisableFocus) {
+        for (ControlNode obj : needToDisableFocus) {
             obj.setFocus(false);
         }
 
@@ -60,7 +60,7 @@ public class ControlSceneObjectBehavior {
 
     private static void processTap(SXRContext context) {
 
-        for (ControlSceneObject object : interactiveObjects) {
+        for (ControlNode object : interactiveObjects) {
             if (object.hasFocus()) {
 
                 checkInput(object);
@@ -68,7 +68,7 @@ public class ControlSceneObjectBehavior {
         }
     }
 
-    private static void checkInput(ControlSceneObject object) {
+    private static void checkInput(ControlNode object) {
         if (TouchPadInput.getCurrent().buttonState.isSingleTap()) {
             object.singleTap();
 
@@ -77,7 +77,7 @@ public class ControlSceneObjectBehavior {
         handleGamePad(object);
     }
 
-    private static void handleGamePad(ControlSceneObject object) {
+    private static void handleGamePad(ControlNode object) {
         if (object.gamepadActionButtonslistener != null) {
             hadleGamepadPressed(object);
             hadleGamepadUp(object);
@@ -85,7 +85,7 @@ public class ControlSceneObjectBehavior {
         }
     }
 
-    private static void hadleGamepadDown(ControlSceneObject object) {
+    private static void hadleGamepadDown(ControlNode object) {
         if (GamepadInput.getKeyDown(GamepadMap.KEYCODE_BUTTON_A)) {
             object.gamepadActionButtonslistener.down(GamepadMap.KEYCODE_BUTTON_A);
         }
@@ -101,7 +101,7 @@ public class ControlSceneObjectBehavior {
 
     }
 
-    private static void hadleGamepadUp(ControlSceneObject object) {
+    private static void hadleGamepadUp(ControlNode object) {
         if (GamepadInput.getKeyUp(GamepadMap.KEYCODE_BUTTON_A)) {
             object.gamepadActionButtonslistener.up(GamepadMap.KEYCODE_BUTTON_A);
         }
@@ -117,7 +117,7 @@ public class ControlSceneObjectBehavior {
 
     }
 
-    private static void hadleGamepadPressed(ControlSceneObject object) {
+    private static void hadleGamepadPressed(ControlNode object) {
 
         if (GamepadInput.getKey(GamepadMap.KEYCODE_BUTTON_A)) {
             object.gamepadActionButtonslistener.pressed(GamepadMap.KEYCODE_BUTTON_A);
@@ -134,7 +134,7 @@ public class ControlSceneObjectBehavior {
 
     }
 
-    private static void handleTouchPad(ControlSceneObject object) {
+    private static void handleTouchPad(ControlNode object) {
         if (object.touchAndGesturelistener != null) {
 
             if (TouchPadInput.getCurrent().buttonState.isLongPressed()) {

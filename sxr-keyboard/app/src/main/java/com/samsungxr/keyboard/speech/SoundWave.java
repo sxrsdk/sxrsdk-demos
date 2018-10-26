@@ -19,20 +19,20 @@ import android.graphics.Color;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.mic.RecognitionRmsChangeListener;
 import com.samsungxr.keyboard.util.Constants;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.utility.Log;
 
 import java.util.ArrayList;
 
-public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeListener {
+public class SoundWave extends SXRNode implements RecognitionRmsChangeListener {
 
-    private SXRSceneObject[] boxes;
-    private ArrayList<SXRSceneObject> columns;
+    private SXRNode[] boxes;
+    private ArrayList<SXRNode> columns;
     private int currentBox = 0, currentColumn = 0;
     private float minRange, maxRange;
     private boolean canAnimate = false;
@@ -40,9 +40,9 @@ public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeLis
     public SoundWave(SXRContext sxrContext, int width, float minRange, float maxRange) {
 
         super(sxrContext);
-        setName(SceneObjectNames.SOUND_WAVE);
-        boxes = new SXRSceneObject[width * 5];
-        columns = new ArrayList<SXRSceneObject>();
+        setName(NodeNames.SOUND_WAVE);
+        boxes = new SXRNode[width * 5];
+        columns = new ArrayList<SXRNode>();
         this.minRange = minRange;
         this.maxRange = maxRange;
 
@@ -55,7 +55,7 @@ public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeLis
 
     private void createColumn(SXRContext context) {
 
-        SXRSceneObject column = new SXRSceneObject(context);
+        SXRNode column = new SXRNode(context);
         column.addChildObject(createBox(context, Color.argb(1, 230, 72, 50)));
         column.addChildObject(createBox(context, Color.argb(1, 209, 60, 43)));
         column.addChildObject(createBox(context, Color.argb(1, 186, 47, 35)));
@@ -76,9 +76,9 @@ public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeLis
         getTransform().setScale(waveSize, 0.5f, 0.5f);
     }
 
-    private SXRSceneObject createBox(SXRContext context, int color) {
+    private SXRNode createBox(SXRContext context, int color) {
 
-        SXRSceneObject box1 = new SXRSceneObject(
+        SXRNode box1 = new SXRNode(
                 context,
                 0.1f,
                 0.1f,
@@ -96,7 +96,7 @@ public class SoundWave extends SXRSceneObject implements RecognitionRmsChangeLis
     private void setColumn(float amplitude) {
 
         float valueBlock = (maxRange - minRange) / 5;
-        SXRSceneObject currentColumn = columns.get(0);
+        SXRNode currentColumn = columns.get(0);
 
         for (int i = 0; i < columns.size(); i++) {
 

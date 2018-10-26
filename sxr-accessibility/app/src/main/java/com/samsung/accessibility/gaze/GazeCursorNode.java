@@ -17,29 +17,29 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPerspectiveCamera;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderData.SXRRenderMaskBit;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import com.samsung.accessibility.R;
 
-public class GazeCursorSceneObject extends SXRSceneObject {
+public class GazeCursorNode extends SXRNode {
 
     private static final float NEAR_CLIPPING_OFFSET = 0.00001f;
     private static final float DEFAULT_NEAR_CLIPPING_DISTANCE = 0.1f;
     private static final float NORMAL_CURSOR_SIZE = 0.5f;
     private static final int CURSOR_RENDER_ORDER = 100000;
 
-    private SXRSceneObject rightCursor;
-    private SXRSceneObject leftCursor;
-    private static GazeCursorSceneObject sInstance;
+    private SXRNode rightCursor;
+    private SXRNode leftCursor;
+    private static GazeCursorNode sInstance;
 
-    public static GazeCursorSceneObject getInstance(SXRContext sxrContext) {
+    public static GazeCursorNode getInstance(SXRContext sxrContext) {
         if (sInstance == null) {
-            sInstance = new GazeCursorSceneObject(sxrContext);
+            sInstance = new GazeCursorNode(sxrContext);
         }
         return sInstance;
     }
 
-    private GazeCursorSceneObject(SXRContext sxrContext) {
+    private GazeCursorNode(SXRContext sxrContext) {
         super(sxrContext);
 
         float xRightCursor = sxrContext.getMainScene().getMainCameraRig().getRightCamera().getTransform().getPositionX();
@@ -59,13 +59,13 @@ public class GazeCursorSceneObject extends SXRSceneObject {
             zLeftCursor = -(DEFAULT_NEAR_CLIPPING_DISTANCE + NEAR_CLIPPING_OFFSET);
         }
 
-        rightCursor = new SXRSceneObject(sxrContext);
+        rightCursor = new SXRNode(sxrContext);
         rightCursor.attachRenderData(createRenderData(sxrContext));
         rightCursor.getRenderData().setRenderMask(SXRRenderMaskBit.Right);
         rightCursor.getTransform().setPosition(xRightCursor, 0, zRightCursor);
         addChildObject(rightCursor);
 
-        leftCursor = new SXRSceneObject(sxrContext);
+        leftCursor = new SXRNode(sxrContext);
         leftCursor.attachRenderData(createRenderData(sxrContext));
         leftCursor.getRenderData().setRenderMask(SXRRenderMaskBit.Left);
         leftCursor.getTransform().setPosition(xLeftCursor, 0, zLeftCursor);

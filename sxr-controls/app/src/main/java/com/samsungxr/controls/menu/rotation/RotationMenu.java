@@ -21,14 +21,14 @@ import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.Main;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.anim.AnimationsTime;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.focus.GamepadTouchImpl;
 import com.samsungxr.controls.focus.TouchAndGestureImpl;
 import com.samsungxr.controls.input.GamepadMap;
 import com.samsungxr.controls.menu.ItemSelectedListener;
 import com.samsungxr.controls.menu.MenuWindow;
-import com.samsungxr.controls.menu.RadioButtonSceneObject;
-import com.samsungxr.controls.menu.RadioGrupoSceneObject;
+import com.samsungxr.controls.menu.RadioButtonNode;
+import com.samsungxr.controls.menu.RadioGrupoNode;
 import com.samsungxr.controls.menu.TouchableButton;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class RotationMenu extends MenuWindow {
     private RotationGroup rotationGroup;
     private TouchableButton leftButton;
     private TouchableButton rightButton;
-    private RadioGrupoSceneObject radioGroup;
+    private RadioGrupoNode radioGroup;
 
     public RotationMenu(SXRContext sxrContext) {
         super(sxrContext);
@@ -63,14 +63,14 @@ public class RotationMenu extends MenuWindow {
 
     private void attachRadioGroup() {
 
-        radioGroup =  new RadioGrupoSceneObject(getSXRContext(), new ItemSelectedListener() {
+        radioGroup =  new RadioGrupoNode(getSXRContext(), new ItemSelectedListener() {
 
             @Override
-            public void selected(ControlSceneObject object) {
+            public void selected(ControlNode object) {
 
                 Main.enableAnimationStar();
 
-                RadioButtonSceneObject button = (RadioButtonSceneObject)object;
+                RadioButtonNode button = (RadioButtonNode)object;
                 AnimationsTime.setRotationTime(button.getSecond());
             }
 

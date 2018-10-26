@@ -11,14 +11,14 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.simplephysics.R;
 import com.samsungxr.physics.SXRCollisionMatrix;
 import com.samsungxr.physics.SXRRigidBody;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,8 +46,8 @@ public class MainHelper {
         collisionMatrix.enableCollision(COLLISION_GROUP_BALL, COLLISION_GROUP_CYLINDER);
     }
 
-    public static SXRSceneObject createPointLight(SXRContext context, float x, float y, float z) {
-        SXRSceneObject lightObject = new SXRSceneObject(context);
+    public static SXRNode createPointLight(SXRContext context, float x, float y, float z) {
+        SXRNode lightObject = new SXRNode(context);
         SXRPointLight light = new SXRPointLight(context);
 
        float ambientIntensity = 0.5f;
@@ -63,8 +63,8 @@ public class MainHelper {
         return lightObject;
     }
 
-   public static SXRSceneObject createDirectLight(SXRContext context, float x, float y, float z) {
-        SXRSceneObject lightObject = new SXRSceneObject(context);
+   public static SXRNode createDirectLight(SXRContext context, float x, float y, float z) {
+        SXRNode lightObject = new SXRNode(context);
         SXRDirectLight light = new SXRDirectLight(context);
 
         light.setCastShadow(true);
@@ -81,11 +81,11 @@ public class MainHelper {
         return lightObject;
     }
 
-    public static SXRSceneObject createGround(SXRContext context, float x, float y, float z) {
+    public static SXRNode createGround(SXRContext context, float x, float y, float z) {
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(context, R.drawable.orange));
         SXRMaterial material = new SXRMaterial(context, SXRMaterial.SXRShaderType.Phong.ID);
 
-        SXRSceneObject groundObject = new SXRCubeSceneObject(context, true, texture);
+        SXRNode groundObject = new SXRCubeNode(context, true, texture);
 
         groundObject.getRenderData().setMaterial(material);
         groundObject.getRenderData().getMaterial().setTexture("diffuseTexture", texture);
@@ -106,12 +106,12 @@ public class MainHelper {
         return groundObject;
     }
 
-    public static SXRSceneObject createCylinder(SXRContext context, float x, float y, float z,
+    public static SXRNode createCylinder(SXRContext context, float x, float y, float z,
                                                  int drawable) throws IOException {
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(context, drawable));
         SXRMaterial mtl = new SXRMaterial(context, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMesh mesh = context.getAssetLoader().loadMesh(new SXRAndroidResource(context, "cylinder.fbx"));
-        SXRSceneObject cylinderObject = new SXRSceneObject(context, mesh, mtl);
+        SXRNode cylinderObject = new SXRNode(context, mesh, mtl);
 
         cylinderObject.getTransform().setPosition(x, y, z);
         cylinderObject.getTransform().setRotationByAxis(90.0f, 1.0f, 0.0f, 0.0f);
@@ -130,10 +130,10 @@ public class MainHelper {
         return cylinderObject;
     }
 
-    public static SXRSceneObject createBall(SXRSceneObject ballProto, float x, float y, float z,
+    public static SXRNode createBall(SXRNode ballProto, float x, float y, float z,
                                             float[] force) throws IOException {
         SXRContext context = ballProto.getSXRContext();
-        SXRSceneObject ballGeometry = new SXRSceneObject(context, ballProto.getRenderData().getMesh(), ballProto.getRenderData().getMaterial());
+        SXRNode ballGeometry = new SXRNode(context, ballProto.getRenderData().getMesh(), ballProto.getRenderData().getMaterial());
         ballGeometry.getTransform().setScale(0.7f, 0.7f, 0.7f);
         ballGeometry.getTransform().setPosition(x, y, z);
 
@@ -149,10 +149,10 @@ public class MainHelper {
         return ballGeometry;
     }
 
-    public static SXRSceneObject createGaze(SXRContext context, float x, float y, float z) {
+    public static SXRNode createGaze(SXRContext context, float x, float y, float z) {
         SXRMesh mesh = new SXRMesh(context, "float3 a_position float2 a_texcoord");
         mesh.createQuad(0.1f, 0.1f);
-        SXRSceneObject gaze = new SXRSceneObject(context, mesh,
+        SXRNode gaze = new SXRNode(context, mesh,
                 context.getAssetLoader().loadTexture(new SXRAndroidResource(context, R.drawable.gaze)));
 
         gaze.getTransform().setPosition(x, y, z);
@@ -163,12 +163,12 @@ public class MainHelper {
         return gaze;
     }
 
-    public static SXRTextViewSceneObject createLabel(SXRContext context, float x, float y, float z) {
-        SXRTextViewSceneObject textObject = new SXRTextViewSceneObject(context, 5f, 2f, "00");
+    public static SXRTextViewNode createLabel(SXRContext context, float x, float y, float z) {
+        SXRTextViewNode textObject = new SXRTextViewNode(context, 5f, 2f, "00");
         textObject.setTextColor(Color.BLACK);
         textObject.setGravity(Gravity.CENTER);
         textObject.setTextSize(20);
-        textObject.setRefreshFrequency(SXRTextViewSceneObject.IntervalFrequency.LOW);
+        textObject.setRefreshFrequency(SXRTextViewNode.IntervalFrequency.LOW);
         textObject.getTransform().setPosition(x, y, z);
         return textObject;
     }

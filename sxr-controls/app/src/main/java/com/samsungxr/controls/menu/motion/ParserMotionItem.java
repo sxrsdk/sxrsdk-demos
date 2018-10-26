@@ -19,7 +19,7 @@ import android.content.res.TypedArray;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.controls.R;
-import com.samsungxr.controls.menu.MenuControlSceneObject;
+import com.samsungxr.controls.menu.MenuControlNode;
 import com.samsungxr.controls.model.Apple.Motion;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ParserMotionItem {
 
     public TypedArray grid;
     private Resources res;
-    private List<MenuControlSceneObject> listItens = new ArrayList<MenuControlSceneObject>();
+    private List<MenuControlNode> listItens = new ArrayList<MenuControlNode>();
 
     public ParserMotionItem(SXRContext sxrContext) {
 
@@ -46,8 +46,8 @@ public class ParserMotionItem {
         }
     }
 
-    public ArrayList<MenuControlSceneObject> getList(){
-        return (ArrayList<MenuControlSceneObject>) listItens;
+    public ArrayList<MenuControlNode> getList(){
+        return (ArrayList<MenuControlNode>) listItens;
     }
 
     public Motion getMotionForTitle(String title){

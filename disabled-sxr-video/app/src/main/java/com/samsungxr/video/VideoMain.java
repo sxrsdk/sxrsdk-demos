@@ -20,7 +20,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.video.focus.FocusableController;
 import com.samsungxr.video.movie.MovieManager;
 import com.samsungxr.video.movie.MovieTheater;
@@ -55,9 +55,9 @@ public class VideoMain extends SXRMain {
         // movie manager
         mMovieManager = new MovieManager(mSXRContext);
         // add all theaters to main scene
-        SXRSceneObject theaters[] = mMovieManager.getAllMovieTheater();
-        for (SXRSceneObject theater : theaters) {
-            mainScene.addSceneObject(theater);
+        SXRNode theaters[] = mMovieManager.getAllMovieTheater();
+        for (SXRNode theater : theaters) {
+            mainScene.addNode(theater);
             // hide all except active one
             if (theater != mMovieManager.getCurrentMovieTheater()) {
                 ((MovieTheater)theater).hideCinemaTheater();
@@ -66,7 +66,7 @@ public class VideoMain extends SXRMain {
 
         // video control
         mOverlayUI = new OverlayUI(sxrContext, mMovieManager, mainScene);
-        mainScene.addSceneObject(mOverlayUI);
+        mainScene.addNode(mOverlayUI);
         mOverlayUI.hide();
 
         mPicker = new SXRPicker(sxrContext, mainScene);

@@ -26,7 +26,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSphereCollider;
@@ -74,7 +74,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
     private SphereStaticList flagListCostructor;
     private SphereFlag lastSelectedSphereFlag;
     private TextField answer;
-    private SXRSceneObject question;
+    private SXRNode question;
     private Keyboard keyboard;
     private Mic mMic;
     private MainActivity mMainActivity;
@@ -98,7 +98,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
     {
         public SXRPicker.SXRPickedObject Picked;
 
-        public void onEnter(SXRSceneObject sceneObject, SXRPicker.SXRPickedObject pickInfo)
+        public void onEnter(SXRNode sceneObject, SXRPicker.SXRPickedObject pickInfo)
         {
             if (keyboard.isEnabled())
             {
@@ -111,7 +111,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
             }
         }
 
-        public void onExit(SXRSceneObject sceneObj) { }
+        public void onExit(SXRNode sceneObj) { }
 
         public void onNoPick(SXRPicker picker)
         {
@@ -125,7 +125,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
             Picked = picked[0];
         }
 
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
     }
 
     @Override
@@ -144,13 +144,13 @@ public class Main extends SXRMain implements KeyboardEventListener {
 
         AudioClip.getInstance(mSXRContext.getActivity());
 
-        SXRSceneObject floor = new SXRSceneObject(mSXRContext,
+        SXRNode floor = new SXRNode(mSXRContext,
                 mSXRContext.createQuad(120.0f, 120.0f),
                 mSXRContext.getAssetLoader().loadTexture(new SXRAndroidResource(mSXRContext, R.drawable.floor)));
 
         floor.getTransform().setRotationByAxis(-90, 1, 0, 0);
         floor.getTransform().setPositionY(-10.0f);
-        sxrContext.getMainScene().addSceneObject(floor);
+        sxrContext.getMainScene().addNode(floor);
         floor.getRenderData().setRenderingOrder(0);
 
         createSkybox();
@@ -175,7 +175,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
 
         SXRCameraRig cameraObject = sxrContext.getMainScene()
                 .getMainCameraRig();
-        for (SXRSceneObject spherePack : flagListCostructor.listFlag) {
+        for (SXRNode spherePack : flagListCostructor.listFlag) {
             spherePack.getRenderData().setMaterial(new SXRMaterial(sxrContext, new SXRShaderId(SphereShader.class)));
             rotateObject(spherePack, cameraObject.getTransform());
 
@@ -189,7 +189,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
                     .getTransform()
                     .setScale(1 / scaleFactor, 1 / scaleFactor, 1 / scaleFactor);
 
-            sxrContext.getMainScene().addSceneObject(spherePack);
+            sxrContext.getMainScene().addNode(spherePack);
         }
 
         sxrContext.getMainScene().getEventReceiver().addListener(mPickHandler);
@@ -201,7 +201,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
         spinner = new Spinner(mSXRContext, 0, Keyboard.NUMERIC_KEYBOARD);
         spinner.getTransform().setPositionZ(0.2f);
         spinner.getTransform().setPositionY(0.05f);
-        mSXRContext.getMainScene().addSceneObject(spinner);
+        mSXRContext.getMainScene().addNode(spinner);
         spinner.off();
     }
 
@@ -283,22 +283,22 @@ public class Main extends SXRMain implements KeyboardEventListener {
         mSXRContext.getMainScene().getMainCameraRig()
                 .getTransform().setPosition(-0f, Util.applyRatioAt(1.70), 0f);
 
-        SXRSceneObject mSpaceSceneObject = null;
+        SXRNode mSpaceNode = null;
         EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettings();
         try {
-            mSpaceSceneObject = mSXRContext.getAssetLoader().loadModel(new SXRAndroidResource(mSXRContext, R.raw.skybox_esphere), settings, false, mSXRContext.getMainScene());
+            mSpaceNode = mSXRContext.getAssetLoader().loadModel(new SXRAndroidResource(mSXRContext, R.raw.skybox_esphere), settings, false, mSXRContext.getMainScene());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mSXRContext.getMainScene().addSceneObject(mSpaceSceneObject);
-        List<SXRRenderData> rdatas = mSpaceSceneObject.getAllComponents(SXRRenderData.getComponentType());
+        mSXRContext.getMainScene().addNode(mSpaceNode);
+        List<SXRRenderData> rdatas = mSpaceNode.getAllComponents(SXRRenderData.getComponentType());
         SXRRenderData rdata = rdatas.get(0);
         rdata.setRenderingOrder(0);
     }
 
     private void addCursorPosition() {
 
-        SXRSceneObject headTracker = new SXRSceneObject(mSXRContext,
+        SXRNode headTracker = new SXRNode(mSXRContext,
                 mSXRContext.createQuad(0.5f, 0.5f), mSXRContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                 mSXRContext, R.drawable.head_tracker)));
 
@@ -311,7 +311,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
                 .addChildObject(headTracker);
     }
 
-    private void rotateObject(SXRSceneObject spherePack,
+    private void rotateObject(SXRNode spherePack,
                               SXRTransform cameraObject) {
         spherePack.getTransform().rotateByAxis(
                 Util.getZRotationAngle(spherePack, cameraObject), 0, 0, 1);
@@ -337,7 +337,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
         }
         if (picked != null)
         {
-            SXRSceneObject sceneObject = picked.getHitObject();
+            SXRNode sceneObject = picked.getHitObject();
             if ((lastSelectedSphereFlag == null ||
                     lastSelectedSphereFlag.answerState != SphereStaticList.ANSWERING))
             {
@@ -373,13 +373,13 @@ public class Main extends SXRMain implements KeyboardEventListener {
         }
     }
 
-    private void restoreObjectToItsDefaultPosition(SXRSceneObject object) {
+    private void restoreObjectToItsDefaultPosition(SXRNode object) {
         ((SphereFlag) object).stopFloatingSphere();
         ((SphereFlag) object).unspotSphere();
         ((SphereFlag) object).unsnapSphere(1.2f);
     }
 
-    private void moveObject(SXRSceneObject object, float [] hitLocation) {
+    private void moveObject(SXRNode object, float [] hitLocation) {
         ((SphereFlag) object.getChildByIndex(0))
                 .stopFloatingSphere();
         ((SphereFlag) (object.getChildByIndex(0))).snapSphere(hitLocation);
@@ -463,7 +463,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
     }
 
     private void removeQuestionChildren() {
-        List<SXRSceneObject> children = question.getChildren();
+        List<SXRNode> children = question.getChildren();
         final int size = children.size();
         for (int i = 0; i < size; i++) {
             question.removeChildObject(children.get(0));
@@ -509,7 +509,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
 
     public void animateSpheresBlurState(int on) {
 
-        for (SXRSceneObject sphereFlag : flagListCostructor.listFlag) {
+        for (SXRNode sphereFlag : flagListCostructor.listFlag) {
             if (lastSelectedSphereFlag != null
                     && !lastSelectedSphereFlag.equals(sphereFlag.getChildByIndex(0))) {
                 new SXRShaderAnimation(sphereFlag.getChildByIndex(0),
@@ -521,9 +521,9 @@ public class Main extends SXRMain implements KeyboardEventListener {
         }
     }
 
-    public void animateSpheresBlurState(int on, SXRSceneObject lastIntem2) {
+    public void animateSpheresBlurState(int on, SXRNode lastIntem2) {
 
-        for (SXRSceneObject sphereFlag : flagListCostructor.listFlag) {
+        for (SXRNode sphereFlag : flagListCostructor.listFlag) {
 
             if (lastIntem2 != null
                     && !lastIntem2.equals(sphereFlag.getChildByIndex(0))) {
@@ -533,8 +533,8 @@ public class Main extends SXRMain implements KeyboardEventListener {
     }
 
     private void createAndAttachAllEyePointee() {
-        for (SXRSceneObject object : mSXRContext.getMainScene()
-                .getWholeSceneObjects()) {
+        for (SXRNode object : mSXRContext.getMainScene()
+                .getWholeNodes()) {
             if (object instanceof SphereFlag) {
 
                 ((SphereFlag) object).animateFloating();
@@ -544,7 +544,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
         }
     }
 
-    private void attachDefaultEyePointee(SXRSceneObject sceneObject) {
+    private void attachDefaultEyePointee(SXRNode sceneObject) {
         sceneObject.attachComponent(new SXRSphereCollider(getSXRContext()));
     }
 
@@ -558,7 +558,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
     public void createAnswer() {
         answer = new TextField(mSXRContext, this);
         answer.setSpinner(spinner);
-        final SXRSceneObject parent = spinner.getParent();
+        final SXRNode parent = spinner.getParent();
         if (null != parent) {
             parent.removeChildObject(spinner);
         }
@@ -566,7 +566,7 @@ public class Main extends SXRMain implements KeyboardEventListener {
     }
 
     public void createQuestion() {
-        question = new SXRSceneObject(mSXRContext);
+        question = new SXRNode(mSXRContext);
     }
 
     @Override

@@ -23,7 +23,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.resonanceaudio.SXRAudioManager;
 import com.samsungxr.resonanceaudio.SXRAudioSource;
@@ -55,7 +55,7 @@ public final class SpatialAudioActivity extends SXRActivity
     private static final class SpatialAudioMain extends SXRMain
     {
         private static final String SOUND_FILE = "cube_sound.wav";
-        SXRSceneObject r2d2Model;
+        SXRNode r2d2Model;
         private float modelY = -1.5f;
         private SXRAudioManager audioListener;
         private float time = 0f;
@@ -69,7 +69,7 @@ public final class SpatialAudioActivity extends SXRActivity
             r2d2Model = sxrContext.getAssetLoader().loadModel("R2D2/R2D2.dae");
             r2d2Model.getTransform().setPosition(distance * (float)Math.sin(time), modelY,
                     distance * (float)Math.cos(time));
-            scene.addSceneObject(r2d2Model);
+            scene.addNode(r2d2Model);
 
             final SXRAudioSource audioSource = new SXRAudioSource(sxrContext);
             audioListener.addSource(audioSource);
@@ -77,12 +77,12 @@ public final class SpatialAudioActivity extends SXRActivity
 
             // add a floor
             final SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.floor));
-            SXRSceneObject floor = new SXRSceneObject(sxrContext, 120.0f, 120.0f, texture);
+            SXRNode floor = new SXRNode(sxrContext, 120.0f, 120.0f, texture);
 
             floor.getTransform().setRotationByAxis(-90, 1, 0, 0);
             floor.getTransform().setPositionY(-1.5f);
             floor.getRenderData().setRenderingOrder(0);
-            scene.addSceneObject(floor);
+            scene.addNode(floor);
 
             // Avoid any delays during start-up due to decoding of sound files.
             Threads.spawn(

@@ -20,7 +20,7 @@ import android.view.MotionEvent;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXRRelativeMotionAnimation;
@@ -39,7 +39,7 @@ import com.samsungxr.controls.util.RenderingOrder;
 import com.samsungxr.controls.util.Util;
 import com.samsungxr.io.SXRTouchPadGestureListener;
 
-public class Worm extends SXRSceneObject {
+public class Worm extends SXRNode {
 
     private static final float SHADOW_END_OFFSET = 0.801f;
     private static final float SHADOW_MIDDLE_OFFSET = 0.8f;
@@ -57,7 +57,7 @@ public class Worm extends SXRSceneObject {
     private float DISTANCE_TO_EAT_APPLE = 0.50f;
     private WormBasePart head, middle, end;
 
-    public SXRSceneObject wormParent;
+    public SXRNode wormParent;
     private boolean isRotatingWorm = false;
 
     private SXRAnimation wormParentAnimation;
@@ -88,7 +88,7 @@ public class Worm extends SXRSceneObject {
         createWormParts(color);
     }
 
-    public SXRSceneObject getWormParentation() {
+    public SXRNode getWormParentation() {
         return wormParent;
     }
 
@@ -100,7 +100,7 @@ public class Worm extends SXRSceneObject {
 
     private void createWormParts(Color color) {
 
-        wormParent = new SXRSceneObject(getSXRContext());
+        wormParent = new SXRNode(getSXRContext());
         addChildObject(wormParent);
 
         head = new WormBasePart(getSXRContext(), R.raw.sphere_head, R.drawable.worm_head_texture, color);
@@ -374,15 +374,15 @@ public class Worm extends SXRSceneObject {
         }
     }
 
-    public SXRSceneObject getHead() {
+    public SXRNode getHead() {
         return head;
     }
 
-    public SXRSceneObject getMiddle() {
+    public SXRNode getMiddle() {
         return middle;
     }
 
-    public SXRSceneObject getEnd() {
+    public SXRNode getEnd() {
         return end;
     }
 
@@ -405,7 +405,7 @@ public class Worm extends SXRSceneObject {
         scaleWormPart(getEnd(), scaleFactor);
     }
 
-    private void moveWormPart(SXRSceneObject part, float scaleFactor) {
+    private void moveWormPart(SXRNode part, float scaleFactor) {
 
         float currentScale = part.getTransform().getScaleX();
         float ratio = (currentScale + scaleFactor) / currentScale;
@@ -418,7 +418,7 @@ public class Worm extends SXRSceneObject {
                 .getAnimationEngine());
     }
 
-    private void scaleWormPart(SXRSceneObject part, float scaleFactor) {
+    private void scaleWormPart(SXRNode part, float scaleFactor) {
 
         new SXRScaleAnimation(part, 0.1f, part.getTransform().getScaleX()
                 + scaleFactor)

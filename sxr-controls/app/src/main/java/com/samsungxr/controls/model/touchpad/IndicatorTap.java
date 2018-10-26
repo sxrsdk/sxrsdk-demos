@@ -16,14 +16,14 @@
 package com.samsungxr.controls.model.touchpad;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class IndicatorTap extends SXRSceneObject {
+public class IndicatorTap extends SXRNode {
 
     private static final float TIME_ANIMATION = 0.1f;
     static final float SCALE_OBJECT = 0.3f;

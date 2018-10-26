@@ -11,7 +11,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShader;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.io.SXRControllerType;
@@ -20,8 +20,8 @@ import com.samsungxr.io.SXRInputManager;
 import com.samsungxr.io.SXRTouchPadGestureListener;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.physics.SXRWorld;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.simplephysics.R;
 import com.samsungxr.simplephysics.entity.Countdown;
 import com.samsungxr.simplephysics.util.MathUtils;
@@ -30,7 +30,7 @@ import org.joml.Vector3f;
 
 import java.io.IOException;
 
-public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisitor {
+public class MainScript extends SXRMain implements SXRNode.ComponentVisitor {
 
     private final int MAX_BALLS = 40;
     private int SCORE_OFFSET = -50;
@@ -40,14 +40,14 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     private int mScore = 0;
     private int mNumBalls = 0;
     private int mNumCylinders = 0;
-    private SXRTextViewSceneObject mScoreLabel;
-    private SXRTextViewSceneObject mBallsLabel;
-    private SXRTextViewSceneObject mEndGameLabel;
+    private SXRTextViewNode mScoreLabel;
+    private SXRTextViewNode mBallsLabel;
+    private SXRTextViewNode mEndGameLabel;
     private Countdown mCountDown;
     private SXRCursorController mController;
-    private SXRSceneObject mCursor;
-    private SXRSceneObject mBallProto;
-    private SXRSceneObject mCurrentBall = null;
+    private SXRNode mCursor;
+    private SXRNode mBallProto;
+    private SXRNode mCurrentBall = null;
 
 
     private SXRCursorController.IControllerEvent mControllerThrowHandler = new SXRCursorController.IControllerEvent()
@@ -86,7 +86,7 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
                 mTempDir.mul(1000000.0f / dt);
                 rigidBody.applyCentralForce(mTempDir.x, mTempDir.y, mTempDir.z * 4.0f);
                 rigidBody.setEnable(true);
-                mScene.addSceneObject(mCurrentBall);
+                mScene.addNode(mCurrentBall);
                 mCurrentBall = null;
             }
         }
@@ -131,7 +131,7 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
         mCamera.getTransform().setPosition(0.0f, 6.0f, 20f);
 
         mCursor = MainHelper.createGaze(sxrContext, 0.0f, 0.0f, 0.0f);
-        mBallProto = new SXRSphereSceneObject(sxrContext, true, new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID));
+        mBallProto = new SXRSphereNode(sxrContext, true, new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID));
 
         initScene(sxrContext, mScene);
         initLabels(sxrContext, mScene);
@@ -152,10 +152,10 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     }
 
     private void addTimer(SXRContext context, SXRScene scene) {
-        SXRTextViewSceneObject label = MainHelper.createLabel(context, 6f, 9f, -5f);
+        SXRTextViewNode label = MainHelper.createLabel(context, 6f, 9f, -5f);
         mCountDown = new Countdown(label);
 
-        scene.addSceneObject(label);
+        scene.addNode(label);
 
         mCountDown.start(context);
     }
@@ -168,8 +168,8 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
         mScoreLabel.setText("Score: 0");
         mBallsLabel.setText("Balls: " + MAX_BALLS );
 
-        scene.addSceneObject(mScoreLabel);
-        scene.addSceneObject(mBallsLabel);
+        scene.addNode(mScoreLabel);
+        scene.addNode(mBallsLabel);
 
         addTimer(context, scene);
     }
@@ -179,19 +179,19 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     }
 
     private static void addLights(SXRContext context, SXRScene scene) {
-        SXRSceneObject centerLight = MainHelper.createDirectLight(context, 0.0f, 10.0f, 2.0f);
-        SXRSceneObject leftPointLight = MainHelper.createPointLight(context, -10.0f, 5.0f, 20.0f);
-        SXRSceneObject rightPointLight = MainHelper.createPointLight(context, 10.0f, 5.0f, 20.0f);
+        SXRNode centerLight = MainHelper.createDirectLight(context, 0.0f, 10.0f, 2.0f);
+        SXRNode leftPointLight = MainHelper.createPointLight(context, -10.0f, 5.0f, 20.0f);
+        SXRNode rightPointLight = MainHelper.createPointLight(context, 10.0f, 5.0f, 20.0f);
 
         centerLight.getTransform().rotateByAxis(-90, 1, 0, 0);
 
-        scene.addSceneObject(centerLight);
-        scene.addSceneObject(leftPointLight);
-        scene.addSceneObject(rightPointLight);
+        scene.addNode(centerLight);
+        scene.addNode(leftPointLight);
+        scene.addNode(rightPointLight);
     }
 
     private static void addGround(SXRContext context, SXRScene scene) {
-        scene.addSceneObject(MainHelper.createGround(context, 0.0f, 0.0f, 0.0f));
+        scene.addNode(MainHelper.createGround(context, 0.0f, 0.0f, 0.0f));
     }
 
     private void addCylinderGroup(SXRContext context, SXRScene scene) {
@@ -220,7 +220,7 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
 
     private static void addCylinder(SXRContext context, SXRScene scene, float x, float y, float z,
                                     int drawable) throws IOException {
-        scene.addSceneObject(MainHelper.createCylinder(context, x, y, z, drawable));
+        scene.addNode(MainHelper.createCylinder(context, x, y, z, drawable));
     }
 
     @Override
@@ -235,12 +235,12 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
 
         try {
             SXRTransform trans = mCamera.getTransform();
-            SXRSceneObject ball = MainHelper.createBall(mBallProto,
+            SXRNode ball = MainHelper.createBall(mBallProto,
                     5 * forward[0] + trans.getPositionX(),
                     5 * forward[1] + trans.getPositionY(),
                     5 * forward[2] + trans.getPositionZ(), force);
 
-            mScene.addSceneObject(ball);
+            mScene.addNode(ball);
             mNumBalls++;
 
             mBallsLabel.setText("Balls: " + (MAX_BALLS - mNumBalls));
@@ -250,11 +250,11 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     }
 
 
-    private SXRSceneObject newBall()
+    private SXRNode newBall()
     {
         try
         {
-            SXRSceneObject ball = MainHelper.createBall(mBallProto,
+            SXRNode ball = MainHelper.createBall(mBallProto,
                    0,0,0, new float[] { 0, 0, 0 });
             mNumBalls++;
             mBallsLabel.setText("Balls: " + (MAX_BALLS - mNumBalls));
@@ -283,14 +283,14 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
 
             // Show finished message.
             if (mScore == mNumCylinders) {
-                mEndGameLabel = new SXRTextViewSceneObject(getSXRContext(),
+                mEndGameLabel = new SXRTextViewNode(getSXRContext(),
                         18, 4f, "Congratulations, you won!");
             } else if (mCountDown.isFinished()){
 
-                mEndGameLabel = new SXRTextViewSceneObject(getSXRContext(),
+                mEndGameLabel = new SXRTextViewNode(getSXRContext(),
                         18, 4f, "Time out! Try again.");
             } else {
-                mEndGameLabel = new SXRTextViewSceneObject(getSXRContext(),
+                mEndGameLabel = new SXRTextViewNode(getSXRContext(),
                         18, 4f, "No shots left! Try again.");
             }
 
@@ -300,7 +300,7 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
             mEndGameLabel.setGravity(Gravity.CENTER);
             mEndGameLabel.getTransform().setPosition(0f, 9f, -4f);
 
-            mScene.addSceneObject(mEndGameLabel);
+            mScene.addNode(mEndGameLabel);
         } else {
             // Score
             mScene.getRoot().forAllComponents(this, SXRRigidBody.getComponentType());
@@ -311,7 +311,7 @@ public class MainScript extends SXRMain implements SXRSceneObject.ComponentVisit
     @Override
     public boolean visit(SXRComponent sxrComponent) {
         if (sxrComponent.getTransform().getPositionY() < SCORE_OFFSET) {
-            mScene.removeSceneObject(sxrComponent.getOwnerObject());
+            mScene.removeNode(sxrComponent.getOwnerObject());
             doScore((SXRRigidBody) sxrComponent);
         }
 

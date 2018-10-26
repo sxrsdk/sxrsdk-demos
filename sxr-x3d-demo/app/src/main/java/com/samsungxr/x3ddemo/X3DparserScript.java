@@ -23,7 +23,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScreenshot3DCallback;
 import com.samsungxr.SXRScreenshotCallback;
 import com.samsungxr.SXRShader;
@@ -66,7 +66,7 @@ public class X3DparserScript extends SXRMain
     scene = sxrContext.getMainScene();
     scene.setBackgroundColor(0, 0, 0, 1);
 
-    SXRSceneObject model = new SXRSceneObject(mSXRContext);
+    SXRNode model = new SXRNode(mSXRContext);
     // X3D test files should be in the assets directory.
     // Replace 'filename' to view another .x3d file
     String filename = SystemPropertyUtil.getSystemPropertyString("debug.gearvrf.sxr-x3d-demo");
@@ -86,7 +86,7 @@ public class X3DparserScript extends SXRMain
         List<SXRLight> lights = model.getAllComponents(SXRLight.getComponentType());
         for (SXRLight l : lights)
         {
-          SXRSceneObject owner = l.getOwnerObject();
+          SXRNode owner = l.getOwnerObject();
           owner.getParent().removeChildObject(owner);
         }
       }

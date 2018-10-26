@@ -42,11 +42,11 @@ import com.google.android.exoplayer2.util.Util;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRExternalTexture;
 import com.samsungxr.SXRMeshCollider;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject.SXRVideoType;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNode.SXRVideoType;
 import com.samsungxr.videoplayer.VideoPlayerApp;
 import com.samsungxr.videoplayer.component.FadeableObject;
 import com.samsungxr.videoplayer.component.video.DefaultExoPlayer;
@@ -75,9 +75,9 @@ public class Player extends FadeableObject {
     private OnPlayerListener mOnVideoPlayerListener;
     private ProgressHandler mProgressHandler = new ProgressHandler();
     private boolean mIsPlaying;
-    private SXRVideoSceneObject mVideo;
-    private SXRVideoSceneObject mFlatVideo;
-    private SXRVideoSceneObject m360Video;
+    private SXRVideoNode mVideo;
+    private SXRVideoNode mFlatVideo;
+    private SXRVideoNode m360Video;
 
     public Player(final SXRContext sxrContext) {
         super(sxrContext);
@@ -92,10 +92,10 @@ public class Player extends FadeableObject {
         };
 
         createDashFactories();
-        createVideoSceneObject();
+        createVideoNode();
     }
 
-    private void createVideoSceneObject() {
+    private void createVideoNode() {
         SXRExternalTexture texture = new SXRExternalTexture(mGvrContext);
         SurfaceTexture surfaceTexture = new SurfaceTexture(texture.getId());
         Surface surface = new Surface(surfaceTexture);
@@ -103,14 +103,14 @@ public class Player extends FadeableObject {
         mMediaPlayer = new DefaultExoPlayer(ExoPlayerFactory.newSimpleInstance(mGvrContext.getContext(), new DefaultTrackSelector()));
         mMediaPlayer.getPlayer().addListener(mPlayerListener);
 
-        mFlatVideo = new SXRVideoSceneObject(mGvrContext, mGvrContext.createQuad(1, .6f), mMediaPlayer, texture, SXRVideoType.MONO);
+        mFlatVideo = new SXRVideoNode(mGvrContext, mGvrContext.createQuad(1, .6f), mMediaPlayer, texture, SXRVideoType.MONO);
         mFlatVideo.attachCollider(new SXRMeshCollider(getSXRContext(), true));
         mFlatVideo.getTransform().setScale(10, 10, 1);
         mFlatVideo.getTransform().setPositionZ(-8.1f);
         addChildObject(mFlatVideo);
 
-        SXRSphereSceneObject sphere = new SXRSphereSceneObject(mGvrContext, 72, 144, false);
-        m360Video = new SXRVideoSceneObject(mGvrContext, sphere.getRenderData().getMesh(), mMediaPlayer, texture, SXRVideoType.MONO);
+        SXRSphereNode sphere = new SXRSphereNode(mGvrContext, 72, 144, false);
+        m360Video = new SXRVideoNode(mGvrContext, sphere.getRenderData().getMesh(), mMediaPlayer, texture, SXRVideoType.MONO);
         m360Video.getTransform().setScale(100f, 100f, 100f);
         addChildObject(m360Video);
 
@@ -297,7 +297,7 @@ public class Player extends FadeableObject {
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mVideo;
     }
 

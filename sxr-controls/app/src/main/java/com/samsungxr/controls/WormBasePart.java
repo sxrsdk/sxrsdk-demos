@@ -18,7 +18,7 @@ package com.samsungxr.controls;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.anim.AnimationsTime;
@@ -27,12 +27,12 @@ import com.samsungxr.controls.shaders.ColorSwapShader;
 import com.samsungxr.controls.util.ColorControls.Color;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class WormBasePart extends SXRSceneObject {
+public class WormBasePart extends SXRNode {
 
     private Color color;
     private final float WORM_INITIAL_Z = -3;
     private final float WORM_INITIAL_Y = -0.83f;
-    private SXRSceneObject segment;
+    private SXRNode segment;
 
     public WormBasePart(SXRContext sxrContext, int meshResId, int textureResId, Color color) {
         super(sxrContext);
@@ -54,7 +54,7 @@ public class WormBasePart extends SXRSceneObject {
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(sxrContext, textureResId));
 
-        segment = new SXRSceneObject(sxrContext, mesh, texture, new SXRShaderId(ColorSwapShader.class));
+        segment = new SXRNode(sxrContext, mesh, texture, new SXRShaderId(ColorSwapShader.class));
 
         segment.getRenderData().setRenderingOrder(RenderingOrder.WORM);
 
@@ -62,7 +62,7 @@ public class WormBasePart extends SXRSceneObject {
         addChildObject(segment);
     }
 
-    private void applyShader(SXRContext sxrContext, SXRSceneObject wormPiece, Color color) {
+    private void applyShader(SXRContext sxrContext, SXRNode wormPiece, Color color) {
 
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                 R.drawable.wormy_diffuse_light));

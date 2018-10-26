@@ -2,7 +2,7 @@ package com.samsungxr.balloons;
 
 import com.samsungxr.SXRBehavior;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.utility.Log;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -28,7 +28,7 @@ class Particle extends SXRBehavior
 
     public void setPosition(Vector3f pos)
     {
-        SXRSceneObject owner = getOwnerObject();
+        SXRNode owner = getOwnerObject();
         Distance = 0;
         mCurPos.x = mStartPos.x = pos.x;
         mCurPos.y = mStartPos.y = pos.y;
@@ -46,7 +46,7 @@ class Particle extends SXRBehavior
         return mCurPos;
     }
     
-    public void onAttach(SXRSceneObject owner)
+    public void onAttach(SXRNode owner)
     {
         super.onAttach(owner);
         getPosition();
@@ -57,7 +57,7 @@ class Particle extends SXRBehavior
     
     public void move(float time)
     {
-        SXRSceneObject owner = getOwnerObject();
+        SXRNode owner = getOwnerObject();
         
         if (owner == null)
         {

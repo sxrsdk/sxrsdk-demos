@@ -18,7 +18,7 @@ package com.samsungxr.controls.menu;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
@@ -28,7 +28,7 @@ import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class MenuFrame extends SXRSceneObject {
+public class MenuFrame extends SXRNode {
 
     private static final float ANIMATION_TIME = 0.4f;
     private static final float ANIMATION_FRAME_RESIZE = .8f;
@@ -37,7 +37,7 @@ public class MenuFrame extends SXRSceneObject {
     private static final float FRAME_EXPAND_SCALE_X = 160f;
     private static final float PIVOT_OFFSET_Y = .8f;
 
-    private SXRSceneObject mMenuFrame;
+    private SXRNode mMenuFrame;
     public static boolean isOpen = false;
 
     private SXRScaleAnimation scaleCollapse;
@@ -45,18 +45,18 @@ public class MenuFrame extends SXRSceneObject {
     private SXRScaleAnimation scaleExpand;
     private SXRRelativeMotionAnimation rmExpand;
 
-    private SXRSceneObject pivot = null;
+    private SXRNode pivot = null;
 
     public MenuFrame(SXRContext sxrContext) {
         super(sxrContext);
 
-        pivot = new SXRSceneObject(sxrContext);
+        pivot = new SXRNode(sxrContext);
         pivot.getTransform().setPosition(0, PIVOT_OFFSET_Y,FRAME_POSITION_Z);
 
         SXRMesh mesh = getSXRContext().createQuad(3.57f, 0.01f);
         SXRTexture texture = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(this.getSXRContext(), R.drawable.background_frame));
 
-        mMenuFrame = new SXRSceneObject(getSXRContext(), mesh, texture);
+        mMenuFrame = new SXRNode(getSXRContext(), mesh, texture);
         mMenuFrame.getRenderData().getMaterial().setOpacity(0);
         mMenuFrame.getRenderData().setRenderingOrder(RenderingOrder.MENU_FRAME_BG);
 

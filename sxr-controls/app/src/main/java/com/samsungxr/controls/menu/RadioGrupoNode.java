@@ -16,32 +16,32 @@
 package com.samsungxr.controls.menu;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.controls.focus.GamepadTouchImpl;
 import com.samsungxr.controls.focus.TouchAndGestureImpl;
 import com.samsungxr.controls.input.GamepadMap;
 
-public class RadioGrupoSceneObject extends SXRSceneObject {
+public class RadioGrupoNode extends SXRNode {
 
     private static final float SPACE_BETWEEN_BUTTONS = 0.5f;
-    private RadioButtonSceneObject button1;
-    private RadioButtonSceneObject button2;
-    private RadioButtonSceneObject button3;
-    private RadioButtonSceneObject buttonSelected;
+    private RadioButtonNode button1;
+    private RadioButtonNode button2;
+    private RadioButtonNode button3;
+    private RadioButtonNode buttonSelected;
 
     private ItemSelectedListener mItemSelectedListener;
 
-    public RadioGrupoSceneObject(SXRContext sxrContext, ItemSelectedListener mItemSelectedListener,
+    public RadioGrupoNode(SXRContext sxrContext, ItemSelectedListener mItemSelectedListener,
                                  float time1, float time2, float time3) {
         super(sxrContext);
 
         this.mItemSelectedListener = mItemSelectedListener;
 
-        button1 = new RadioButtonSceneObject(sxrContext, time1 >= 1 ? (int) time1 + "s" : time1
+        button1 = new RadioButtonNode(sxrContext, time1 >= 1 ? (int) time1 + "s" : time1
                 + "s", time1);
-        button2 = new RadioButtonSceneObject(sxrContext, time2 >= 1 ? (int) time2 + "s" : time2
+        button2 = new RadioButtonNode(sxrContext, time2 >= 1 ? (int) time2 + "s" : time2
                 + "s", time2);
-        button3 = new RadioButtonSceneObject(sxrContext, time3 >= 1 ? (int) time3 + "s" : time3
+        button3 = new RadioButtonNode(sxrContext, time3 >= 1 ? (int) time3 + "s" : time3
                 + "s", time3);
 
         buttonSelected = button1;
@@ -76,7 +76,7 @@ public class RadioGrupoSceneObject extends SXRSceneObject {
         }
     }
 
-    private void handlerEvents(final RadioButtonSceneObject button) {
+    private void handlerEvents(final RadioButtonNode button) {
 
         button.setTouchAndGesturelistener(new TouchAndGestureImpl() {
 
@@ -131,11 +131,11 @@ public class RadioGrupoSceneObject extends SXRSceneObject {
         addChildObject(button3);
     }
 
-    private void setNewPosition(RadioButtonSceneObject button, Position position) {
+    private void setNewPosition(RadioButtonNode button, Position position) {
         button.getTransform().setPosition(position.x, position.y, position.z);
     }
 
-    private void handleUISelection(RadioButtonSceneObject object) {
+    private void handleUISelection(RadioButtonNode object) {
 
         if (buttonSelected != null) {
 

@@ -15,7 +15,7 @@ import android.media.AudioManager;
 import android.util.Log;
 
 import com.samsung.accessibility.R;
-import com.samsung.accessibility.focus.FocusableSceneObject;
+import com.samsung.accessibility.focus.FocusableNode;
 import com.samsung.accessibility.focus.OnClickListener;
 import com.samsung.accessibility.focus.OnFocusListener;
 import com.samsung.accessibility.main.Main;
@@ -29,19 +29,19 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.accessibility.SXRAccessibilitySpeech;
 
-public class ShortcutMenuItem extends FocusableSceneObject {
+public class ShortcutMenuItem extends FocusableNode {
     private static final String TAG = ShortcutMenuItem.class.getSimpleName();
     private SXRContext sxrContext;
     private static final int IN_FOCUS_COLOR = 8570046;
     private static final int LOST_FOCUS_COLOR = 6186095;
     private static final int CLICKED_COLOR = 12631476;
     private boolean clicked;
-    private SXRSceneObject icon;
+    private SXRNode icon;
     private SXRTexture iconTexture;
     private TypeItem typeItem;
     private AccessibilityTexture textures;
@@ -73,7 +73,7 @@ public class ShortcutMenuItem extends FocusableSceneObject {
         setOnFocusListener(new OnFocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
                 if (clicked)
                     object.getRenderData().getMaterial().setColor(CLICKED_COLOR);
                 else
@@ -82,13 +82,13 @@ public class ShortcutMenuItem extends FocusableSceneObject {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
                 if (clicked)
                     object.getRenderData().getMaterial().setColor(CLICKED_COLOR);
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
                 if (typeItem != TypeItem.EMPTY)
                     object.getRenderData().getMaterial().setColor(IN_FOCUS_COLOR);
             }
@@ -100,7 +100,7 @@ public class ShortcutMenuItem extends FocusableSceneObject {
             removeIcon();
         }
         iconTexture = iconMenu;
-        icon = new SXRSceneObject(sxrContext, sxrContext.createQuad(.60f, .20f), iconMenu);
+        icon = new SXRNode(sxrContext, sxrContext.createQuad(.60f, .20f), iconMenu);
         icon.getTransform().setPosition(-0f, 0.02f, -0.7f);
         icon.getTransform().rotateByAxis(-90, 1, 0, 0);
         icon.getTransform().rotateByAxisWithPivot(245, 0, 1, 0, 0, 0, 0);
@@ -183,8 +183,8 @@ public class ShortcutMenuItem extends FocusableSceneObject {
 
         main.setScene(accessibilityScene.getMainApplicationScene());
         createIcon(textures.getAccessibilityIcon(), TypeItem.ACCESSIBILITY);
-        accessibilityScene.removeSceneObject(accessibilityScene.getShortcutMenu());
-        accessibilityScene.getMainApplicationScene().addSceneObject(accessibilityScene.getShortcutMenu());
+        accessibilityScene.removeNode(accessibilityScene.getShortcutMenu());
+        accessibilityScene.getMainApplicationScene().addNode(accessibilityScene.getShortcutMenu());
     }
 
     private void accessibility() {
@@ -235,7 +235,7 @@ public class ShortcutMenuItem extends FocusableSceneObject {
         removeChildObject(icon);
     }
 
-    public SXRSceneObject getIcon() {
+    public SXRNode getIcon() {
         return icon;
     }
 

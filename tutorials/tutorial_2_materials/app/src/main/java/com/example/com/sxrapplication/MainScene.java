@@ -6,32 +6,32 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRPhongShader;
 import com.samsungxr.SXRPointLight;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 
 /**
  * The Main Scene of the App
  */
 public class MainScene extends SXRMain {
 
-    SXRCubeSceneObject mCube;
-    SXRSphereSceneObject mSphere;
+    SXRCubeNode mCube;
+    SXRSphereNode mSphere;
 
 
     @Override
     public void onInit(SXRContext sxrContext) throws Throwable {
 
         //Create Sphere
-        mSphere = new SXRSphereSceneObject(sxrContext);
+        mSphere = new SXRSphereNode(sxrContext);
         mSphere.getTransform().setPosition(1, 0, -3);
-        sxrContext.getMainScene().addSceneObject(mSphere);
+        sxrContext.getMainScene().addNode(mSphere);
 
         //Create Cube
-        mCube = new SXRCubeSceneObject(sxrContext);
+        mCube = new SXRCubeNode(sxrContext);
         mCube.getTransform().setPosition(-1, 0, -3);
-        sxrContext.getMainScene().addSceneObject(mCube);
+        sxrContext.getMainScene().addNode(mCube);
 
         /*******************
          * Assign solid color to Sphere
@@ -61,11 +61,11 @@ public class MainScene extends SXRMain {
         pointLight = new SXRPointLight(sxrContext);
         pointLight.setDiffuseIntensity(0.9f, 0.7f, 0.7f, 1.0f);
 
-        SXRSceneObject lightNode = new SXRSceneObject(sxrContext);
+        SXRNode lightNode = new SXRNode(sxrContext);
         lightNode.getTransform().setPosition(0,0,0);
         lightNode.attachLight(pointLight);
 
-        sxrContext.getMainScene().addSceneObject(lightNode);
+        sxrContext.getMainScene().addNode(lightNode);
     }
 
     @Override

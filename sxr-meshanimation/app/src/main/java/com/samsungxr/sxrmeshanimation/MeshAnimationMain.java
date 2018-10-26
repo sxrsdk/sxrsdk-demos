@@ -10,14 +10,14 @@ import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRRepeatMode;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import android.util.Log;
 
 public class MeshAnimationMain extends SXRMain {
 
     private SXRContext mSXRContext;
-    private SXRSceneObject mCharacter;
+    private SXRNode mCharacter;
 
     private final String mModelPath = "TRex_NoGround.fbx";
 

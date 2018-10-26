@@ -20,15 +20,15 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShader;
 import com.samsungxr.SXRSwitch;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRConeSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRConeNode;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRCylinderNode;
+import com.samsungxr.nodes.SXRSphereNode;
 
 import android.util.Log;
 
@@ -53,7 +53,7 @@ public class SampleMain extends SXRMain {
          */
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.headtrackingpointer));
-        SXRSceneObject headTracker = new SXRSceneObject(sxrContext, 0.1f, 0.1f, texture);
+        SXRNode headTracker = new SXRNode(sxrContext, 0.1f, 0.1f, texture);
         headTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
         headTracker.getRenderData().setDepthTest(false);
         headTracker.getRenderData().setRenderingOrder(100000);
@@ -63,23 +63,23 @@ public class SampleMain extends SXRMain {
          */
         if (!SXRShader.isVulkanInstance())
         {
-            SXRSceneObject lightObj = new SXRSceneObject(sxrContext);
+            SXRNode lightObj = new SXRNode(sxrContext);
             SXRDirectLight light = new SXRDirectLight(sxrContext);
 
             lightObj.getTransform().setPositionZ(2.0f);
             lightObj.attachComponent(light);
-            scene.addSceneObject(lightObj);
+            scene.addNode(lightObj);
         }
         /*
          * Add a root node with four geometric shapes as children
          */
         SXRMaterial red = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMaterial blue = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject root = new SXRSceneObject(sxrContext);
-        SXRCubeSceneObject cube = new SXRCubeSceneObject(sxrContext, true, red);
-        SXRSphereSceneObject sphere = new SXRSphereSceneObject(sxrContext, true, blue);
-        SXRCylinderSceneObject cylinder = new SXRCylinderSceneObject(sxrContext, true, red);
-        SXRConeSceneObject cone = new SXRConeSceneObject(sxrContext, true, blue);
+        SXRNode root = new SXRNode(sxrContext);
+        SXRCubeNode cube = new SXRCubeNode(sxrContext, true, red);
+        SXRSphereNode sphere = new SXRSphereNode(sxrContext, true, blue);
+        SXRCylinderNode cylinder = new SXRCylinderNode(sxrContext, true, red);
+        SXRConeNode cone = new SXRConeNode(sxrContext, true, blue);
         
         mMaxIndex = 3;
         red.setDiffuseColor(1,  0,  0, 1);
@@ -95,7 +95,7 @@ public class SampleMain extends SXRMain {
         root.getTransform().setPositionZ(-5.0f);
         mSwitchNode = new SXRSwitch(sxrContext);
         root.attachComponent(mSwitchNode);
-        scene.addSceneObject(root);
+        scene.addNode(root);
     }
 
 

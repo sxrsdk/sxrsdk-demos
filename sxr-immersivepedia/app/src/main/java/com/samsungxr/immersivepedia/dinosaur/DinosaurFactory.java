@@ -21,7 +21,7 @@ import com.samsungxr.SXRImportSettings;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.immersivepedia.R;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 
 import java.util.EnumSet;
 
@@ -72,34 +72,34 @@ public class DinosaurFactory {
 
     private Dinosaur createDinosauros(int dinoMeshId, int dinoTextureId, int baseMeshId, int groundMeshId) {
 
-        FocusableSceneObject dino = createDinosaur(dinoMeshId, dinoTextureId);
+        FocusableNode dino = createDinosaur(dinoMeshId, dinoTextureId);
 
-        FocusableSceneObject base = createDinosaurBase(baseMeshId);
-        FocusableSceneObject ground = createDinosaurGround(groundMeshId);
+        FocusableNode base = createDinosaurBase(baseMeshId);
+        FocusableNode ground = createDinosaurGround(groundMeshId);
 
         return new Dinosaur(sxrContext, dino, base, ground);
     }
 
-    private FocusableSceneObject createDinosaur(int dinoMeshId, int dinoTextureId) {
+    private FocusableNode createDinosaur(int dinoMeshId, int dinoTextureId) {
         SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, dinoMeshId), settings);
         SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, dinoTextureId));
-        final FocusableSceneObject dino = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
+        final FocusableNode dino = new FocusableNode(sxrContext, baseMesh, baseTexture);
 
         return dino;
     }
 
-    private FocusableSceneObject createDinosaurBase(int baseMeshId) {
+    private FocusableNode createDinosaurBase(int baseMeshId) {
         SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, baseMeshId), settings);
         SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.base_tex_diffuse));
-        FocusableSceneObject dinosaurBase = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
+        FocusableNode dinosaurBase = new FocusableNode(sxrContext, baseMesh, baseTexture);
         return dinosaurBase;
     }
 
-    private FocusableSceneObject createDinosaurGround(int groundMesh) {
+    private FocusableNode createDinosaurGround(int groundMesh) {
 
         SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, groundMesh), settings);
         SXRTexture groundTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.ground_tex_diffuse));
-        final FocusableSceneObject dinosaurGround = new FocusableSceneObject(sxrContext, mesh, groundTexture);
+        final FocusableNode dinosaurGround = new FocusableNode(sxrContext, mesh, groundTexture);
 
         return dinosaurGround;
     }

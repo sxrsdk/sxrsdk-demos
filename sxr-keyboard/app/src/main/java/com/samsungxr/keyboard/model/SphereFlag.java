@@ -24,7 +24,7 @@ import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
@@ -39,11 +39,11 @@ import com.samsungxr.keyboard.interpolator.InterpolatorExpoEaseOut;
 import com.samsungxr.keyboard.shader.SXRShaderAnimation;
 import com.samsungxr.keyboard.shader.SphereShader;
 import com.samsungxr.keyboard.util.Constants;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.keyboard.util.Util;
 import com.samsungxr.utility.Log;
 
-public class SphereFlag extends SXRSceneObject {
+public class SphereFlag extends SXRNode {
 
     private final float CURSOR_POSITION_OFFSET_Y = 2f;
     private String mCountryName;
@@ -69,7 +69,7 @@ public class SphereFlag extends SXRSceneObject {
 
     public SphereFlag(SXRContext sxrContext, TypedArray sphere) {
         super(sxrContext);
-        setName(SceneObjectNames.SPHERE_FLAG);
+        setName(NodeNames.SPHERE_FLAG);
 
         this.sxrContext = sxrContext;
 

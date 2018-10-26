@@ -22,7 +22,7 @@ import java.util.List;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.animation.SXRAnimation;
@@ -38,10 +38,10 @@ public class SolarViewManager extends SXRScript {
 
     private SXRAnimationEngine mAnimationEngine;
 
-    private SXRSceneObject asyncSceneObject(SXRContext context,
+    private SXRNode asyncNode(SXRContext context,
             SXRAndroidResource meshResource, String textureName)
             throws IOException {
-        return new SXRSceneObject(context, meshResource,
+        return new SXRNode(context, meshResource,
                 new SXRAndroidResource(context, textureName));
     }
 
@@ -70,70 +70,70 @@ public class SolarViewManager extends SXRScript {
         mainScene.getMainCameraRig().getTransform()
                 .setPosition(0.0f, 0.0f, 0.0f);
 
-        SXRSceneObject solarSystemObject = new SXRSceneObject(sxrContext);
-        mainScene.addSceneObject(solarSystemObject);
+        SXRNode solarSystemObject = new SXRNode(sxrContext);
+        mainScene.addNode(solarSystemObject);
 
-        SXRSceneObject sunRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode sunRotationObject = new SXRNode(sxrContext);
         solarSystemObject.addChildObject(sunRotationObject);
 
         SXRAndroidResource meshResource = new SXRAndroidResource(sxrContext,
                 "sphere.obj");
 
-        SXRSceneObject sunMeshObject = asyncSceneObject(sxrContext,
+        SXRNode sunMeshObject = asyncNode(sxrContext,
                 meshResource, "sunmap.astc");
         sunMeshObject.getTransform().setPosition(0.0f, 0.0f, 0.0f);
         sunMeshObject.getTransform().setScale(10.0f, 10.0f, 10.0f);
         sunRotationObject.addChildObject(sunMeshObject);
 
-        SXRSceneObject mercuryRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode mercuryRevolutionObject = new SXRNode(sxrContext);
         mercuryRevolutionObject.getTransform().setPosition(14.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(mercuryRevolutionObject);
 
-        SXRSceneObject mercuryRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode mercuryRotationObject = new SXRNode(sxrContext);
         mercuryRevolutionObject.addChildObject(mercuryRotationObject);
 
-        SXRSceneObject mercuryMeshObject = asyncSceneObject(sxrContext,
+        SXRNode mercuryMeshObject = asyncNode(sxrContext,
                 meshResource, "mercurymap.jpg");
         mercuryMeshObject.getTransform().setScale(0.3f, 0.3f, 0.3f);
         mercuryRotationObject.addChildObject(mercuryMeshObject);
 
-        SXRSceneObject venusRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode venusRevolutionObject = new SXRNode(sxrContext);
         venusRevolutionObject.getTransform().setPosition(17.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(venusRevolutionObject);
 
-        SXRSceneObject venusRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode venusRotationObject = new SXRNode(sxrContext);
         venusRevolutionObject.addChildObject(venusRotationObject);
 
-        SXRSceneObject venusMeshObject = asyncSceneObject(sxrContext,
+        SXRNode venusMeshObject = asyncNode(sxrContext,
                 meshResource, "venusmap.jpg");
         venusMeshObject.getTransform().setScale(0.8f, 0.8f, 0.8f);
         venusRotationObject.addChildObject(venusMeshObject);
 
-        SXRSceneObject earthRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode earthRevolutionObject = new SXRNode(sxrContext);
         earthRevolutionObject.getTransform().setPosition(22.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(earthRevolutionObject);
 
-        SXRSceneObject earthRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode earthRotationObject = new SXRNode(sxrContext);
         earthRevolutionObject.addChildObject(earthRotationObject);
 
-        SXRSceneObject earthMeshObject = asyncSceneObject(sxrContext,
+        SXRNode earthMeshObject = asyncNode(sxrContext,
                 meshResource, "earthmap1k.jpg");
         earthMeshObject.getTransform().setScale(1.0f, 1.0f, 1.0f);
         earthRotationObject.addChildObject(earthMeshObject);
 
-        SXRSceneObject moonRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode moonRevolutionObject = new SXRNode(sxrContext);
         moonRevolutionObject.getTransform().setPosition(4.0f, 0.0f, 0.0f);
         earthRevolutionObject.addChildObject(moonRevolutionObject);
         moonRevolutionObject.addChildObject(mainScene.getMainCameraRig());
 
-        SXRSceneObject marsRevolutionObject = new SXRSceneObject(sxrContext);
+        SXRNode marsRevolutionObject = new SXRNode(sxrContext);
         marsRevolutionObject.getTransform().setPosition(30.0f, 0.0f, 0.0f);
         solarSystemObject.addChildObject(marsRevolutionObject);
 
-        SXRSceneObject marsRotationObject = new SXRSceneObject(sxrContext);
+        SXRNode marsRotationObject = new SXRNode(sxrContext);
         marsRevolutionObject.addChildObject(marsRotationObject);
 
-        SXRSceneObject marsMeshObject = asyncSceneObject(sxrContext,
+        SXRNode marsMeshObject = asyncNode(sxrContext,
                 meshResource, "mars_1k_color.jpg");
         marsMeshObject.getTransform().setScale(0.6f, 0.6f, 0.6f);
         marsRotationObject.addChildObject(marsMeshObject);
@@ -169,14 +169,14 @@ public class SolarViewManager extends SXRScript {
         mAnimations.add(animation);
     }
 
-    private void counterClockwise(SXRSceneObject object, float duration) {
+    private void counterClockwise(SXRNode object, float duration) {
         setup(new SXRRotationByAxisWithPivotAnimation( //
                 object, duration, 360.0f, //
                 0.0f, 1.0f, 0.0f, //
                 0.0f, 0.0f, 0.0f));
     }
 
-    private void clockwise(SXRSceneObject object, float duration) {
+    private void clockwise(SXRNode object, float duration) {
         setup(new SXRRotationByAxisWithPivotAnimation( //
                 object, duration, -360.0f, //
                 0.0f, 1.0f, 0.0f, //

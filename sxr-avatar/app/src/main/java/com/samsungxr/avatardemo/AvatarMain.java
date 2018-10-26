@@ -13,7 +13,7 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRAvatar;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRSkeleton;
 import com.samsungxr.animation.keyframe.SXRSkeletonAnimation;
@@ -50,7 +50,7 @@ public class AvatarMain extends SXRMain
     private SXRAvatar.IAvatarEvents mAvatarListener = new SXRAvatar.IAvatarEvents()
     {
         @Override
-        public void onAvatarLoaded(final SXRSceneObject avatarRoot, String filePath, String errors)
+        public void onAvatarLoaded(final SXRNode avatarRoot, String filePath, String errors)
         {
             if (avatarRoot.getParent() == null)
             {
@@ -59,7 +59,7 @@ public class AvatarMain extends SXRMain
                     public void run()
                     {
                         mAvatar.centerModel(avatarRoot);
-                        mScene.addSceneObject(avatarRoot);
+                        mScene.addNode(avatarRoot);
                     }
                 });
             }
@@ -86,7 +86,7 @@ public class AvatarMain extends SXRMain
             }
         }
 
-        public void onModelLoaded(final SXRSceneObject avatarRoot, String filePath, String errors) { }
+        public void onModelLoaded(final SXRNode avatarRoot, String filePath, String errors) { }
 
         public void onAnimationFinished(SXRAnimator animator, SXRAnimation animation) { }
 
@@ -101,11 +101,11 @@ public class AvatarMain extends SXRMain
         mScene = sxrContext.getMainScene();
         SXRCameraRig rig = mScene.getMainCameraRig();
         SXRDirectLight topLight = new SXRDirectLight(sxrContext);
-        SXRSceneObject topLightObj = new SXRSceneObject(sxrContext);
+        SXRNode topLightObj = new SXRNode(sxrContext);
 
         topLightObj.attachComponent(topLight);
         topLightObj.getTransform().rotateByAxis(-90, 1, 0, 0);
-        mScene.addSceneObject(topLightObj);
+        mScene.addNode(topLightObj);
         rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
         rig.getRightCamera().setBackgroundColor(Color.LTGRAY);
         rig.getOwnerObject().attachComponent(new SXRDirectLight(mContext));

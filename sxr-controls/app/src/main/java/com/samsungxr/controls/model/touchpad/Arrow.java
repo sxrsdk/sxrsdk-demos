@@ -16,7 +16,7 @@
 package com.samsungxr.controls.model.touchpad;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
@@ -24,7 +24,7 @@ import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class Arrow extends SXRSceneObject {
+public class Arrow extends SXRNode {
 
     public static final float UP = 270;
     public static final float DOWN = 90;

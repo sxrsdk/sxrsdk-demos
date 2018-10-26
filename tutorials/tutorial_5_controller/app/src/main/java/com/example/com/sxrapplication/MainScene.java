@@ -9,7 +9,7 @@ import com.samsungxr.SXRCursorController;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.io.CursorControllerListener;
 import com.samsungxr.io.SXRControllerType;
@@ -29,7 +29,7 @@ public class MainScene extends SXRMain {
     //Listener for add/removal of a controller
     private CursorControllerListener listener = new CursorControllerListener() {
 
-        private SXRSceneObject cursor;
+        private SXRNode cursor;
         private ArrayList<SXRCursorController> controllerList = new ArrayList<SXRCursorController>();
 
         @Override
@@ -39,7 +39,7 @@ public class MainScene extends SXRMain {
             if (controller.getControllerType() == SXRControllerType.GAZE) {
 
                 //Add controller cursor
-                cursor = new SXRSceneObject(mContext,
+                cursor = new SXRNode(mContext,
                         mContext.createQuad(0.1f, 0.1f),
                         mContext.getAssetLoader().loadTexture(new SXRAndroidResource(mContext, R.raw.cursor))
                 );
@@ -81,11 +81,11 @@ public class MainScene extends SXRMain {
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.__default_splash_screen__));
 
         //Create a rectangle with the texture we just loaded
-        SXRSceneObject quad = new SXRSceneObject(sxrContext, 4, 2, texture);
+        SXRNode quad = new SXRNode(sxrContext, 4, 2, texture);
         quad.getTransform().setPosition(0, 0, -3);
 
         //Add rectangle to the scene
-        sxrContext.getMainScene().addSceneObject(quad);
+        sxrContext.getMainScene().addNode(quad);
 
         //Listen controller events
         SXRInputManager input = sxrContext.getInputManager();

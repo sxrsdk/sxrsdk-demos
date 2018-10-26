@@ -5,14 +5,14 @@ import android.view.Gravity;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.SXRNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 public class Banner {
-    SXRTextViewSceneObject message;
+    SXRTextViewNode message;
 
     public Banner(SXRContext context, String text, int size, int color, float posX, float posY, float posZ) {
-        message = new SXRTextViewSceneObject(context, text);
+        message = new SXRTextViewNode(context, text);
         message.setGravity(Gravity.CENTER);
         message.setTextSize(size);
         message.setTextColor(color);
@@ -20,7 +20,7 @@ public class Banner {
         message.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
     }
 
-    public SXRTextViewSceneObject getBanner() {
+    public SXRTextViewNode getBanner() {
         return message;
     }
 }

@@ -17,7 +17,7 @@ package com.samsungxr.controls.animation;
 
 import com.samsungxr.SXRHybridObject;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRMaterialAnimation;
 import com.samsungxr.controls.shaders.ColorSwapShader;
 import com.samsungxr.utility.Colors;
@@ -66,13 +66,13 @@ public class SXRColorSwapAnimation extends SXRMaterialAnimation {
      * Animate the {@linkplain SXRMaterial#setColor(float, float, float) overlay
      * color.}
      * 
-     * @param target {@link SXRSceneObject} containing a {@link SXRMaterial} to
+     * @param target {@link SXRNode} containing a {@link SXRMaterial} to
      *            animate
      * @param duration The animation duration, in seconds.
      * @param rgb A float[3] array, containing rgb values in GL format, from 0
      *            to 1
      */
-    public SXRColorSwapAnimation(SXRSceneObject target, float duration, float[] rgb) {
+    public SXRColorSwapAnimation(SXRNode target, float duration, float[] rgb) {
         this(getMaterial(target), duration, rgb);
     }
 
@@ -80,12 +80,12 @@ public class SXRColorSwapAnimation extends SXRMaterialAnimation {
      * Animate the {@linkplain SXRMaterial#setColor(float, float, float) overlay
      * color.}
      * 
-     * @param target {@link SXRSceneObject} containing a {@link SXRMaterial} to
+     * @param target {@link SXRNode} containing a {@link SXRMaterial} to
      *            animate
      * @param duration The animation duration, in seconds.
      * @param color An Android {@link Color} value
      */
-    public SXRColorSwapAnimation(SXRSceneObject target, float duration, int color) {
+    public SXRColorSwapAnimation(SXRNode target, float duration, int color) {
         this(target, duration, Colors.toColors(color));
     }
 

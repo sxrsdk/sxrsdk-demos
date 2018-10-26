@@ -17,24 +17,24 @@ package com.samsungxr.video.focus;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
-public class FocusableSceneObject extends SXRSceneObject {
+public class FocusableNode extends SXRNode {
 
     private FocusListener focusListener = null;
     private OnClickListener onClickListener = null;
     private boolean focus = false;
 
-    public FocusableSceneObject(SXRContext context) {
+    public FocusableNode(SXRContext context) {
         super(context);
     }
 
-    public FocusableSceneObject(SXRContext context, SXRMesh mesh, SXRTexture texture) {
+    public FocusableNode(SXRContext context, SXRMesh mesh, SXRTexture texture) {
         super(context, mesh, texture);
     }
 
-    public FocusableSceneObject(SXRContext context, float width, float height, SXRTexture texture) {
+    public FocusableNode(SXRContext context, float width, float height, SXRTexture texture) {
         super(context, width, height, texture);
     }
 

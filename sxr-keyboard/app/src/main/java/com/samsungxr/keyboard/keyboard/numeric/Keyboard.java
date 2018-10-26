@@ -20,7 +20,7 @@ import android.view.MotionEvent;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.keyboard.model.KeyboardBase;
@@ -30,12 +30,12 @@ import com.samsungxr.keyboard.keyboard.model.KeyboardLine;
 import com.samsungxr.keyboard.model.AudioClip;
 import com.samsungxr.keyboard.model.Dashboard;
 import com.samsungxr.keyboard.model.KeyboardCharItem;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
 /**
  * @author Douglas and SIDIA VR TEAM
  */
-public class Keyboard extends SXRSceneObject {
+public class Keyboard extends SXRNode {
 
     public static final int SOFT_KEYBOARD_UPPERCASE = 0;
     public static final int SOFT_KEYBOARD_LOWERCASE = 1;
@@ -54,7 +54,7 @@ public class Keyboard extends SXRSceneObject {
 
     private static final float ANIMATION_TOTAL_TIME = 2.6f;
 
-    private SXRSceneObject currentSelection;
+    private SXRNode currentSelection;
     private boolean isEnabled = false;
     private KeyboardBase keyboard;
     private KeyboardAlphabetic keyboardAlphabetic;
@@ -70,7 +70,7 @@ public class Keyboard extends SXRSceneObject {
 
     public Keyboard(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.KEYBOARD);
+        setName(NodeNames.KEYBOARD);
         keyboardAlphabetic = new KeyboardAlphabetic(getSXRContext());
         numericKeyboard = new NumericKeyboard(getSXRContext());
         androidResources = this.getSXRContext().getContext().getApplicationContext().getResources();
@@ -185,7 +185,7 @@ public class Keyboard extends SXRSceneObject {
 
         isEnabled = true;
 
-        getSXRContext().getMainScene().addSceneObject(this);
+        getSXRContext().getMainScene().addNode(this);
 
         for (KeyboardLine item : keyboard.getListKeyboardLine()) {
 
@@ -207,17 +207,17 @@ public class Keyboard extends SXRSceneObject {
 
         isEnabled = false;
 
-        getSXRContext().getMainScene().removeSceneObject(this);
+        getSXRContext().getMainScene().removeNode(this);
         configureKeyboardRemoveParentation();
     }
 
-    public void setHoverMaterial(SXRSceneObject obj) {
+    public void setHoverMaterial(SXRNode obj) {
 
         KeyboardItemBase t = (KeyboardItemBase) obj;
         t.setHoverMaterial();
     }
 
-    public void setNormalMaterial(SXRSceneObject obj) {
+    public void setNormalMaterial(SXRNode obj) {
 
         KeyboardItemBase t = (KeyboardItemBase) obj;
         t.setNormalMaterial();
@@ -227,13 +227,13 @@ public class Keyboard extends SXRSceneObject {
         tapKeyboard();
     }
 
-    public void update(SXRSceneObject sceneObject) {
+    public void update(SXRNode sceneObject) {
         changeTexture(sceneObject);
     }
 
     boolean test = true;
 
-    private void changeTexture(SXRSceneObject sceneObject) {
+    private void changeTexture(SXRNode sceneObject) {
 
         if (currentSelection != null) {
             setNormalMaterial(currentSelection);
@@ -296,14 +296,14 @@ public class Keyboard extends SXRSceneObject {
 
     private void changeToLowercase() {
         mode = SOFT_KEYBOARD_LOWERCASE;
-        for (SXRSceneObject object : keyboard.getObjects()) {
+        for (SXRNode object : keyboard.getObjects()) {
             ((KeyboardItemBase) object).switchMaterialState(SOFT_KEYBOARD_LOWERCASE);
         }
     }
 
     private void changeToUppercase() {
         mode = SOFT_KEYBOARD_UPPERCASE;
-        for (SXRSceneObject object : keyboard.getObjects()) {
+        for (SXRNode object : keyboard.getObjects()) {
             ((KeyboardItemBase) object).switchMaterialState(SOFT_KEYBOARD_UPPERCASE);
         }
     }
@@ -312,7 +312,7 @@ public class Keyboard extends SXRSceneObject {
 
         mode = SOFT_KEYBOARD_SPECIAL;
 
-        for (SXRSceneObject object : keyboard.getObjects()) {
+        for (SXRNode object : keyboard.getObjects()) {
             ((KeyboardItemBase) object).switchMaterialState(SOFT_KEYBOARD_SPECIAL);
         }
     }

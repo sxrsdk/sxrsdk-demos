@@ -2,7 +2,7 @@ package com.samsungxr.modelviewer2;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.util.BoundingBoxCreator;
 import org.joml.Vector3f;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class CameraPosition {
     private Vector3f position = new Vector3f();
-    SXRSceneObject cameraModel;
+    SXRNode cameraModel;
     private float angle;
     private Vector3f axis = new Vector3f();
 
@@ -33,7 +33,7 @@ public class CameraPosition {
         return axis;
     }
 
-    public SXRSceneObject loadNavigator(SXRContext context) {
+    public SXRNode loadNavigator(SXRContext context) {
         if (cameraModel != null)
             return cameraModel;
 

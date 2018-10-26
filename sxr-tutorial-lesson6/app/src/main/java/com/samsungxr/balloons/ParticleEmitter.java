@@ -20,7 +20,7 @@ import java.util.Random;
 import com.samsungxr.SXRBehavior;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.utility.Log;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -51,7 +51,7 @@ public class ParticleEmitter extends SXRBehavior
 
     public interface MakeParticle
     {
-        SXRSceneObject create(SXRContext ctx);
+        SXRNode create(SXRContext ctx);
     }
     
     /**
@@ -118,7 +118,7 @@ public class ParticleEmitter extends SXRBehavior
     {
         synchronized (mActiveParticles)
         {
-            SXRSceneObject owner = particle.getOwnerObject();
+            SXRNode owner = particle.getOwnerObject();
             owner.setEnable(false);
             mActiveParticles.remove(particle);
             mFreeParticles.add(particle);
@@ -195,7 +195,7 @@ public class ParticleEmitter extends SXRBehavior
     protected void emit()
     {
         Particle particle = null;
-        SXRSceneObject sceneObj = null;
+        SXRNode sceneObj = null;
         Vector3f direction = getNextDirection();
         float velocity = getNextVelocity();
 

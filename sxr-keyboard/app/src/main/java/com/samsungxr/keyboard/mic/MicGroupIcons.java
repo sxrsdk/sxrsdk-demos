@@ -17,13 +17,13 @@ package com.samsungxr.keyboard.mic;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.mic.model.MicItem;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class MicGroupIcons extends SXRSceneObject {
+public class MicGroupIcons extends SXRNode {
 
     private MicItem mIcon;
     int mOff = R.drawable.mic_icon_off;
@@ -31,7 +31,7 @@ public class MicGroupIcons extends SXRSceneObject {
 
     public MicGroupIcons(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.MIC_GROUP_ICONS);
+        setName(NodeNames.MIC_GROUP_ICONS);
 
         mIcon = new MicItem(sxrContext, mOff);
         mIcon.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_ICON);

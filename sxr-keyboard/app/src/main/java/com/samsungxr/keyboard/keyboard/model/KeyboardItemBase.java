@@ -24,24 +24,24 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.keyboard.model.KeyboardCharItem;
 import com.samsungxr.keyboard.shader.TransparentButtonShaderThreeStates;
 import com.samsungxr.keyboard.util.SXRTextBitmapFactory;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.keyboard.util.Util;
 
-public abstract class KeyboardItemBase extends SXRSceneObject {
+public abstract class KeyboardItemBase extends SXRNode {
 
     protected KeyboardItemStyle styleItem;
     protected KeyboardCharItem keyboardCharItem;
 
     public KeyboardItemBase(SXRContext sxrContext, KeyboardItemStyle styleItem) {
         super(sxrContext);
-        setName(SceneObjectNames.KEYBOARD_ITEM);
+        setName(NodeNames.KEYBOARD_ITEM);
 
         this.styleItem = styleItem;
     }

@@ -31,7 +31,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.List;
 public class EventsMain extends SXRMain {
     private static final String TAG = EventsMain.class.getSimpleName();
 
-    private SXRViewSceneObject layoutSceneObject;
+    private SXRViewNode layoutNode;
     private SXRContext context;
     private SXRScene mainScene;
 
@@ -66,7 +66,7 @@ public class EventsMain extends SXRMain {
         context = sxrContext;
         mainScene = sxrContext.getMainScene();
 
-        layoutSceneObject = new SXRViewSceneObject(sxrContext,
+        layoutNode = new SXRViewNode(sxrContext,
                 R.layout.activity_main, viewSOEventsListener);
 
         sxrContext.getInputManager().selectController();
@@ -84,7 +84,7 @@ public class EventsMain extends SXRMain {
 
     private IViewEvents viewSOEventsListener = new IViewEvents() {
         @Override
-        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onInitView(SXRViewNode sxrViewNode, View view) {
             final Activity activity = context.getActivity();
 
             button1 = view.findViewById(R.id.button1);
@@ -109,9 +109,9 @@ public class EventsMain extends SXRMain {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-            mainScene.addSceneObject(sxrViewSceneObject);
-            sxrViewSceneObject.getTransform().setPosition(0.0f, 0.0f, DEPTH);
+        public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+            mainScene.addNode(sxrViewNode);
+            sxrViewNode.getTransform().setPosition(0.0f, 0.0f, DEPTH);
         }
     };
 

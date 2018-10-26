@@ -20,27 +20,27 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 
-public class SpinnerSkeleton extends SXRSceneObject {
+public class SpinnerSkeleton extends SXRNode {
 
     private SXRContext sxrContext;
-    private SXRSceneObject spinnerBox;
-    private SXRSceneObject spinnerShadow;
+    private SXRNode spinnerBox;
+    private SXRNode spinnerShadow;
 
     public SpinnerSkeleton(SXRContext sxrContext) {
         super(sxrContext);
 
-        setName(SceneObjectNames.SPINNER_SKELETON);
+        setName(NodeNames.SPINNER_SKELETON);
         this.sxrContext = sxrContext;
         createSkeletonSpinner();
     }
 
-    private SXRSceneObject createSkeletonSpinner() {
+    private SXRNode createSkeletonSpinner() {
 
         spinnerBox = getSpinnerBackground(R.drawable.spinner_asset_box);
         spinnerShadow = getSpinnerBackground(R.drawable.spinner_asset_shadow);
@@ -56,9 +56,9 @@ public class SpinnerSkeleton extends SXRSceneObject {
 
     }
 
-    private SXRSceneObject getSpinnerBackground(int resourceTextureID) {
+    private SXRNode getSpinnerBackground(int resourceTextureID) {
 
-        SXRSceneObject object = new SXRSceneObject(sxrContext);
+        SXRNode object = new SXRNode(sxrContext);
         SXRRenderData renderData = new SXRRenderData(sxrContext);
         SXRMaterial material = new SXRMaterial(sxrContext);
         SXRMesh mesh = sxrContext.createQuad(0.49f / 2, 1.63f / 2 /**
@@ -79,11 +79,11 @@ public class SpinnerSkeleton extends SXRSceneObject {
 
     }
 
-    public SXRSceneObject getSpinnerBox() {
+    public SXRNode getSpinnerBox() {
         return spinnerBox;
     }
 
-    public SXRSceneObject getSpinnerShadow() {
+    public SXRNode getSpinnerShadow() {
         return spinnerShadow;
     }
 

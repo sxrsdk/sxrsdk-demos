@@ -18,7 +18,7 @@ package com.samsungxr.controls.anim;
 import android.content.res.Resources;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXRRelativeMotionAnimation;
@@ -28,7 +28,7 @@ import com.samsungxr.controls.focus.GamepadTouchImpl;
 import com.samsungxr.controls.focus.TouchAndGestureImpl;
 import com.samsungxr.controls.input.GamepadMap;
 
-public class ActionWormAnimation extends SXRSceneObject {
+public class ActionWormAnimation extends SXRNode {
 
     private static final float CLEARBUTTON_POSITIONY = -0.3f;
     private AnimButtonPlay playButton;

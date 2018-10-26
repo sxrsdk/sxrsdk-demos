@@ -21,7 +21,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.SXRTextureParameters.TextureWrapType;
@@ -50,9 +50,9 @@ public class MenuScene extends SXRScene {
         createBirdsMenuItem();
         createFishesMenuItem();
         createMammalsMenuItem();
-        addSceneObject(createSkybox()); //
+        addNode(createSkybox()); //
 
-        addSceneObject(createBlueSkybox()); //
+        addNode(createBlueSkybox()); //
 
         getMainCameraRig().getTransform().setPositionY(CAMERA_Y);
     }
@@ -74,13 +74,13 @@ public class MenuScene extends SXRScene {
         }
     };
 
-    private SXRSceneObject.ComponentVisitor hideAll = new SXRSceneObject.ComponentVisitor()
+    private SXRNode.ComponentVisitor hideAll = new SXRNode.ComponentVisitor()
     {
         @Override
         public boolean visit(SXRComponent comp)
         {
             SXRRenderData rd = (SXRRenderData) comp;
-            SXRSceneObject owner = rd.getOwnerObject();
+            SXRNode owner = rd.getOwnerObject();
             try
             {
                 new SXROpacityAnimation(owner, 1f, 0f).start(getSXRContext().getAnimationEngine()).setOnFinish(onAfterHide);
@@ -109,7 +109,7 @@ public class MenuScene extends SXRScene {
                 getRoot().forAllComponents(hideAll, SXRRenderData.getComponentType());
             }
         });
-        addSceneObject(dinosaurs);
+        addNode(dinosaurs);
     }
 
     private void createBirdsMenuItem() {
@@ -121,7 +121,7 @@ public class MenuScene extends SXRScene {
         birds.setTexts(getSXRContext().getContext().getString(R.string.birds), getSXRContext().getContext().getString(R.string.unavailable));
         birds.setOnClickListener(getUnavailableMenuItemClick());
         birds.setName("menu_birds");
-        addSceneObject(birds);
+        addNode(birds);
     }
 
     private void createFishesMenuItem() {
@@ -133,7 +133,7 @@ public class MenuScene extends SXRScene {
         fishes.setOnClickListener(getUnavailableMenuItemClick());
         fishes.getTransform().setPositionY(Y_ADJUST);
         fishes.setName("menu_fishes");
-        addSceneObject(fishes);
+        addNode(fishes);
     }
 
     private void createMammalsMenuItem() {
@@ -145,7 +145,7 @@ public class MenuScene extends SXRScene {
         mammals.setOnClickListener(getUnavailableMenuItemClick());
         mammals.getTransform().setPositionY(Y_ADJUST);
         mammals.setName("menu_mammals");
-        addSceneObject(mammals);
+        addNode(mammals);
     }
 
     private OnClickListener getUnavailableMenuItemClick() {
@@ -158,24 +158,24 @@ public class MenuScene extends SXRScene {
         };
     }
 
-    private SXRSceneObject createSkybox() {
+    private SXRNode createSkybox() {
 
         SXRMesh mesh = getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.environment_walls_mesh));
         SXRTexture texture = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.menu_walls_tex_diffuse));
-        SXRSceneObject skybox = new SXRSceneObject(getSXRContext(), mesh, texture);
+        SXRNode skybox = new SXRNode(getSXRContext(), mesh, texture);
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshGround = getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.environment_ground_mesh));
         SXRTexture textureGround = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.menu_ground_tex_diffuse));
-        SXRSceneObject skyboxGround = new SXRSceneObject(getSXRContext(), meshGround, textureGround);
+        SXRNode skyboxGround = new SXRNode(getSXRContext(), meshGround, textureGround);
         skyboxGround.getRenderData().setRenderingOrder(0);
 
         skybox.addChildObject(skyboxGround);
         return skybox;
     }
 
-    private SXRSceneObject createBlueSkybox() {
+    private SXRNode createBlueSkybox() {
 
         SXRMesh mesh = getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.skybox_mesh));
         SXRTextureParameters textureParameters = new SXRTextureParameters(getSXRContext());
@@ -184,7 +184,7 @@ public class MenuScene extends SXRScene {
 
         SXRTexture texture = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.starfield_tex_diffuse),
                 textureParameters);
-        SXRSceneObject skybox = new SXRSceneObject(getSXRContext(), mesh, texture);
+        SXRNode skybox = new SXRNode(getSXRContext(), mesh, texture);
         skybox.getTransform().setScale(1, 1, 1);
         skybox.getRenderData().setRenderingOrder(0);
         return skybox;

@@ -16,15 +16,15 @@
 package com.samsungxr.keyboard.keyboard.model;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyboardBase extends SXRSceneObject {
+public class KeyboardBase extends SXRNode {
 
     public float softLineWidth = 0;
-    private List<SXRSceneObject> objects = null;
+    private List<SXRNode> objects = null;
     private List<KeyboardLine> mListKeyboardLine = new ArrayList<>();
 
     public KeyboardBase(SXRContext sxrContext) {
@@ -44,11 +44,11 @@ public class KeyboardBase extends SXRSceneObject {
         this.mListKeyboardLine = listKeyboardLine;
     }
 
-    public List<SXRSceneObject> getObjects() {
+    public List<SXRNode> getObjects() {
 
         if (objects == null) {
 
-            objects = new ArrayList<SXRSceneObject>();
+            objects = new ArrayList<SXRNode>();
 
             for (KeyboardLine line : mListKeyboardLine) {
                 objects.addAll(line.getChildren());

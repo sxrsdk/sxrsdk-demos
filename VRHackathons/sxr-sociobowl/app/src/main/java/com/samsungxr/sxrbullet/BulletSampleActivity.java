@@ -2,7 +2,7 @@ package com.samsungxr.sxrbullet;
 
 
 import com.samsungxr.SXRActivity;
-import com.samsungxr.scene_objects.view.SXRView;
+import com.samsungxr.nodes.view.SXRView;
 import com.samsungxr.utility.Log;
 import com.samsungxr.sxrbullet.VRTouchPadGestureDetector;
 import com.samsungxr.sxrbullet.VRTouchPadGestureDetector.OnTouchPadGestureListener;

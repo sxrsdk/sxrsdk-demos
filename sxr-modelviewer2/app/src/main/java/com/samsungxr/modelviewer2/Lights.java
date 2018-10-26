@@ -1,7 +1,7 @@
 package com.samsungxr.modelviewer2;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSpotLight;
 import org.joml.Vector4f;
 
@@ -18,7 +18,7 @@ public class Lights {
 
 
     private SXRSpotLight bulb;
-    private SXRSceneObject bulbScene;
+    private SXRNode bulbScene;
 
     public void addAmbient(float r, float g, float b, float a) {
         ambient.add(new Vector4f(r, g, b, a));
@@ -45,7 +45,7 @@ public class Lights {
     }
 
     public void createLight(SXRContext context) {
-        bulbScene = new SXRSceneObject(context);
+        bulbScene = new SXRNode(context);
         bulb = new SXRSpotLight(context);
 
         bulbScene.attachLight(bulb);
@@ -60,7 +60,7 @@ public class Lights {
         return bulb;
     }
 
-    public SXRSceneObject getLightScene() {
+    public SXRNode getLightScene() {
         return bulbScene;
     }
 

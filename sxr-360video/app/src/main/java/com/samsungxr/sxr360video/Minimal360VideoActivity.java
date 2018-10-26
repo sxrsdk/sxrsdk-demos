@@ -40,9 +40,9 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObjectPlayer;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNodePlayer;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,18 +55,18 @@ public class Minimal360VideoActivity extends SXRActivity {
         super.onCreate(savedInstanceState);
 
         if (!USE_EXO_PLAYER) {
-            videoSceneObjectPlayer = makeMediaPlayer();
+            videoNodePlayer = makeMediaPlayer();
         } else {
-            videoSceneObjectPlayer = makeExoPlayer();
+            videoNodePlayer = makeExoPlayer();
         }
 
-        if (null != videoSceneObjectPlayer) {
-            final Minimal360Video main = new Minimal360Video(videoSceneObjectPlayer);
+        if (null != videoNodePlayer) {
+            final Minimal360Video main = new Minimal360Video(videoNodePlayer);
             setMain(main, "sxr.xml");
         }
     }
 
-    private SXRVideoSceneObjectPlayer<MediaPlayer> makeMediaPlayer() {
+    private SXRVideoNodePlayer<MediaPlayer> makeMediaPlayer() {
         final MediaPlayer mediaPlayer = new MediaPlayer();
 
         try {
@@ -92,10 +92,10 @@ public class Minimal360VideoActivity extends SXRActivity {
         mediaPlayer.setLooping(true);
         android.util.Log.d("Minimal360Video", "starting player.");
 
-        return SXRVideoSceneObject.makePlayerInstance(mediaPlayer);
+        return SXRVideoNode.makePlayerInstance(mediaPlayer);
     }
 
-    private SXRVideoSceneObjectPlayer<ExoPlayer> makeExoPlayer() {
+    private SXRVideoNodePlayer<ExoPlayer> makeExoPlayer() {
         final Context context = this;
         final DataSource.Factory dataSourceFactory = new DataSource.Factory() {
             @Override
@@ -111,7 +111,7 @@ public class Minimal360VideoActivity extends SXRActivity {
                 new DefaultTrackSelector());
         player.prepare(mediaSource);
 
-        return new SXRVideoSceneObjectPlayer<ExoPlayer>() {
+        return new SXRVideoNodePlayer<ExoPlayer>() {
             @Override
             public ExoPlayer getPlayer() {
                 return player;
@@ -170,12 +170,12 @@ public class Minimal360VideoActivity extends SXRActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (null != videoSceneObjectPlayer) {
+        if (null != videoNodePlayer) {
             if (ACTION_DOWN == event.getAction()) {
                 if (mPlaying) {
-                    videoSceneObjectPlayer.pause();
+                    videoNodePlayer.pause();
                 } else {
-                    videoSceneObjectPlayer.start();
+                    videoNodePlayer.start();
                 }
                 mPlaying = !mPlaying;
             }
@@ -184,13 +184,13 @@ public class Minimal360VideoActivity extends SXRActivity {
     }
 
     private boolean mPlaying = true;
-    private SXRVideoSceneObjectPlayer<?> videoSceneObjectPlayer;
+    private SXRVideoNodePlayer<?> videoNodePlayer;
 
     static final boolean USE_EXO_PLAYER = false;
 
     private final static class Minimal360Video extends SXRMain
     {
-        Minimal360Video(SXRVideoSceneObjectPlayer<?> player) {
+        Minimal360Video(SXRVideoNodePlayer<?> player) {
             mPlayer = player;
         }
 
@@ -199,17 +199,17 @@ public class Minimal360VideoActivity extends SXRActivity {
 
             SXRScene scene = sxrContext.getMainScene();
 
-            SXRSphereSceneObject sphere = new SXRSphereSceneObject(sxrContext, 72, 144, false);
+            SXRSphereNode sphere = new SXRSphereNode(sxrContext, 72, 144, false);
             SXRMesh mesh = sphere.getRenderData().getMesh();
 
-            SXRVideoSceneObject video = new SXRVideoSceneObject( sxrContext, mesh, mPlayer, SXRVideoSceneObject.SXRVideoType.MONO );
+            SXRVideoNode video = new SXRVideoNode( sxrContext, mesh, mPlayer, SXRVideoNode.SXRVideoType.MONO );
             video.getTransform().setScale(100f, 100f, 100f);
             video.setName( "video" );
 
-            scene.addSceneObject( video );
+            scene.addNode( video );
             video.getMediaPlayer().start();
         }
 
-        private final SXRVideoSceneObjectPlayer<?> mPlayer;
+        private final SXRVideoNodePlayer<?> mPlayer;
     }
 }

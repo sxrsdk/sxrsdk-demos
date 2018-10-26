@@ -1,11 +1,11 @@
 package com.samsungxr.bondage;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
-public class NameMatcher implements SXRSceneObject.SceneVisitor
+public class NameMatcher implements SXRNode.SceneVisitor
 {
     private String mElementName;
-    public SXRSceneObject Match;
+    public SXRNode Match;
 
     public NameMatcher(String elementName)
     {
@@ -13,7 +13,7 @@ public class NameMatcher implements SXRSceneObject.SceneVisitor
         mElementName = elementName;
     }
 
-    public boolean visit(SXRSceneObject srcObj)
+    public boolean visit(SXRNode srcObj)
     {
         String name = srcObj.getName();
 

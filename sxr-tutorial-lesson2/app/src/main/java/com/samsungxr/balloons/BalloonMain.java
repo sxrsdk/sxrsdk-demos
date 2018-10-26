@@ -20,13 +20,13 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
 import com.samsungxr.SXRShader;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import android.view.MotionEvent;
 
 public class BalloonMain extends SXRMain {
@@ -44,7 +44,7 @@ public class BalloonMain extends SXRMain {
         /*
          * Set up a head-tracking pointer
          */
-        SXRSceneObject headTracker = new SXRSceneObject(context,
+        SXRNode headTracker = new SXRNode(context,
                 context.createQuad(0.1f, 0.1f),
                 context.getAssetLoader().loadTexture(new SXRAndroidResource(context, R.drawable.headtrackingpointer)));
         headTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
@@ -54,16 +54,16 @@ public class BalloonMain extends SXRMain {
         /*
          * Add the environment and a single balloon
          */
-        SXRSceneObject balloon = makeBalloon(context);
-        mScene.addSceneObject(balloon);
-        SXRSceneObject environment = makeEnvironment(context);
-        mScene.addSceneObject(environment);
+        SXRNode balloon = makeBalloon(context);
+        mScene.addNode(balloon);
+        SXRNode environment = makeEnvironment(context);
+        mScene.addNode(environment);
     }
     
 
-    SXRSceneObject makeBalloon(SXRContext context)
+    SXRNode makeBalloon(SXRContext context)
     {
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true);
+        SXRNode sphere = new SXRSphereNode(context, true);
         SXRRenderData rdata = sphere.getRenderData();
         SXRMaterial mtl = new SXRMaterial(context, SXRMaterial.SXRShaderType.Phong.ID);
         mtl.setDiffuseColor(1.0f, 0.0f, 1.0f, 0.5f);
@@ -75,12 +75,12 @@ public class BalloonMain extends SXRMain {
         return sphere;
     }
 
-    SXRSceneObject makeEnvironment(SXRContext context)
+    SXRNode makeEnvironment(SXRContext context)
     {
         SXRTexture tex = context.getAssetLoader().loadCubemapTexture(new SXRAndroidResource(context, R.raw.lycksele3));
         SXRMaterial material = new SXRMaterial(context, SXRMaterial.SXRShaderType.Cubemap.ID);
         material.setMainTexture(tex);
-        SXRSphereSceneObject environment = new SXRSphereSceneObject(context, 18, 36, false, material, 4, 4);
+        SXRSphereNode environment = new SXRSphereNode(context, 18, 36, false, material, 4, 4);
         environment.getTransform().setScale(20.0f, 20.0f, 20.0f);
 
         if (!SXRShader.isVulkanInstance())

@@ -15,10 +15,10 @@
 
 package com.samsungxr.controls.menu;
 
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 
 public interface ItemSelectedListener {
 
-    public void selected(ControlSceneObject object);
+    public void selected(ControlNode object);
 
 }

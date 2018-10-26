@@ -24,18 +24,18 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.shader.MenuImageShader;
 import com.samsungxr.immersivepedia.util.AudioClip;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 
-public class MenuItem extends FocusableSceneObject {
+public class MenuItem extends FocusableNode {
 
 
     private static final float difGroupTextY = -0f;
@@ -60,11 +60,11 @@ public class MenuItem extends FocusableSceneObject {
 
     private final float SCALE_BIGER_OFFSET = .05f;
 
-    private SXRSceneObject frontObj;
-    private SXRSceneObject backgroundObj;
-    private SXRTextViewSceneObject mainText;
-    private SXRSceneObject textBackground;
-    private SXRTextViewSceneObject subText;
+    private SXRNode frontObj;
+    private SXRNode backgroundObj;
+    private SXRTextViewNode mainText;
+    private SXRNode textBackground;
+    private SXRTextViewNode subText;
     float scale ;
 
     public MenuItem(SXRContext sxrContext, int frontIdleRes, int frontHoverRes, int backgroundIdleRes, int backgroundHoverRes) {
@@ -76,14 +76,14 @@ public class MenuItem extends FocusableSceneObject {
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.empty_clickable));
         getRenderData().getMaterial().setMainTexture(texture);
 
-        frontObj = createSceneObject(frontIdleRes, frontHoverRes);
+        frontObj = createNode(frontIdleRes, frontHoverRes);
         frontObj.getTransform().setPositionZ(FRONT_IMAGE_Z_OFFSET);
         frontObj.getTransform().setPositionY(FRONT_IMAGE_Y);
         frontObj.getTransform().setPositionX(FRONT_IMAGE_X);
         frontObj.getRenderData().setRenderingOrder(RenderingOrderApplication.MAIN_IMAGE);
         scale = (MenuScene.DISTANCE_TO_CAMERA - FRONT_IMAGE_Z_OFFSET) / MenuScene.DISTANCE_TO_CAMERA;
         frontObj.getTransform().setScale(scale, scale, scale);
-        backgroundObj = createSceneObject(backgroundIdleRes, backgroundHoverRes);
+        backgroundObj = createNode(backgroundIdleRes, backgroundHoverRes);
         backgroundObj.getRenderData().setRenderingOrder(RenderingOrderApplication.BACKGROUND_IMAGE);
 
         SXRMeshCollider collider = new SXRMeshCollider(sxrContext, false);
@@ -96,7 +96,7 @@ public class MenuItem extends FocusableSceneObject {
         focusListener = new FocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
                 frontObj.getRenderData().getMaterial().setFloat(MenuImageShader.TEXTURE_SWITCH, IDLE_STATE);
                 backgroundObj.getRenderData().getMaterial().setFloat(MenuImageShader.TEXTURE_SWITCH, IDLE_STATE);
                 hideText();
@@ -108,11 +108,11 @@ public class MenuItem extends FocusableSceneObject {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
                 AudioClip.getInstance(getSXRContext().getContext()).playSound(AudioClip.getUIMenuHoverSoundID(), 1.0f, 1.0f);
                 frontObj.getRenderData().getMaterial().setFloat(MenuImageShader.TEXTURE_SWITCH, HOVER_STATE);
                 backgroundObj.getRenderData().getMaterial().setFloat(MenuImageShader.TEXTURE_SWITCH, HOVER_STATE);
@@ -139,8 +139,8 @@ public class MenuItem extends FocusableSceneObject {
         subText.getRenderData().getMaterial().setOpacity(1);
     }
 
-    public SXRSceneObject createSceneObject(int idleImageRes, int hoverImageRes) {
-        SXRSceneObject obj = new SXRSceneObject(getSXRContext());
+    public SXRNode createNode(int idleImageRes, int hoverImageRes) {
+        SXRNode obj = new SXRNode(getSXRContext());
 
         SXRTexture idle = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), idleImageRes));
         SXRTexture hover = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), hoverImageRes));
@@ -165,7 +165,7 @@ public class MenuItem extends FocusableSceneObject {
 
     private void createTextBackground() {
         SXRMesh mesh = getSXRContext().createQuad(TEXT_WIDTH, TEXT_HEIGHT);
-        textBackground = new SXRSceneObject(getSXRContext(), mesh, getSXRContext().getAssetLoader().loadTexture(
+        textBackground = new SXRNode(getSXRContext(), mesh, getSXRContext().getAssetLoader().loadTexture(
                 new SXRAndroidResource(getSXRContext(), R.drawable.text_bg)));
 
         textBackground.getTransform().setPosition(0, TEXT_BACKGROUND_Y, TEXT_BACKGROUND_Z);
@@ -176,7 +176,7 @@ public class MenuItem extends FocusableSceneObject {
     }
 
     private void createMainText(String text) {
-        mainText = new SXRTextViewSceneObject(getSXRContext(), TEXT_WIDTH, TEXT_HEIGHT / 2, text);
+        mainText = new SXRTextViewNode(getSXRContext(), TEXT_WIDTH, TEXT_HEIGHT / 2, text);
 
         mainText.setTextColor(Color.WHITE);
         mainText.setTextSize(5);
@@ -190,7 +190,7 @@ public class MenuItem extends FocusableSceneObject {
     }
 
     public void createSubText(String text) {
-        subText = new SXRTextViewSceneObject(getSXRContext(), TEXT_WIDTH, TEXT_HEIGHT / 2, text);
+        subText = new SXRTextViewNode(getSXRContext(), TEXT_WIDTH, TEXT_HEIGHT / 2, text);
 
         subText.setTextColor(Color.WHITE);
         subText.setTextSize(3);

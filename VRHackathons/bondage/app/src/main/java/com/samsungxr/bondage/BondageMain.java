@@ -22,12 +22,12 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -46,25 +46,25 @@ public class BondageMain extends SXRMain {
 
     public class GridPicker implements IPickEvents
     {
-        public SXRSceneObject   PickedObject = null;
+        public SXRNode   PickedObject = null;
 
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
         {
-            SXRSceneObject parent = sceneObj.getParent();
+            SXRNode parent = sceneObj.getParent();
             if ((parent != null) && (parent.getParent() == mElementGrid))
             {
                 parent.getTransform().setScale(1.2f, 1.2f, 1.2f);
             }
         }
-        public void onExit(SXRSceneObject sceneObj)
+        public void onExit(SXRNode sceneObj)
         {
-            SXRSceneObject parent = sceneObj.getParent();
+            SXRNode parent = sceneObj.getParent();
             if ((parent != null) && (parent.getParent() == mElementGrid))
             {
                 parent.getTransform().setScale(1.0f, 1.0f, 1.0f);
             }
         }
-        public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
+        public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) { }
         public void onNoPick(SXRPicker picker)
         {
             PickedObject = null;
@@ -73,7 +73,7 @@ public class BondageMain extends SXRMain {
         {
             for (SXRPickedObject picked : picker.getPicked())
             {
-                SXRSceneObject parent = picked.hitObject.getParent();
+                SXRNode parent = picked.hitObject.getParent();
                 if (parent.getParent() == mElementGrid)
                 {
                     PickedObject = picked.hitObject;
@@ -85,9 +85,9 @@ public class BondageMain extends SXRMain {
 
     private SXRScene mScene = null;
     private GridPicker mPickHandler;
-    private SXRSceneObject mElementGrid = null;
-    private SXRSceneObject mMolecule = null;
-    private SXRSceneObject mHeadTracker;
+    private SXRNode mElementGrid = null;
+    private SXRNode mMolecule = null;
+    private SXRNode mHeadTracker;
     private ElementCursor mCursor = null;
     private BondAnimator mBondAnimator = null;
     private int mNumMatched = 0;
@@ -107,7 +107,7 @@ public class BondageMain extends SXRMain {
         /*
          * Set up a head-tracking pointer
          */
-        mHeadTracker = new SXRSceneObject(context,
+        mHeadTracker = new SXRNode(context,
                 context.createQuad(0.1f, 0.1f),
                 context.loadTexture(new SXRAndroidResource(context, R.drawable.headtrackingpointer)));
         mHeadTracker.getTransform().setPosition(0.0f, 0.0f, -1.0f);
@@ -128,7 +128,7 @@ public class BondageMain extends SXRMain {
         mScene.getEventReceiver().addListener(mPickHandler);
     }
     
-    SXRSceneObject loadMolecule(SXRContext ctx, String fileName, String moleculeName)
+    SXRNode loadMolecule(SXRContext ctx, String fileName, String moleculeName)
     {
         if (mBondAnimator != null)
         {
@@ -136,8 +136,8 @@ public class BondageMain extends SXRMain {
         }
         try
         {
-            SXRSceneObject modelRoot = ctx.getAssetLoader().loadModel(fileName, mScene);
-            SXRSceneObject.BoundingVolume bv = modelRoot.getBoundingVolume();
+            SXRNode modelRoot = ctx.getAssetLoader().loadModel(fileName, mScene);
+            SXRNode.BoundingVolume bv = modelRoot.getBoundingVolume();
             SXRTransform trans = modelRoot.getTransform();
             mBondAnimator = new BondAnimator(ctx, mMoleculeMap, mGoodSound, mBadSound);
 
@@ -147,10 +147,10 @@ public class BondageMain extends SXRMain {
             modelRoot.attachComponent(mBondAnimator);
             if (mElementGrid != null)
             {
-                mScene.removeSceneObject(mElementGrid);
+                mScene.removeNode(mElementGrid);
             }
             mElementGrid = makeElementGrid(ctx, modelRoot);
-            mScene.addSceneObject(mElementGrid);
+            mScene.addNode(mElementGrid);
             mScene.getEventReceiver().addListener(mBondAnimator);
             mNumMatched = 0;
             makeMoleculeMap(fileName);
@@ -163,9 +163,9 @@ public class BondageMain extends SXRMain {
         }
     }
 
-    SXRSceneObject makeEnvironment(SXRContext context)
+    SXRNode makeEnvironment(SXRContext context)
     {
-        SXRSceneObject environment;
+        SXRNode environment;
         try
         {
             environment = context.getAssetLoader().loadModel("playarea.obj", mScene);
@@ -179,8 +179,8 @@ public class BondageMain extends SXRMain {
         {
             Log.e("bondage", ex.getMessage());
             SXRTexture tex = context.loadTexture(new SXRAndroidResource(context, R.drawable.gearvrf));
-            environment = new SXRSceneObject(context, 4, 4, tex);
-            SXRSceneObject lightObj = new SXRSceneObject(context);
+            environment = new SXRNode(context, 4, 4, tex);
+            SXRNode lightObj = new SXRNode(context);
             SXRDirectLight light = new SXRDirectLight(context);
             light.setAmbientIntensity(0.1f, 0.1f, 0.1f, 1.0f);
             light.setDiffuseIntensity(0.4f, 0.4f, 0.4f, 1.0f);
@@ -188,14 +188,14 @@ public class BondageMain extends SXRMain {
             lightObj.getTransform().setPosition(0, 1.0f, 1.0f);
             environment.getTransform().setPositionZ(-3.0f);
             environment.addChildObject(lightObj);
-            mScene.addSceneObject(environment);
+            mScene.addNode(environment);
             return environment;
         }
     }
 
-    private SXRSceneObject makeElementGrid(SXRContext ctx, SXRSceneObject srcRoot)
+    private SXRNode makeElementGrid(SXRContext ctx, SXRNode srcRoot)
     {
-        SXRSceneObject gridRoot = new SXRSceneObject(ctx);
+        SXRNode gridRoot = new SXRNode(ctx);
         SXRTransform trans = gridRoot.getTransform();
         float sf = 0.15f;
         ElementGrid elementGrid = new ElementGrid(ctx);
@@ -226,7 +226,7 @@ public class BondageMain extends SXRMain {
                 }
                 if (mBondAnimator != null)
                 {
-                    SXRSceneObject target = mBondAnimator.getTarget();
+                    SXRNode target = mBondAnimator.getTarget();
                     mBondAnimator.onTouch();
                     if (mBondAnimator.WrongAnswer && (target != null))
                     {
@@ -245,9 +245,9 @@ public class BondageMain extends SXRMain {
         }
     }
 
-    private void onHitGrid(SXRSceneObject sceneObj)
+    private void onHitGrid(SXRNode sceneObj)
     {
-        SXRSceneObject parent = sceneObj.getParent();
+        SXRNode parent = sceneObj.getParent();
         if ((parent != null) && (parent.getParent() == mElementGrid))
         {
             if (mNumMatched == 0)
@@ -257,7 +257,7 @@ public class BondageMain extends SXRMain {
                 Log.d("bondage", "Match " + elemName);
                 matcher.Match = null;
                 mMolecule.forAllDescendants(matcher);
-                SXRSceneObject match = matcher.Match;
+                SXRNode match = matcher.Match;
                 if (match != null)
                 {
                     String name = match.getName();
@@ -275,10 +275,10 @@ public class BondageMain extends SXRMain {
         }
     }
 
-    private void attachToCursor(SXRSceneObject elemObj)
+    private void attachToCursor(SXRNode elemObj)
     {
         float sf = 0.1f;
-        SXRSceneObject parent = elemObj.getParent();
+        SXRNode parent = elemObj.getParent();
         elemObj.getTransform().setScale(sf, sf, sf);
 
         parent.getParent().removeChildObject(elemObj);
@@ -289,7 +289,7 @@ public class BondageMain extends SXRMain {
         mBondAnimator.setEnable(true);
     }
 
-    private void attachToGrid(SXRSceneObject elemObj)
+    private void attachToGrid(SXRNode elemObj)
     {
         ElementGrid grid = (ElementGrid) mElementGrid.getComponent(ElementGrid.getComponentType());
         mHeadTracker.removeChildObject(elemObj);

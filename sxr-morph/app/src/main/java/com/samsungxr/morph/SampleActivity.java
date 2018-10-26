@@ -27,7 +27,7 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMeshMorph;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRVertexBuffer;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRMorphAnimation;
@@ -46,7 +46,7 @@ public class SampleActivity extends SXRActivity {
         setMain(new SampleMain());
     }
 
-    private  SXRSceneObject mObjectRoot;
+    private  SXRNode mObjectRoot;
     private  int animDuration = 50;
     private SXRScene mScene = null;
 
@@ -59,15 +59,15 @@ public class SampleActivity extends SXRActivity {
             mScene = scene;
 
             SXRCameraRig rig = scene.getMainCameraRig();
-            mObjectRoot = new SXRSceneObject(sxrContext);
+            mObjectRoot = new SXRNode(sxrContext);
             rig.getCenterCamera().setBackgroundColor(Color.BLACK);
             rig.getLeftCamera().setBackgroundColor(Color.BLACK);
             rig.getRightCamera().setBackgroundColor(Color.BLACK);
 
             String filePath = "/sloth/sloth.gltf";
 
-            SXRSceneObject light1 = createLight(sxrContext, 1, 1, 1, new Vector3f(0,1.8f, 0));
-            SXRSceneObject light2 = createLight(sxrContext ,1, 1, 1, new Vector3f(0,-0.8f, 0));
+            SXRNode light1 = createLight(sxrContext, 1, 1, 1, new Vector3f(0,1.8f, 0));
+            SXRNode light2 = createLight(sxrContext ,1, 1, 1, new Vector3f(0,-0.8f, 0));
 
             mObjectRoot.addChildObject(light1);
             mObjectRoot.addChildObject(light2);
@@ -81,16 +81,16 @@ public class SampleActivity extends SXRActivity {
             {
             }
 
-            scene.addSceneObject(mObjectRoot);
+            scene.addNode(mObjectRoot);
 
             SXRAnimator animator = setupAnimation(mObjectRoot);
             animator.start();
         }
 
-        private SXRAnimator setupAnimation(SXRSceneObject root)
+        private SXRAnimator setupAnimation(SXRNode root)
         {
 
-            SXRSceneObject baseObject = mObjectRoot.getSceneObjectByName("Sloth_face");
+            SXRNode baseObject = mObjectRoot.getNodeByName("Sloth_face");
             SXRMeshMorph morph = (SXRMeshMorph)baseObject.getComponent(SXRMeshMorph.getComponentType());
             int numBlendShapes = morph.getBlendShapeCount();
 
@@ -140,7 +140,7 @@ public class SampleActivity extends SXRActivity {
         private void addModeltoScene(String filePath, Vector3f scale, Vector3f position) throws IOException {
 
             SXRAssetLoader loader = getSXRContext().getAssetLoader();
-            SXRSceneObject root = loader.loadModel(filePath,SXRImportSettings.getRecommendedMorphSettings(), false, null);
+            SXRNode root = loader.loadModel(filePath,SXRImportSettings.getRecommendedMorphSettings(), false, null);
             root.getTransform().setScale(scale.x,scale.y,scale.z);
             root.getTransform().setPosition(position.x, position.y, position.z);
 
@@ -148,9 +148,9 @@ public class SampleActivity extends SXRActivity {
 
         }
 
-        private SXRSceneObject createLight(SXRContext context, float r, float g, float b, Vector3f position)
+        private SXRNode createLight(SXRContext context, float r, float g, float b, Vector3f position)
         {
-            SXRSceneObject lightNode = new SXRSceneObject(context);
+            SXRNode lightNode = new SXRNode(context);
             SXRPointLight light = new SXRPointLight(context);
 
             lightNode.attachLight(light);

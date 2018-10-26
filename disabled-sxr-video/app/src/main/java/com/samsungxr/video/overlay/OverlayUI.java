@@ -21,19 +21,19 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.utility.Log;
 import com.samsungxr.video.focus.OnClickListener;
 import com.samsungxr.video.movie.MovieManager;
 
 import java.io.IOException;
 
-public class OverlayUI extends SXRSceneObject {
+public class OverlayUI extends SXRNode {
 
     private static final String TAG = "OverlayUI";
 
-    private SXRSceneObject mHeadTracker = null;
-    private SXRSceneObject mButtonBoard = null;
+    private SXRNode mHeadTracker = null;
+    private SXRNode mButtonBoard = null;
     private Button mPlayButton = null;
     private Button mPauseButton = null;
     private Button mFrontButton = null;
@@ -48,7 +48,7 @@ public class OverlayUI extends SXRSceneObject {
         mMovieManager = movieManager;
         try {
             // head tracker
-            mHeadTracker = new SXRSceneObject(context, context.createQuad(0.5f, 0.5f),
+            mHeadTracker = new SXRNode(context, context.createQuad(0.5f, 0.5f),
                     context.getAssetLoader().loadTexture(new SXRAndroidResource(context, "head-tracker.png")));
             mHeadTracker.getTransform().setPositionZ(-9.0f);
             mHeadTracker.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
@@ -57,7 +57,7 @@ public class OverlayUI extends SXRSceneObject {
             mainScene.getMainCameraRig().addChildObject(mHeadTracker);
 
             // button board
-            mButtonBoard = new SXRSceneObject(context, context.createQuad(8.2f, 1.35f),
+            mButtonBoard = new SXRNode(context, context.createQuad(8.2f, 1.35f),
                     context.getAssetLoader().loadTexture(new SXRAndroidResource(context, "button/button-board.png")));
             mButtonBoard.getTransform().setPosition(-0.1f, -0.6f, -8.0f);
             mButtonBoard.getRenderData().setRenderingOrder(

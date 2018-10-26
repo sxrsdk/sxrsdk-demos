@@ -17,9 +17,9 @@ package com.samsungxr.sample.remote_scripting;
 
 import com.samsungxr.SXRContext;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.SXRSensor;
 import com.samsungxr.SensorEvent;
 import com.samsungxr.ISensorEvents;
@@ -50,7 +50,7 @@ import java.util.List;
 
 public class FileBrowserUtils {
     private SXRContext sxrContext;
-    private final SXRViewSceneObject layoutSceneObject;
+    private final SXRViewNode layoutNode;
     private GearVRScripting activity;
 
     private static final float QUAD_X = 2.0f;
@@ -67,27 +67,27 @@ public class FileBrowserUtils {
         sxrContext = context;
         activity = (GearVRScripting) context.getActivity();
 
-        layoutSceneObject = new SXRViewSceneObject(sxrContext, R.layout.filebrowser,
+        layoutNode = new SXRViewNode(sxrContext, R.layout.filebrowser,
                 viewEventsHandler, sxrContext.createQuad(QUAD_X, QUAD_Y));
 
-        layoutSceneObject.getTransform().setPosition(0.0f, 0.0f, -1.0f);
-        layoutSceneObject.setName("editor");
+        layoutNode.getTransform().setPosition(0.0f, 0.0f, -1.0f);
+        layoutNode.setName("editor");
     }
 
     public void show() {
-        sxrContext.getMainScene().addSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().addNode(layoutNode);
     }
 
     public void setPosition(float x, float y, float z) {
-        layoutSceneObject.getTransform().setPosition(x, y, z);
+        layoutNode.getTransform().setPosition(x, y, z);
     }
 
     public void setRotationByAxis(float angle, float x, float y, float z) {
-        layoutSceneObject.getTransform().setRotationByAxis(angle, x, y, z);
+        layoutNode.getTransform().setRotationByAxis(angle, x, y, z);
     }
 
     public void hide() {
-        sxrContext.getMainScene().removeSceneObject(layoutSceneObject);
+        sxrContext.getMainScene().removeNode(layoutNode);
     }
 
     private void init() {
@@ -181,9 +181,9 @@ public class FileBrowserUtils {
                         spinner.setVisibility(View.VISIBLE);
                         // try to load the model
                         try {
-                            SXRSceneObject
+                            SXRNode
                                 model = sxrContext.getAssetLoader().loadModel("sd:/" +filename);
-                            sxrContext.getMainScene().addSceneObject(model);
+                            sxrContext.getMainScene().addNode(model);
 
                             // base the name for the model on the filename, minus the suffix.  Also add a prefix since there may already be (and i've already seen) a node inside the model based on the filename
                             int end = filename.lastIndexOf(".");
@@ -201,7 +201,7 @@ public class FileBrowserUtils {
 
     private IViewEvents viewEventsHandler = new IViewEvents() {
         @Override
-        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onInitView(SXRViewNode sxrViewNode, View view) {
             listView = (ListView) view.findViewById(R.id.list);
             dirView = (TextView) view.findViewById(R.id.dirname);
             spinner = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -210,7 +210,7 @@ public class FileBrowserUtils {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onStartRendering(SXRViewNode sxrViewNode, View view) {
 
         }
     };

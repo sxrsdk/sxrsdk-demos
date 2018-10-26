@@ -22,32 +22,32 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.videoplayer.R;
 
-public class LoadingAsset extends SXRSceneObject implements IViewEvents {
+public class LoadingAsset extends SXRNode implements IViewEvents {
     private static final String TAG = LoadingAsset.class.getSimpleName();
-    private SXRViewSceneObject mLoadingObject;
+    private SXRViewNode mLoadingObject;
     LinearLayout mLoading;
     SXRAnimation mAnimation;
 
     public LoadingAsset(SXRContext sxrContext) {
         super(sxrContext);
-        mLoadingObject = new SXRViewSceneObject(sxrContext, R.layout.layout_loading, this);
+        mLoadingObject = new SXRViewNode(sxrContext, R.layout.layout_loading, this);
     }
 
     @Override
-    public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+    public void onInitView(SXRViewNode sxrViewNode, View view) {
         mLoading = view.findViewById(R.id.loading);
     }
 
     @Override
-    public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
-        addChildObject(sxrViewSceneObject);
+    public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+        addChildObject(sxrViewNode);
         mAnimation = new SXRRotationByAxisWithPivotAnimation(this, 2, -360f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f, 0.0f).start(getSXRContext().getAnimationEngine());
         mAnimation.setRepeatMode(1);

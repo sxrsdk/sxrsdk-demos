@@ -17,11 +17,11 @@ package com.samsungxr.keyboard.util;
 
 import com.samsungxr.SXRBitmapImage;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.keyboard.textField.Text;
 
-public class InteractiveText extends SXRSceneObject {
+public class InteractiveText extends SXRNode {
 
     public Text currentText;
     private int width, height;
@@ -30,7 +30,7 @@ public class InteractiveText extends SXRSceneObject {
 
         super(sxrContext, Util.convertPixelToVRFloatValue(width), Util
                 .convertPixelToVRFloatValue(height));
-        setName(SceneObjectNames.INTERACTIVE_TEXT);
+        setName(NodeNames.INTERACTIVE_TEXT);
 
         currentText = new Text();
         this.width = width;

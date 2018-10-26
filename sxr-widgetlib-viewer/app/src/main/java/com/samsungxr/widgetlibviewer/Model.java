@@ -23,7 +23,7 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.widgetlib.content_scene.ContentSceneController;
@@ -60,11 +60,11 @@ public class Model extends GroupWidget {
         super(context, loadModel(context, location));
         mLocation = location;
         setName(location);
-        SXRSceneObject model = getSceneObject();
+        SXRNode model = getNode();
         model.attachComponent(new SXRMeshCollider(context, true));
 
         // Adding Pointee to Model
-        SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
         float originalRadius = bv.radius;
         Log.i(TAG, "Radius" + Float.toString(originalRadius));
 
@@ -128,13 +128,13 @@ public class Model extends GroupWidget {
         }
     }
 
-    private static SXRSceneObject loadModel(SXRContext context, String location) throws IOException {
+    private static SXRNode loadModel(SXRContext context, String location) throws IOException {
         EnumSet<SXRImportSettings> additionalSettings = EnumSet.of(SXRImportSettings.CALCULATE_SMOOTH_NORMALS,  SXRImportSettings.NO_ANIMATION);
         EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(additionalSettings);
 
         SXRMesh mesh = context.getAssetLoader().loadMesh(new SXRAndroidResource(context,
                 "models/" + location), settings);
-        SXRSceneObject model = new SXRSceneObject(context, mesh);
+        SXRNode model = new SXRNode(context, mesh);
 
 //        model = context.getAssetLoader().loadModel("models/" + location);
         return model;
@@ -196,7 +196,7 @@ public class Model extends GroupWidget {
     }
 
     private List<SXRRenderData> getRenderDatas() {
-        return getSceneObject().getAllComponents(SXRRenderData.getComponentType());
+        return getNode().getAllComponents(SXRRenderData.getComponentType());
     }
 
     public void applyCustomShader(ModelViewer.SHADER index) {

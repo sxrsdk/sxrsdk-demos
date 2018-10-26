@@ -2,19 +2,19 @@ package com.samsungxr.immersivepedia.focus;
 
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.immersivepedia.GazeController;
 import com.samsungxr.utility.Log;
 
 public class PickHandler extends SXREventListeners.PickEvents
 {
-    public SXRSceneObject PickedObject = null;
+    public SXRNode PickedObject = null;
 
-    public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+    public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
     {
-        if (sceneObj instanceof FocusableSceneObject)
+        if (sceneObj instanceof FocusableNode)
         {
-            FocusableSceneObject fo = (FocusableSceneObject) sceneObj;
+            FocusableNode fo = (FocusableNode) sceneObj;
             PickedObject = fo;
             Log.v("PICKER", sceneObj.getName() + " onEnter");
             fo.setFocus(true);
@@ -23,17 +23,17 @@ public class PickHandler extends SXREventListeners.PickEvents
         }
     }
 
-    public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo) {
-        if (sceneObj instanceof FocusableSceneObject)
+    public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo) {
+        if (sceneObj instanceof FocusableNode)
         {
-            FocusableSceneObject fo = (FocusableSceneObject) sceneObj;
+            FocusableNode fo = (FocusableNode) sceneObj;
             fo.dispatchInFocus();
         }
     }
 
-    public void onExit(SXRSceneObject sceneObj)
+    public void onExit(SXRNode sceneObj)
     {
-        FocusableSceneObject fo = (FocusableSceneObject) PickedObject;
+        FocusableNode fo = (FocusableNode) PickedObject;
         if (fo != null)
         {
             Log.v("PICKER", fo.getName() + " onExit");
@@ -43,7 +43,7 @@ public class PickHandler extends SXREventListeners.PickEvents
 
     public void onNoPick(SXRPicker picker)
     {
-        FocusableSceneObject fo = (FocusableSceneObject) PickedObject;
+        FocusableNode fo = (FocusableNode) PickedObject;
         if (fo != null)
         {
             fo.setFocus(false);

@@ -13,7 +13,7 @@ package com.samsung.accessibility.scene;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
@@ -21,14 +21,14 @@ import com.samsungxr.animation.SXRRelativeMotionAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 
 import com.samsung.accessibility.R;
-import com.samsung.accessibility.focus.FocusableSceneObject;
+import com.samsung.accessibility.focus.FocusableNode;
 import com.samsung.accessibility.focus.OnFocusListener;
 import com.samsung.accessibility.interpolator.InterpolatorBackEaseIn;
 import com.samsung.accessibility.interpolator.InterpolatorBackEaseOut;
 import com.samsung.accessibility.interpolator.InterpolatorStrongEaseInOut;
 import com.samsung.accessibility.util.Utils;
 
-public class SceneItem extends FocusableSceneObject {
+public class SceneItem extends FocusableNode {
     protected boolean isActive = false;
     private boolean isAnimating = false;
     private static final float duration = 0.35f;
@@ -36,26 +36,26 @@ public class SceneItem extends FocusableSceneObject {
     public SceneItem(SXRContext sxrContext, SXRMesh mesh, SXRTexture texture) {
         super(sxrContext, mesh, texture);
 
-        final SXRSceneObject onFocusSceneObject = new SXRSceneObject(sxrContext, sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
+        final SXRNode onFocusNode = new SXRNode(sxrContext, sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                 R.raw.edge_box_normal)), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.edge_box)));
-        onFocusSceneObject.getTransform().setPositionZ(-.1f);
-        onFocusSceneObject.getRenderData().setRenderingOrder(getRenderData().getRenderingOrder() + 1);
-        onFocusSceneObject.getRenderData().setDepthTest(false);
+        onFocusNode.getTransform().setPositionZ(-.1f);
+        onFocusNode.getRenderData().setRenderingOrder(getRenderData().getRenderingOrder() + 1);
+        onFocusNode.getRenderData().setDepthTest(false);
 
         setOnFocusListener(new OnFocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
-                removeChildObject(onFocusSceneObject);
+            public void lostFocus(FocusableNode object) {
+                removeChildObject(onFocusNode);
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
-                addChildObject(onFocusSceneObject);
+            public void gainedFocus(FocusableNode object) {
+                addChildObject(onFocusNode);
             }
         });
 

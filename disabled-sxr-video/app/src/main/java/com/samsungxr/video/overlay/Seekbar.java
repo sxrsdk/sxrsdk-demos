@@ -22,27 +22,27 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData.SXRRenderMaskBit;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.io.FileNotFoundException;
 
-public class Seekbar extends SXRSceneObject {
+public class Seekbar extends SXRNode {
     private static final float WIDTH = 8.0f;
     private static final float HEIGHT = 0.4f;
     private static final float DEPTH = 8.0f;
     private static final float Y = -0.2f;
-    private SXRSceneObject mPlayedSide = null;
-    private SXRSceneObject mLeftSide = null;
-    private SXRSceneObject mPointer = null;
-    private SXRSceneObject mGlow = null;
-    private SXRSceneObject mCurrentTime = null;
-    private SXRSceneObject mDuration = null;
+    private SXRNode mPlayedSide = null;
+    private SXRNode mLeftSide = null;
+    private SXRNode mPointer = null;
+    private SXRNode mGlow = null;
+    private SXRNode mCurrentTime = null;
+    private SXRNode mDuration = null;
 
     public Seekbar(SXRContext sxrContext) throws FileNotFoundException {
         super(sxrContext);
         getTransform().setPosition(-0.1f, Y, -DEPTH);
 
-        mPlayedSide = new SXRSceneObject(sxrContext, sxrContext.createQuad(
+        mPlayedSide = new SXRNode(sxrContext, sxrContext.createQuad(
                 1.0f, 0.1f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/dark-gray.png")));
         mPlayedSide.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 2);
@@ -50,7 +50,7 @@ public class Seekbar extends SXRSceneObject {
         mPlayedSide.getRenderData().setOffsetFactor(-2.0f);
         mPlayedSide.getRenderData().setOffsetUnits(-2.0f);
 
-        mLeftSide = new SXRSceneObject(sxrContext, sxrContext.createQuad(1.0f,
+        mLeftSide = new SXRNode(sxrContext, sxrContext.createQuad(1.0f,
                 0.1f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/light-gray.png")));
         mLeftSide.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 2);
@@ -58,7 +58,7 @@ public class Seekbar extends SXRSceneObject {
         mLeftSide.getRenderData().setOffsetFactor(-2.0f);
         mLeftSide.getRenderData().setOffsetUnits(-2.0f);
 
-        mPointer = new SXRSceneObject(sxrContext, sxrContext.createQuad(0.08f,
+        mPointer = new SXRNode(sxrContext, sxrContext.createQuad(0.08f,
                 0.3f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/dark-gray-circle.png")));
         mPointer.getRenderData().setRenderingOrder(
                 SXRRenderingOrder.TRANSPARENT + 3);
@@ -66,7 +66,7 @@ public class Seekbar extends SXRSceneObject {
         mPointer.getRenderData().setOffsetFactor(-3.0f);
         mPointer.getRenderData().setOffsetUnits(-3.0f);
 
-        mGlow = new SXRSceneObject(sxrContext,
+        mGlow = new SXRNode(sxrContext,
                 sxrContext.createQuad(8.8f, 0.5f),
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource("seekbar/seekbar-glow.png")));
         mGlow.getRenderData().setRenderingOrder(
@@ -75,7 +75,7 @@ public class Seekbar extends SXRSceneObject {
         mGlow.getRenderData().setOffsetFactor(-1.0f);
         mGlow.getRenderData().setOffsetUnits(-1.0f);
 
-        mCurrentTime = new SXRSceneObject(sxrContext, sxrContext.createQuad(
+        mCurrentTime = new SXRNode(sxrContext, sxrContext.createQuad(
                 2.4f, 0.3f), TextFactory.create(sxrContext, "1111"));
         mCurrentTime.getTransform().setPosition(-3.2f, -0.3f, 0.0f);
         mCurrentTime.getRenderData().setRenderingOrder(
@@ -84,7 +84,7 @@ public class Seekbar extends SXRSceneObject {
         mCurrentTime.getRenderData().setOffsetFactor(-2.0f);
         mCurrentTime.getRenderData().setOffsetUnits(-2.0f);
 
-        mDuration = new SXRSceneObject(sxrContext, sxrContext.createQuad(2.4f,
+        mDuration = new SXRNode(sxrContext, sxrContext.createQuad(2.4f,
                 0.3f), TextFactory.create(sxrContext, "2222"));
         mDuration.getTransform().setPosition(3.2f, -0.3f, 0.0f);
         mDuration.getRenderData().setRenderingOrder(

@@ -25,7 +25,7 @@ import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
@@ -35,9 +35,9 @@ import com.samsungxr.SXRTextureParameters.TextureWrapType;
 import com.samsungxr.IActivityEvents;
 import com.samsungxr.controls.anim.ActionWormAnimation;
 import com.samsungxr.controls.anim.ColorWorm;
-import com.samsungxr.controls.anim.StarBoxSceneObject;
+import com.samsungxr.controls.anim.StarBoxNode;
 import com.samsungxr.controls.cursor.ControlGazeController;
-import com.samsungxr.controls.focus.ControlSceneObjectBehavior;
+import com.samsungxr.controls.focus.ControlNodeBehavior;
 import com.samsungxr.controls.gamepad.GamepadObject;
 import com.samsungxr.controls.input.GamepadInput;
 import com.samsungxr.controls.input.TouchPadInput;
@@ -54,7 +54,7 @@ public class Main extends SXRMain {
     private SXRScene scene;
 
     public static Worm worm;
-    private SXRSceneObject skybox, surroundings, sun, ground, fence;
+    private SXRNode skybox, surroundings, sun, ground, fence;
     private Clouds clouds;
     private float GROUND_Y_POSITION = -1;
     private float SKYBOX_SIZE = 1;
@@ -75,7 +75,7 @@ public class Main extends SXRMain {
 
     private Apple apple;
     public static ActionWormAnimation animationColor;
-    private static StarBoxSceneObject starBox;
+    private static StarBoxNode starBox;
     private IActivityEvents activityTouchHandler = new SXREventListeners.ActivityEvents()
     {
         public void dispatchTouchEvent(MotionEvent event)
@@ -134,25 +134,25 @@ public class Main extends SXRMain {
 
     public void createStar(){
 
-        SXRSceneObject object = new SXRSceneObject(mSXRContext);
+        SXRNode object = new SXRNode(mSXRContext);
 
-        starBox = new StarBoxSceneObject(mSXRContext);
+        starBox = new StarBoxNode(mSXRContext);
 
         starBox.getTransform().setPosition(0, .4f, 8.5f);
         starBox.getTransform().rotateByAxisWithPivot(125, 0, 1, 0, 0, 0, 0);
         starBox.setName("star");
         object.addChildObject(starBox);
 
-        scene.addSceneObject(object);
+        scene.addNode(object);
     }
 
     public void enableAnimationWorm(){
 
-        SXRSceneObject wormParent = worm.getWormParentation();
+        SXRNode wormParent = worm.getWormParentation();
 
         animationColor = new ActionWormAnimation(mSXRContext);
 
-        SXRSceneObject object = new SXRSceneObject(mSXRContext);
+        SXRNode object = new SXRNode(mSXRContext);
         object.addChildObject(animationColor);
 
         wormParent.addChildObject(object);
@@ -167,7 +167,7 @@ public class Main extends SXRMain {
 
         apple = new Apple(mSXRContext);
         apple.setName("apple");
-        mSXRContext.getMainScene().addSceneObject(apple);
+        mSXRContext.getMainScene().addNode(apple);
         apple.setAppleRandomPosition(mSXRContext);
         apple.getTransform().setPositionY(Constants.APPLE_INICIAL_YPOS);
         apple.playAnimation(mSXRContext);
@@ -180,7 +180,7 @@ public class Main extends SXRMain {
         touchpad.getTransform().setScale(0.6f, 0.6f, 0.6f);
         touchpad.getTransform().rotateByAxisWithPivot(90 + 45, 0, 1, 0, 0, 0, 0);
         touchpad.setName("touchpad");
-        mSXRContext.getMainScene().addSceneObject(touchpad);
+        mSXRContext.getMainScene().addNode(touchpad);
     }
 
     private void createFence() {
@@ -189,13 +189,13 @@ public class Main extends SXRMain {
                 new SXRAndroidResource(mSXRContext, R.raw.fence));
         SXRTexture texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
-        fence = new SXRSceneObject(mSXRContext, mesh, texture);
+        fence = new SXRNode(mSXRContext, mesh, texture);
         fence.getTransform().setPositionY(GROUND_Y_POSITION);
         fence.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         fence.getRenderData().setCullFace(SXRCullFaceEnum.None);
         fence.getRenderData().setRenderingOrder(RenderingOrder.FENCE);
         fence.setName("fence");
-        scene.addSceneObject(fence);
+        scene.addNode(fence);
     }
 
     private void createWorm() {
@@ -203,7 +203,7 @@ public class Main extends SXRMain {
         worm = new Worm(mSXRContext);
         worm.enableShadow();
         worm.setName("worm");
-        scene.addSceneObject(worm);
+        scene.addNode(worm);
     }
 
     private void createGround() {
@@ -219,7 +219,7 @@ public class Main extends SXRMain {
         SXRTexture texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.ground_512), parameters);
 
-        ground = new SXRSceneObject(mSXRContext, mesh, texture,
+        ground = new SXRNode(mSXRContext, mesh, texture,
                 new SXRShaderId(TileShader.class));
         ground.getTransform().setPositionY(GROUND_Y_POSITION);
         ground.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
@@ -230,7 +230,7 @@ public class Main extends SXRMain {
        // ground.getRenderData().getMaterial().setFloat(TileShader.TILE_COUNT, GROUND_TILES);
         ground.getRenderData().getMaterial().setTexture(TileShader.TEXTURE_KEY, texture);
         ground.setName("ground");
-        scene.addSceneObject(ground);
+        scene.addNode(ground);
     }
 
     private void createSkybox() {
@@ -240,11 +240,11 @@ public class Main extends SXRMain {
         SXRTexture texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.skybox));
 
-        skybox = new SXRSceneObject(mSXRContext, mesh, texture);
+        skybox = new SXRNode(mSXRContext, mesh, texture);
         skybox.getTransform().setScale(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
         skybox.getRenderData().setRenderingOrder(RenderingOrder.SKYBOX);
         skybox.setName("skybox");
-        scene.addSceneObject(skybox);
+        scene.addNode(skybox);
     }
 
     private void createClouds() {
@@ -260,11 +260,11 @@ public class Main extends SXRMain {
         SXRTexture texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
 
         mesh = mSXRContext.getAssetLoader().loadMesh(
@@ -272,10 +272,10 @@ public class Main extends SXRMain {
         texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.GRASS);
 
@@ -284,10 +284,10 @@ public class Main extends SXRMain {
         texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
 
@@ -295,11 +295,11 @@ public class Main extends SXRMain {
                 new SXRAndroidResource(mSXRContext, R.raw.wood));
         texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setCullFace(SXRCullFaceEnum.None);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         surroundings.setName("surroundings");
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.WOOD);
@@ -310,13 +310,13 @@ public class Main extends SXRMain {
         SXRMesh mesh = mSXRContext.createQuad(SUN_SIZE, SUN_SIZE);
         SXRTexture texture = mSXRContext.getAssetLoader().loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.sun));
-        sun = new SXRSceneObject(mSXRContext, mesh, texture);
+        sun = new SXRNode(mSXRContext, mesh, texture);
         sun.getTransform().setRotationByAxis(90, 1, 0, 0);
         sun.getTransform().setPositionY(SUN_Y_POSITION);
         sun.getTransform().rotateByAxisWithPivot(SUN_ANGLE_POSITION, 1, 0, 0, 0, 0, 0);
         sun.getRenderData().setRenderingOrder(RenderingOrder.SUN);
         sun.setName("sun");
-        scene.addSceneObject(sun);
+        scene.addNode(sun);
     }
 
     @Override
@@ -331,7 +331,7 @@ public class Main extends SXRMain {
 
         worm.interactWithDPad();
         worm.animateWormByTouchPad();
-        ControlSceneObjectBehavior.process(mSXRContext);
+        ControlNodeBehavior.process(mSXRContext);
 
         if (gamepadObject != null) {
             gamepadObject.inputControl();
@@ -343,7 +343,7 @@ public class Main extends SXRMain {
 
         menu = new MenuBox(mSXRContext);
         menu.setName("menu");
-        scene.addSceneObject(menu);
+        scene.addNode(menu);
     }
 
     private void createGazeCursor() {
@@ -356,6 +356,6 @@ public class Main extends SXRMain {
         gamepadObject.getTransform().setPosition(0, 1.f, -8.5f);
         gamepadObject.getTransform().rotateByAxisWithPivot(225, 0, 1, 0, 0, 0, 0);
         gamepadObject.setName("gamepad");
-        scene.addSceneObject(gamepadObject);
+        scene.addNode(gamepadObject);
     }
 }

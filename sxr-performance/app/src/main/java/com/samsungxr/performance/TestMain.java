@@ -24,7 +24,7 @@ import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRImportSettings;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.ZipLoader;
 import com.samsungxr.SXRMain;
@@ -93,10 +93,10 @@ public class TestMain extends SXRMain {
             int numTextures = textures.size();
             for (int i = 0; i < numberOfBunnies; ++i) {
 
-                SXRSceneObject bunny;
+                SXRNode bunny;
                 EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(NO_LIGHTING));
                 // we assume that the mesh and the textures are valid
-                bunny = new SXRSceneObject(sxrContext,
+                bunny = new SXRNode(sxrContext,
                         sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                                 "bunny.obj"), settings), textures.get(i % numTextures));
 

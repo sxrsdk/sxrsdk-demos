@@ -64,13 +64,13 @@ public abstract class BaseContentScene extends ScrollableContentScene {
             mFirstShow = false;
         }
         mMainWidget.addChild(mControlBar);
-        mMainScene.addSceneObject(mMainWidget);
+        mMainScene.addNode(mMainWidget);
     }
 
     @Override
     public void hide() {
         mMainWidget.removeChild(mControlBar);
-        mMainScene.removeSceneObject(mMainWidget);
+        mMainScene.removeNode(mMainWidget);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class MainScene extends SXRMain {
         mPlayerObj.setLooping(true);
         mPlayerObj.play();
 
-        sxrContext.getMainScene().addSceneObject(mPlayerObj);
+        sxrContext.getMainScene().addNode(mPlayerObj);
     }
 
     @Override

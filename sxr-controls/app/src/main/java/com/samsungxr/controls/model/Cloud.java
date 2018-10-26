@@ -22,11 +22,11 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.controls.util.RenderingOrder;
 
-public class Cloud extends SXRSceneObject {
+public class Cloud extends SXRNode {
 
     private final int CLOUD_ANGLE = 30;
     private final float CLOUD_OFFSET = 0.5f;

@@ -24,10 +24,10 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
+import com.samsungxr.nodes.SXRVideoNode;
 import com.samsungxr.video.shaders.AdditiveShader;
 import com.samsungxr.video.shaders.RadiosityShader;
 
@@ -35,9 +35,9 @@ import java.io.IOException;
 
 public class IMAXMovieTheater extends MovieTheater {
 
-    SXRSceneObject background = null;
-    SXRSceneObject additive = null;
-    SXRSceneObject screen = null;
+    SXRNode background = null;
+    SXRNode additive = null;
+    SXRNode screen = null;
 
     private float mFadeWeight = 0.0f;
     private float mFadeTarget = 1.0f;
@@ -55,7 +55,7 @@ public class IMAXMovieTheater extends MovieTheater {
                     new SXRAndroidResource(context, "imax/cinema_light_on.png"));
             SXRMesh backgroundRadiosity = context.getAssetLoader().loadMesh(new SXRAndroidResource(context, "imax/radiosity1.obj"));
             backgroundMesh.setNormals(backgroundRadiosity.getVertices());
-            background = new SXRSceneObject(context, backgroundMesh, backgroundLightOffTexture);
+            background = new SXRNode(context, backgroundMesh, backgroundLightOffTexture);
             background.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
             SXRMesh additiveMesh = context.getAssetLoader().loadMesh(
                     new SXRAndroidResource(context, "imax/additive.obj"));
@@ -63,7 +63,7 @@ public class IMAXMovieTheater extends MovieTheater {
                     new SXRAndroidResource(context, "imax/additive.png"));
             SXRMesh additiveRadiosity = context.getAssetLoader().loadMesh(new SXRAndroidResource(context, "imax/radiosity2.obj"));
             additiveMesh.setNormals(additiveRadiosity.getVertices());
-            additive = new SXRSceneObject(context, additiveMesh, additiveTexture);
+            additive = new SXRNode(context, additiveMesh, additiveTexture);
             additive.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
             additive.getRenderData().setRenderingOrder(2500);
 
@@ -83,8 +83,8 @@ public class IMAXMovieTheater extends MovieTheater {
             // screen
             SXRMesh screenMesh = context.getAssetLoader().loadMesh(new SXRAndroidResource(
                     context, "imax/screen.obj"));
-            screen = new SXRVideoSceneObject(context, screenMesh, player,
-                    screenTexture, SXRVideoSceneObject.SXRVideoType.MONO);
+            screen = new SXRVideoNode(context, screenMesh, player,
+                    screenTexture, SXRVideoNode.SXRVideoType.MONO);
             screen.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
             this.addChildObject(background);
             this.addChildObject(additive);

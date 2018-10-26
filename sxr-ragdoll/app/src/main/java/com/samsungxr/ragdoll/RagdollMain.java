@@ -22,7 +22,7 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
 import com.samsungxr.physics.SXRPhysicsLoader;
@@ -37,7 +37,7 @@ public class RagdollMain extends SXRMain {
     private final static float CURSOR_DEPTH = 6.0f;
 
     private SXRCursorController mCursorController = null;
-    private SXRSceneObject mCursor = null;
+    private SXRNode mCursor = null;
     private TouchHandler mTouchHandler = null;
     private SXRWorld mWorld = null;
 
@@ -52,10 +52,10 @@ public class RagdollMain extends SXRMain {
         scene.setBackgroundColor(0,0,0,0);
 
         Log.d(TAG, "Loading Rag Doll mesh...");
-        SXRSceneObject model = sxrContext.getAssetLoader().loadModel("models/ragdoll.fbx", scene);
+        SXRNode model = sxrContext.getAssetLoader().loadModel("models/ragdoll.fbx", scene);
 
         model.getTransform().setPosition(0,0, -3);
-        scene.addSceneObject(model);
+        scene.addNode(model);
 
         mWorld = new SXRWorld(sxrContext);
         mWorld.setGravity(0f, -1f, 0f);
@@ -79,7 +79,7 @@ public class RagdollMain extends SXRMain {
 
         scene.getEventReceiver().addListener(mTouchHandler);
         SXRInputManager inputManager = sxrContext.getInputManager();
-        mCursor = new SXRSceneObject(sxrContext,
+        mCursor = new SXRNode(sxrContext,
                 sxrContext.createQuad(0.2f * CURSOR_DEPTH,
                         0.2f * CURSOR_DEPTH),
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
@@ -109,7 +109,7 @@ public class RagdollMain extends SXRMain {
 
     private class TouchHandler extends SXREventListeners.TouchEvents {
         @Override
-        public void onTouchStart(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject collision) {
+        public void onTouchStart(SXRNode sceneObj, SXRPicker.SXRPickedObject collision) {
             super.onTouchStart(sceneObj, collision);
 
             mWorld.startDrag(sceneObj,
@@ -117,7 +117,7 @@ public class RagdollMain extends SXRMain {
         }
 
         @Override
-        public void onTouchEnd(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject collision) {
+        public void onTouchEnd(SXRNode sceneObj, SXRPicker.SXRPickedObject collision) {
             super.onTouchEnd(sceneObj, collision);
             mWorld.stopDrag();
         }

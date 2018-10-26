@@ -37,7 +37,7 @@ import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.ZipLoader;
 import com.samsungxr.io.SXRCursorController;
@@ -50,7 +50,7 @@ import com.samsungxr.io.cursor3d.ICursorActivationListener;
 import com.samsungxr.io.cursor3d.IoDevice;
 import com.samsungxr.io.cursor3d.MovableBehavior;
 import com.samsungxr.io.cursor3d.SelectableBehavior;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.utility.Log;
 import org.joml.Vector3f;
 
@@ -296,8 +296,8 @@ public class CursorMain extends SXRMain {
 
         for (int i = 0; i < NUM_TEXT_VIEWS; i++) {
             setTextOnMainThread(i, textViewStrings[i]);
-            createTextViewSceneObject(i);
-            createCircleTextViewSceneObject(i);
+            createTextViewNode(i);
+            createCircleTextViewNode(i);
         }
 
         setTextOnMainThread(resetTextView, RESET_TEXT);
@@ -387,24 +387,24 @@ public class CursorMain extends SXRMain {
         position.set(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         addSpaceObject(new ResetButton(cursorManager, getButtonAsset(), "reset", position, 2.5f,
                 SETTINGS_ROTATION_X, SETTINGS_ROTATION_Y - 2.0f));
-        SXRViewSceneObject resetText = new SXRViewSceneObject(sxrContext, resetTextView,
+        SXRViewNode resetText = new SXRViewNode(sxrContext, resetTextView,
                 sxrContext.createQuad(TEXT_QUAD_WIDTH, TEXT_QUAD_HEIGHT));
         resetText.getTransform().setPosition(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         resetText.getTransform().rotateByAxisWithPivot(SETTINGS_ROTATION_X, 0, 1, 0, 0, 0, 0);
         resetText.getTransform().rotateByAxisWithPivot(SETTINGS_ROTATION_Y +
                 SETTINGS_TEXT_OFFSET, 1, 0, 0, 0, 0, 0);
-        mainScene.addSceneObject(resetText);
+        mainScene.addNode(resetText);
 
         position.set(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         addSpaceObject(new SettingsObject(cursorManager, getSettingAsset(), "settings", position,
                 2.0f, -SETTINGS_ROTATION_X, SETTINGS_ROTATION_Y, 0.0f));
-        SXRViewSceneObject settingsText = new SXRViewSceneObject(sxrContext, settingsTextView,
+        SXRViewNode settingsText = new SXRViewNode(sxrContext, settingsTextView,
                 sxrContext.createQuad(TEXT_QUAD_WIDTH, TEXT_QUAD_HEIGHT));
         settingsText.getTransform().setPosition(0.0f, SCENE_HEIGHT, SCENE_DEPTH);
         settingsText.getTransform().rotateByAxisWithPivot(-SETTINGS_ROTATION_X, 0, 1, 0, 0, 0, 0);
         settingsText.getTransform().rotateByAxisWithPivot(SETTINGS_ROTATION_Y +
                 SETTINGS_TEXT_OFFSET, 1, 0, 0, 0, 0, 0);
-        mainScene.addSceneObject(settingsText);
+        mainScene.addNode(settingsText);
 
         cursors = new ArrayList<Cursor>();
         cursorManager.getEventReceiver().addListener(activationListener);
@@ -415,28 +415,28 @@ public class CursorMain extends SXRMain {
         }
     }
 
-    private void createTextViewSceneObject(int index) {
-        SXRViewSceneObject text = new SXRViewSceneObject(sxrContext, textViewList.get(index),
+    private void createTextViewNode(int index) {
+        SXRViewNode text = new SXRViewNode(sxrContext, textViewList.get(index),
                 sxrContext.createQuad(TEXT_QUAD_WIDTH, getTextQuadHeightFromIndex(index)));
         text.getTransform().setPosition(TEXT_POSITION_X, TEXT_POSITION_Y +
                 getTextViewYOffsetFromIndex(index), TEXT_POSITION_Z);
-        rotateTextViewSceneObject(text, getRotationFromIndex(index));
-        mainScene.addSceneObject(text);
+        rotateTextViewNode(text, getRotationFromIndex(index));
+        mainScene.addNode(text);
     }
 
-    private void rotateTextViewSceneObject(SXRViewSceneObject text, float rotationX) {
+    private void rotateTextViewNode(SXRViewNode text, float rotationX) {
         text.getTransform().rotateByAxisWithPivot(rotationX, Y_AXIS[0], Y_AXIS[1], Y_AXIS[2],
                 0.0f, 0.0f, 0.0f);
         text.getRenderData().setRenderingOrder(10002);
     }
 
-    private void createCircleTextViewSceneObject(int index) {
-        SXRViewSceneObject text = new SXRViewSceneObject(sxrContext, circleTextViewList.get(index),
+    private void createCircleTextViewNode(int index) {
+        SXRViewNode text = new SXRViewNode(sxrContext, circleTextViewList.get(index),
                 sxrContext.createQuad(CIRCLE_TEXT_QUAD_WIDTH, CIRCLE_TEXT_QUAD_HEIGHT));
         text.getTransform().setPosition(TEXT_POSITION_X, TEXT_POSITION_Y +
                 getTextViewYOffsetFromIndex(index), TEXT_POSITION_Z);
-        rotateTextViewSceneObject(text, getRotationFromIndex(index) + CIRCLE_TEXT_ROTATION_OFFSET);
-        mainScene.addSceneObject(text);
+        rotateTextViewNode(text, getRotationFromIndex(index) + CIRCLE_TEXT_ROTATION_OFFSET);
+        mainScene.addNode(text);
     }
 
     private float getRotationFromIndex(int index) {
@@ -516,8 +516,8 @@ public class CursorMain extends SXRMain {
     }
 
     private void addSpaceObject(SpaceObject spaceObject) {
-        SXRSceneObject sceneObject = spaceObject.getSceneObject();
-        mainScene.addSceneObject(sceneObject);
+        SXRNode sceneObject = spaceObject.getNode();
+        mainScene.addNode(sceneObject);
         cursorManager.addSelectableObject(sceneObject);
         objects.put(sceneObject.getName(), spaceObject);
     }
@@ -589,50 +589,50 @@ public class CursorMain extends SXRMain {
         quadMesh.createQuad(CUBE_WIDTH, CUBE_WIDTH);
 
         // surrounding cube
-        SXRSceneObject frontFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
+        SXRNode frontFace = new SXRNode(sxrContext, quadMesh, cubemapTexture);
         frontFace.getRenderData().setMaterial(cubemapMaterial);
         frontFace.setName("front");
         frontFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
-        scene.addSceneObject(frontFace);
+        scene.addNode(frontFace);
         frontFace.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.5f);
 
-        SXRSceneObject backFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
+        SXRNode backFace = new SXRNode(sxrContext, quadMesh, cubemapTexture);
         backFace.getRenderData().setMaterial(cubemapMaterial);
         backFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         backFace.setName("back");
-        scene.addSceneObject(backFace);
+        scene.addNode(backFace);
         backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
         backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject leftFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
+        SXRNode leftFace = new SXRNode(sxrContext, quadMesh, cubemapTexture);
         leftFace.getRenderData().setMaterial(cubemapMaterial);
         leftFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         leftFace.setName("left");
-        scene.addSceneObject(leftFace);
+        scene.addNode(leftFace);
         leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject rightFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
+        SXRNode rightFace = new SXRNode(sxrContext, quadMesh, cubemapTexture);
         rightFace.getRenderData().setMaterial(cubemapMaterial);
         rightFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         rightFace.setName("right");
-        scene.addSceneObject(rightFace);
+        scene.addNode(rightFace);
         rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject topFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
+        SXRNode topFace = new SXRNode(sxrContext, quadMesh, cubemapTexture);
         topFace.getRenderData().setMaterial(cubemapMaterial);
         topFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         topFace.setName("top");
-        scene.addSceneObject(topFace);
+        scene.addNode(topFace);
         topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
         topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-        SXRSceneObject bottomFace = new SXRSceneObject(sxrContext, quadMesh, cubemapTexture);
+        SXRNode bottomFace = new SXRNode(sxrContext, quadMesh, cubemapTexture);
         bottomFace.getRenderData().setMaterial(cubemapMaterial);
         bottomFace.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         bottomFace.setName("bottom");
-        scene.addSceneObject(bottomFace);
+        scene.addNode(bottomFace);
         bottomFace.getTransform().setPosition(0.0f, -CUBE_WIDTH * 0.5f, 0.0f);
         bottomFace.getTransform().rotateByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
     }
@@ -653,7 +653,7 @@ public class CursorMain extends SXRMain {
     }
 
     private class SettingsObject extends SpaceObject {
-        public SettingsObject(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public SettingsObject(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY, float orientationX) {
             super(cursorMgr, asset, name, position, scale, rotationX, rotationY, orientationX,
                     0.0f, 0.0f);
@@ -691,7 +691,7 @@ public class CursorMain extends SXRMain {
         private CursorTheme rightHandTheme, leftHandTheme;
         private Vector3f leftCursorPosition, rightCursorPosition;
 
-        public HandCursorButton(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public HandCursorButton(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY) {
             super(cursorMgr, asset, name, position, scale, rotationX, rotationY,
                     BUTTON_XORIENTATION, 0.0f, 0.0f);
@@ -792,7 +792,7 @@ public class CursorMain extends SXRMain {
     }
 
     private class LaserCursorButton extends SpaceObject {
-        public LaserCursorButton(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public LaserCursorButton(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY) {
             super(cursorMgr, asset, name, position, scale, rotationX, rotationY,
                     BUTTON_XORIENTATION, 0.0f, 0.0f);
@@ -812,7 +812,7 @@ public class CursorMain extends SXRMain {
 
     private class GearS2Button extends SpaceObject {
         Vector3f cursorPosition;
-        public GearS2Button(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public GearS2Button(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY) {
             super(cursorMgr, asset, name, position, scale, rotationX, rotationY,
                     BUTTON_XORIENTATION, 0.0f, 0.0f);
@@ -849,7 +849,7 @@ public class CursorMain extends SXRMain {
     private class ResetButton extends SpaceObject {
         private static final String RESET_CURSOR_NAME = "Right Cursor";
 
-        public ResetButton(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public ResetButton(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY) {
             super(cursorMgr, asset, name, position, scale, rotationX, rotationY,
                     BUTTON_XORIENTATION + 10.0f, 0.0f, 0.0f);
@@ -877,14 +877,14 @@ public class CursorMain extends SXRMain {
     }
 
     class MovableObject extends SpaceObject {
-        private SXRSceneObject sceneObject;
+        private SXRNode sceneObject;
 
-        public MovableObject(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public MovableObject(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY) {
             this(cursorMgr, asset, name, position, scale, rotationX, rotationY, 0.0f, 0.0f, 0.0f);
         }
 
-        public MovableObject(CursorManager cursorMgr, SXRSceneObject asset, String name, Vector3f
+        public MovableObject(CursorManager cursorMgr, SXRNode asset, String name, Vector3f
                 position, float scale, float rotationX, float rotationY, float orientationX,
                              float orientationY, float orientationZ) {
             super(cursorMgr, asset, name, position, scale, rotationX, rotationY, orientationX,
@@ -893,56 +893,56 @@ public class CursorMain extends SXRMain {
         }
 
         private void initialize(CursorManager cursorMgr) {
-            sceneObject = getSceneObject();
+            sceneObject = getNode();
             cursorMgr.removeSelectableObject(sceneObject);
             sceneObject.detachComponent(SelectableBehavior.getComponentType());
             sceneObject.attachComponent(new MovableBehavior(cursorMgr, true));
         }
     }
 
-    private SXRSceneObject getStarAsset() {
+    private SXRNode getStarAsset() {
         return getAsset(STAR_MESHES, STAR_TEXTURES, true);
     }
 
-    private SXRSceneObject getCubeAsset() {
+    private SXRNode getCubeAsset() {
         return getAsset(CUBE_MESHES, CUBE_TEXTURES, true);
     }
 
-    private SXRSceneObject getAstronautAsset() {
+    private SXRNode getAstronautAsset() {
         return getAsset(ASTRONAUT_MESHES, ASTRONAUT_TEXTURES, true);
     }
 
-    private SXRSceneObject getRocketShipAsset() {
+    private SXRNode getRocketShipAsset() {
         return getAsset(ROCKET_SHIP_MESHES, ROCKET_SHIP_TEXTURES, true);
     }
 
-    private SXRSceneObject getSettingAsset() {
+    private SXRNode getSettingAsset() {
         return getAsset(SETTING_MESHES, SETTING_TEXTURES, false);
     }
 
-    private SXRSceneObject getCloud1Asset() {
+    private SXRNode getCloud1Asset() {
         return getAsset(CLOUD_1_MESHES, CLOUD_TEXTURES, false);
     }
 
-    private SXRSceneObject getCloud2Asset() {
+    private SXRNode getCloud2Asset() {
         return getAsset(CLOUD_2_MESHES, CLOUD_TEXTURES, false);
     }
 
-    private SXRSceneObject getCloud3Asset() {
+    private SXRNode getCloud3Asset() {
         return getAsset(CLOUD_3_MESHES, CLOUD_TEXTURES, false);
     }
 
-    private SXRSceneObject getButtonAsset() {
+    private SXRNode getButtonAsset() {
         return getAsset(BUTTON_MESHES, BUTTON_TEXTURES, false);
     }
 
-    private SXRSceneObject getSwordAsset() {
+    private SXRNode getSwordAsset() {
 
         return getAsset(SWORD_MESHES, SWORD_TEXTURES, false);
     }
 
-    private SXRSceneObject getAsset(String[] meshes, String[] textures, boolean useMesh) {
-        SXRSceneObject root = new SXRSceneObject(sxrContext);
+    private SXRNode getAsset(String[] meshes, String[] textures, boolean useMesh) {
+        SXRNode root = new SXRNode(sxrContext);
         SXRMeshCollider collider = new SXRMeshCollider(sxrContext, true);
 
         collider.setMesh(meshMap.get(meshes[0]));
@@ -953,7 +953,7 @@ public class CursorMain extends SXRMain {
              ++state)
         {
             SXRMesh mesh = meshMap.get(meshes[state]);
-            SXRSceneObject child = new SXRSceneObject(sxrContext, mesh);
+            SXRNode child = new SXRNode(sxrContext, mesh);
 
             child.getRenderData().setMaterial(materialMap.get(textures[state]));
             child.setName(meshes[state]);

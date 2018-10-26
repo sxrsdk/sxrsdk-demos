@@ -16,7 +16,7 @@
 package com.samsungxr.controls.anim;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRRelativeMotionAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.Main;
@@ -46,7 +46,7 @@ public class WormApplyTransformAnims {
         scaleWormPart(sxrContext, Main.worm.getEnd(), scaleFactor);
     }
 
-    public static void moveWormPart(SXRContext sxrContext, SXRSceneObject part, float scaleFactor) {
+    public static void moveWormPart(SXRContext sxrContext, SXRNode part, float scaleFactor) {
 
         float currentScale = part.getTransform().getScaleX();
         float ratio = (currentScale + scaleFactor) / currentScale;
@@ -59,8 +59,8 @@ public class WormApplyTransformAnims {
                 .getAnimationEngine());
     }
 
-    public static void moveWormPartToClose(SXRContext sxrContext, SXRSceneObject moveablePart,
-            SXRSceneObject basePart) {
+    public static void moveWormPartToClose(SXRContext sxrContext, SXRNode moveablePart,
+            SXRNode basePart) {
 
         float scaleRatio = ScaleWorm.getWorm().getHead().getTransform().getScaleX()
                 / ScaleWorm.getLastSize()[0];
@@ -76,15 +76,15 @@ public class WormApplyTransformAnims {
                 .start(sxrContext.getAnimationEngine());
     }
 
-    private static void scaleWormPart(SXRContext sxrContext, SXRSceneObject part, float scaleFactor) {
+    private static void scaleWormPart(SXRContext sxrContext, SXRNode part, float scaleFactor) {
 
         new SXRScaleAnimation(part, AnimationsTime.getScaleTime(), part.getTransform().getScaleX()
                 + scaleFactor)
                 .start(sxrContext.getAnimationEngine());
     }
 
-    public static SXRRelativeMotionAnimation moveWormPartReset(SXRSceneObject moveablePart,
-            SXRSceneObject basePart) {
+    public static SXRRelativeMotionAnimation moveWormPartReset(SXRNode moveablePart,
+            SXRNode basePart) {
 
         float scaleRatio = ScaleWorm.getLastSize()[0] / basePart.getTransform().getScaleX();
 

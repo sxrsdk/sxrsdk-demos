@@ -15,11 +15,11 @@
 
 package com.samsungxr.video.focus;
 
-import com.samsungxr.video.focus.FocusableSceneObject;
+import com.samsungxr.video.focus.FocusableNode;
 
 public interface FocusListener {
 
-    public void gainedFocus(FocusableSceneObject object);
+    public void gainedFocus(FocusableNode object);
 
-    public void lostFocus(FocusableSceneObject object);
+    public void lostFocus(FocusableNode object);
 }

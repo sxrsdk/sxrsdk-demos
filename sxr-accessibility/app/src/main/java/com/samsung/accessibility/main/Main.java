@@ -14,9 +14,9 @@ import android.view.MotionEvent;
 
 import com.samsung.accessibility.R;
 import com.samsung.accessibility.focus.FocusableController;
-import com.samsung.accessibility.focus.FocusableSceneObject;
+import com.samsung.accessibility.focus.FocusableNode;
 import com.samsung.accessibility.focus.OnFocusListener;
-import com.samsung.accessibility.gaze.GazeCursorSceneObject;
+import com.samsung.accessibility.gaze.GazeCursorNode;
 import com.samsung.accessibility.scene.AccessibilityScene;
 import com.samsung.accessibility.shortcut.ShortcutMenu;
 import com.samsung.accessibility.shortcut.ShortcutMenuItem;
@@ -33,7 +33,7 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.ITouchEvents;
@@ -48,17 +48,17 @@ public class Main extends SXRMain {
 
     private SXRContext sxrContext;
 
-    private GazeCursorSceneObject cursor;
+    private GazeCursorNode cursor;
 
-    private FocusableSceneObject trex;
+    private FocusableNode trex;
 
-    private FocusableSceneObject bookObject;
+    private FocusableNode bookObject;
     public static AccessibilityScene accessibilityScene;
     public static AccessibilityManager manager;
 
     private ITouchEvents mTouchHandler = new TouchHandler();
     private SXRCursorController mController = null;
-    private SXRSceneObject pickedObject = null;
+    private SXRNode pickedObject = null;
 
     /*
      * Handles initializing the selected controller:
@@ -87,22 +87,22 @@ public class Main extends SXRMain {
      */
     public class TouchHandler extends SXREventListeners.TouchEvents
     {
-        public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject hit)
+        public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject hit)
         {
             pickedObject = hit.getHitObject();
-            if (pickedObject instanceof FocusableSceneObject)
+            if (pickedObject instanceof FocusableNode)
             {
-                ((FocusableSceneObject) pickedObject).setFocus(true);
+                ((FocusableNode) pickedObject).setFocus(true);
             }
         }
 
-        public void onExit(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject hit)
+        public void onExit(SXRNode sceneObj, SXRPicker.SXRPickedObject hit)
         {
             if (sceneObj == pickedObject)
             {
-                if (pickedObject instanceof FocusableSceneObject)
+                if (pickedObject instanceof FocusableNode)
                 {
-                    ((FocusableSceneObject) pickedObject).setFocus(false);
+                    ((FocusableNode) pickedObject).setFocus(false);
                 }
                 pickedObject = null;
             }
@@ -114,7 +114,7 @@ public class Main extends SXRMain {
 
         this.sxrContext = sxrContext;
         AccessibilityTexture.getInstance(sxrContext);
-        cursor = GazeCursorSceneObject.getInstance(sxrContext);
+        cursor = GazeCursorNode.getInstance(sxrContext);
         manager = new AccessibilityManager(sxrContext);
 
         SXRScene scene = sxrContext.getMainScene();
@@ -124,8 +124,8 @@ public class Main extends SXRMain {
         createPedestalObject();
         createDinossaur();
 
-        scene.addSceneObject(shortcutMenu);
-        scene.addSceneObject(createSkybox());
+        scene.addNode(shortcutMenu);
+        scene.addNode(createSkybox());
         sxrContext.getInputManager().selectController(controllerSelector);
     }
 
@@ -142,9 +142,9 @@ public class Main extends SXRMain {
         SXRTexture bookTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.book));
         SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.base));
 
-        FocusableSceneObject baseObject = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
-        bookObject = new FocusableSceneObject(sxrContext, bookMesh, bookTexture);
-        FocusableSceneObject pedestalObject = new FocusableSceneObject(sxrContext);
+        FocusableNode baseObject = new FocusableNode(sxrContext, baseMesh, baseTexture);
+        bookObject = new FocusableNode(sxrContext, bookMesh, bookTexture);
+        FocusableNode pedestalObject = new FocusableNode(sxrContext);
 
         baseObject.getTransform().setScale(0.005f, 0.005f, 0.005f);
         bookObject.getTransform().setScale(0.005f, 0.005f, 0.005f);
@@ -155,25 +155,25 @@ public class Main extends SXRMain {
         pedestalObject.addChildObject(baseObject);
         pedestalObject.addChildObject(bookObject);
 
-        sxrContext.getMainScene().addSceneObject(pedestalObject);
+        sxrContext.getMainScene().addNode(pedestalObject);
     }
 
-    private SXRSceneObject createSkybox() {
+    private SXRNode createSkybox() {
         SXRMesh mesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_walls_mesh));
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_walls_tex_diffuse));
-        SXRSceneObject skybox = new SXRSceneObject(sxrContext, mesh, texture);
+        SXRNode skybox = new SXRNode(sxrContext, mesh, texture);
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getTransform().setPositionY(-1.6f);
         skybox.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshGround = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_ground_mesh));
         SXRTexture textureGround = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_ground_tex_diffuse));
-        SXRSceneObject skyboxGround = new SXRSceneObject(sxrContext, meshGround, textureGround);
+        SXRNode skyboxGround = new SXRNode(sxrContext, meshGround, textureGround);
         skyboxGround.getRenderData().setRenderingOrder(0);
 
         SXRMesh meshFx = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.windows_fx_mesh));
         SXRTexture textureFx = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
-        SXRSceneObject skyboxFx = new SXRSceneObject(sxrContext, meshFx, textureFx);
+        SXRNode skyboxFx = new SXRNode(sxrContext, meshFx, textureFx);
         skyboxGround.getRenderData().setRenderingOrder(0);
         skybox.addChildObject(skyboxFx);
         skybox.addChildObject(skyboxGround);
@@ -190,12 +190,12 @@ public class Main extends SXRMain {
 
         SXRMesh baseMesh = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.trex_mesh), settings);
         SXRTexture baseTexture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.trex_tex_diffuse));
-        trex = new FocusableSceneObject(sxrContext, baseMesh, baseTexture);
+        trex = new FocusableNode(sxrContext, baseMesh, baseTexture);
         trex.getTransform().setPosition(0, -1.6f, -7f);
         trex.getTransform().rotateByAxis(-90, 1, 0, 0);
         trex.getTransform().rotateByAxis(90, 0, 1, 0);
         activeTalkBack();
-        sxrContext.getMainScene().addSceneObject(trex);
+        sxrContext.getMainScene().addNode(trex);
     }
 
     public void setScene(SXRScene scene)
@@ -216,15 +216,15 @@ public class Main extends SXRMain {
         trex.setOnFocusListener(new OnFocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
                 trex.getTalkBack().speak();
             }
         });
@@ -235,15 +235,15 @@ public class Main extends SXRMain {
         bookObject.setOnFocusListener(new OnFocusListener() {
 
             @Override
-            public void lostFocus(FocusableSceneObject object) {
+            public void lostFocus(FocusableNode object) {
             }
 
             @Override
-            public void inFocus(FocusableSceneObject object) {
+            public void inFocus(FocusableNode object) {
             }
 
             @Override
-            public void gainedFocus(FocusableSceneObject object) {
+            public void gainedFocus(FocusableNode object) {
                 bookObject.getTalkBack().speak();
             }
         });

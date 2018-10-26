@@ -19,20 +19,20 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData.SXRRenderingOrder;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXROpacityAnimation;
 import com.samsungxr.immersivepedia.R;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.focus.OnClickListener;
 
-public class Seekbar extends FocusableSceneObject {
+public class Seekbar extends FocusableNode {
 
     public static final float WIDTH = 4.2f;
     private static final float HEIGHT = 0.2f;
 
-    private SXRSceneObject playedSide;
-    private FocusableSceneObject seekbarHover;
+    private SXRNode playedSide;
+    private FocusableNode seekbarHover;
 
     private SXRContext sxrContext;
 
@@ -46,9 +46,9 @@ public class Seekbar extends FocusableSceneObject {
         createCollider();
     }
 
-    private SXRSceneObject createSeekbarHover() {
+    private SXRNode createSeekbarHover() {
 
-        seekbarHover = new FocusableSceneObject(sxrContext, sxrContext.createQuad(WIDTH, HEIGHT),
+        seekbarHover = new FocusableNode(sxrContext, sxrContext.createQuad(WIDTH, HEIGHT),
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                         sxrContext.getActivity(), R.drawable.timelime_hover_mask)));
         seekbarHover.getTransform().setPositionZ(.1f);
@@ -70,8 +70,8 @@ public class Seekbar extends FocusableSceneObject {
         });
     }
 
-    private SXRSceneObject createPlaySide() {
-        playedSide = new SXRSceneObject(sxrContext, sxrContext.createQuad(1.0f, HEIGHT / 2), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
+    private SXRNode createPlaySide() {
+        playedSide = new SXRNode(sxrContext, sxrContext.createQuad(1.0f, HEIGHT / 2), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                 sxrContext.getActivity(), R.drawable.timeline_watched)));
 
         playedSide.getRenderData().setRenderingOrder(SXRRenderingOrder.TRANSPARENT + 2);

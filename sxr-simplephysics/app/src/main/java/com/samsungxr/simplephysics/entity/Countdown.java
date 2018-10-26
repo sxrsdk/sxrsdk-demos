@@ -3,7 +3,7 @@ package com.samsungxr.simplephysics.entity;
 import android.os.CountDownTimer;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -13,12 +13,12 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Countdown {
-    private SXRTextViewSceneObject timeObject;
+    private SXRTextViewNode timeObject;
     private static final String FORMAT = "%02d:%02d";
     private boolean mIsFinished;
     private CountDownTimer mCountDownTimer;
 
-    public Countdown(SXRTextViewSceneObject label) {
+    public Countdown(SXRTextViewNode label) {
         timeObject = label;
         mIsFinished = false;
         mCountDownTimer = null;

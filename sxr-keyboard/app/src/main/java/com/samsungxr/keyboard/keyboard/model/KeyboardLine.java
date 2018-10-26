@@ -16,20 +16,20 @@
 package com.samsungxr.keyboard.keyboard.model;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.keyboard.util.Constants;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.keyboard.util.Util;
 
-public class KeyboardLine extends SXRSceneObject {
+public class KeyboardLine extends SXRNode {
 
     public float softLineWidth = 0;
     protected int LINE_MARGINT_TOP = 164;
 
     public KeyboardLine(SXRContext sxrContext) {
         super(sxrContext);
-        setName(SceneObjectNames.KEYBOARD_LINE);
+        setName(NodeNames.KEYBOARD_LINE);
     }
 
     private void beforeAddItem(float width) {
@@ -53,7 +53,7 @@ public class KeyboardLine extends SXRSceneObject {
         attachDefaultEyePointee(item);
     }
 
-    private void attachDefaultEyePointee(SXRSceneObject sceneObject) {
+    private void attachDefaultEyePointee(SXRNode sceneObject) {
         sceneObject.attachComponent(new SXRSphereCollider(getSXRContext()));
     }
 
@@ -61,7 +61,7 @@ public class KeyboardLine extends SXRSceneObject {
 
         float backSpaceAdjust = (getWidth() / 2);
 
-        for (SXRSceneObject item : getChildren()) {
+        for (SXRNode item : getChildren()) {
 
             float newX = item.getTransform().getPositionX() - backSpaceAdjust;
             item.getTransform().setPositionX(newX);

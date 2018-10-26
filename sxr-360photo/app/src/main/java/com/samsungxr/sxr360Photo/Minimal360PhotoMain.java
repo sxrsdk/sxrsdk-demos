@@ -23,7 +23,7 @@ import com.samsungxr.SXRScene;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 
 public class Minimal360PhotoMain extends SXRMain {
 
@@ -33,16 +33,16 @@ public class Minimal360PhotoMain extends SXRMain {
         // get a handle to the scene
         SXRScene scene = sxrContext.getMainScene();
 
-        SXRSphereSceneObject sphereObject = null;
+        SXRSphereNode sphereObject = null;
 
         // load texture
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.photosphere));
 
         // create a sphere scene object with the specified texture and triangles facing inward (the 'false' argument)
-        sphereObject = new SXRSphereSceneObject(sxrContext, 72, 144, false, texture);
+        sphereObject = new SXRSphereNode(sxrContext, 72, 144, false, texture);
 
         // add the scene object to the scene graph
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
     }
 
 }

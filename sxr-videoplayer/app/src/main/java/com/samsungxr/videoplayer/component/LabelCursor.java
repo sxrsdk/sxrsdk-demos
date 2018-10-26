@@ -22,15 +22,15 @@ import android.view.Gravity;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.SXRNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 public class LabelCursor extends FadeableObject {
-    SXRTextViewSceneObject mTextView;
+    SXRTextViewNode mTextView;
 
     public LabelCursor(SXRContext context, float width, float height, String text) {
         super(context);
-        mTextView = new SXRTextViewSceneObject(context, width, height, text);
+        mTextView = new SXRTextViewNode(context, width, height, text);
         mTextView.getRenderData().setDepthTest(false);
         mTextView.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
         mTextView.setGravity(Gravity.CENTER);
@@ -41,7 +41,7 @@ public class LabelCursor extends FadeableObject {
 
     @NonNull
     @Override
-    protected SXRSceneObject getFadeable() {
+    protected SXRNode getFadeable() {
         return mTextView;
     }
 }

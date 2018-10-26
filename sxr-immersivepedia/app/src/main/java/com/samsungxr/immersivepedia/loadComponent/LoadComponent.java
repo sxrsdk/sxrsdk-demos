@@ -19,16 +19,16 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.FocusListener;
-import com.samsungxr.immersivepedia.focus.FocusableSceneObject;
+import com.samsungxr.immersivepedia.focus.FocusableNode;
 import com.samsungxr.immersivepedia.shader.CutoutShader;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 
-public class LoadComponent extends SXRSceneObject implements FocusListener {
+public class LoadComponent extends SXRNode implements FocusListener {
 
     private static final int CUTOUT_VALUE = 1;
     private static final float LOADING_SPEED = 0.01f;
@@ -36,9 +36,9 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     private SXRTexture circleTexture;
     private SXRTexture plusTexture;
 
-    private SXRSceneObject circleAlpha;
-    private SXRSceneObject plus;
-    private FocusableSceneObject circle;
+    private SXRNode circleAlpha;
+    private SXRNode plus;
+    private FocusableNode circle;
     private SXRContext sxrContext;
 
     private float valueFloatTexture;
@@ -63,10 +63,10 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     }
 
     private void createLoadComponent() {
-        circleAlpha = new SXRSceneObject(sxrContext, sxrContext.createQuad(.5f, .5f),
+        circleAlpha = new SXRNode(sxrContext, sxrContext.createQuad(.5f, .5f),
                 circleAlphaTexture);
-        plus = new SXRSceneObject(sxrContext, sxrContext.createQuad(.5f, .5f), plusTexture);
-        circle = new FocusableSceneObject(sxrContext, sxrContext.createQuad(.5f, .5f),
+        plus = new SXRNode(sxrContext, sxrContext.createQuad(.5f, .5f), plusTexture);
+        circle = new FocusableNode(sxrContext, sxrContext.createQuad(.5f, .5f),
                 circleTexture);
 
         plus.getRenderData().getMaterial().setMainTexture(plusTexture);
@@ -128,7 +128,7 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
     public void finishLoadComponent() {
         sxrContext.unregisterDrawFrameListener(drawFrameListener);
         isLoading = false;
-        sxrContext.getMainScene().removeSceneObject(this);
+        sxrContext.getMainScene().removeNode(this);
 
         componentListener.onFinishLoadComponent();
     }
@@ -137,16 +137,16 @@ public class LoadComponent extends SXRSceneObject implements FocusListener {
         sxrContext.unregisterDrawFrameListener(drawFrameListener);
     }
     @Override
-    public void gainedFocus(FocusableSceneObject object) {
+    public void gainedFocus(FocusableNode object) {
     }
 
     @Override
-    public void lostFocus(FocusableSceneObject object) {
+    public void lostFocus(FocusableNode object) {
         finishLoadComponent();
     }
 
     @Override
-    public void inFocus(FocusableSceneObject object) {
+    public void inFocus(FocusableNode object) {
     }
 
     public boolean isLoading() {

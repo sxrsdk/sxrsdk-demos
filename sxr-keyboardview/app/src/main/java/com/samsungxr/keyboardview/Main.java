@@ -25,20 +25,20 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IViewEvents;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.scene_objects.SXRKeyboardSceneObject;
-import com.samsungxr.scene_objects.SXRViewSceneObject;
+import com.samsungxr.nodes.SXRKeyboardNode;
+import com.samsungxr.nodes.SXRViewNode;
 
 public class Main extends SXRMain {
     private final MainActivity mActivity;
     private SXRScene mScene;
 
-    private SXRKeyboardSceneObject mKeyboardSceneObject;
+    private SXRKeyboardNode mKeyboardNode;
 
-    private SXRViewSceneObject mFrameLayoutFormSceneObject;
+    private SXRViewNode mFrameLayoutFormNode;
     private EditText mFocusedEdit;
     final float DEPTH = -2f;
 
@@ -53,19 +53,19 @@ public class Main extends SXRMain {
     public void onInit(final SXRContext sxrContext) throws Throwable {
         mScene = sxrContext.getMainScene();
 
-        mFrameLayoutFormSceneObject = new SXRViewSceneObject(sxrContext, R.layout.main_form, new ViewEventsHandler());
-        mFrameLayoutFormSceneObject.getTransform().setPosition(0.0f, -0.3f, DEPTH);
-        mFrameLayoutFormSceneObject.setName("frame");
-        mScene.addSceneObject(mFrameLayoutFormSceneObject);
+        mFrameLayoutFormNode = new SXRViewNode(sxrContext, R.layout.main_form, new ViewEventsHandler());
+        mFrameLayoutFormNode.getTransform().setPosition(0.0f, -0.3f, DEPTH);
+        mFrameLayoutFormNode.setName("frame");
+        mScene.addNode(mFrameLayoutFormNode);
 
-        mKeyboardSceneObject = new SXRKeyboardSceneObject.Builder()
+        mKeyboardNode = new SXRKeyboardNode.Builder()
                 .setKeyboardTexture(sxrContext.getAssetLoader().loadTexture(
                         new SXRAndroidResource(sxrContext, R.drawable.keyboard_background)))
                 .setKeyBackground(mActivity.getDrawable(R.drawable.key_background))
                 .build(sxrContext, R.xml.qwerty);
-        mKeyboardSceneObject.setName("keyboard");
+        mKeyboardNode.setName("keyboard");
         // Add frames per second display
-        SXRSceneObject fpsObject = new SXRFPSCounter(sxrContext);
+        SXRNode fpsObject = new SXRFPSCounter(sxrContext);
         fpsObject.getTransform().setPosition(0.0f, -1.0f, -0.1f);
         fpsObject.getTransform().setScale(0.2f, 0.2f, 1.0f);
         mScene.getMainCameraRig().addChildObject(fpsObject);
@@ -75,7 +75,7 @@ public class Main extends SXRMain {
             public void onCursorControllerSelected(SXRCursorController newController, SXRCursorController oldController)
             {
                 SXRPicker picker = newController.getPicker();
-                mKeyboardSceneObject.setPicker(picker);
+                mKeyboardNode.setPicker(picker);
             }
         });
     }
@@ -83,7 +83,7 @@ public class Main extends SXRMain {
     private class ViewEventsHandler implements IViewEvents {
 
         @Override
-        public void onInitView(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onInitView(SXRViewNode sxrViewNode, View view) {
             view.findViewById(R.id.nameEdit).setOnClickListener(mTextEditClickHandler);
             view.findViewById(R.id.emailEdit).setOnClickListener(mTextEditClickHandler);
             view.findViewById(R.id.phoneEdit).setOnClickListener(mTextEditClickHandler);
@@ -98,7 +98,7 @@ public class Main extends SXRMain {
         }
 
         @Override
-        public void onStartRendering(SXRViewSceneObject sxrViewSceneObject, View view) {
+        public void onStartRendering(SXRViewNode sxrViewNode, View view) {
         }
     }
 
@@ -123,8 +123,8 @@ public class Main extends SXRMain {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (mKeyboardSceneObject != null
-                    && mKeyboardSceneObject.getParent() != null) {
+            if (mKeyboardNode != null
+                    && mKeyboardNode.getParent() != null) {
                 hideKeyboard();
             }
         }
@@ -142,15 +142,15 @@ public class Main extends SXRMain {
     private void onShowKeyboard(EditText editText) {
         switch (editText.getInputType()) {
             case EditorInfo.TYPE_CLASS_PHONE:
-                mKeyboardSceneObject.setKeyboard(R.xml.numkbd);
+                mKeyboardNode.setKeyboard(R.xml.numkbd);
                 break;
             default:
-                mKeyboardSceneObject.setKeyboard(R.xml.qwerty);
+                mKeyboardNode.setKeyboard(R.xml.qwerty);
                 break;
         }
 
-        mScene.addSceneObject(mKeyboardSceneObject);
-        mKeyboardSceneObject.startInput(mFrameLayoutFormSceneObject);
+        mScene.addNode(mKeyboardNode);
+        mKeyboardNode.startInput(mFrameLayoutFormNode);
     }
 
     private void hideKeyboard() {
@@ -163,10 +163,10 @@ public class Main extends SXRMain {
     }
 
     private void onHideKeyboard() {
-        mKeyboardSceneObject.stopInput();
-        SXRSceneObject parent = mKeyboardSceneObject.getParent();
+        mKeyboardNode.stopInput();
+        SXRNode parent = mKeyboardNode.getParent();
         if (parent != null) {
-            parent.removeChildObject(mKeyboardSceneObject);
+            parent.removeChildObject(mKeyboardNode);
         }
     }
 
@@ -174,46 +174,46 @@ public class Main extends SXRMain {
 
         @Override
         public void onClick(View v) {
-            mKeyboardSceneObject.getTransform().setScale(1.0f, 1.0f, 1.0f);
+            mKeyboardNode.getTransform().setScale(1.0f, 1.0f, 1.0f);
 
             switch (v.getId()) {
                 case R.id.nameEdit:
-                    mKeyboardSceneObject.getTransform().setPosition(0.0f,  -0.45f, DEPTH + 0.20f);
-                    mKeyboardSceneObject.getTransform().setRotationByAxis(-10, 1, 0, 0);
-                    mKeyboardSceneObject.getTransform().setScale(1.4f, 1.4f, 1.0f);
+                    mKeyboardNode.getTransform().setPosition(0.0f,  -0.45f, DEPTH + 0.20f);
+                    mKeyboardNode.getTransform().setRotationByAxis(-10, 1, 0, 0);
+                    mKeyboardNode.getTransform().setScale(1.4f, 1.4f, 1.0f);
 
 
                     break;
                 case R.id.phoneEdit:
-                    mKeyboardSceneObject.getTransform().setPosition(0.0f,  -0.5f, DEPTH + 0.4f);
-                    mKeyboardSceneObject.getTransform().setRotationByAxis(-15, 1, 0, 0);
-                    mKeyboardSceneObject.getTransform().setScale(0.4f, 0.4f, 1.0f);
+                    mKeyboardNode.getTransform().setPosition(0.0f,  -0.5f, DEPTH + 0.4f);
+                    mKeyboardNode.getTransform().setRotationByAxis(-15, 1, 0, 0);
+                    mKeyboardNode.getTransform().setScale(0.4f, 0.4f, 1.0f);
 
                     break;
                 case R.id.emailEdit:
-                    mKeyboardSceneObject.getTransform().setPosition(0.0f,  -0.9f, DEPTH + 0.20f);
-                    mKeyboardSceneObject.getTransform().setRotationByAxis(-20, 1, 0, 0);
-                    mKeyboardSceneObject.getTransform().setScale(1.5f, 1.5f, 1.0f);
+                    mKeyboardNode.getTransform().setPosition(0.0f,  -0.9f, DEPTH + 0.20f);
+                    mKeyboardNode.getTransform().setRotationByAxis(-20, 1, 0, 0);
+                    mKeyboardNode.getTransform().setScale(1.5f, 1.5f, 1.0f);
 
 
                     break;
                 case R.id.addButton:
-                    ((EditText)mFrameLayoutFormSceneObject.findViewById(R.id.nameEdit)).setText("");
-                    ((EditText)mFrameLayoutFormSceneObject.findViewById(R.id.emailEdit)).setText("");
-                    ((EditText)mFrameLayoutFormSceneObject.findViewById(R.id.phoneEdit)).setText("");
+                    ((EditText)mFrameLayoutFormNode.findViewById(R.id.nameEdit)).setText("");
+                    ((EditText)mFrameLayoutFormNode.findViewById(R.id.emailEdit)).setText("");
+                    ((EditText)mFrameLayoutFormNode.findViewById(R.id.phoneEdit)).setText("");
                     break;
             }
 
             if (v.hasFocus()) {
                 mFocusedEdit = (EditText) v;
-                if (mKeyboardSceneObject.getParent() == null) {
+                if (mKeyboardNode.getParent() == null) {
                     mFocusedEdit.setCursorVisible(true);
                     showKeyboard(mFocusedEdit);
                 } else {
                     mFocusedEdit.setCursorVisible(false);
                     hideKeyboard();
                 }
-            } else if (mKeyboardSceneObject.getParent() != null) {
+            } else if (mKeyboardNode.getParent() != null) {
                 hideKeyboard();
             }
         }

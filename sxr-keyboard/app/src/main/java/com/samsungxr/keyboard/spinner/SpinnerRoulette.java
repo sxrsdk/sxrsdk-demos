@@ -18,7 +18,7 @@ package com.samsungxr.keyboard.spinner;
 import android.graphics.Color;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.keyboard.fling.Fling;
@@ -28,13 +28,13 @@ import com.samsungxr.keyboard.model.CharList;
 import com.samsungxr.keyboard.textField.Text;
 import com.samsungxr.keyboard.util.CircularList;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.keyboard.util.Util;
 import com.samsungxr.keyboard.util.VRSamplesTouchPadGesturesDetector.SwipeDirection;
 
 import java.util.ArrayList;
 
-public class SpinnerRoulette extends SXRSceneObject {
+public class SpinnerRoulette extends SXRNode {
 
     private static final int ITEM_DEGREE = 45;
     private static final float ITEM_DEGREE_TEST = 45;
@@ -64,7 +64,7 @@ public class SpinnerRoulette extends SXRSceneObject {
 
     protected SpinnerRoulette(SXRContext sxrContext, int initialCharacterPosition, int mode) {
         super(sxrContext);
-        setName(SceneObjectNames.SPINNER);
+        setName(NodeNames.SPINNER);
 
         this.initialCharacterPosition = initialCharacterPosition;
         this.sxrContext = sxrContext;

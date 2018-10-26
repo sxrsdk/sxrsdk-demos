@@ -24,18 +24,18 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
+import com.samsungxr.nodes.SXRVideoNode;
 import com.samsungxr.video.shaders.RadiosityShader;
 
 import java.io.IOException;
 
 public class MultiplexMovieTheater extends MovieTheater {
 
-    SXRSceneObject background = null;
-    SXRSceneObject screen = null;
+    SXRNode background = null;
+    SXRNode screen = null;
 
     private boolean mIsImax = false;
     private float mTransitionWeight = 0.0f;
@@ -54,7 +54,7 @@ public class MultiplexMovieTheater extends MovieTheater {
                     new SXRAndroidResource(context, "multiplex/theater_background_light_off.jpg"));
             SXRTexture backgroundLightOnTexture = context.getAssetLoader().loadTexture(
                     new SXRAndroidResource(context, "multiplex/theater_background_light_on.jpg"));
-            background = new SXRSceneObject(context, backgroundMesh, backgroundLightOffTexture);
+            background = new SXRNode(context, backgroundMesh, backgroundLightOffTexture);
             background.setName("background");
             background.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
             // radiosity
@@ -70,8 +70,8 @@ public class MultiplexMovieTheater extends MovieTheater {
             // screen
             SXRMesh screenMesh = context.getAssetLoader().loadMesh(new SXRAndroidResource(
                     context, "multiplex/screen.obj"));
-            screen = new SXRVideoSceneObject(context, screenMesh, player,
-                    screenTexture, SXRVideoSceneObject.SXRVideoType.MONO);
+            screen = new SXRVideoNode(context, screenMesh, player,
+                    screenTexture, SXRVideoNode.SXRVideoType.MONO);
             screen.getRenderData().setCullFace(SXRRenderPass.SXRCullFaceEnum.None);
             this.addChildObject(background);
             this.addChildObject(screen);

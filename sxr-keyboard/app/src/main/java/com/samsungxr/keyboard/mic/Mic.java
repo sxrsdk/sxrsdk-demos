@@ -21,16 +21,16 @@ import android.speech.SpeechRecognizer;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.keyboard.main.MainActivity;
 import com.samsungxr.keyboard.mic.model.MicItem;
 import com.samsungxr.keyboard.textField.TextField;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.utility.Log;
 
 import java.util.ArrayList;
 
-public class Mic extends SXRSceneObject implements RecognitionListener {
+public class Mic extends SXRNode implements RecognitionListener {
 
     private static final float MIC_SIZE_ADJUST = 0.5f;
     private MicGroupHitArea mMicHitGroupArea;
@@ -66,7 +66,7 @@ public class Mic extends SXRSceneObject implements RecognitionListener {
 
     public Mic(SXRContext sxrContext, MainActivity mainActivity) {
         super(sxrContext);
-        setName(SceneObjectNames.MIC);
+        setName(NodeNames.MIC);
         mMainActivity = mainActivity;
 
         mMicHitGroupArea = new MicGroupHitArea(sxrContext);
@@ -174,18 +174,18 @@ public class Mic extends SXRSceneObject implements RecognitionListener {
         }
     }
 
-    public void onUpdate(SXRSceneObject sceneObject) {
+    public void onUpdate(SXRNode sceneObject) {
 
         if (mMicHitGroupArea != null) {
             verifyEyePointee(sceneObject);
         }
     }
 
-    private void verifyEyePointee(SXRSceneObject sceneObject) {
+    private void verifyEyePointee(SXRNode sceneObject) {
         handleEyePointeeListNew(sceneObject);
     }
 
-    private void handleEyePointeeListNew(SXRSceneObject sceneObject) {
+    private void handleEyePointeeListNew(SXRNode sceneObject) {
 
         // https://github.com/Samsung/GearVRf/issues/102
         if (mMicHitGroupArea != null && mMicHitGroupArea.mHitArea != null) {

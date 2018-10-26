@@ -21,12 +21,12 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.controls.focus.ControlSceneObject;
+import com.samsungxr.controls.focus.ControlNode;
 import com.samsungxr.controls.util.RenderingOrder;
 
 import java.util.ArrayList;
 
-public class TouchableButton extends ControlSceneObject {
+public class TouchableButton extends ControlNode {
 
     private final int IDLE = 0;
     private final int HOVER = 1;

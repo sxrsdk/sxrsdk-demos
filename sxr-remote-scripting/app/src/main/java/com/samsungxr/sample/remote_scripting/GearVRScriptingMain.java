@@ -24,7 +24,7 @@ import com.samsungxr.debug.DebugServer;
 
 import com.samsungxr.IErrorEvents;
 
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.script.SXRScriptManager;
 
 import smcl.samsung.com.debugwebserver.DebugWebServer;
@@ -56,17 +56,17 @@ public class GearVRScriptingMain extends SXRMain
         String telnetString = "telnet " + ipAddress + " " + DebugServer.DEFAULT_DEBUG_PORT;
 
         // create text object to tell the user where to connect
-        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(sxrContext, 2.0f,
+        SXRTextViewNode textViewNode = new SXRTextViewNode(sxrContext, 2.0f,
                 0.5f, debugUrl + "\n" + telnetString);
-        textViewSceneObject.setGravity(Gravity.CENTER);
-        textViewSceneObject.setTextSize(5);
-        textViewSceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
+        textViewNode.setGravity(Gravity.CENTER);
+        textViewNode.setTextSize(5);
+        textViewNode.getTransform().setPosition(0.0f, 0.0f, -3.0f);
 
         // make sure to set a name so we can reference it when we log in
-        textViewSceneObject.setName("text");
+        textViewNode.setName("text");
 
         // add it to the scene
-        scene.addSceneObject(textViewSceneObject);
+        scene.addNode(textViewNode);
         context.getInputManager().selectController();
 
         // Add display utils for scripts

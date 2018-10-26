@@ -20,27 +20,27 @@ import android.graphics.Color;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.keyboard.R;
 import com.samsungxr.keyboard.main.Main;
 import com.samsungxr.keyboard.model.CharItem;
 import com.samsungxr.keyboard.spinner.Spinner;
 import com.samsungxr.keyboard.util.RenderingOrder;
-import com.samsungxr.keyboard.util.SceneObjectNames;
+import com.samsungxr.keyboard.util.NodeNames;
 import com.samsungxr.keyboard.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextField extends SXRSceneObject {
+public class TextField extends SXRNode {
 
     private static final float SUB_LINE_Y = -0.2f;
     private static final float INTERACTIVE_TEXT_WIDTH = 118 / 2;
     private static final float TEXT_WIDTH = 0.279f;
     public static final int LAST_CHARACTER = -1;
     protected List<TextFieldItem> mListFieldItems = new ArrayList<TextFieldItem>();
-    protected List<SXRSceneObject> mListFieldSubLines = new ArrayList<SXRSceneObject>();
+    protected List<SXRNode> mListFieldSubLines = new ArrayList<SXRNode>();
 
     protected TextFieldItem currentCharSelected;
     private int maxNumberOfCharecters;
@@ -49,7 +49,7 @@ public class TextField extends SXRSceneObject {
 
     public TextField(SXRContext sxrContext, Main main) {
         super(sxrContext);
-        setName(SceneObjectNames.TEXT_FIELD);
+        setName(NodeNames.TEXT_FIELD);
 
         mListFieldItems = new ArrayList<TextFieldItem>();
     }
@@ -94,7 +94,7 @@ public class TextField extends SXRSceneObject {
                 @Override
                 public void run() {
 
-                    SXRSceneObject space = newSpaceLine(position);
+                    SXRNode space = newSpaceLine(position);
                     mListFieldSubLines.add(position, space);
                     addChildObject(space);
                 }
@@ -102,9 +102,9 @@ public class TextField extends SXRSceneObject {
         }
     }
 
-    private SXRSceneObject newSpaceLine(int position) {
+    private SXRNode newSpaceLine(int position) {
 
-        SXRSceneObject space = new SXRSceneObject(TextField.this.getSXRContext(),
+        SXRNode space = new SXRNode(TextField.this.getSXRContext(),
                 Util.convertPixelToVRFloatValue(40),
                 Util.convertPixelToVRFloatValue(5),
                 TextField.this.getSXRContext().getAssetLoader().loadTexture(
@@ -141,7 +141,7 @@ public class TextField extends SXRSceneObject {
         }
     }
 
-    protected TextFieldItem getObjectInHitArea(SXRSceneObject sceneObject) {
+    protected TextFieldItem getObjectInHitArea(SXRNode sceneObject) {
 
         for (int i = 0; i < mListFieldItems.size(); i++) {
 
@@ -207,7 +207,7 @@ public class TextField extends SXRSceneObject {
         mListFieldItems.clear();
     }
 
-    public void spinnerUpdate(SXRSceneObject sceneObject) {
+    public void spinnerUpdate(SXRNode sceneObject) {
 
         spinner.getSpinnerRoulette().onStep();
 
@@ -317,7 +317,7 @@ public class TextField extends SXRSceneObject {
     }
 
     private void removeSubLine(int i) {
-        SXRSceneObject subLine = mListFieldSubLines.get(i);
+        SXRNode subLine = mListFieldSubLines.get(i);
         removeChildObject(subLine);
         mListFieldSubLines.remove(i);
     }
