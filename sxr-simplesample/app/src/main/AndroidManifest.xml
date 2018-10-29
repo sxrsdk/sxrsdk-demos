@@ -24,7 +24,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/gearvr_logo"
+        android:icon="@drawable/samsung_xr_512x512"
         android:label="@string/app_name">
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
         <activity

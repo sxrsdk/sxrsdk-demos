@@ -40,11 +40,11 @@ public class SampleActivity extends SXRActivity {
             SXRScene scene = sxrContext.getMainScene();
             scene.setBackgroundColor(1, 1, 1, 1);
 
-            SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.gearvr_logo));
+            SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.samsung_xr_512x512));
 
             // create a scene object (this constructor creates a rectangular scene
             // object that uses the standard texture shader
-            SXRNode sceneObject = new SXRNode(sxrContext, 4.0f, 2.0f, texture);
+            SXRNode sceneObject = new SXRNode(sxrContext, 4.0f, 4.0f, texture);
 
             // set the scene object position
             sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
