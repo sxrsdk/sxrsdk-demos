@@ -61,7 +61,7 @@ public class SampleMain extends SXRMain {
         // load texture asynchronously
         SXRTexture futureTexture = sxrContext
                 .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
-                        R.drawable.gearvr_logo));
+                        R.drawable.samsung_xr_2048x2048));
         SXRTexture futureTextureTop = sxrContext
                 .getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
                         R.drawable.top));

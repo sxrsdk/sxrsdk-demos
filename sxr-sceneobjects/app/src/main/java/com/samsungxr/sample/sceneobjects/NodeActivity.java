@@ -46,7 +46,7 @@ public class NodeActivity extends SXRActivity {
         webView.setLayoutParams(new ViewGroup.LayoutParams(2000, 1000));
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webView.loadUrl("http://gearvrf.org");
+        webView.loadUrl("http://www.samsungxr.com");
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
