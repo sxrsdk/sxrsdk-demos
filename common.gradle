@@ -102,8 +102,7 @@ project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
 
 if (!project.ext.hasBackend) {
-    project.ext.backend_oculus = true
-    project.ext.backend_daydream = true
+    project.ext.backend_monoscopic = true
 }
 
 if (project.hasProperty("backend_monoscopic")) {
