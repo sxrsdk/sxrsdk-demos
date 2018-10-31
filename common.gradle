@@ -42,10 +42,10 @@ android {
         minSdkVersion 23
         targetSdkVersion 23
         ndk {
-            if (rootProject.hasProperty("ARM64")) {
-                abiFilters = ['arm64-v8a']
+            if (rootProject.hasProperty("SXRSDK_ABI_FILTER")) {
+                abiFilters rootProject.property("SXRSDK_ABI_FILTER")
             } else {
-                abiFilters = ['armeabi-v7a']
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
         }
     }
@@ -58,14 +58,7 @@ android {
 
     // ignore the x86 files from the google vr libraries
     packagingOptions {
-        exclude 'lib/x86/libgvr.so'
         pickFirst 'lib/*/libc++_shared.so'
-        pickFirst 'lib/*/libgnustl_shared.so'
-        if (!project.hasProperty("ARM64")) {
-            exclude 'lib/arm64-v8a/*.so'
-        } else {
-            exclude 'lib/armeabi-v7a/*.so'
-        }
     }
 }
 
