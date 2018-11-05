@@ -1,32 +1,27 @@
 package com.samsungxr.avatardemo;
 
-import java.io.IOException;
-import java.io.InputStream;
+import android.graphics.Color;
+import android.util.Log;
 
 import com.samsungxr.SXRActivity;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
-import com.samsungxr.SXRScene;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRNode;
+import com.samsungxr.SXRScene;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRAvatar;
-import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRRepeatMode;
-import com.samsungxr.animation.SXRSkeleton;
-import com.samsungxr.animation.keyframe.SXRSkeletonAnimation;
 
-import android.graphics.Color;
-import android.util.Log;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class AvatarMain extends SXRMain
-{
+public class AvatarMain extends SXRMain {
     private final String mModelPath = "YBot/ybot.fbx";
-    //    private final String[] mAnimationPaths =  { "animation/mixamo/Ybot_SambaDancing.bvh" };
-//    private final String mBoneMapPath = "animation/mixamo/bonemap.txt";
-    private final String[] mAnimationPaths =  {
+    private final String[] mAnimationPaths = {
             "animation/captured/Video1_BVH.bvh",
             "animation/captured/Video2_BVH.bvh",
             "animation/captured/Video3_BVH.bvh",
@@ -36,67 +31,58 @@ public class AvatarMain extends SXRMain
     };
     private final String mBoneMapPath = "animation/captured/bonemap.txt";
     private static final String TAG = "AVATAR";
-    private SXRContext      mContext;
-    private SXRScene        mScene;
-    private SXRAvatar       mAvatar;
-    private SXRActivity     mActivity;
-    private int             mNumAnimsLoaded = 0;
-    private String          mBoneMap;
+    private SXRContext mContext;
+    private SXRScene mScene;
+    private SXRActivity mActivity;
+    private int mNumAnimsLoaded = 0;
+    private String mBoneMap;
 
     public AvatarMain(SXRActivity activity) {
         mActivity = activity;
     }
 
-    private SXRAvatar.IAvatarEvents mAvatarListener = new SXRAvatar.IAvatarEvents()
-    {
+    private SXRAvatar.IAvatarEvents mAvatarListener = new SXRAvatar.IAvatarEvents() {
         @Override
-        public void onAvatarLoaded(final SXRNode avatarRoot, String filePath, String errors)
-        {
-            if (avatarRoot.getParent() == null)
-            {
-                mContext.runOnGlThread(new Runnable()
-                {
-                    public void run()
-                    {
-                        mAvatar.centerModel(avatarRoot);
+        public void onAvatarLoaded(final SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) {
+            if (avatarRoot.getParent() == null) {
+                mContext.runOnGlThread(new Runnable() {
+                    public void run() {
+                        avatar.centerModel(avatarRoot);
                         mScene.addNode(avatarRoot);
                     }
                 });
             }
-            loadNextAnimation(mAvatar, mBoneMap);
+            loadNextAnimation(avatar, mBoneMap);
         }
 
         @Override
-        public void onAnimationLoaded(SXRAnimator animation, String filePath, String errors)
-        {
+        public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors) {
             animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
             ++mNumAnimsLoaded;
-            if (!mAvatar.isRunning())
-            {
-                mAvatar.startAll(SXRRepeatMode.REPEATED);
+            if (!avatar.isRunning()) {
+                avatar.startAll(SXRRepeatMode.REPEATED);
+            } else {
+                avatar.start(animation.getName());
             }
-            else
-            {
-                mAvatar.start(animation.getName());
-            }
-            if (mNumAnimsLoaded < mAnimationPaths.length)
-            {
-                loadNextAnimation(mAvatar, mBoneMap);
+            if (mNumAnimsLoaded < mAnimationPaths.length) {
+                loadNextAnimation(avatar, mBoneMap);
             }
         }
 
-        public void onModelLoaded(final SXRNode avatarRoot, String filePath, String errors) { }
+        public void onModelLoaded(SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) {
+        }
 
-        public void onAnimationFinished(SXRAnimator animator, SXRAnimation animation) { }
+        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) {
+        }
 
-        public void onAnimationStarted(SXRAnimator animator) { }
+        public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) {
+        }
     };
 
 
     @Override
-    public void onInit(SXRContext sxrContext)
-    {
+    public void onInit(SXRContext sxrContext) {
         mContext = sxrContext;
         mScene = sxrContext.getMainScene();
         SXRCameraRig rig = mScene.getMainCameraRig();
@@ -110,15 +96,12 @@ public class AvatarMain extends SXRMain
         rig.getRightCamera().setBackgroundColor(Color.LTGRAY);
         rig.getOwnerObject().attachComponent(new SXRDirectLight(mContext));
 
-        mAvatar = new SXRAvatar(sxrContext, "YBot");
-        mAvatar.getEventReceiver().addListener(mAvatarListener);
+        SXRAvatar avatar = new SXRAvatar(sxrContext, "YBot");
+        avatar.getEventReceiver().addListener(mAvatarListener);
         mBoneMap = readFile(mBoneMapPath);
-        try
-        {
-            mAvatar.loadModel(new SXRAndroidResource(sxrContext, mModelPath));
-        }
-        catch (IOException e)
-        {
+        try {
+            avatar.loadModel(new SXRAndroidResource(sxrContext, mModelPath));
+        } catch (IOException e) {
             e.printStackTrace();
             mActivity.finish();
             mActivity = null;
@@ -126,15 +109,11 @@ public class AvatarMain extends SXRMain
         sxrContext.getInputManager().selectController();
     }
 
-    private void loadNextAnimation(SXRAvatar avatar, String bonemap)
-    {
-        try
-        {
+    private void loadNextAnimation(SXRAvatar avatar, String bonemap) {
+        try {
             SXRAndroidResource res = new SXRAndroidResource(mContext, mAnimationPaths[mNumAnimsLoaded]);
             avatar.loadAnimation(res, bonemap);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
             mActivity.finish();
             mActivity = null;
@@ -142,27 +121,16 @@ public class AvatarMain extends SXRMain
         }
     }
 
-    @Override
-    public void onStep() {
-    }
-
-    private String readFile(String filePath)
-    {
-        try
-        {
+    private String readFile(String filePath) {
+        try {
             SXRAndroidResource res = new SXRAndroidResource(getSXRContext(), filePath);
             InputStream stream = res.getStream();
             byte[] bytes = new byte[stream.available()];
             stream.read(bytes);
             String s = new String(bytes);
             return s;
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             return null;
         }
     }
-
-
-
 }
