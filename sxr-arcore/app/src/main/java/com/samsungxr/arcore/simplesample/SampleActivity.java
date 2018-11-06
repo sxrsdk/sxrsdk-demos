@@ -27,7 +27,7 @@ public class SampleActivity extends SXRActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        enableGestureDetector();
         Log.d(TAG, "onCreate");
         mMain = new SampleMain();
         setMain(mMain, "sxr.xml");
