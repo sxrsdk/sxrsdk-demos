@@ -3,8 +3,10 @@ package com.samsungxr.aravatar;
 import android.util.Log;
 
 import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRRenderData;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRAvatar;
@@ -26,7 +28,7 @@ public class AvatarManager
 
     private final String[] GYLE = { "Gyle/Gyle_Skin.fbx", null, "Gyle/bboydance_mixamo.com.bvh", "Gyle/idle_anim_mixamo.com.bvh", "Gyle/runningman_mixamo.com.bvh" };
 
-    private final String[] HLMODEL = new String[] { "/sdcard/hololab.ply" };
+    private final String[] HOLOLAB = new String[] { "Hololab/evp_chung_lowres.fbx" };
 
     private final List<String[]> mAvatarFiles = new ArrayList<String[]>();
     private final List<SXRAvatar> mAvatars = new ArrayList<SXRAvatar>();
@@ -48,11 +50,12 @@ public class AvatarManager
         mAvatarFiles.add(1, YBOT);
         mAvatarFiles.add(2, CAT);
         mAvatarFiles.add(3, GYLE);
+        mAvatarFiles.add(4, HOLOLAB);
         mAvatars.add(0, new SXRAvatar(ctx, "EVA"));
         mAvatars.add(1, new SXRAvatar(ctx, "YBOT"));
         mAvatars.add(2, new SXRAvatar(ctx, "CAT"));
         mAvatars.add(3, new SXRAvatar(ctx, "GYLE"));
-        selectAvatar("EVA");
+        mAvatars.add(4, new SXRAvatar(ctx, "HOLOLAB"));
     }
 
     public SXRAvatar selectAvatar(String name)
@@ -231,7 +234,20 @@ public class AvatarManager
         }
 
         public void onModelLoaded(SXRAvatar avatar, SXRNode avatarRoot, String filePath, String errors)
-        { }
+        {
+            SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
+            float scale = 0.3f / bv.radius;
+            avatarRoot.getTransform().setScale(scale, scale, scale);
+            avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
+                @Override
+                public boolean visit(SXRComponent c)
+                {
+                    ((SXRRenderData) c).disableLight();
+                    return true;
+                }
+            }, SXRRenderData.getComponentType());
+            avatar.getModel().addChildObject(avatarRoot);
+        }
 
         public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }
 
