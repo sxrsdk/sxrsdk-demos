@@ -17,6 +17,21 @@ android {
         }
     }
 
+    flavorDimensions "vr"
+
+    productFlavors {
+        monoscopic {
+            dimension "vr"
+            applicationIdSuffix ".monoscopic"
+            versionNameSuffix "-monoscopic"
+        }
+        vr_only {
+            dimension "vr"
+            applicationIdSuffix ".vr_only"
+            versionNameSuffix "-vr_only"
+        }
+    }
+
     sourceSets.main {
         jni.srcDirs = [] // no auto generation of Android.mk
         jniLibs.srcDir 'libs' // pre-compiled libraries
