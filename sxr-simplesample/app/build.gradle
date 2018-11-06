@@ -25,6 +25,11 @@ android {
             applicationIdSuffix ".monoscopic"
             versionNameSuffix "-monoscopic"
         }
+        daydream {
+            dimension "vr"
+            applicationIdSuffix ".daydream"
+            versionNameSuffix "-daydream"
+        }
         vr_only {
             dimension "vr"
             applicationIdSuffix ".vr_only"
