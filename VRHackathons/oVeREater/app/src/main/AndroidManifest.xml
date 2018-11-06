@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        ${vrMetaData}
         <activity
             android:name=".FEMainActivity"
             android:label="@string/app_name" >

@@ -38,6 +38,50 @@ android {
         }
     }
 
+
+    flavorDimensions "vr"
+
+    productFlavors {
+        monoscopic {
+            dimension "vr"
+            applicationIdSuffix ".monoscopic"
+            versionNameSuffix "-monoscopic"
+        }
+        daydream {
+            dimension "vr"
+            applicationIdSuffix ".daydream"
+            versionNameSuffix "-daydream"
+        }
+        vr_only {
+            dimension "vr"
+            applicationIdSuffix ".vr_only"
+            versionNameSuffix "-vr_only"
+            manifestPlaceholders = [vrMetaData:'<meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>']
+        }
+        ar {
+            dimension "vr"
+            applicationIdSuffix ".ar"
+            versionNameSuffix "-ar"
+            manifestPlaceholders = [vrMetaData:'<meta-data android:name="com.samsung.android.sxr.application.type" android:value="ar"/>']
+        }
+    }
+
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        if (names.contains("monoscopic") && !(project.hasProperty("backend_monoscopic") && project.property("backend_monoscopic")) ) {
+            setIgnore(true)
+	}
+        if (names.contains("daydream") && !(project.hasProperty("backend_daydream") && project.property("backend_daydream")) ) {
+            setIgnore(true)
+	}
+        if (names.contains("vr_only") && !(project.hasProperty("backend_oculus") && project.property("backend_oculus")) ) {
+            setIgnore(true)
+	}
+        if (names.contains("ar") && !(project.hasProperty("sxr_adapter") && project.property("sxr_adapter")) ) {
+            setIgnore(true)
+	}
+    }
+
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 23
