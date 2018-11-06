@@ -15,16 +15,16 @@
 
 package com.samsungxr.polyline;
 
+import android.opengl.GLES20;
+
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRNode;
 import com.samsungxr.nodes.SXRSphereNode;
-
-import android.opengl.GLES20;
 
 public class SampleScript extends SXRMain {
 
@@ -33,8 +33,8 @@ public class SampleScript extends SXRMain {
     @Override
     public void onInit(SXRContext sxrContext) {
         SXRScene scene = sxrContext.getMainScene();
-        scene.getMainCameraRig().getLeftCamera().setBackgroundColor(1.0f, 1.0f, 0, 1.0f);
-        scene.getMainCameraRig().getRightCamera().setBackgroundColor(1.0f, 1.0f, 0, 1.0f);
+        scene.setBackgroundColor(1.0f, 1.0f, 0, 1.0f);
+
         float Z = -4;
         float[] L = { -2.5f, 1, Z, -2.5f, -1, Z, -1.5f, -1, Z };
         float[] I = { -1, 1, Z, -1, -1, Z };
@@ -98,9 +98,4 @@ public class SampleScript extends SXRMain {
         sphere.getTransform().setPositionZ(Z);
         scene.addNode(sphere);
      }
-
-    @Override
-    public void onStep() {
-    }
-
 }
