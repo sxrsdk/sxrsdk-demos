@@ -42,8 +42,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 23
         ndk {
-            if (rootProject.hasProperty("SXRSDK_ABI_FILTER")) {
-                abiFilters rootProject.property("SXRSDK_ABI_FILTER")
+            if (project.hasProperty("SXRSDK_ABI_FILTER")) {
+                abiFilters project.property("SXRSDK_ABI_FILTER")
             } else {
                 abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
