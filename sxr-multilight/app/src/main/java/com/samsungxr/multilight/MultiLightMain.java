@@ -140,7 +140,7 @@ public class MultiLightMain extends SXRMain {
      */
     private SXRNode createBackdrop(SXRContext context)
     {
-        SXRTexture tex = context.getAssetLoader().loadTexture(new SXRAndroidResource(mSXRContext, R.drawable.gearvrflogo));
+        SXRTexture tex = context.getAssetLoader().loadTexture(new SXRAndroidResource(mSXRContext, R.drawable.samsung_xr_512x128));
         SXRNode backdrop = new SXRNode(context, 10.0f, 4.0f, tex);
         SXRRenderData rdata = backdrop.getRenderData();
         SXRMaterial material = new SXRMaterial(context, SXRMaterial.SXRShaderType.Phong.ID);
