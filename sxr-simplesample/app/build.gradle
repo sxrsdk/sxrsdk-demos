@@ -35,6 +35,11 @@ android {
             applicationIdSuffix ".vr_only"
             versionNameSuffix "-vr_only"
         }
+        ar {
+            dimension "vr"
+            applicationIdSuffix ".ar"
+            versionNameSuffix "-ar"
+        }
     }
 
     sourceSets.main {
