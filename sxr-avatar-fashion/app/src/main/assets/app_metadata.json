@@ -1,0 +1,170 @@
+{
+  "objects": {
+    "com.samsungxr.avatar_fashion.AvatarViewer.ModelBox": {
+      "name": "ModelBox"
+    },
+    "com.samsungxr.avatar_fashion.AvatarViewer": {
+      "zoom_step": 1,
+      "padding": 2,
+      "position": {
+        "x": 0,
+        "y": -3,
+        "z": -12
+      },
+      "control_bar": {
+        "name": "ControlBar",
+        "size": {
+          "x": 1,
+          "y": 1
+        },
+        "padding": 0.1,
+        "controls": [
+          {
+            "name": "Home",
+            "states": {
+              "normal": {
+                "material": {
+                  "main_texture": {
+                    "type": "bitmap",
+                    "bitmap": {
+                      "resource_type": "resource",
+                      "type": "uncompressed",
+                      "id": "R.drawable.navbar_home"
+                    }
+                  }
+                }
+              },
+              "focused": {
+                "material": {
+                  "main_texture": {
+                    "type": "bitmap",
+                    "bitmap": {
+                      "resource_type": "resource",
+                      "type": "uncompressed",
+                      "id": "R.drawable.navbar_home_hover"
+                    }
+                  }
+                }
+              },
+              "selected": {
+                "material": {
+                  "main_texture": {
+                    "type": "bitmap",
+                    "bitmap": {
+                      "resource_type": "resource",
+                      "type": "uncompressed",
+                      "id": "R.drawable.navbar_home_active"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "com.samsungxr.avatar_fashion.BackgroundListContentScene": {
+      "padding": 0.8,
+      "arch_radius": 12,
+      "rows_num": 3,
+      "columns_num": 3,
+      "control_bar": {
+        "name": "ControlBar",
+        "size": {
+          "x": 1,
+          "y": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -12
+        },
+        "padding": 0.4,
+        "controls": [
+          {
+            "name": "Home",
+            "states": {
+              "normal": {
+                "material": {
+                  "main_texture": {
+                    "type": "bitmap",
+                    "bitmap": {
+                      "resource_type": "resource",
+                      "type": "uncompressed",
+                      "id": "R.drawable.navbar_home"
+                    }
+                  }
+                }
+              },
+              "focused": {
+                "material": {
+                  "main_texture": {
+                    "type": "bitmap",
+                    "bitmap": {
+                      "resource_type": "resource",
+                      "type": "uncompressed",
+                      "id": "R.drawable.navbar_home_hover"
+                    }
+                  }
+                }
+              },
+              "selected": {
+                "material": {
+                  "main_texture": {
+                    "type": "bitmap",
+                    "bitmap": {
+                      "resource_type": "resource",
+                      "type": "uncompressed",
+                      "id": "R.drawable.navbar_home_active"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "com.samsungxr.avatar_fashion.AvatarsListContentScene": {
+      "background_picker":false,
+      "padding": 0.8,
+      "position": {
+        "x": 0,
+        "y": -3,
+        "z": -12
+      },
+      "control_bar": {
+        "name": "ControlBar",
+        "size": {
+          "x": 1,
+          "y": 1
+        },
+        "padding": 0.4
+      }
+    },
+    "com.samsungxr.avatar_fashion.BackgroundWidget": {
+      "name": "BackgroundWidget",
+      "mesh": {
+        "id": "backgrounds/sphere.obj"
+      },
+      "scale": 10,
+      "level": 0,
+      "lazy_load": "true",
+      "levels": [
+        {
+          "thumbnail": "R.raw.env_thumbnail",
+          "material": {
+            "main_texture": {
+              "type": "bitmap",
+              "bitmap": {
+                "resource_type": "asset",
+                "type": "uncompressed",
+                "id": "backgrounds/cubes.jpg"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
