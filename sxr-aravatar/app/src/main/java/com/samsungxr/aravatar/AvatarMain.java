@@ -61,7 +61,7 @@ public class AvatarMain extends SXRMain {
         mSceneLight = mUtility.makeSceneLight(ctx);
         mScene.addNode(mSceneLight.getOwnerObject());
         mAvManager = new AvatarManager(mContext, null);
-        mAvatar = mAvManager.selectAvatar("GYLE");
+        mAvatar = mAvManager.selectAvatar("EVA");
         if (mAvatar == null)
         {
             Log.e(TAG, "Avatar could not be found");

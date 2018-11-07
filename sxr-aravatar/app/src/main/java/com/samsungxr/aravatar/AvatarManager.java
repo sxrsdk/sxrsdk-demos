@@ -22,13 +22,13 @@ public class AvatarManager
     private static final String TAG = "AVATAR";
     private final String[] YBOT = new String[] { "YBot/YBot.fbx", "YBot/bonemap.txt", "YBot/Football_Hike.bvh", "YBot/Zombie_Stand_Up.bvh" };
 
-    private final String[] EVA = { "Eva/Eva.dae", "Eva/pet_map.txt", "Eva/bvhExport_GRAB_BONE.bvh", "Eva/bvhExport_RUN.bvh", "Eva/bvhExport_WALK.bvh" };
+    private final String[] EVA = { "Eva/Eva.dae", "Eva/pet_map.txt", "Eva/Walk_Circle.bvh", "Eva/bvhExport_GRAB_BONE.bvh",  };
 
-    private final String[] CAT = { "Cat/Cat.fbx", "animation/mixamo/pet_map.txt", "Cat/defaultAnim_SitDown.bvh", "Cat/defaultAnim_StandUp.bvh", "Cat/defaultAnim_Walk.bvh" };
+    private final String[] GYLE = { "Gyle/gyle_collada.dae", "Gyle/bonemap.txt", "Gyle/idle_Anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
 
-    private final String[] GYLE = { "Gyle/gyle_collada.dae", "Gyle/bonemap.txt", "Gyle/idle_anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
+    private final String[] MRCHUNG = new String[] { "Hololab/evp_chung_lowres.fbx" };
 
-    private final String[] HOLOLAB = new String[] { "Hololab/evp_chung_lowres.fbx" };
+    private final String[] MYAVATAR = new String[] { "/sdcard/mymodel.ply" };
 
     private final List<String[]> mAvatarFiles = new ArrayList<String[]>();
     private final List<SXRAvatar> mAvatars = new ArrayList<SXRAvatar>();
@@ -46,16 +46,14 @@ public class AvatarManager
             handler = mAvatarListener;
         }
         mEventHandler = handler;
-        mAvatarFiles.add(0, EVA);
-        mAvatarFiles.add(1, YBOT);
-        mAvatarFiles.add(2, CAT);
-        mAvatarFiles.add(3, GYLE);
-        mAvatarFiles.add(4, HOLOLAB);
-        mAvatars.add(0, new SXRAvatar(ctx, "EVA"));
-        mAvatars.add(1, new SXRAvatar(ctx, "YBOT"));
-        mAvatars.add(2, new SXRAvatar(ctx, "CAT"));
-        mAvatars.add(3, new SXRAvatar(ctx, "GYLE"));
-        mAvatars.add(4, new SXRAvatar(ctx, "HOLOLAB"));
+        mAvatarFiles.add(0, YBOT);
+        mAvatarFiles.add(1, MRCHUNG);
+        mAvatarFiles.add(2, GYLE);
+        mAvatarFiles.add(3, MYAVATAR);
+        mAvatars.add(0, new SXRAvatar(ctx, "YBOT"));
+        mAvatars.add(1, new SXRAvatar(ctx, "MRCHUNG"));
+        mAvatars.add(2, new SXRAvatar(ctx, "GYLE"));
+        mAvatars.add(3, new SXRAvatar(ctx, "MYAVATAR"));
     }
 
     public SXRAvatar selectAvatar(String name)
@@ -217,6 +215,7 @@ public class AvatarManager
         {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
             float scale = 0.3f / bv.radius;
+            if (avatar.getName().equals("EVA")) scale = 0.2f / bv.radius;
             avatarRoot.getTransform().setScale(scale, scale, scale);
             loadNextAnimation();
         }
