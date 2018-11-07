@@ -28,6 +28,12 @@ public class AvatarManager
 
     private final String[] MRCHUNG = new String[] { "Hololab/evp_chung_lowres.fbx" };
 
+    private final String[] AMINA = new String[] { "Hololab/amina_lowres.fbx" };
+
+    private final String[] PAULA = new String[] { "Hololab/paula_lowres.fbx" };
+
+    private final String[] RAJESH = new String[] { "Hololab/rajesh_lowres.fbx" };
+
     private final String[] MYAVATAR = new String[] { "/sdcard/mymodel.ply" };
 
     private final List<String[]> mAvatarFiles = new ArrayList<String[]>();
@@ -50,10 +56,16 @@ public class AvatarManager
         mAvatarFiles.add(1, MRCHUNG);
         mAvatarFiles.add(2, GYLE);
         mAvatarFiles.add(3, MYAVATAR);
+        mAvatarFiles.add( 4, AMINA);
+        mAvatarFiles.add( 5, PAULA);
+        mAvatarFiles.add( 6, RAJESH);
         mAvatars.add(0, new SXRAvatar(ctx, "YBOT"));
         mAvatars.add(1, new SXRAvatar(ctx, "MRCHUNG"));
         mAvatars.add(2, new SXRAvatar(ctx, "GYLE"));
         mAvatars.add(3, new SXRAvatar(ctx, "MYAVATAR"));
+        mAvatars.add(4, new SXRAvatar(ctx, "AMINA"));
+        mAvatars.add(5, new SXRAvatar(ctx, "PAULA"));
+        mAvatars.add(6, new SXRAvatar(ctx, "RAJESH"));
     }
 
     public SXRAvatar selectAvatar(String name)
