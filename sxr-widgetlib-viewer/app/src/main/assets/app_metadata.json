@@ -1,6 +1,6 @@
 {
   "objects": {
-    "org.gearvrf.widgetlibviewer.BackgroundListContentScene": {
+    "com.samsungxr.widgetlibviewer.BackgroundListContentScene": {
       "padding": 0.8,
       "arch_radius": 7,
       "rows_num": 3,
@@ -62,7 +62,7 @@
         ]
       }
     },
-    "org.gearvrf.widgetlibviewer.ModelViewer.ModelBox": {
+    "com.samsungxr.widgetlibviewer.ModelViewer.ModelBox": {
       "name": "ModelBox",
       "position": {
         "x": 0,
@@ -70,7 +70,7 @@
         "z": -7
       }
     },
-    "org.gearvrf.widgetlibviewer.CheckList": {
+    "com.samsungxr.widgetlibviewer.CheckList": {
       "name": "CheckList",
       "size": {
         "x": 0,
@@ -87,7 +87,7 @@
         "gravity": 3
       }
     },
-    "org.gearvrf.widgetlibviewer.ModelViewer": {
+    "com.samsungxr.widgetlibviewer.ModelViewer": {
       "zoom_step": 1,
       "padding": 2,
       "control_bar": {
@@ -188,7 +188,7 @@
         ]
       }
     },
-    "org.gearvrf.widgetlibviewer.ModelsListContentScene": {
+    "com.samsungxr.widgetlibviewer.ModelsListContentScene": {
       "padding": 0.8,
       "arch_radius": 7,
       "control_bar": {
@@ -248,7 +248,7 @@
         ]
       }
     },
-    "org.gearvrf.widgetlibviewer.ViewerMain.BackgroundWidget": {
+    "com.samsungxr.widgetlibviewer.ViewerMain.BackgroundWidget": {
       "name": "BackgroundWidget",
       "mesh": {
         "id": "backgrounds/sphere.obj"
@@ -362,7 +362,7 @@
         }
       ]
     },
-    "org.gearvrf.widgetlibviewer.NotificationsContentScene.NotificationItemGroupWidget": {
+    "com.samsungxr.widgetlibviewer.NotificationsContentScene.NotificationItemGroupWidget": {
       "name": "notificationItemGroupWidget",
       "size": {
         "x": 0,
@@ -390,7 +390,7 @@
         }
       }
     },
-    "org.gearvrf.widgetlibviewer.NotificationsContentScene.NotificationItemWidget": {
+    "com.samsungxr.widgetlibviewer.NotificationsContentScene.NotificationItemWidget": {
       "name": "item",
       "size": {
         "x": 5,
@@ -404,7 +404,7 @@
         }
       }
     },
-    "org.gearvrf.widgetlibviewer.NotificationsContentScene.NotificationContentWidget": {
+    "com.samsungxr.widgetlibviewer.NotificationsContentScene.NotificationContentWidget": {
       "name": "content",
       "size": {
         "x": 0,
@@ -433,7 +433,7 @@
         }
       }
     },
-    "org.gearvrf.widgetlibviewer.NotificationsContentScene": {
+    "com.samsungxr.widgetlibviewer.NotificationsContentScene": {
       "control_bar": {
         "name": "ControlBar",
         "size": {
