@@ -12,6 +12,9 @@ else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
 android {
     defaultConfig {
         applicationId "org.gearvrf.vuforiasample"
+        ndk {
+            abiFilters = ['armeabi-v7a']
+        }
     }
 
     buildTypes {
