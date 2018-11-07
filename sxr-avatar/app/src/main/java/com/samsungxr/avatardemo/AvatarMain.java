@@ -21,15 +21,8 @@ import java.io.InputStream;
 
 public class AvatarMain extends SXRMain {
     private final String mModelPath = "YBot/ybot.fbx";
-    private final String[] mAnimationPaths = {
-            "animation/captured/Video1_BVH.bvh",
-            "animation/captured/Video2_BVH.bvh",
-            "animation/captured/Video3_BVH.bvh",
-            "animation/captured/Video4_BVH.bvh",
-            "animation/captured/Video5_BVH.bvh",
-            "animation/captured/Video6_BVH.bvh"
-    };
-    private final String mBoneMapPath = "animation/captured/bonemap.txt";
+    private final String[] mAnimationPaths =  { "animation/mixamo/Ybot_SambaDancing.bvh" };
+    private final String mBoneMapPath = "animation/mixamo/bonemap.txt";
     private static final String TAG = "AVATAR";
     private SXRContext mContext;
     private SXRScene mScene;
@@ -43,10 +36,14 @@ public class AvatarMain extends SXRMain {
 
     private SXRAvatar.IAvatarEvents mAvatarListener = new SXRAvatar.IAvatarEvents() {
         @Override
-        public void onAvatarLoaded(final SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) {
-            if (avatarRoot.getParent() == null) {
-                mContext.runOnGlThread(new Runnable() {
-                    public void run() {
+        public void onAvatarLoaded(final SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors)
+        {
+            if (avatarRoot.getParent() == null)
+            {
+                mContext.runOnGlThread(new Runnable()
+                {
+                    public void run()
+                    {
                         avatar.centerModel(avatarRoot);
                         mScene.addNode(avatarRoot);
                     }
@@ -56,28 +53,30 @@ public class AvatarMain extends SXRMain {
         }
 
         @Override
-        public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors) {
+        public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors)
+        {
             animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
             ++mNumAnimsLoaded;
-            if (!avatar.isRunning()) {
+            if (!avatar.isRunning())
+            {
                 avatar.startAll(SXRRepeatMode.REPEATED);
-            } else {
+            }
+            else
+            {
                 avatar.start(animation.getName());
             }
-            if (mNumAnimsLoaded < mAnimationPaths.length) {
+            if (mNumAnimsLoaded < mAnimationPaths.length)
+            {
                 loadNextAnimation(avatar, mBoneMap);
             }
         }
 
-        public void onModelLoaded(SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) {
-        }
+        public void onModelLoaded(SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) { }
 
-        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) {
-        }
+        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }
 
-        public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) {
-        }
+        public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
     };
 
 
