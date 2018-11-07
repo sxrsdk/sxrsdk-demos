@@ -67,7 +67,7 @@ public class AvatarMain extends SXRMain {
             Log.e(TAG, "Avatar could not be found");
         }
         mAvManager.loadModel();
-        mMixedReality = new SXRMixedReality(mContext);
+        mMixedReality = new SXRMixedReality(mScene, false);
         mMixedReality.getEventReceiver().addListener(planeEventsListener);
         mMixedReality.getEventReceiver().addListener(anchorEventsListener);
         mMixedReality.resume();
@@ -76,10 +76,13 @@ public class AvatarMain extends SXRMain {
     @Override
     public void onStep()
     {
-        float light = mMixedReality.getLightEstimate().getPixelIntensity() * 1.5f;
-        mSceneLight.setAmbientIntensity(light, light, light, 1);
-        mSceneLight.setDiffuseIntensity(light, light, light, 1);
-        mSceneLight.setSpecularIntensity(light, light, light, 1);
+        if (mMixedReality != null)
+        {
+            float light = mMixedReality.getLightEstimate().getPixelIntensity() * 1.5f;
+            mSceneLight.setAmbientIntensity(light, light, light, 1);
+            mSceneLight.setDiffuseIntensity(light, light, light, 1);
+            mSceneLight.setSpecularIntensity(light, light, light, 1);
+        }
     }
 
 
