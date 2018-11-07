@@ -26,7 +26,7 @@ public class AvatarManager
 
     private final String[] CAT = { "Cat/Cat.fbx", "animation/mixamo/pet_map.txt", "Cat/defaultAnim_SitDown.bvh", "Cat/defaultAnim_StandUp.bvh", "Cat/defaultAnim_Walk.bvh" };
 
-    private final String[] GYLE = { "Gyle/Gyle_Skin.fbx", null, "Gyle/bboydance_mixamo.com.bvh", "Gyle/idle_anim_mixamo.com.bvh", "Gyle/runningman_mixamo.com.bvh" };
+    private final String[] GYLE = { "Gyle/gyle_collada.dae", "Gyle/bonemap.txt", "Gyle/idle_anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
 
     private final String[] HOLOLAB = new String[] { "Hololab/evp_chung_lowres.fbx" };
 
