@@ -15,8 +15,6 @@
 
 package com.samsungxr.arcore.simplesample;
 
-import android.graphics.Color;
-
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
@@ -24,8 +22,11 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRNode;
+import com.samsungxr.ITouchEvents;
 import com.samsungxr.io.SXRCursorController;
+import com.samsungxr.io.SXRGazeCursorController;
 import com.samsungxr.io.SXRInputManager;
+import org.joml.Vector4f;
 
 import java.util.EnumSet;
 
@@ -34,45 +35,78 @@ public class SampleHelper {
     private SXRNode mCursor;
     private SXRCursorController mCursorController;
 
-    private int hsvHUE = 0;
+    private Vector4f[] mColors;
+    private int mPlaneIndex = 0;
 
-    public SXRNode createQuadPlane(SXRContext sxrContext) {
-        SXRMesh mesh = SXRMesh.createQuad(sxrContext,
-                "float3 a_position", 1.0f, 1.0f);
+    SampleHelper()
+    {
+        mColors = new Vector4f[]
+        {
+            new Vector4f(1, 0, 0, 0.3f),
+            new Vector4f(0, 1, 0, 0.3f),
+            new Vector4f(0, 0, 1, 0.3f),
+            new Vector4f(1, 0, 1, 0.3f),
+            new Vector4f(0, 1, 1, 0.3f),
+            new Vector4f(1, 1, 0, 0.3f),
+            new Vector4f(1, 1, 1, 0.3f),
 
-        SXRMaterial mat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
+            new Vector4f(1, 0, 0.5f, 0.3f),
+            new Vector4f(0, 0.5f, 0, 0.3f),
+            new Vector4f(0, 0, 0.5f, 0.3f),
+            new Vector4f(1, 0, 0.5f, 0.3f),
+            new Vector4f(0, 1, 0.5f, 0.3f),
+            new Vector4f( 1, 0.5f, 0,0.3f),
+            new Vector4f( 1, 0.5f, 1,0.3f),
 
-        SXRNode polygonObject = new SXRNode(sxrContext, mesh, mat);
-
-        hsvHUE += 35;
-        float[] hsv = new float[3];
-        hsv[0] = hsvHUE % 360;
-        hsv[1] = 1f; hsv[2] = 1f;
-
-        int c =  Color.HSVToColor(50, hsv);
-        mat.setDiffuseColor(Color.red(c) / 255f,Color.green(c) / 255f,
-                Color.blue(c) / 255f, 0.2f);
-
-        polygonObject.getRenderData().setMaterial(mat);
-        polygonObject.getRenderData().setAlphaBlend(true);
-        polygonObject.getTransform().setRotationByAxis(-90, 1, 0, 0);
-
-        return polygonObject;
+            new Vector4f(0.5f, 0, 1, 0.3f),
+            new Vector4f(0.5f, 0, 1, 0.3f),
+            new Vector4f(0, 0.5f, 1, 0.3f),
+            new Vector4f( 0.5f, 1, 0,0.3f),
+            new Vector4f( 0.5f, 1, 1,0.3f),
+            new Vector4f( 1, 1, 0.5f, 0.3f),
+            new Vector4f( 1, 0.5f, 0.5f, 0.3f),
+            new Vector4f( 0.5f, 0.5f, 1, 0.3f),
+            new Vector4f( 0.5f, 1, 0.5f, 0.3f),
+       };
     }
 
-    public void initCursorController(SXRContext sxrContext, final SampleMain.TouchHandler handler) {
-        final int cursorDepth = 100;
-        sxrContext.getMainScene().getEventReceiver().addListener(handler);
-        SXRInputManager inputManager = sxrContext.getInputManager();
-        mCursor = new SXRNode(sxrContext,
-                sxrContext.createQuad(0.2f * cursorDepth,
+    public SXRNode createQuadPlane(SXRContext SXRContext)
+    {
+        SXRNode plane = new SXRNode(SXRContext);
+        SXRMesh mesh = SXRMesh.createQuad(SXRContext,
+                "float3 a_position", 1.0f, 1.0f);
+        SXRMaterial mat = new SXRMaterial(SXRContext, SXRMaterial.SXRShaderType.Phong.ID);
+        SXRNode polygonObject = new SXRNode(SXRContext, mesh, mat);
+        Vector4f color = mColors[mPlaneIndex % mColors.length];
+
+        plane.setName("Plane" + mPlaneIndex);
+        polygonObject.setName("PlaneGeometry" + mPlaneIndex);
+        mPlaneIndex++;
+        mat.setDiffuseColor(color.x, color.y, color.x, color.w);
+        polygonObject.getRenderData().disableLight();
+        polygonObject.getRenderData().setAlphaBlend(true);
+        polygonObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
+        polygonObject.getTransform().setRotationByAxis(-90, 1, 0, 0);
+        plane.addChildObject(polygonObject);
+        return plane;
+    }
+
+    public void initCursorController(SXRContext SXRContext, final ITouchEvents handler, final float displayDepth)
+    {
+        final float cursorDepth = 100.0f;
+        SXRContext.getMainScene().getEventReceiver().addListener(handler);
+        SXRInputManager inputManager = SXRContext.getInputManager();
+        mCursor = new SXRNode(SXRContext,
+                SXRContext.createQuad(0.2f * cursorDepth,
                         0.2f * cursorDepth),
-                sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext,
+                SXRContext.getAssetLoader().loadTexture(new SXRAndroidResource(SXRContext,
                         R.raw.cursor)));
         mCursor.getRenderData().setDepthTest(false);
+        mCursor.getRenderData().disableLight();
         mCursor.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
         final EnumSet<SXRPicker.EventOptions> eventOptions = EnumSet.of(
                 SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
+                SXRPicker.EventOptions.SEND_TO_HIT_OBJECT,
                 SXRPicker.EventOptions.SEND_TO_LISTENERS);
         inputManager.selectController(new SXRInputManager.ICursorControllerSelectListener()
         {
@@ -83,9 +117,13 @@ public class SampleHelper {
                     oldController.removePickEventListener(handler);
                 }
                 mCursorController = newController;
-                newController.addPickEventListener(handler);
+                if (newController instanceof SXRGazeCursorController)
+                {
+                    ((SXRGazeCursorController) newController).setTouchScreenDepth(displayDepth);
+                }
                 newController.setCursor(mCursor);
-                newController.setCursorDepth(-cursorDepth);
+                newController.getPicker().setPickClosest(false);
+                newController.setCursorDepth(cursorDepth);
                 newController.setCursorControl(SXRCursorController.CursorControl.CURSOR_CONSTANT_DEPTH);
                 newController.getPicker().setEventOptions(eventOptions);
             }
