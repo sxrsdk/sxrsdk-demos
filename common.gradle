@@ -1,5 +1,3 @@
-project.ext.hasBackend = false
-
 if (file("../../../extra_properties.gradle").exists()) {
     apply from: '../../../extra_properties.gradle'
 }
@@ -30,14 +28,11 @@ android {
         debug {
             debuggable = true
             jniDebuggable = true
-            resValue 'string', 'app_name', System.getProperty("appName")
         }
         release {
             signingConfig signingConfigs.debug
-            resValue 'string', 'app_name', System.getProperty("appName")
         }
     }
-
 
     flavorDimensions "vr"
 
@@ -46,52 +41,50 @@ android {
             dimension "vr"
             applicationIdSuffix ".monoscopic"
             versionNameSuffix "-monoscopic"
+            resValue 'string', 'app_name', System.getProperty("appName")+"-monoscopic"
+
+            ndk {
+                if (project.hasProperty("SXRSDK_ABI_FILTER")) {
+                    abiFilters project.property("SXRSDK_ABI_FILTER")
+                } else {
+                    abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                }
+            }
         }
         daydream {
             dimension "vr"
             applicationIdSuffix ".daydream"
             versionNameSuffix "-daydream"
-        }
-        vr_only {
-            dimension "vr"
-            applicationIdSuffix ".vr_only"
-            versionNameSuffix "-vr_only"
-            manifestPlaceholders = [vrMetaData:'<meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>']
-        }
-        ar {
-            dimension "vr"
-            applicationIdSuffix ".ar"
-            versionNameSuffix "-ar"
-            manifestPlaceholders = [vrMetaData:'<meta-data android:name="com.samsung.android.sxr.application.type" android:value="ar"/>']
-        }
-    }
+            resValue 'string', 'app_name', System.getProperty("appName")+"-daydream"
 
-    variantFilter { variant ->
-        def names = variant.flavors*.name
-        if (names.contains("monoscopic") && !(project.hasProperty("backend_monoscopic") && project.property("backend_monoscopic")) ) {
-            setIgnore(true)
-	}
-        if (names.contains("daydream") && !(project.hasProperty("backend_daydream") && project.property("backend_daydream")) ) {
-            setIgnore(true)
-	}
-        if (names.contains("vr_only") && !(project.hasProperty("backend_oculus") && project.property("backend_oculus")) ) {
-            setIgnore(true)
-	}
-        if (names.contains("ar") && !(project.hasProperty("sxr_adapter") && project.property("sxr_adapter")) ) {
-            setIgnore(true)
-	}
+            ndk {
+                if (project.hasProperty("SXRSDK_ABI_FILTER")) {
+                    abiFilters project.property("SXRSDK_ABI_FILTER")
+                } else {
+                    abiFilters "armeabi-v7a", "arm64-v8a"
+                }
+            }
+        }
+        oculus {
+            dimension "vr"
+            applicationIdSuffix ".oculus"
+            versionNameSuffix "-oculus"
+            manifestPlaceholders = [vrMetaData:'<meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>']
+            resValue 'string', 'app_name', System.getProperty("appName")+"-oculus"
+
+            ndk {
+                if (project.hasProperty("SXRSDK_ABI_FILTER")) {
+                    abiFilters project.property("SXRSDK_ABI_FILTER")
+                } else {
+                    abiFilters "armeabi-v7a", "arm64-v8a"
+                }
+            }
+        }
     }
 
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 23
-        ndk {
-            if (project.hasProperty("SXRSDK_ABI_FILTER")) {
-                abiFilters project.property("SXRSDK_ABI_FILTER")
-            } else {
-                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-            }
-        }
     }
 
     applicationVariants.all { variant ->
@@ -100,7 +93,6 @@ android {
         }
     }
 
-    // ignore the x86 files from the google vr libraries
     packagingOptions {
         pickFirst 'lib/*/libc++_shared.so'
     }
@@ -126,29 +118,10 @@ file("../../..").eachDir {
     }
 }
 
-/*
-To use local dependencies add the following line in a global gradle properties file
-eg. ~/.gradle/gradle.properties:
-
-useLocalDependencies=true
-
- */
 ext.sxrVersion = '4.0.1-SNAPSHOT'
 project.ext.daydreamVersion = '1.130.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
-
-if (!project.ext.hasBackend) {
-    project.ext.backend_monoscopic = true
-}
-
-if (project.hasProperty("backend_monoscopic")) {
-    project.ext.backend_monoscopic = project.property("backend_monoscopic")
-} else if (project.hasProperty("backend_daydream")) {
-    project.ext.backend_daydream = project.property("backend_daydream")
-} else if (project.hasProperty("backend_oculus")) {
-    project.ext.backend_oculus = project.property("backend_oculus")
-}
 
 dependencies {
     implementation "com.google.code.gson:gson:$gsonVersion"
@@ -165,45 +138,36 @@ dependencies {
         implementation "com.samsungxr:sxrsdk:$sxrVersion"
     }
 
-    if (project.hasProperty("backend_monoscopic") && project.property("backend_monoscopic")) {
-        if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-            if (findProject(':backend_monoscopic')) {
-                implementation project(':backend_monoscopic')
-            } else {
-                debugImplementation(name: 'backend_monoscopic-debug', ext: 'aar')
-                releaseImplementation(name: 'backend_monoscopic-release', ext: 'aar')
-            }
+    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':backend_monoscopic')) {
+            monoscopicImplementation project(':backend_monoscopic')
         } else {
-            implementation "com.samsungxr:backend_monoscopic:$sxrVersion"
+            monoscopicImplementation(':backend_monoscopic-release@aar')
         }
+    } else {
+        monoscopicImplementation "com.samsungxr:backend_monoscopic:$sxrVersion"
     }
 
-    if (project.hasProperty("backend_daydream") && project.property("backend_daydream")) {
-        if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-            if (findProject(':backend_daydream')) {
-                implementation project(':backend_daydream')
-            } else {
-                debugImplementation(name: 'backend_daydream-debug', ext: 'aar')
-                releaseImplementation(name: 'backend_daydream-release', ext: 'aar')
-            }
+    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':backend_daydream')) {
+            daydreamImplementation project(':backend_daydream')
         } else {
-            implementation "com.samsungxr:backend_daydream:$sxrVersion"
+            daydreamImplementation(':backend_daydream-release@aar')
         }
-        implementation "com.google.vr:sdk-base:${daydreamVersion}"
-        implementation "com.google.vr:sdk-controller:${daydreamVersion}"
+    } else {
+        daydreamImplementation "com.samsungxr:backend_daydream:$sxrVersion"
     }
+    daydreamImplementation "com.google.vr:sdk-base:${daydreamVersion}"
+    daydreamImplementation "com.google.vr:sdk-controller:${daydreamVersion}"
 
-    if (project.hasProperty("backend_oculus") && project.property("backend_oculus")) {
-        if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-            if (findProject(':backend_oculus')) {
-                implementation project(':backend_oculus')
-            } else {
-                debugImplementation(name: 'backend_oculus-debug', ext: 'aar')
-                releaseImplementation(name: 'backend_oculus-release', ext: 'aar')
-            }
+    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':backend_oculus')) {
+            oculusImplementation project(':backend_oculus')
         } else {
-            implementation "com.samsungxr:backend_oculus:$sxrVersion"
+            oculusImplementation(':backend_oculus-release@aar')
         }
+    } else {
+        oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
     }
 }
 
