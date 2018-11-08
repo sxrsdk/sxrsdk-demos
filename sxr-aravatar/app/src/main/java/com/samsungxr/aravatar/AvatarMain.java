@@ -27,6 +27,7 @@ import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SystemPropertyUtil;
 import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.mixedreality.SXRAnchor;
@@ -60,8 +61,15 @@ public class AvatarMain extends SXRMain {
         mSelector = new SelectionHandler(ctx);
         mSceneLight = mUtility.makeSceneLight(ctx);
         mScene.addNode(mSceneLight.getOwnerObject());
+
+        String avatarName = SystemPropertyUtil.getSystemPropertyString("debug.samsungxr.avatarname");
+
+        if ((avatarName == null) || (avatarName == ""))
+        {
+            avatarName = "GYLE";
+        }
         mAvManager = new AvatarManager(mContext, null);
-        mAvatar = mAvManager.selectAvatar("GYLE");
+        mAvatar = mAvManager.selectAvatar(avatarName.toUpperCase());
         if (mAvatar == null)
         {
             Log.e(TAG, "Avatar could not be found");
