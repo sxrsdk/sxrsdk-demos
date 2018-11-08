@@ -6,13 +6,14 @@
 ```
 git clone https://github.com/sxrsdk/sxrsdk-demos.git -b release_v5.0
 ```
-
-2. Download the release5.0.zip archive from https://github.com/sxrsdk/sxrsdk/releases/tag/release_v5.0
+2. Download the release5.0.zip archive from https://github.com/sxrsdk/sxrsdk/releases/tag/release_v5.0.
 3. Extract release5.0.zip to ./sxrsdk/SXR/sxr-lib. sxrsdk must be in the same directory where you cloned sxrsdk-demos.
 4. Edit sxrsdk-demo/gradle.properties; add "useLocalDependencies=true" to it.
 5. Open the sxrsdk-demos folder in AS; build and run apps.
 
+Do note that the demos support multiple flavors. In AS go to "Build Variants" and pick the desired one (e.g. monoscopicDebug or oculusDebug). Monoscopic variant runs the app in monoscopic mode - meaning one eye rendered full screen. If you pick the Oculus variant then the app will do stereoscopic rendering. See below for further details on running with Oculus. 
 
+For Oculus
 * Set up the [Oculus device signature](https://developer.oculus.com/osig/) for your device (it will look like oculussig_xxxxxxxx where xxxxxxxx is the id you get when you run `adb devices`); copy it into an assets folder each project's `src/main/assets` directory.
 
 * if you want to run without loading into a headset, enable Samsung VR Service developer mode: 
