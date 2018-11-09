@@ -15,9 +15,10 @@
 
 package com.samsungxr.aravatar;
 
-import android.util.Log;
+import android.graphics.Color;
 
 import com.samsungxr.SXRBoxCollider;
+import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXREventListeners;
@@ -25,9 +26,13 @@ import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
+import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRTransform;
 import com.samsungxr.SystemPropertyUtil;
+import com.samsungxr.animation.SXRAnimation;
+import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.mixedreality.SXRAnchor;
@@ -38,6 +43,7 @@ import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.mixedreality.IAnchorEvents;
 import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
+import com.samsungxr.utility.Log;
 
 public class AvatarMain extends SXRMain {
     private static String TAG = "ARAVATAR";
@@ -50,6 +56,7 @@ public class AvatarMain extends SXRMain {
     private SelectionHandler  mSelector;
     private SXRDirectLight    mSceneLight;
     private AvatarManager     mAvManager;
+    public SXRNode            mAvatarAnchor;
 
     @Override
     public void onInit(SXRContext ctx)
@@ -61,19 +68,20 @@ public class AvatarMain extends SXRMain {
         mSelector = new SelectionHandler(ctx);
         mSceneLight = mUtility.makeSceneLight(ctx);
         mScene.addNode(mSceneLight.getOwnerObject());
-
         String avatarName = SystemPropertyUtil.getSystemPropertyString("debug.samsungxr.avatarname");
 
         if ((avatarName == null) || (avatarName == ""))
         {
             avatarName = "GYLE";
         }
-        mAvManager = new AvatarManager(mContext, null);
+        mAvManager = new AvatarManager(mContext, mAvatarListener);
         mAvatar = mAvManager.selectAvatar(avatarName.toUpperCase());
         if (mAvatar == null)
         {
             Log.e(TAG, "Avatar could not be found");
         }
+        mAvatarAnchor = new SXRNode(mContext);
+        mAvatarAnchor.setName("Avatar_Anchor");
         mAvManager.loadModel();
         mMixedReality = new SXRMixedReality(mScene, false);
         mMixedReality.getEventReceiver().addListener(planeEventsListener);
@@ -113,9 +121,12 @@ public class AvatarMain extends SXRMain {
             if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING)
             {
                 SXRNode planeMesh = mUtility.createPlane(getSXRContext());
+                float[] pose = new float[16];
 
+                plane.getCenterPose(pose);
                 planeMesh.attachComponent(plane);
                 mScene.addNode(planeMesh);
+                placeAvatar(pose);
             }
         }
 
@@ -205,35 +216,95 @@ public class AvatarMain extends SXRMain {
             }
             SXRHitResult hit = mMixedReality.hitTest(pickInfo);
 
-            if (hit == null)
+            if (hit != null)
             {
-                return;
-            }
-            SXRNode avatarModel = mAvatar.getModel();
-            SXRNode avatarAnchor = avatarModel.getParent();
-            SXRAnchor   anchor = null;
-            float[]     pose = hit.getPose();
-
-            if (!mAvatar.isRunning())
-            {
-                mAvatar.startAll(SXRRepeatMode.REPEATED);
-            }
-            if (avatarAnchor != null)
-            {
-                anchor = (SXRAnchor) avatarAnchor.getComponent(SXRAnchor.getComponentType());
-                mMixedReality.updateAnchorPose(anchor, pose);
-            }
-            else
-            {
-                avatarAnchor = mMixedReality.createAnchorNode(pose);
-                avatarAnchor.addChildObject(avatarModel);
-                avatarModel.attachComponent(new SXRBoxCollider(mContext));
-                mScene.addNode(avatarAnchor);
-                avatarModel.getEventReceiver().addListener(mSelector);
+                placeAvatar(hit.getPose());
             }
         }
     };
 
+    private void placeAvatar(float[] pose)
+    {
+        SXRAnchor   anchor = (SXRAnchor) mAvatarAnchor.getComponent(SXRAnchor.getComponentType());;
+
+        if (anchor != null)
+        {
+            mMixedReality.updateAnchorPose(anchor, pose);
+        }
+        else
+        {
+            anchor = mMixedReality.createAnchor(pose);
+            mAvatarAnchor.attachComponent(anchor);
+        }
+    }
+
+    public  SXRAvatar.IAvatarEvents mAvatarListener = new SXRAvatar.IAvatarEvents()
+    {
+        @Override
+        public void onAvatarLoaded(final SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors)
+        {
+            SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
+            if (bv.radius > 0)
+            {
+                float scale = 0.5f /bv.radius;
+                avatarRoot.getTransform().setScale(scale, scale, scale);
+                bv = avatarRoot.getBoundingVolume();
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -1.5f - bv.center.z);
+            avatarRoot.attachComponent(new SXRBoxCollider(mContext));
+            mAvatarAnchor.addChildObject(avatarRoot);
+            avatarRoot.getEventReceiver().addListener(mSelector);
+            mScene.addNode(mAvatarAnchor);
+            mAvManager.loadNextAnimation();
+        }
+
+        @Override
+        public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors)
+        {
+            if (animation == null)
+            {
+                return;
+            }
+            animation.setRepeatMode(SXRRepeatMode.ONCE);
+            animation.setSpeed(1f);
+            if (!avatar.isRunning())
+            {
+                avatar.startAll(SXRRepeatMode.REPEATED);
+            }
+            else
+            {
+                avatar.start(animation.getName());
+            }
+            mAvManager.loadNextAnimation();
+        }
+
+        public void onModelLoaded(SXRAvatar avatar, SXRNode avatarRoot, String filePath, String errors)
+        {
+            SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
+            if (bv.radius > 0)
+            {
+                float scale = 0.5f / bv.radius;
+                avatarRoot.getTransform().setScale(scale, scale, scale);
+                bv = avatarRoot.getBoundingVolume();
+            }
+            avatarRoot.attachComponent(new SXRBoxCollider(mContext));
+            avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
+                @Override
+                public boolean visit(SXRComponent c)
+                {
+                    ((SXRRenderData) c).disableLight();
+                    return true;
+                }
+            }, SXRRenderData.getComponentType());
+            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -1.5f - bv.center.z);
+            mAvatarAnchor.addChildObject(avatarRoot);
+            mContext.getMainScene().addNode(mAvatarAnchor);
+        }
+
+        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }
+
+        public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
+    };
 
 
 }
