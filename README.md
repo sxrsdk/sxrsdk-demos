@@ -7,7 +7,7 @@
 git clone https://github.com/sxrsdk/sxrsdk-demos.git -b release_v5.0
 ```
 2. Download the release5.0.zip archive from https://github.com/sxrsdk/sxrsdk/releases/tag/release_v5.0.
-3. Extract release5.0.zip to ./sxrsdk/SXR/sxr-lib. sxrsdk must be in the same directory where you cloned sxrsdk-demos.
+3. Extract release5.0.zip to ./sxrsdk/SXR/sxr-libs. sxrsdk must be in the same directory where you cloned sxrsdk-demos.
 4. Edit sxrsdk-demo/gradle.properties; add "useLocalDependencies=true" to it.
 5. Open the sxrsdk-demos folder in AS; build and run apps.
 
