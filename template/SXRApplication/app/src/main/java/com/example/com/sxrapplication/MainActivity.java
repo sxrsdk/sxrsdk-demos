@@ -1,4 +1,4 @@
-package com.example.org.sxrfapplication;
+package com.example.org.sxrsdkapplication;
 
 import android.os.Bundle;
 
