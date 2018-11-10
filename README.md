@@ -22,6 +22,7 @@ For Oculus
 	- if you get a message 'You are a developer' you should see a toggle to enable developer mode
 	- if you get a message 'You are not a developer' you probably haven't installed a valid apk with your oculus signature - run the `adb install -r ./sxrcubemap/build/outputs/apk/app-debug.apk` command on at least one project, then the service should discover you	 
 
+Putting the phone into "AR" mode, must be done after each phone restart: ``adb shell setprop debug.samsungxr.hmt AR-DROP-IN2``
 
 ### sxr-360photo
 A minimal sample showing how to display an equirectangular (360) photo.
