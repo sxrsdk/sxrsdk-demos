@@ -61,6 +61,10 @@ android {
             dimension "vr"
             applicationIdSuffix ".oculus"
         }
+        ar {
+            dimension "vr"
+            applicationIdSuffix ".ar"
+        }
     }
 }
 
@@ -98,5 +102,11 @@ dependencies {
         oculusImplementation project(':backend_oculus')
     } else {
         oculusImplementation(':backend_oculus-release@aar')
+    }
+    arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
+    if (findProject(':sxr_adapter')) {
+        arImplementation project(':sxr_adapter')
+    } else {
+        arImplementation(':sxr_adapter-release@aar')
     }
 }
