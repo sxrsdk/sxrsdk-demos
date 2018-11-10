@@ -3,6 +3,7 @@ package com.samsungxr.aravatar;
 import android.util.Log;
 
 import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
@@ -226,9 +227,13 @@ public class AvatarManager
         public void onAvatarLoaded(final SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors)
         {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
-            float scale = 0.3f / bv.radius;
-            if (avatar.getName().equals("EVA")) scale = 0.2f / bv.radius;
-            avatarRoot.getTransform().setScale(scale, scale, scale);
+            if (bv.radius > 0)
+            {
+                float scale = 0.5f / bv.radius;
+                avatarRoot.getTransform().setScale(scale, scale, scale);
+                bv = avatarRoot.getBoundingVolume();
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -bv.center.z);
             loadNextAnimation();
         }
 
@@ -241,23 +246,27 @@ public class AvatarManager
             }
             animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
+            if (!avatar.isRunning())
+            {
+                avatar.startAll(SXRRepeatMode.REPEATED);
+            }
+            else
+            {
+                avatar.start(animation.getName());
+            }
             loadNextAnimation();
         }
 
         public void onModelLoaded(SXRAvatar avatar, SXRNode avatarRoot, String filePath, String errors)
         {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
-            float scale = 0.3f / bv.radius;
-            avatarRoot.getTransform().setScale(scale, scale, scale);
-            avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
-                @Override
-                public boolean visit(SXRComponent c)
-                {
-                    ((SXRRenderData) c).disableLight();
-                    return true;
-                }
-            }, SXRRenderData.getComponentType());
-            avatar.getModel().addChildObject(avatarRoot);
+            if (bv.radius > 0)
+            {
+                float scale = 0.5f / bv.radius;
+                avatarRoot.getTransform().setScale(scale, scale, scale);
+                bv = avatarRoot.getBoundingVolume();
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -bv.center.z);
         }
 
         public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }
