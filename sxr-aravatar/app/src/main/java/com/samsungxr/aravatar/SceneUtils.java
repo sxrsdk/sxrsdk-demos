@@ -95,6 +95,7 @@ public class SceneUtils
         mPlaneIndex++;
         mat.setDiffuseColor(color.x, color.y, color.x, color.w);
         polygonObject.getRenderData().setAlphaBlend(true);
+        polygonObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
         polygonObject.getRenderData().disableLight();
         polygonObject.getTransform().setRotationByAxis(-90, 1, 0, 0);
         plane.addChildObject(polygonObject);
