@@ -25,7 +25,7 @@ public class AvatarManager
 
     private final String[] EVA = { "Eva/Eva.dae", "Eva/pet_map.txt", "Eva/Walk_Circle.bvh", "Eva/bvhExport_GRAB_BONE.bvh",  };
 
-    private final String[] GYLE = { "Gyle/gyle_collada.dae", "Gyle/bonemap.txt", "Gyle/idle_Anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
+    private final String[] GYLE = { "Gyle/gyle_skin.fbx", "Gyle/bonemap.txt", "Gyle/idle_Anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
 
     private final String[] MRCHUNG = new String[] { "Hololab/evp_chung_lowres.fbx" };
 

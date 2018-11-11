@@ -58,7 +58,6 @@ public class AvatarMain extends SXRMain {
     private SelectionHandler  mSelector;
     private SXRDirectLight    mSceneLight;
     private AvatarManager     mAvManager;
-    private SXRTextViewNode   mTextDisplay;
     public SXRNode            mAvatarAnchor;
 
     @Override
@@ -70,17 +69,7 @@ public class AvatarMain extends SXRMain {
         mTouchHandler = new TouchHandler();
         mSelector = new SelectionHandler(ctx);
         mSceneLight = mUtility.makeSceneLight(ctx);
-        mScene.addNode(mSceneLight.getOwnerObject());
-
-        mTextDisplay = new SXRTextViewNode(ctx, 10, 2.5f, "HEAD POSITION");
-        mTextDisplay.setTextSize(3.5f);
-        mTextDisplay.setTextColor(Color.YELLOW);
-        mTextDisplay.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        mTextDisplay.getTransform().setPositionZ(-5);
-        mTextDisplay.getRenderData().setDepthTest(false);
-        mTextDisplay.getRenderData().setAlphaBlend(true);
-        mTextDisplay.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
-        mScene.getMainCameraRig().getHeadTransformObject().addChildObject(mTextDisplay);
+        mScene.getMainCameraRig().getHeadTransformObject().addChildObject(mSceneLight.getOwnerObject());
 
         String avatarName = SystemPropertyUtil.getSystemPropertyString("debug.samsungxr.avatarname");
 
@@ -108,16 +97,11 @@ public class AvatarMain extends SXRMain {
     {
         if (mMixedReality != null)
         {
-            float light = mMixedReality.getLightEstimate().getPixelIntensity() * 1.5f;
+            float light = mMixedReality.getLightEstimate().getPixelIntensity();
             mSceneLight.setAmbientIntensity(light, light, light, 1);
             mSceneLight.setDiffuseIntensity(light, light, light, 1);
             mSceneLight.setSpecularIntensity(light, light, light, 1);
         }
-        SXRTransform t  = mScene.getMainCameraRig().getHeadTransform();
-        String output = String.format("%f %f %f  %f %f %f",
-                                      t.getPositionX(), t.getPositionY(), t.getPositionZ(),
-                                      t.getRotationYaw(), t.getRotationPitch(), t.getRotationRoll());
-        mTextDisplay.setText(output);
     }
 
 
@@ -265,11 +249,16 @@ public class AvatarMain extends SXRMain {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
             if (bv.radius > 0)
             {
-                float scale = 0.5f /bv.radius;
+                float scale = 0.3f /bv.radius;
                 avatarRoot.getTransform().setScale(scale, scale, scale);
                 bv = avatarRoot.getBoundingVolume();
             }
-            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -1.5f - bv.center.z);
+            float zpos = -bv.center.z;
+            if (mMixedReality.getPassThroughObject() != null)
+            {
+                zpos -= 1.5f;
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, 0, zpos);
             avatarRoot.attachComponent(new SXRBoxCollider(mContext));
             mAvatarAnchor.addChildObject(avatarRoot);
             avatarRoot.getEventReceiver().addListener(mSelector);
@@ -302,10 +291,16 @@ public class AvatarMain extends SXRMain {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
             if (bv.radius > 0)
             {
-                float scale = 0.5f / bv.radius;
+                float scale = 0.3f / bv.radius;
                 avatarRoot.getTransform().setScale(scale, scale, scale);
                 bv = avatarRoot.getBoundingVolume();
             }
+            float zpos = -bv.center.z;
+            if (mMixedReality.getPassThroughObject() != null)
+            {
+                zpos -= 1.5f;
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, 0, zpos);
             avatarRoot.attachComponent(new SXRBoxCollider(mContext));
             avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
                 @Override
@@ -315,7 +310,6 @@ public class AvatarMain extends SXRMain {
                     return true;
                 }
             }, SXRRenderData.getComponentType());
-            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -1.5f - bv.center.z);
             mAvatarAnchor.addChildObject(avatarRoot);
             mContext.getMainScene().addNode(mAvatarAnchor);
         }
