@@ -1,0 +1,47 @@
+*Unity Preparation Process and Build Instructions*
+
+
+The latest binary package file for Unity applications will be released as part of SamsungXR.
+
+- To use it, just import the package file to your app, then prepare SamsungXR camera. 
+  If you have old SamsungXR camera, please delete it and recreate it. 
+  
+- In Unity, select "Assets > Import Package > Custom Package ...", 
+  find the folder containing Samsung SXR Unity Plugin, for example, 
+  "SXRPlugin3.0.unitypackage", and import everything from the package.
+
+
+To build Unity Project using the plugin follow the described instructions: 
+
+- Define build platform as Android 
+
+- Make sure option "Player Settings"/"Resolution And Presentation"/Landscape Left" is enabled 
+
+- Make sure option "Player Settings"/"Other Settings"/"Virtual Reality Supported" is NOT enabled
+
+- You can choose option "Player Settings"/"Other Settings"/"Multithreaded Rendering" depending on your app
+
+- Click in option "SXR"/"Prepare XR Camera..." in the "Tools Bar" to open Plugin options window 
+
+- Select the Camera (main camera) from your game and click "Prepare Camera" on Plugin Window
+
+- Now your camera is ready to be used for SXR, just make sure every camera you use in the game 
+  have been prepared and your game is ready to build
+
+- Be careful not to accidently modify the default camera settings after prepared.
+
+- The settings of main camera are adjustable depending on app's need. Otherwise, recommended to set
+  as Clear Flags: Skybox, Culling Mask: Everything, Camera: checked
+
+- The plugin has namespaces, called Sxr and SxrInternal. Applications may need to add using directive, 
+  using namespace Sxr, to allow access to the pluin’s scripts at code level. SxrInternal is usually 
+  for plugin codes and can be changed anytime in the future without backward compatibility.
+
+
+*UI Interaction Instructions* 
+
+- Unity Plugin comes with an input module to enable interaction with Unity Native UI System 
+in order to use it follow the 'Preparation Process' to have a camera ready to be used using plugin, 
+select your Canvas in Unity Scene and set the properties "Event Camera" with the object 
+inside your prepared camera called "SXRCameraRig", 
+repeat this process for every canvas you want to interact with.

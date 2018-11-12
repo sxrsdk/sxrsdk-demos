@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parameters>
+<!-- Float Value !-->
+  <EyeDistance>0.066</EyeDistance>
+  <!-- Bool Value !-->
+  <CopyParentCamera>true</CopyParentCamera>
+  <!-- float Value !-->
+  <CopyParentCamera>true</CopyParentCamera>
+  <!-- float Value !-->
+  <InterpupillaryDistance> 0.062 </InterpupillaryDistance>
+  <!-- float Value !-->
+  <EyeHeight> 1.675 </EyeHeight>
+  <!-- float Value !-->
+  <HeadModelDepth> 0.0805 </HeadModelDepth>
+  <!-- float Value !-->
+  <HeadModelHeight> 0.075 </HeadModelHeight>
+
+</parameters>

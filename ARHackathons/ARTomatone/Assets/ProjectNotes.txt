@@ -1,0 +1,10 @@
+API notes:
+API was not too hard, but it was a bit inconvenient to implement ISXRControllerTriggerHandler, ISXRControllerGyroHandler,
+ISXRControllerTouchpadHandler,ISXRControllerTouchpadButtonHandler,ISXRControllerVolumeHandler,
+ISXRControllerBackHandler,ISXRControllerHomeHandler to work with the controller and need add objects to scene etc.
+I think it would be easier in Unity to have static methods like GearController.GetTouchpad() like how the Input.* methods
+work in the Unity API.  Another way might be to have a ControllerState struct that you can get all at once.
+
+Side note:
+This hackathon was a bit harder since my laptops got water damage due to a leak in my bag on the way here.
+As a result my space key doesn't work, please excuse the messy formatting!

@@ -1,0 +1,5 @@
+pros: Acutally, we don't have any base of AR but we can make something out Because the Librarys are easy to use and demo is also great to see what we can do with SXR.
+
+cons: Controller doesn't work with java SXR. 
+      Camera doesn't work with java SXR properly, may because my code(?). Also, other people said Unity SXR is much easier then Java SXR which means sometimes Java SXR does't work well.
+       

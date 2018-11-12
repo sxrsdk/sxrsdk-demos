@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: 9969846f978fd1b4e9627fd7200715ee
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Block-A1
+    100002: Block-A2
+    100004: Block-A3
+    100006: Block-A4
+    100008: Block-B1
+    100010: Block-B2
+    100012: Block-B3
+    100014: Block-B4
+    100016: Brick-A1
+    100018: Brick-A2
+    100020: Brick-A3
+    100022: Brick-A4
+    100024: Brick-B1
+    100026: Brick-B2
+    100028: Brick-B3
+    100030: Brick-B4
+    100032: Brick-C1
+    100034: Brick-C2
+    100036: Brick-C3
+    100038: Brick-C4
+    100040: //RootNode
+    400000: Block-A1
+    400002: Block-A2
+    400004: Block-A3
+    400006: Block-A4
+    400008: Block-B1
+    400010: Block-B2
+    400012: Block-B3
+    400014: Block-B4
+    400016: Brick-A1
+    400018: Brick-A2
+    400020: Brick-A3
+    400022: Brick-A4
+    400024: Brick-B1
+    400026: Brick-B2
+    400028: Brick-B3
+    400030: Brick-B4
+    400032: Brick-C1
+    400034: Brick-C2
+    400036: Brick-C3
+    400038: Brick-C4
+    400040: //RootNode
+    2300000: Block-A1
+    2300002: Block-A2
+    2300004: Block-A3
+    2300006: Block-A4
+    2300008: Block-B1
+    2300010: Block-B2
+    2300012: Block-B3
+    2300014: Block-B4
+    2300016: Brick-A1
+    2300018: Brick-A2
+    2300020: Brick-A3
+    2300022: Brick-A4
+    2300024: Brick-B1
+    2300026: Brick-B2
+    2300028: Brick-B3
+    2300030: Brick-B4
+    2300032: Brick-C1
+    2300034: Brick-C2
+    2300036: Brick-C3
+    2300038: Brick-C4
+    3300000: Block-A1
+    3300002: Block-A2
+    3300004: Block-A3
+    3300006: Block-A4
+    3300008: Block-B1
+    3300010: Block-B2
+    3300012: Block-B3
+    3300014: Block-B4
+    3300016: Brick-A1
+    3300018: Brick-A2
+    3300020: Brick-A3
+    3300022: Brick-A4
+    3300024: Brick-B1
+    3300026: Brick-B2
+    3300028: Brick-B3
+    3300030: Brick-B4
+    3300032: Brick-C1
+    3300034: Brick-C2
+    3300036: Brick-C3
+    3300038: Brick-C4
+    4300000: Brick-C1
+    4300002: Block-A4
+    4300004: Block-A3
+    4300006: Block-A2
+    4300008: Block-A1
+    4300010: Brick-A3
+    4300012: Brick-A2
+    4300014: Brick-A1
+    4300016: Brick-A4
+    4300018: Block-B1
+    4300020: Block-B2
+    4300022: Block-B3
+    4300024: Block-B4
+    4300026: Brick-B2
+    4300028: Brick-B3
+    4300030: Brick-B4
+    4300032: Brick-C3
+    4300034: Brick-C2
+    4300036: Brick-C4
+    4300038: Brick-B1
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

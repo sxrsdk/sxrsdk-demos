@@ -1,0 +1,8 @@
+1) Install Unity 5.3+
+2) From Unity, open the Project UnityPlugin/UnityProject
+3) Open the DemoScene
+4) Add OSIG into UnityProject\Assets\Plugins\Android\assets
+5) Select File > Build and Settings
+  a.	Select Android
+  b.	Select Texture Compression as ETC2 (GLES 3.0)
+  c.	Build And Run

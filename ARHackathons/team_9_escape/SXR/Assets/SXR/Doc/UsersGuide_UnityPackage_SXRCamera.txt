@@ -1,0 +1,106 @@
+User Guide for SXRCamera and SXRCamera prefab
+----------------------------------------------------------------------------------
+SXR supports Multi-camera feature on top of generic SXR pure framework.  
+
+----------------------------------------------------------------------------------
+SamsungXR Requirements
+
+Hardware Requirements
+  - Samsung Galaxy Note4, Note5, Samsung Galaxy S6,S6 Edge, Edge+, S7 and S7 Edge, S8 or higher
+  - Samsung SXR headset
+  - Review system requirements for developing android application in the following link
+    https://developer.android.com/studio/index.html
+
+Software Requirements
+  - Unity Editor 5.3+ (ver 5.6.0f3 is recommended)
+  - Visual Studio 2015 community or professional version
+  - Android Studio IDE 2.1 and above
+  - Android SDK(version 5.0.1 or higher, is preferred) and/or KitKat SDK (version 4.4.x)
+  - Android NDK(version r12b or latest stable version)
+  - Apache Ant 1.8.2
+  - Gradle 2.9
+  - JDK 1.7 or above
+
+----------------------------------------------------------------------------------
+How to import SXR unity package
+
+The latest binary package file for Unity applications will be released as part of SamsungXR.  
+To use it, just import the package file to your app, then prepare SamsungXR camera.  
+If you have old SamsungXR camera, please delete it.
+
+- In Unity, select Assets > Import Package > Custom Package ...
+  find the folder containing Samsung SXR Unity Plugin, for example,
+  SXRPlugin3.0.unitypackage and import everything from the package.
+
+----------------------------------------------------------------------------------
+How to prepare SXR camera
+
+1. From Unity, Open your game scene
+2. Select GameObject which contains Camera component  
+3. Select the menu, "SXR -> Prepare XR Camera... -> Prepare XR Camera..."
+  - If you have multiple game scene then you should do same step for each scene
+  - Button text will be shown "Unprepare SXR Camera System..." once it is prepared successfully.
+4. Check whether SXREventSystem (Which contains SXR Camera System (Script) and others) exists in the current scene hierarchy.  
+Now your camera is ready to be used for SXR and your game is ready to build, just make sure every camera you use in the game 
+have been prepared and your game is ready to build. 
+
+  <Snapshot of Cmaera hierarchy>
+  - Camera (GameObject) - Camera and SXR Camera (Script) attached as component  
+    - SXRCameraRig  
+        SXRLeftCamera  
+        SXRRightCamera
+  
+  ... (Or Multiple cameras)
+  - SXRCamera N
+    - SXRCameraRig  
+        SXRLeftCamera  
+        SXRRightCamera
+
+    SXRCameraSystem
+    SXRCameraSystem
+
+  SXRCamera (Script) setting  
+  "Use Global Setting" : Checked
+   It will follow the SXR Camera System's setting as default
+   Antialiasing level 2 is set as default on SXR framework
+ 
+  SXREventSystem
+  - EventSystem (Script)
+  - SXR Input (Script)
+  - SXR Input Module (Script)
+  - SXR Camera System (Script)
+    "Use Fixed Update" : Unchecked
+    "Use Chromatic Abberation" : Checked
+    "Use Antialising" : Checked
+    "Antialiasing Level" : X2 Sample
+    "Eye Buffer Size" : 1024
+
+  Once it is prepared then SXRWindow shows prepared camera object name and "Unprepare XR Camera..." button
+
+Note. ProjectSettings->Quality ->Anti Aliasing will be discard when SXR setting is used as manually
+
+----------------------------------------------------------------------------------
+How to use SXRCamera prefab 
+
+Application developer can use SXRCamear prefab directly in their scene as drag and drop or instantiate new SXRCamera from the code.
+
+  <Snapshot of multiple camera hierarchy>
+  - SXRCamera
+    - SXRCameraRig  
+        SXRLeftCamera  
+        SXRRightCamera
+
+  ... (Or Multiple cameras)
+  - SXRCamera N
+    - SXRCameraRig  
+        SXRLeftCamera  
+        SXRRightCamera
+
+    SXRCameraSystem
+
+Note. Prepare SXR camera to attach SXREventSystem with SXRCameraSystem script correctly first.
+
+----------------------------------------------------------------------------------
+How to build game app with SXR unity package
+
+Refer UsersGuide_UnityPackage.txt for more details.
