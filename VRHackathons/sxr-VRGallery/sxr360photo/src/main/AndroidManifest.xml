@@ -29,7 +29,7 @@
                    android:icon="@drawable/ic_launcher"
                    android:theme="@style/AppTheme" >
 
-        ${vrMetaData}
+        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
         <activity android:name="Minimal360PhotoActivity"
                   android:screenOrientation="landscape"
                   android:launchMode="singleTask"
