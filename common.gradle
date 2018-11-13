@@ -127,6 +127,15 @@ task copyOculusSignature(type: Copy) {
 
 preBuild {}.dependsOn copyOculusSignature
 
+file("../../..").eachDir {
+    def fn = it.toString() + "/sxrsdk-demos_build.gradle"
+    if (file(fn).exists()) {
+        apply from: fn
+        println "importing build file from " + it.toString()
+    }
+}
+
+
 ext.sxrVersion = '5.0.1-SNAPSHOT'
 project.ext.daydreamVersion = '1.130.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
