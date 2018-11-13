@@ -44,10 +44,10 @@ public class SampleActivity extends SXRActivity {
 
             // create a scene object (this constructor creates a rectangular scene
             // object that uses the standard texture shader
-            SXRNode sceneObject = new SXRNode(sxrContext, 0.15f, 0.15f, texture);
+            SXRNode sceneObject = new SXRNode(sxrContext, 4.0f, 4.0f, texture);
 
             // set the scene object position
-            sceneObject.getTransform().setPosition(0.0f, 0.0f, 00f);
+            sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
 
             // add the scene object to the scene graph
             scene.addNode(sceneObject);
