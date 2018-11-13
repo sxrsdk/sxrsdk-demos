@@ -41,7 +41,8 @@ android {
             dimension "vr"
             applicationIdSuffix ".monoscopic"
             versionNameSuffix "-monoscopic"
-            resValue 'string', 'app_name', System.getProperty("appName")+"-monoscopic"
+            manifestPlaceholders = [metaDataName: "dummy", metaDataValue: "notapplicable"]
+            resValue 'string', 'app_name', System.getProperty("appName") + "-monoscopic"
 
             ndk {
                 if (project.hasProperty("SXRSDK_ABI_FILTER")) {
@@ -55,7 +56,8 @@ android {
             dimension "vr"
             applicationIdSuffix ".daydream"
             versionNameSuffix "-daydream"
-            resValue 'string', 'app_name', System.getProperty("appName")+"-daydream"
+            manifestPlaceholders = [metaDataName: "dummy", metaDataValue: "notapplicable"]
+            resValue 'string', 'app_name', System.getProperty("appName") + "-daydream"
 
             ndk {
                 if (project.hasProperty("SXRSDK_ABI_FILTER")) {
@@ -69,8 +71,8 @@ android {
             dimension "vr"
             applicationIdSuffix ".oculus"
             versionNameSuffix "-oculus"
-            manifestPlaceholders = [vrMetaData:'<meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>']
-            resValue 'string', 'app_name', System.getProperty("appName")+"-oculus"
+            manifestPlaceholders = [metaDataName: "com.samsung.android.vr.application.mode", metaDataValue: "vr_only"]
+            resValue 'string', 'app_name', System.getProperty("appName") + "-oculus"
 
             ndk {
                 if (project.hasProperty("SXRSDK_ABI_FILTER")) {
@@ -79,13 +81,13 @@ android {
                     abiFilters "armeabi-v7a", "arm64-v8a"
                 }
             }
-	}
-	ar {
-	     dimension "vr"
-	     applicationIdSuffix ".ar"
-	     versionNameSuffix "-ar"
-	     manifestPlaceholders = [vrMetaData: '<meta-data android:name="com.samsung.android.sxr.application.type" android:value="ar"/>']
-	     resValue 'string', 'app_name', System.getProperty("appName")+"-ar"
+        }
+        ar {
+            dimension "vr"
+            applicationIdSuffix ".ar"
+            versionNameSuffix "-ar"
+            manifestPlaceholders = [metaDataName: "com.samsung.android.sxr.application.type", metaDataValue: "ar"]
+            resValue 'string', 'app_name', System.getProperty("appName") + "-ar"
 
              ndk {
                 if (project.hasProperty("SXRSDK_ABI_FILTER")) {
@@ -125,15 +127,7 @@ task copyOculusSignature(type: Copy) {
 
 preBuild {}.dependsOn copyOculusSignature
 
-file("../../..").eachDir {
-    def fn = it.toString() + "/sxrsdk-demos_build.gradle"
-    if (file(fn).exists()) {
-        apply from: fn
-        println "importing build file from " + it.toString()
-    }
-}
-
-ext.sxrVersion = '4.0.1-SNAPSHOT'
+ext.sxrVersion = '5.0.1-SNAPSHOT'
 project.ext.daydreamVersion = '1.130.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
