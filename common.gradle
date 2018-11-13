@@ -89,9 +89,13 @@ android {
             manifestPlaceholders = [metaDataName: "com.samsung.android.sxr.application.type", metaDataValue: "ar"]
             resValue 'string', 'app_name', System.getProperty("appName") + "-ar"
 
-            ndk {
-                abiFilters "armeabi-v7a"
-            }
+             ndk {
+                if (project.hasProperty("SXRSDK_ABI_FILTER")) {
+                    abiFilters project.property("SXRSDK_ABI_FILTER")
+                } else {
+                    abiFilters "armeabi-v7a", "arm64-v8a"
+                }
+             }
         }
     }
 
