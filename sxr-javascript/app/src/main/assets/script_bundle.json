@@ -2,12 +2,12 @@
     name: "Javascript Demo",
     binding: [
     {
-		target: "@GVRMain",
+		target: "@SXRMain",
 		script: "script.js",
 		language: "js"
     },
     {
-		target: "@GVRApplication",
+		target: "@SXRApplication",
 		script: "activity.js",
 		language: "js"
     }
