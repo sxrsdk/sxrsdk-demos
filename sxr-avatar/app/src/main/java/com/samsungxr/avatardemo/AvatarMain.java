@@ -89,11 +89,16 @@ public class AvatarMain extends SXRMain {
 
 
     @Override
-    public void onInit(SXRContext ctx) {
+    public void onInit(SXRContext ctx)
+    {
         mContext = ctx;
         mScene = ctx.getMainScene();
+
+        SXRCameraRig rig = mScene.getMainCameraRig();
+        rig.getOwnerObject().getTransform().setPositionY(1.0f);
+        rig.setNearClippingDistance(0.1f);
+        rig.setFarClippingDistance(50);
         mScene.addNode(makeEnvironment(ctx, mScene));
-        mScene.getMainCameraRig().getOwnerObject().getTransform().setPositionY(1.0f);
 
         SXRAvatar avatar = new SXRAvatar(ctx, "YBot");
         avatar.getEventReceiver().addListener(mAvatarListener);
@@ -134,8 +139,8 @@ public class AvatarMain extends SXRMain {
         }
         headLight.setInnerConeAngle(50.0f);
         headLight.setOuterConeAngle(60.0f);
-        floorMtl.setAmbientColor(1, 1, 0.8f, 1);
-        floorMtl.setDiffuseColor(1, 1, 0.8f, 1);
+        floorMtl.setAmbientColor(0.7f, 0.6f, 0.5f, 1);
+        floorMtl.setDiffuseColor(0.7f, 0.6f, 0.5f, 1);
         floorMtl.setSpecularColor(1, 1, 0.8f, 1);
         floorMtl.setSpecularExponent(4.0f);
         floor.getTransform().rotateByAxis(-90, 1, 0, 0);
@@ -147,9 +152,11 @@ public class AvatarMain extends SXRMain {
         skyMtl.setSpecularColor(0, 0, 0, 1);
         skyMtl.setSpecularExponent(0);
         rig.getHeadTransformObject().attachComponent(headLight);
-        headLight.setShadowRange(1, 20);
+//        headLight.setShadowRange(0.1f, 20);
         topLightObj.attachComponent(topLight);
-        topLightObj.getTransform().rotateByAxis(90, 1, 0, 0);
+        topLightObj.getTransform().rotateByAxis(-90, 1, 0, 0);
+        topLightObj.getTransform().setPosition(0, 2, -1);
+        topLight.setShadowRange(0.1f, 50);
         env.addChildObject(topLight);
         env.addChildObject(skyBox);
         env.addChildObject(floor);
