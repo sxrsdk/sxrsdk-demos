@@ -45,6 +45,6 @@ dependencies {
             releaseImplementation(name: 'MixedReality-release', ext: 'aar')
         }
     } else {
-        implementation "org.gearvrf:MixedReality:$gearvrfVersion"
+        implementation "org.gearvrf:MixedReality:$sxrVersion"
     }
 }

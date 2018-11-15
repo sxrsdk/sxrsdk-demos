@@ -123,7 +123,7 @@ task copyOculusSignature(type: Copy) {
 
 preBuild {}.dependsOn copyOculusSignature
 
-ext.sxrVersion = '5.0.1-SNAPSHOT'
+ext.sxrVersion = '5.0.0'
 project.ext.daydreamVersion = '1.130.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
@@ -190,7 +190,7 @@ dependencies {
             }
         }
     } else {
-        throw new GradleException("sxr runtime not available from maven")
+        arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
     }
 }
 

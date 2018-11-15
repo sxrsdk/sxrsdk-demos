@@ -37,7 +37,7 @@ android {
     }
 }
 
-ext.gearvrfVersion='4.0.1-SNAPSHOT'
+ext.sxrVersion='5.0.0'
 project.ext.daydreamVersion = '1.120.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
@@ -45,8 +45,8 @@ project.ext.gsonVersion = '2.8.2'
 dependencies {
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "org.joml:joml-android:${jomlVersion}"
-    compile "org.gearvrf:framework:$gearvrfVersion"
-    compile "org.gearvrf:backend_daydream:$gearvrfVersion"
-    compile "org.gearvrf:backend_oculus:$gearvrfVersion"
+    compile "org.gearvrf:framework:$sxrVersion"
+    compile "org.gearvrf:backend_daydream:$sxrVersion"
+    compile "org.gearvrf:backend_oculus:$sxrVersion"
     compile "com.google.vr:sdk-base:$daydreamVersion"
 }
