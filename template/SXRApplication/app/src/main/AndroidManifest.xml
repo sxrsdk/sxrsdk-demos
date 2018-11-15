@@ -11,11 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/SXRfAppTheme"
-        tools:replace="android:icon">
-
-        <!-- meta-data for GearVR comment this for DayDream testing-->
-        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
+        android:theme="@style/SXRfAppTheme">
 
         <activity
             android:name=".MainActivity"
