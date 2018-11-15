@@ -52,7 +52,7 @@ dependencies {
             implementation(name: '3DCursorLibrary-debug', ext: 'aar')
         }
     } else {
-        implementation "org.gearvrf:3DCursorLibrary:$gearvrfVersion"
+        implementation "com.samsungxr:3DCursorLibrary:$sxrVersion"
     }
     //_VENDOR_TODO_ add the device to sxr-3dcursor-simple here
     //compile project(':IODevices:io_template')
