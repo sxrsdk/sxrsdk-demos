@@ -191,19 +191,9 @@ dependencies {
     if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
         if (findProject(':sxr_adapter')) {
             arImplementation project(':sxr_adapter')
-            if (rootProject.hasProperty("sxr_runtime_as_apk") && rootProject.property("sxr_runtime_as_apk")) {
-                arImplementation project(':sxr_runtime_frameregulator')
-                arImplementation project(':sxr_runtime_configuration')
-            }
         } else {
             arImplementation(':sxr_adapter-release@aar')
-            if (rootProject.hasProperty("sxr_runtime_as_apk") && rootProject.property("sxr_runtime_as_apk")) {
-                arImplementation(':sxr_runtime_frameregulator-release@aar')
-                arImplementation(':sxr_runtime_configuration-release@aar')
-            }
         }
-    } else {
-        throw new GradleException("sxr runtime not available from maven")
     }
 }
 

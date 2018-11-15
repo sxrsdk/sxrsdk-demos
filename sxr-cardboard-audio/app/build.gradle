@@ -55,6 +55,6 @@ dependencies {
             releaseImplementation(name: 'ResonanceAudio-release', ext: 'aar')
         }
     } else {
-        implementation "org.gearvrf:ResonanceAudio:$gearvrfVersion"
+        implementation "com.samsungxr:ResonanceAudio:$sxrVersion"
     }
 }

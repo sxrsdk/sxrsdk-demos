@@ -32,6 +32,6 @@ dependencies {
         debugImplementation(name: 'MixedReality-debug', ext: 'aar')
         releaseImplementation(name: 'MixedReality-release', ext: 'aar')
     } else {
-        implementation "org.gearvrf:MixedReality:$gearvrfVersion"
+        implementation "com.samsungxr:MixedReality:$sxrVersion"
     }
 }

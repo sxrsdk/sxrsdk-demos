@@ -37,7 +37,7 @@ dependencies {
 			releaseImplementation(name: 'script-release', ext: 'aar')
 		}
     } else {
-        implementation "org.gearvrf:script:$gearvrfVersion"
+        implementation "com.samsungxr:script:$sxrVersion"
     }
 
     if(project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
@@ -47,6 +47,6 @@ dependencies {
             implementation(name: 'debugwebserver-debug', ext: 'aar')
         }
     } else {
-        implementation "org.gearvrf:debugwebserver:$gearvrfVersion"
+        implementation "com.samsungxr:debugwebserver:$sxrVersion"
     }
 }
