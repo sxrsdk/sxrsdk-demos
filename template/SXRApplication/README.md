@@ -22,7 +22,7 @@ Perform the following steps to enable DayDream Mode
 1. remove following line in `app/build.gradle`
 
 ```
-compile "org.gearvrf:backend_oculus:$gearvrfVersion"
+compile "org.gearvrf:backend_oculus:$sxrVersion"
 ```
 
 2. comment out following line in `AndroidManifest.xml`
