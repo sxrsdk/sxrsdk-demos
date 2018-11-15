@@ -26,7 +26,7 @@
         android:allowBackup="true"
         android:icon="@drawable/sxr_192x192"
         android:label="sxr-particles">
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
         <activity
             android:name="com.samsungxr.particles.SampleActivity"
             android:screenOrientation="landscape"

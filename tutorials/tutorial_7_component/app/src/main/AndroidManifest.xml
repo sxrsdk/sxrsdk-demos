@@ -14,7 +14,7 @@
         tools:replace="android:icon">
 
         <!-- meta-data for GearVR comment this for DayDream testing-->
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
 
         <activity
             android:name=".MainActivity"

@@ -1,61 +1,29 @@
 # sxrsdk-demos
 
-## How to run these examples
-* make sure you have [this repository](https://github.com/sxrsdk/sxrsdk-demos) and [the SXR SDK](https://github.com/sxrsdk/sxrsdk) in a sibling directory 
+## How to build and run these examples
 
+1. Get the repo
 ```
-git clone https://github.com/sxrsdk/sxrsdk.git -b release_v5.0
 git clone https://github.com/sxrsdk/sxrsdk-demos.git -b release_v5.0
 ```
+2. Download the release5.0.zip archive from https://github.com/sxrsdk/sxrsdk/releases/tag/release_v5.0.
+3. Extract release5.0.zip to ./sxrsdk/SXR/sxr-libs. sxrsdk must be in the same directory where you cloned sxrsdk-demos.
+4. Edit sxrsdk-demo/gradle.properties; add "useLocalDependencies=true" to it.
+5. Open the sxrsdk-demos folder in AS; build and run apps.
 
-There are two options:
-- Clone the 5.0 branch: ``git clone -b release_v5.0 git@github.com:sxrsdk/sxrsdk-demos.git``
-- Download a zip archive: open https://github.com/sxrsdk/sxrsdk-demos/tree/release_v5.0 and then select "Download ZIP"
+Do note that the demos support multiple flavors. In AS go to "Build Variants" and pick the desired one (e.g. monoscopicDebug or oculusDebug). Monoscopic variant runs the app in monoscopic mode - meaning one eye rendered full screen. If you pick the Oculus variant then the app will do stereoscopic rendering. See below for further details on running with Oculus. 
 
-* [download the Oculus_Mobile_SDK](https://developer3.oculus.com/downloads/mobile/1.0.4/Oculus_Mobile_SDK/) and put the SDK folder at the same directory level as your SXR directory.
-
-```
-#edit to use your PATH or make a env variable reference for wherever you unzipped the SDK
-export OVR_MOBILE_SDK=~/mytools/ovr_sdk_mobile_1.0.4
-
-```
-
-
-* make sure you have gradle in your PATH (you can check that your PATH is setup correctly and verify your gradle version by running: `gradle -v` if you get a response, great! if not, [these instructions may help](https://developer.nvidia.com/codeworks-android)
-
-* set up the [Oculus device signature](https://developer.oculus.com/osig/) for your device (it will look like oculussig_xxxxxxxx where xxxxxxxx is the id you get when you run `adb devices`) and copy it into an assets folder each project's `src/main/assets` directory: 
-
-```
-cp ~/Downloads/oculussig_xxxxxxxx ./sxr-cubemap/sxrcubemap/src/main/assets/oculussig_xxxxxxxx
-```
-
-* change to the example you wish to build and invoke the included gradle wrapper file, `./gradlew` 
-
-```
-cd sxr-sample
-./gradlew assembleDebug
-```
-
-* you should now have an apk that you can push to an android device
-
-```
-adb install -r ./app/build/outputs/apk/app-debug.apk
-```
-NOTE: some of these examples use the application name instead of `app` to hold the apk build directory for instance, in sxr-cubemap, you will find the apk in `./sxr-cubemap/sxrcubemap/build/outputs/apk/app-debug.apk`
-
-```
-cd sxr-cubemap
-./gradlew assembleDebug
-adb install -r ./sxrcubemap/build/outputs/apk/app-debug.apk
-```
+For Oculus
+* Set up the [Oculus device signature](https://developer.oculus.com/osig/) for your device (it will look like oculussig_xxxxxxxx where xxxxxxxx is the id you get when you run `adb devices`); copy it into an assets folder each project's `src/main/assets` directory.
 
 * if you want to run without loading into a headset, enable Samsung VR Service developer mode: 
 	- go to Settings > Applications > manage applications > Gear VR Service > Manage Storage
 	- press the VR Service Version 6 times
 	- if you get a message 'You are a developer' you should see a toggle to enable developer mode
-	- if you get a message 'You are not a developer' you probably haven't installed a valid apk with your oculus signature - run the `adb install -r ./sxrcubemap/build/outputs/apk/app-debug.apk` command on at least one project, then the service should discover you
-	 
-	
+	- if you get a message 'You are not a developer' you probably haven't installed a valid apk with your oculus signature - run the `adb install -r ./sxrcubemap/build/outputs/apk/app-debug.apk` command on at least one project, then the service should discover you	 
+
+Putting the phone into "AR" mode, must be done after each phone restart: ``adb shell setprop debug.samsungxr.hmt AR-DROP-IN2``
+
 ### sxr-360photo
 A minimal sample showing how to display an equirectangular (360) photo.
 

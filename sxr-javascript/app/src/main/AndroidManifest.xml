@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
      <application android:label="@string/app_name" android:icon="@drawable/gearvr_script">
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
         <activity android:name="GearVRJavascriptActivity"
                   android:screenOrientation="landscape"
                   android:launchMode="singleTask"

@@ -62,9 +62,9 @@ dependencies {
             implementation(name: 'gearwearlibrary-debug', ext: 'aar')
         }
     } else {
-        implementation "org.gearvrf:3DCursorLibrary:$gearvrfVersion"
-        implementation "org.gearvrf:GearWearIoDevice:$gearvrfVersion"
-        implementation "org.gearvrf:gearwearlibrary:$gearvrfVersion"
+        implementation "com.samsungxr:3DCursorLibrary:$sxrVersion"
+        implementation "com.samsungxr:GearWearIoDevice:$sxrVersion"
+        implementation "com.samsungxr:gearwearlibrary:$sxrVersion"
     }
     //_VENDOR_TODO_ add the device to sxr-3dcursor here
     //compile project(':IODevices:io_template')

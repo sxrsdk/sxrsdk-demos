@@ -31,7 +31,7 @@
         android:allowBackup="true"
         android:icon="@drawable/sxr_192x192"
         android:label="@string/app_name">
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        <meta-data android:name="com.samsung.android.sxr.application.type" android:value="ar"/>
         <activity
             android:name="com.samsungxr.arcore.simplesample.SampleActivity"
             android:screenOrientation="landscape"

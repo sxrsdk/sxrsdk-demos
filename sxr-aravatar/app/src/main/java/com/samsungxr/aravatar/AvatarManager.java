@@ -3,6 +3,7 @@ package com.samsungxr.aravatar;
 import android.util.Log;
 
 import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
@@ -24,9 +25,15 @@ public class AvatarManager
 
     private final String[] EVA = { "Eva/Eva.dae", "Eva/pet_map.txt", "Eva/Walk_Circle.bvh", "Eva/bvhExport_GRAB_BONE.bvh",  };
 
-    private final String[] GYLE = { "Gyle/gyle_collada.dae", "Gyle/bonemap.txt", "Gyle/idle_Anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
+    private final String[] GYLE = { "Gyle/gyle_skin.fbx", "Gyle/bonemap.txt", "Gyle/idle_Anim.bvh", "Gyle/hiphop_mixamo.com.bvh", "Gyle/running_Dance_mixamo.com.bvh" };
 
     private final String[] MRCHUNG = new String[] { "Hololab/evp_chung_lowres.fbx" };
+
+    private final String[] AMINA = new String[] { "Hololab/amina_lowres.fbx" };
+
+    private final String[] PAULA = new String[] { "Hololab/paula_lowres.fbx" };
+
+    private final String[] RAJESH = new String[] { "Hololab/rajesh_lowres.fbx" };
 
     private final String[] MYAVATAR = new String[] { "/sdcard/mymodel.ply" };
 
@@ -50,10 +57,16 @@ public class AvatarManager
         mAvatarFiles.add(1, MRCHUNG);
         mAvatarFiles.add(2, GYLE);
         mAvatarFiles.add(3, MYAVATAR);
+        mAvatarFiles.add( 4, AMINA);
+        mAvatarFiles.add( 5, PAULA);
+        mAvatarFiles.add( 6, RAJESH);
         mAvatars.add(0, new SXRAvatar(ctx, "YBOT"));
         mAvatars.add(1, new SXRAvatar(ctx, "MRCHUNG"));
         mAvatars.add(2, new SXRAvatar(ctx, "GYLE"));
         mAvatars.add(3, new SXRAvatar(ctx, "MYAVATAR"));
+        mAvatars.add(4, new SXRAvatar(ctx, "AMINA"));
+        mAvatars.add(5, new SXRAvatar(ctx, "PAULA"));
+        mAvatars.add(6, new SXRAvatar(ctx, "RAJESH"));
     }
 
     public SXRAvatar selectAvatar(String name)
@@ -214,9 +227,13 @@ public class AvatarManager
         public void onAvatarLoaded(final SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors)
         {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
-            float scale = 0.3f / bv.radius;
-            if (avatar.getName().equals("EVA")) scale = 0.2f / bv.radius;
-            avatarRoot.getTransform().setScale(scale, scale, scale);
+            if (bv.radius > 0)
+            {
+                float scale = 0.5f / bv.radius;
+                avatarRoot.getTransform().setScale(scale, scale, scale);
+                bv = avatarRoot.getBoundingVolume();
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -bv.center.z);
             loadNextAnimation();
         }
 
@@ -229,23 +246,27 @@ public class AvatarManager
             }
             animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
+            if (!avatar.isRunning())
+            {
+                avatar.startAll(SXRRepeatMode.REPEATED);
+            }
+            else
+            {
+                avatar.start(animation.getName());
+            }
             loadNextAnimation();
         }
 
         public void onModelLoaded(SXRAvatar avatar, SXRNode avatarRoot, String filePath, String errors)
         {
             SXRNode.BoundingVolume bv = avatarRoot.getBoundingVolume();
-            float scale = 0.3f / bv.radius;
-            avatarRoot.getTransform().setScale(scale, scale, scale);
-            avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
-                @Override
-                public boolean visit(SXRComponent c)
-                {
-                    ((SXRRenderData) c).disableLight();
-                    return true;
-                }
-            }, SXRRenderData.getComponentType());
-            avatar.getModel().addChildObject(avatarRoot);
+            if (bv.radius > 0)
+            {
+                float scale = 0.5f / bv.radius;
+                avatarRoot.getTransform().setScale(scale, scale, scale);
+                bv = avatarRoot.getBoundingVolume();
+            }
+            avatarRoot.getTransform().setPosition(-bv.center.x, -bv.center.y, -bv.center.z);
         }
 
         public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }

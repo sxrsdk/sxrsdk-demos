@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         tools:replace="android:icon">
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"

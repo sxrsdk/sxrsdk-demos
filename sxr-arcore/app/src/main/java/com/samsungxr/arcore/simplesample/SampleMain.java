@@ -123,6 +123,42 @@ public class SampleMain extends SXRMain {
         mSceneLight.setSpecularIntensity(0.2f, 0.2f, 0.2f, 1);
     }
 
+
+    /**
+     * Load a 3D model and place it in the virtual world
+     * at the given position. The pose is a 4x4 matrix
+     * giving the real world position/orientation of
+     * the object. We create an anchor (and a corresponding
+     * node) to link the real and virtual pose together.
+     * The node attached to the anchor will be moved and
+     * oriented by the framework, anything you do
+     * to the transform of this node will be discarded
+     * (which is why we scale/rotate the child instead).
+     * @param pose
+     */
+    public void addVirtualObject(float[] pose)
+    {
+        if (mVirtObjCount >= MAX_VIRTUAL_OBJECTS)
+        {
+            return;
+        }
+        try
+        {
+            SXRNode andy = load3dModel(getSXRContext());
+            SXRNode anchorObj = mixedReality.createAnchorNode(pose);
+            anchorObj.addChildObject(andy);
+            SXRAnchor anchor = (SXRAnchor) anchorObj.getComponent(SXRAnchor.getComponentType());
+            mVirtualObjects.add(anchor);
+            mainScene.addNode(anchorObj);
+            mVirtObjCount++;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            Log.e(TAG, ex.getMessage());
+        }
+    }
+
     /**
      * The plane events listener handles plane detection events.
      * It also handles initialization and shutdown.
@@ -159,9 +195,12 @@ public class SampleMain extends SXRMain {
                 return;
             }
             SXRNode planeMesh = helper.createQuadPlane(getSXRContext());
+            float[] pose = new float[16];
 
+            plane.getCenterPose(pose);
             planeMesh.attachComponent(plane);
             mainScene.addNode(planeMesh);
+            addVirtualObject(pose);
         }
 
         /**
@@ -491,41 +530,6 @@ public class SampleMain extends SXRMain {
                                              SelectionHandler.DRAG);
                     }
                 }
-            }
-        }
-
-        /**
-         * Load a 3D model and place it in the virtual world
-         * at the given position. The pose is a 4x4 matrix
-         * giving the real world position/orientation of
-         * the object. We create an anchor (and a corresponding
-         * node) to link the real and virtual pose together.
-         * The node attached to the anchor will be moved and
-         * oriented by the framework, anything you do
-         * to the transform of this node will be discarded
-         * (which is why we scale/rotate the child instead).
-         * @param pose
-         */
-        private void addVirtualObject(float[] pose)
-        {
-            if (mVirtObjCount >= MAX_VIRTUAL_OBJECTS)
-            {
-                return;
-            }
-            try
-            {
-                SXRNode andy = load3dModel(getSXRContext());
-                SXRNode anchorObj = mixedReality.createAnchorNode(pose);
-                anchorObj.addChildObject(andy);
-                SXRAnchor anchor = (SXRAnchor) anchorObj.getComponent(SXRAnchor.getComponentType());
-                mVirtualObjects.add(anchor);
-                mainScene.addNode(anchorObj);
-                mVirtObjCount++;
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-                Log.e(TAG, ex.getMessage());
             }
         }
 

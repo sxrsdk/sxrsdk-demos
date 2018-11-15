@@ -45,8 +45,8 @@ project.ext.gsonVersion = '2.8.2'
 dependencies {
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "org.joml:joml-android:${jomlVersion}"
-    compile "org.gearvrf:framework:$gearvrfVersion"
-    compile "org.gearvrf:backend_daydream:$gearvrfVersion"
-    compile "org.gearvrf:backend_oculus:$gearvrfVersion"
+    compile "com.samsungxr:framework:$gearvrfVersion"
+    compile "com.samsungxr:backend_daydream:$gearvrfVersion"
+    compile "com.samsungxr:backend_oculus:$gearvrfVersion"
     compile "com.google.vr:sdk-base:$daydreamVersion"
 }

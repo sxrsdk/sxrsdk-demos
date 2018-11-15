@@ -28,9 +28,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
-        <meta-data
-            android:name="com.samsung.android.vr.application.mode"
-            android:value="vr_only"/>
+        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only" />
         <activity
             android:name=".CursorActivity"
             android:label="@string/app_name"

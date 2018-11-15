@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="Contact"
          >
-        <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+        <meta-data android:name="${metaDataName}" android:value="${metaDataValue}"/>
         <activity android:name="MainActivity"
                   android:screenOrientation="landscape"
                   android:launchMode="singleTask"
