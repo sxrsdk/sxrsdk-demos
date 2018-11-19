@@ -100,7 +100,7 @@ public class AvatarsListContentScene extends BaseContentScene {
             public boolean onTouch(ListWidget listWidget, int dataIndex) {
                 Log.d(TAG, "onTouch: dataIndex = %d", dataIndex);
                 Avatar avatar = (Avatar)(listWidget.getView(dataIndex));
-                avatar.startAvatarViewer();
+                ((AvatarFashionActivity)mActivity).startAvatarTracker(avatar);
                 return true;
 
             }
@@ -133,18 +133,6 @@ public class AvatarsListContentScene extends BaseContentScene {
         Log.d(TAG, "scrollRight");
         getLayoutScroller().scrollToNextItem();
     }
-
-    private int mCurAvatarId = 0;
-
-    void startNextAvatar() {
-        Avatar avatar = (Avatar)(mHorizontalPicker.getView(mCurAvatarId));
-        Log.d(TAG, "startNextAvatar mCurAvatarId = %d avatar = %s", mCurAvatarId, avatar.getName());
-        avatar.startAvatarViewer();
-        if (++mCurAvatarId == mHorizontalPicker.size()) {
-            mCurAvatarId = 0;
-        }
-    }
-
     private static final float PANEL_PADDING = 0.8f;
     private LayoutScroller mLayoutScroller;
     private PickerWidget mHorizontalPicker;

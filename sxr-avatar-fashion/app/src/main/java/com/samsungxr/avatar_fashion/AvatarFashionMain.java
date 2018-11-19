@@ -40,11 +40,10 @@ public class AvatarFashionMain extends SXRMain
     // content scenes
     private AvatarsListContentScene mAvatarsList;
     private BackgroundListContentScene mBackgroundList;
+    private AvatarViewer mAvatarTracker;
 
-    // AR
     private SXRMixedReality   mMixedReality;
     private SXRDirectLight    mSceneLight;
-
 
     public AvatarFashionMain(SXRActivity activity) {
         mActivity = activity;
@@ -75,7 +74,9 @@ public class AvatarFashionMain extends SXRMain
             mBackgroundList = new BackgroundListContentScene(mContext, mActivity,
                     mBackgroundWidget, mHomeButtonTouchListener);
 
-            // lolad avatars list
+            mAvatarTracker = new AvatarViewer(mContext, mActivity, mHomeButtonTouchListener);
+
+            // load avatars list
             AvatarReader reader = new AvatarReader(sxrContext);
             Log.d(TAG, "AvatarDataLoaderBasic");
             AvatarListDataLoader loader = new AvatarListDataLoader(sxrContext,
@@ -89,23 +90,38 @@ public class AvatarFashionMain extends SXRMain
             mActivity = null;
             Log.e(TAG, "One or more assets could not be loaded.");
         }
-
         sxrContext.getInputManager().selectController();
         WidgetLib.getTouchManager().setDefaultRightClickAction(defaultBackAction);
     }
 
+    void startAvatarTracker(AvatarReader.Location location, String name) {
+        try {
+            mAvatarTracker.setAvatar(location, name);
+        } catch (Exception e) {
+            Log.w(TAG, "Model loading issue for %s %s %s", e, location, name);
+        }
+    }
 
-    void enableAR(SXRAvatar avatar) {
+    void enableARAnchor(Widget avatarAnchor) {
         // AR initialisation
+
+        if (avatarAnchor == null) {
+            return;
+        }
+
+
+        mMainScene.removeNode(mBackgroundWidget);
+
         SXRScene sxrScene = mContext.getMainScene();
         SceneUtils utility = new SceneUtils();
         mSceneLight = utility.makeSceneLight(mContext);
+        sxrScene.getMainCameraRig().getHeadTransformObject().addChildObject(mSceneLight.getOwnerObject());
 
-        sxrScene.addNode(mSceneLight.getOwnerObject());
         mMixedReality = new SXRMixedReality(sxrScene, false);
+        mMixedReality.resume();
 
         mMixedReality.getEventReceiver().addListener(new PlaneEventsListener(mContext, utility,
-                mMixedReality, avatar));
+                mMixedReality, avatarAnchor));
 
         mMixedReality.getEventReceiver().addListener(new IAnchorEvents() {
             @Override
@@ -114,8 +130,6 @@ public class AvatarFashionMain extends SXRMain
                 SXRAnchor.setEnable(SXRTrackingState == SXRTrackingState.TRACKING);
             }
         });
-
-        mMixedReality.resume();
     }
 
     class AvatarListDataLoader extends AvatarDataLoader {
@@ -143,19 +157,11 @@ public class AvatarFashionMain extends SXRMain
 
             mAvatars.add(a);
             a.scale();
-
             if (mAvatars.size() == mAvatarCount) {
                 WidgetLib.getMainThread().runOnMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        JSONObject properties = WidgetLib.getPropertyManager().
-                                getInstanceProperties(AvatarsListContentScene.class, TAG);
-                        final boolean bgPicker = optBoolean(properties,
-                                AvatarsListContentScene.Properties.background_picker, true);
-
-                        if (bgPicker) {
-                           mMainScene.addNode(mBackgroundWidget);
-                        }
+                        mMainScene.addNode(mBackgroundWidget);
                         mAvatarsList.setAvatarList(mAvatars);
                         mContentSceneController.goTo(mAvatarsList);
 
@@ -194,7 +200,7 @@ public class AvatarFashionMain extends SXRMain
     // AR part
     @Override
     public void onStep() {
-        if (mMixedReality != null) {
+        if (mMixedReality != null && mMixedReality.getLightEstimate() != null) {
             float light = mMixedReality.getLightEstimate().getPixelIntensity() * 1.5f;
             if (mSceneLight != null) {
                 mSceneLight.setAmbientIntensity(light, light, light, 1);

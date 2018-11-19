@@ -25,6 +25,10 @@ import com.samsungxr.ITouchEvents;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRGazeCursorController;
 import com.samsungxr.io.SXRInputManager;
+import com.samsungxr.mixedreality.SXRPlane;
+import com.samsungxr.widgetlib.widget.GroupWidget;
+import com.samsungxr.widgetlib.widget.Widget;
+
 import org.joml.Vector4f;
 
 import java.util.EnumSet;
@@ -66,14 +70,46 @@ public class SceneUtils
             new Vector4f( 0.5f, 1, 0.5f, 0.2f),
        };
     }
+/*
+    class PoligonWidget extends Widget {
+        PoligonWidget(SXRContext SXRContext) {
+            super(SXRContext, 1, 1);
+            setName("PlaneGeometry" + mPlaneIndex);
+            SXRMaterial mat = new SXRMaterial(SXRContext, SXRMaterial.SXRShaderType.Phong.ID);
+            Vector4f color = mColors[mPlaneIndex % mColors.length];
+            mPlaneIndex++;
+            mat.setDiffuseColor(color.x, color.y, color.x, color.w);
+
+            setMaterial(mat);
+
+            getNode().getRenderData().setAlphaBlend(true);
+            getNode().getRenderData().disableLight();
+            setRotationByAxis(-90, 1, 0, 0);
+        }
+    }
+
+    public Widget createPlane(SXRContext SXRContext, SXRPlane plane) {
+        GroupWidget planeWidget = new GroupWidget(SXRContext, 0, 0);
+        planeWidget.setName("Plane" + mPlaneIndex);
+        planeWidget.addChild(new PoligonWidget(SXRContext));
+
+        final float[] pose = new float[16];
+        plane.getCenterPose(pose);
+        planeWidget.getNode().attachComponent(plane);
+
+        return planeWidget;
+    }
+*/
 
     public SXRNode createPlane(SXRContext SXRContext)
     {
+
         SXRNode plane = new SXRNode(SXRContext);
         SXRMesh mesh = SXRMesh.createQuad(SXRContext,
                 "float3 a_position", 1.0f, 1.0f);
         SXRMaterial mat = new SXRMaterial(SXRContext, SXRMaterial.SXRShaderType.Phong.ID);
         SXRNode polygonObject = new SXRNode(SXRContext, mesh, mat);
+
         Vector4f color = mColors[mPlaneIndex % mColors.length];
 
         plane.setName("Plane" + mPlaneIndex);
@@ -86,6 +122,7 @@ public class SceneUtils
         plane.addChildObject(polygonObject);
         return plane;
     }
+
 
     public SXRDirectLight makeSceneLight(SXRContext ctx)
     {

@@ -1,66 +1,12 @@
 {
   "objects": {
-    "com.samsungxr.avatar_fashion.AvatarViewer.ModelBox": {
-      "name": "ModelBox"
-    },
     "com.samsungxr.avatar_fashion.AvatarViewer": {
       "zoom_step": 1,
       "padding": 2,
       "position": {
         "x": 0,
-        "y": -3,
+        "y": 0,
         "z": -12
-      },
-      "control_bar": {
-        "name": "ControlBar",
-        "size": {
-          "x": 1,
-          "y": 1
-        },
-        "padding": 0.1,
-        "controls": [
-          {
-            "name": "Home",
-            "states": {
-              "normal": {
-                "material": {
-                  "main_texture": {
-                    "type": "bitmap",
-                    "bitmap": {
-                      "resource_type": "resource",
-                      "type": "uncompressed",
-                      "id": "R.drawable.navbar_home"
-                    }
-                  }
-                }
-              },
-              "focused": {
-                "material": {
-                  "main_texture": {
-                    "type": "bitmap",
-                    "bitmap": {
-                      "resource_type": "resource",
-                      "type": "uncompressed",
-                      "id": "R.drawable.navbar_home_hover"
-                    }
-                  }
-                }
-              },
-              "selected": {
-                "material": {
-                  "main_texture": {
-                    "type": "bitmap",
-                    "bitmap": {
-                      "resource_type": "resource",
-                      "type": "uncompressed",
-                      "id": "R.drawable.navbar_home_active"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ]
       }
     },
     "com.samsungxr.avatar_fashion.BackgroundListContentScene": {
@@ -152,14 +98,14 @@
       "lazy_load": "true",
       "levels": [
         {
-          "thumbnail": "R.raw.env_thumbnail",
+          "thumbnail": "R.raw.skybox_gridroom_thumbnail",
           "material": {
             "main_texture": {
               "type": "bitmap",
               "bitmap": {
                 "resource_type": "asset",
                 "type": "uncompressed",
-                "id": "backgrounds/cubes.jpg"
+                "id": "backgrounds/skybox_gridroom.png"
               }
             }
           }

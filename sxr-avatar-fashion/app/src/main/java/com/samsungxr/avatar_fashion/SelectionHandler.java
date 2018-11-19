@@ -9,7 +9,7 @@ import com.samsungxr.SXRPointLight;
 
 public class SelectionHandler extends SXREventListeners.TouchEvents
 {
-    private SXRNode mSelectionLight = null;
+    private SXRNode mSelectionLight;
 
     public SelectionHandler(SXRContext ctx)
     {

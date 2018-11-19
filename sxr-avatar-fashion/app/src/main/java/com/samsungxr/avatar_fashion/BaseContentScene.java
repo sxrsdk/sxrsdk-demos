@@ -2,7 +2,6 @@ package com.samsungxr.avatar_fashion;
 
 import com.samsungxr.SXRActivity;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRNode;
 import com.samsungxr.widgetlib.content_scene.ScrollableContentScene;
 import com.samsungxr.widgetlib.main.MainScene;
 import com.samsungxr.widgetlib.main.WidgetLib;

@@ -27,22 +27,21 @@ import static com.samsungxr.utility.Log.tag;
 
 public class Avatar extends GroupWidget {
     ArrayList<SXRMaterial> mOriginalMaterial;
-    private float mCurrentZoom = 0;
 
     private static final String TAG = tag(Avatar.class);
     static final float MIN_RADIUS = 15f;
     static final float MAX_RADIUS = 50f;
-    static final float MAX_ZOOM = 4f;
 
     private TransformCache mCache = new TransformCache();
     private SXRAvatar mAvatar;
     private String mAnimMap;
     private String mAvatarName;
-    private static AvatarViewer mAvatarViewer;
     SXRActivity mActivity;
 
     static final float SCALE_FACTOR = 0.25f;
     AvatarReader.Location mLocation;
+    private boolean mAnimEnabled;
+
 
     public Avatar(SXRContext context, SXRActivity activity, AvatarReader.Location location, String avatarName,
                   SXRAvatar avatar, boolean animate) {
@@ -55,11 +54,7 @@ public class Avatar extends GroupWidget {
         mAvatar.getEventReceiver().addListener(mAvatarListener);
         Log.d(TAG, "Avatar avatarName: %s location: %s", mAvatarName, mLocation);
 
-        setName(mAvatarName.replaceAll("\\..*", ""));
-
-        if (mAvatarViewer == null) {
-            mAvatarViewer = new AvatarViewer(context, activity, homeButtonTouchListener);
-        }
+        setName(mAvatarName);
 
         mCache.save(this);
 
@@ -84,12 +79,8 @@ public class Avatar extends GroupWidget {
         }
     };
 
-    public void startAvatarViewer() {
-        try {
-            mAvatarViewer.setAvatar(mLocation, mAvatarName);
-        } catch (Exception e) {
-            Log.w(TAG, "Model loading issue for %s %s %s", e, mLocation, mAvatarName);
-        }
+    AvatarReader.Location getLocation() {
+        return mLocation;
     }
 
     void scale() {
@@ -142,11 +133,11 @@ public class Avatar extends GroupWidget {
                 }
             }
             Log.d(TAG, "onAnimationLoaded count = %d , loaded = %d", mAnimCount, avatar.getAnimationCount());
-            if (mAnimCount == avatar.getAnimationCount()) {
-                if (mAvatarViewer.getAvatar() == Avatar.this) {
-                    mAvatarViewer.createAnimationList();
-                }
-            }
+//            if (mAnimCount == avatar.getAnimationCount()) {
+//                if (mAvatarViewer.getAvatar() == Avatar.this) {
+//                    mAvatarViewer.createAnimationList();
+//                }
+//            }
         }
 
         @Override
@@ -208,8 +199,6 @@ public class Avatar extends GroupWidget {
         return res;
     }
 
-    private boolean mAnimEnabled;
-
     void enableAnimation() {
         if (!mAnimEnabled) {
             mAnimEnabled = true;
@@ -254,33 +243,6 @@ public class Avatar extends GroupWidget {
             anims.add(mAvatar.getAnimation(i));
         }
         return anims;
-    }
-
-    float getCurrentZoom() {
-        return mCurrentZoom;
-    }
-
-    public void onZoomOverModel(float zoomBy) {
-        float zTransform = (int) ((zoomBy));
-        if (zTransform > MAX_ZOOM) {
-            zTransform = 0;
-            setScaleX(mCache.getScaleX());
-            setScaleY(mCache.getScaleY());
-            setScaleZ(mCache.getScaleZ());
-        } else {
-            Log.d(TAG, "Zoom by %f  %f", zTransform, zoomBy);
-            float units = mCurrentZoom;
-            float scaleFactor = units < zTransform ? zTransform - units : units - zTransform;
-            float sf = units < zTransform ? 1.2f : 0.8f;
-
-            for (int i = 0; i < scaleFactor; i++) {
-                float x = getScaleX();
-                float y = getScaleY();
-                float z = getScaleZ();
-                setScale(sf * x, sf * y, sf * z);
-            }
-        }
-        mCurrentZoom = zTransform;
     }
 
     void addAnimation(String animPath) {

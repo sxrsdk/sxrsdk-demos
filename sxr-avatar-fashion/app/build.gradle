@@ -5,8 +5,8 @@ System.setProperty("appName", "sxr-avatar-fashion")
 if(file("../../common.gradle").exists()) {
     apply from: '../../common.gradle'
 }
-else if(file("../../../../GearVRf-Demos/common.gradle").exists()) {
-    apply from: '../../../../GearVRf-Demos/common.gradle'
+else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../../sxrsdk-demos/common.gradle'
 }
 
 android {
@@ -43,8 +43,8 @@ dependencies {
         }
 
     } else {
-        implementation "com.samsungxr:widgetlib:$gearvrfVersion"
-        implementation "org.gearvrf:MixedReality:$gearvrfVersion"
+        implementation "com.samsungxr:widgetlib:$sxrVersion"
+        implementation "org.gearvrf:MixedReality:$sxrVersion"
     }
     implementation 'com.android.support:support-v4:23.4.0'
 }

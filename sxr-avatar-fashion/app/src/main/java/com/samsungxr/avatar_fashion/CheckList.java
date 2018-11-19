@@ -6,7 +6,6 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.widgetlib.main.WidgetLib;
 import com.samsungxr.widgetlib.widget.Widget;
 import com.samsungxr.widgetlib.widget.basic.Checkable;
-import com.samsungxr.widgetlib.widget.basic.Checkbox;
 import com.samsungxr.widgetlib.widget.basic.RadioButton;
 import com.samsungxr.widgetlib.widget.basic.TextWidget;
 import com.samsungxr.widgetlib.widget.compound.CheckableGroup;

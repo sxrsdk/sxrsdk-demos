@@ -186,7 +186,7 @@ class CardReader implements Reader {
 
     public String[] getFileNames() {
         File directory = new File(myDirectory);
-        directory.setReadable(true, false);
+//        directory.setReadable(true, false);
 
         String[] list = null;
         Log.d(TAG, "getFileNames %s readable =%b", myDirectory, isExternalStorageReadable());

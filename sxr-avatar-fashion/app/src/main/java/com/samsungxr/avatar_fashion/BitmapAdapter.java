@@ -21,7 +21,7 @@ public class BitmapAdapter extends BaseAdapter {
     public BitmapAdapter(SXRContext sxrContext,
                          final List<? extends BitmapGetter> items) {
         Log.d(TAG, "CTOR(): items: %d", items.size());
-        mBitmaps = new ArrayList<Bitmap>();
+        mBitmaps = new ArrayList<>();
         mSxrContext = sxrContext;
         final Runnable onBackgroundThread = new Runnable() {
             @Override

@@ -1,16 +1,15 @@
 package com.samsungxr.avatar_fashion;
 
 import com.samsungxr.SXRActivity;
-import com.samsungxr.SXRMain;
 import com.samsungxr.widgetlib.log.Log;
 import com.samsungxr.widgetlib.main.WidgetLib;
+import com.samsungxr.widgetlib.widget.Widget;
 
 import android.os.Bundle;
-
 import static com.samsungxr.utility.Log.tag;
 
 public class AvatarFashionActivity extends SXRActivity {
-    private SXRMain mMain;
+    private AvatarFashionMain mMain;
     private final static String TAG = tag(AvatarFashionActivity.class);
 
     @Override
@@ -28,14 +27,12 @@ public class AvatarFashionActivity extends SXRActivity {
         enableGestureDetector();
     }
 
-    public void setMyMain(SXRMain main) {
-        mMain = main;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setMain(mMain, "sxr.xml");
-            }
-        });
+    public void enableARAnchor(Widget avatarAnchor) {
+        mMain.enableARAnchor(avatarAnchor);
+    }
+
+    public void startAvatarTracker(Avatar avatar) {
+        mMain.startAvatarTracker(avatar.getLocation(), avatar.getName());
     }
 
     @Override
