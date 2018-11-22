@@ -22,11 +22,11 @@ import android.support.annotation.IntDef;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.animation.SXRAnimator;
-import com.samsungxr.utility.Log;
-
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.character.CharacterView;
 import com.samsungxr.arpet.constant.ArPetObjectType;
+import com.samsungxr.utility.Log;
+
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -476,6 +476,8 @@ public class PetActions {
         @Override
         public void entry() {
             Log.w(TAG, "entry => AT_EDIT");
+            // Return the pet to the first position in the animation (IDLE)
+            mCharacter.resetAnimation();
             mPetContext.registerSharedObject(mCharacter, ArPetObjectType.PET);
         }
 

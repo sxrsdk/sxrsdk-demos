@@ -97,6 +97,13 @@ public class CharacterView extends SXRNode implements
         return null;
     }
 
+    public void resetAnimation() {
+        SXRAnimator animatior = getAnimation(0);
+        if (animatior != null) {
+            animatior.animate(0);
+        }
+    }
+
     private void createShadow() {
         final SXRContext sxrContext = getSXRContext();
         SXRTexture tex = sxrContext.getAssetLoader().loadTexture(
