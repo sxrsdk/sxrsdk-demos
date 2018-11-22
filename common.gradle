@@ -188,12 +188,6 @@ dependencies {
         oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
     }
     arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':sxr_adapter')) {
-            arImplementation project(':sxr_adapter')
-        } else {
-            arImplementation(':sxr_adapter-release@aar')
-        }
-    }
+
 }
 

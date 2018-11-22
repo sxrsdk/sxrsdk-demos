@@ -33,6 +33,7 @@ import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.ITouchEvents;
 import com.samsungxr.io.SXRCursorController;
+import com.samsungxr.io.SXRGazeCursorController;
 import com.samsungxr.io.SXRInputManager;
 import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.nodes.SXRSphereNode;
@@ -103,6 +104,9 @@ public class SampleMain extends SXRMain
                 newController.setCursorDepth(DEPTH);
                 newController.setCursorControl(SXRCursorController.CursorControl.PROJECT_CURSOR_ON_SURFACE);
                 newController.getPicker().setEventOptions(eventOptions);
+                if (controller instanceof SXRGazeCursorController) {
+                    ((SXRGazeCursorController)controller).setTouchScreenDepth(DEPTH);
+                }
             }
         });
 
