@@ -102,6 +102,7 @@ public class ScreenshotMode extends BasePetMode {
                 view1 -> mPetContext.getSXRContext()
                         .runOnGlThread(() -> mBackToHudModeListener.OnBackToHud()));
 
+        view.setPhotoBitmap(photo);
         view.show();
     }
 
@@ -129,9 +130,7 @@ public class ScreenshotMode extends BasePetMode {
 
     private void takePhoto() {
         try {
-            showPhotoView(null);
-            //mPetContext.getSXRContext().captureMonoscopicScreen(this::onPhotoCaptured);
-            //mPetContext.getSXRContext().captureScreenCenter(this::onPhotoCaptured);
+            mPetContext.getSXRContext().captureScreenCenter(this::onPhotoCaptured);
         } catch (Throwable t) {
             Log.e(TAG, "Error taking photo", t);
         }
@@ -154,7 +153,7 @@ public class ScreenshotMode extends BasePetMode {
 
         initPhotosDir();
 
-        final String fileName = "com.samsungxr.arpet-photo-" + System.currentTimeMillis() + ".png";
+        final String fileName = "sxr-arpet-photo-" + System.currentTimeMillis() + ".png";
         mSavedFile = new File(mPhotosDir, fileName);
 
         try (FileOutputStream output = new FileOutputStream(mSavedFile)) {
