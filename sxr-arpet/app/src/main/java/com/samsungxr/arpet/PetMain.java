@@ -172,7 +172,7 @@ public class PetMain extends DisableNativeSplashScreen {
         iExitView.show();
     }
 
-    private void showViewConnectionFinished() {
+    private void showViewConnectionFinished(@PetConstants.ShareMode int mode) {
 
         mMainViewController = new MainViewController(mPetContext);
         mMainViewController.onShow(mPetContext.getMainScene());
@@ -186,7 +186,7 @@ public class PetMain extends DisableNativeSplashScreen {
         });
 
         String text = getSXRContext().getActivity().getString(
-                mSharedMixedReality.getMode() == PetConstants.SHARE_MODE_GUEST
+                mode == PetConstants.SHARE_MODE_GUEST
                         ? R.string.view_host_disconnected
                         : R.string.view_guests_disconnected);
         iFinishedView.setStatusText(text);
@@ -209,7 +209,8 @@ public class PetMain extends DisableNativeSplashScreen {
     public void handleConnectionEvent(PetConnectionEvent message) {
         if (message.getType() == EVENT_ALL_CONNECTIONS_LOST) {
             if (mCurrentMode instanceof HudMode) {
-                getSXRContext().runOnGlThread(this::showViewConnectionFinished);
+                int mode = mSharedMixedReality.getMode();
+                getSXRContext().runOnGlThread(() -> showViewConnectionFinished(mode));
                 mSharedMixedReality.stopSharing();
                 mPet.stopBall();
             }
