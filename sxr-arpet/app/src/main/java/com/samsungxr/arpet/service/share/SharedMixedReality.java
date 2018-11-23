@@ -25,6 +25,7 @@ import com.samsungxr.arpet.util.EventBusUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SharedMixedReality implements IMixedReality {
@@ -77,12 +78,13 @@ public class SharedMixedReality implements IMixedReality {
      * @param mode {@link PetConstants#SHARE_MODE_HOST} or {@link PetConstants#SHARE_MODE_GUEST}
      */
     public void startSharing(SXRAnchor sharedAnchor, @PetConstants.ShareMode int mode) {
+        Log.d(TAG, "startSharing => " + mode);
+
         if (mMode != PetConstants.SHARE_MODE_NONE) {
             return;
         }
 
         EventBusUtils.register(this);
-        Log.d(TAG, "startSharing => " + mode);
 
         mSharedAnchor = sharedAnchor;
         mSharedAnchorObject.attachComponent(mSharedAnchor);
@@ -123,16 +125,19 @@ public class SharedMixedReality implements IMixedReality {
                 shared.parent.detachComponent(SXRPlane.getComponentType());
             } else {
                 shared.parent.removeChildObject(shared.object);
+                mPetContext.getMainScene().addNode(shared.object);
             }
-            mPetContext.getMainScene().addNode(shared.object);
         }
     }
 
     private synchronized void stopGuest() {
-        for (SharedSceneObject shared : mSharedSceneObjects) {
-            if (shared.type != ArPetObjectType.PLAYER) {
+        Iterator<SharedSceneObject> iterator = mSharedSceneObjects.iterator();
+        SharedSceneObject shared;
+        while (iterator.hasNext()) {
+            shared = iterator.next();
+            if (shared.type.equals(ArPetObjectType.PLAYER)) {
                 mPetContext.getMainScene().removeNode(shared.object);
-                mSharedSceneObjects.remove(shared);
+                iterator.remove();
             } else if (shared.parent != null) {
                 shared.object.getTransform().reset();
                 mPetContext.getMainScene().removeNode(shared.object);
