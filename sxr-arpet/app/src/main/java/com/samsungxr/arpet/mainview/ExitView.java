@@ -20,6 +20,8 @@ package com.samsungxr.arpet.mainview;
 import android.view.View;
 
 import com.samsungxr.arpet.R;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
 
 public class ExitView extends BaseView implements IExitView {
 

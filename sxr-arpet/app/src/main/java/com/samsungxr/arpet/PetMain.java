@@ -30,7 +30,7 @@ import com.samsungxr.utility.Log;
 
 import com.samsungxr.arpet.character.CharacterController;
 import com.samsungxr.arpet.constant.PetConstants;
-import com.samsungxr.arpet.mainview.IConnectionFinishedView;
+import com.samsungxr.arpet.view.shared.IConnectionFinishedView;
 import com.samsungxr.arpet.mainview.IExitView;
 import com.samsungxr.arpet.mainview.MainViewController;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
@@ -41,7 +41,7 @@ import com.samsungxr.arpet.mode.IPetMode;
 import com.samsungxr.arpet.mode.OnBackToHudModeListener;
 import com.samsungxr.arpet.mode.OnModeChange;
 import com.samsungxr.arpet.mode.photo.ScreenshotMode;
-import com.samsungxr.arpet.mode.sharing.ShareAnchorMode;
+import com.samsungxr.arpet.mode.sharinganchor.SharingAnchorMode;
 import com.samsungxr.arpet.movement.PetActions;
 import com.samsungxr.arpet.service.share.SharedMixedReality;
 import com.samsungxr.arpet.util.EventBusUtils;
@@ -195,7 +195,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
     @Override
     public boolean onBackPress() {
-        if (mCurrentMode instanceof ShareAnchorMode || mCurrentMode instanceof EditMode || mCurrentMode instanceof ScreenshotMode) {
+        if (mCurrentMode instanceof SharingAnchorMode || mCurrentMode instanceof EditMode || mCurrentMode instanceof ScreenshotMode) {
             getSXRContext().runOnGlThread(() -> mHandlerBackToHud.OnBackToHud());
         }
 
@@ -247,7 +247,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
         @Override
         public void onShareAnchor() {
-            if (mCurrentMode instanceof ShareAnchorMode) {
+            if (mCurrentMode instanceof SharingAnchorMode) {
                 return;
             }
 
@@ -255,7 +255,7 @@ public class PetMain extends DisableNativeSplashScreen {
                 mCurrentMode.exit();
             }
 
-            mCurrentMode = new ShareAnchorMode(mPetContext, mHandlerBackToHud);
+            mCurrentMode = new SharingAnchorMode(mPetContext, mHandlerBackToHud);
             mCurrentMode.enter();
             mPet.stopBall();
             mPet.setCurrentAction(PetActions.IDLE.ID);

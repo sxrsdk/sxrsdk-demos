@@ -19,6 +19,8 @@ package com.samsungxr.arpet.mainview;
 
 import android.view.View;
 
+import com.samsungxr.arpet.view.IView;
+
 public interface IExitView extends IView {
 
     void setOnCancelClickListener(View.OnClickListener listener);

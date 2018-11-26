@@ -15,14 +15,14 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view.impl;
+package com.samsungxr.arpet.mode.sharinganchor.view.impl;
 
 import android.view.View;
 
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseView;
-import com.samsungxr.arpet.mainview.IViewController;
-import com.samsungxr.arpet.mode.sharing.view.ILetsStartView;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
+import com.samsungxr.arpet.mode.sharinganchor.view.ILetsStartView;
 
 public class LetsStartView extends BaseView implements ILetsStartView {
 

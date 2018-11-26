@@ -15,7 +15,7 @@
  *
  */
 
-package com.samsungxr.arpet.mainview;
+package com.samsungxr.arpet.view;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -64,7 +64,6 @@ public class BaseViewController extends BasePetView implements IViewController {
         viewObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
         viewObject.setTextureBufferSize(PetConstants.TEXTURE_BUFFER_SIZE);
 
-        getTransform().setPosition(0.0f, 0.0f, -0.74f);
         addChildObject(viewObject);
     }
 
@@ -131,6 +130,8 @@ public class BaseViewController extends BasePetView implements IViewController {
     @Override
     public void onShow(SXRScene mainScene) {
         mainScene.getMainCameraRig().addChildObject(this);
+        mPetContext.runDelayedOnPetThread(() ->
+                getTransform().setPosition(0.0f, 0.0f, -0.74f), 100);
     }
 
     @Override

@@ -15,17 +15,17 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view.impl;
+package com.samsungxr.arpet.mode.sharinganchor.view;
 
 import android.view.View;
 
-import com.samsungxr.arpet.mainview.BaseView;
-import com.samsungxr.arpet.mainview.IViewController;
-import com.samsungxr.arpet.mode.sharing.view.IGuestLookingAtTargetView;
+import com.samsungxr.arpet.view.IView;
 
-public class GuestLookingAtTargetView extends BaseView implements IGuestLookingAtTargetView {
+public interface ILetsStartView extends IView {
 
-    public GuestLookingAtTargetView(View view, IViewController controller) {
-        super(view, controller);
-    }
+    void setBackClickListener(View.OnClickListener listener);
+
+    void setHostClickListener(View.OnClickListener listener);
+
+    void setGuestClickListener(View.OnClickListener listener);
 }

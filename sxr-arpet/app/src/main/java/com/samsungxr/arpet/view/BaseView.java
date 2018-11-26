@@ -15,7 +15,7 @@
  *
  */
 
-package com.samsungxr.arpet.mainview;
+package com.samsungxr.arpet.view;
 
 import android.os.Handler;
 import android.os.Looper;

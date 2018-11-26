@@ -15,20 +15,20 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view.impl;
+package com.samsungxr.arpet.mode.sharinganchor.view.impl;
 
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseViewController;
-import com.samsungxr.arpet.mainview.ConnectionFinishedView;
-import com.samsungxr.arpet.mode.sharing.view.IConnectionFoundView;
-import com.samsungxr.arpet.mode.sharing.view.IGuestLookingAtTargetView;
-import com.samsungxr.arpet.mode.sharing.view.IHostLookingAtTargetView;
-import com.samsungxr.arpet.mode.sharing.view.ILetsStartView;
-import com.samsungxr.arpet.mode.sharing.view.ISharingErrorView;
-import com.samsungxr.arpet.mainview.IConnectionFinishedView;
-import com.samsungxr.arpet.mode.sharing.view.IWaitingForGuestView;
-import com.samsungxr.arpet.mode.sharing.view.IWaitingForHostView;
+import com.samsungxr.arpet.view.BaseViewController;
+import com.samsungxr.arpet.view.shared.ConnectionFinishedView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IConnectionFoundView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IGuestLookingAtTargetView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IHostLookingAtTargetView;
+import com.samsungxr.arpet.mode.sharinganchor.view.ILetsStartView;
+import com.samsungxr.arpet.mode.sharinganchor.view.ISharingErrorView;
+import com.samsungxr.arpet.view.shared.IConnectionFinishedView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IWaitingForGuestView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IWaitingForHostView;
 
 public class SharingAnchorViewController extends BaseViewController {
 

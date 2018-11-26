@@ -15,7 +15,7 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing;
+package com.samsungxr.arpet.mode.sharinganchor;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
@@ -33,8 +33,8 @@ import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.R;
 import com.samsungxr.arpet.constant.ArPetObjectType;
 import com.samsungxr.arpet.constant.PetConstants;
-import com.samsungxr.arpet.mainview.IConnectionFinishedView;
-import com.samsungxr.arpet.mainview.IView;
+import com.samsungxr.arpet.view.shared.IConnectionFinishedView;
+import com.samsungxr.arpet.view.IView;
 import com.samsungxr.arpet.manager.cloud.anchor.CloudAnchor;
 import com.samsungxr.arpet.manager.cloud.anchor.CloudAnchorManager;
 import com.samsungxr.arpet.manager.cloud.anchor.ManagedAnchor;
@@ -45,14 +45,14 @@ import com.samsungxr.arpet.manager.connection.PetConnectionManager;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
 import com.samsungxr.arpet.mode.BasePetMode;
 import com.samsungxr.arpet.mode.OnBackToHudModeListener;
-import com.samsungxr.arpet.mode.sharing.view.IConnectionFoundView;
-import com.samsungxr.arpet.mode.sharing.view.IGuestLookingAtTargetView;
-import com.samsungxr.arpet.mode.sharing.view.IHostLookingAtTargetView;
-import com.samsungxr.arpet.mode.sharing.view.ILetsStartView;
-import com.samsungxr.arpet.mode.sharing.view.ISharingErrorView;
-import com.samsungxr.arpet.mode.sharing.view.IWaitingForGuestView;
-import com.samsungxr.arpet.mode.sharing.view.IWaitingForHostView;
-import com.samsungxr.arpet.mode.sharing.view.impl.SharingAnchorViewController;
+import com.samsungxr.arpet.mode.sharinganchor.view.IConnectionFoundView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IGuestLookingAtTargetView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IHostLookingAtTargetView;
+import com.samsungxr.arpet.mode.sharinganchor.view.ILetsStartView;
+import com.samsungxr.arpet.mode.sharinganchor.view.ISharingErrorView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IWaitingForGuestView;
+import com.samsungxr.arpet.mode.sharinganchor.view.IWaitingForHostView;
+import com.samsungxr.arpet.mode.sharinganchor.view.impl.SharingAnchorViewController;
 import com.samsungxr.arpet.service.IMessageService;
 import com.samsungxr.arpet.service.MessageService;
 import com.samsungxr.arpet.service.data.RequestStatus;
@@ -77,9 +77,9 @@ import static com.samsungxr.arpet.manager.connection.IPetConnectionManager.EVENT
 import static com.samsungxr.arpet.manager.connection.IPetConnectionManager.EVENT_ON_LISTENING_TO_GUESTS;
 import static com.samsungxr.arpet.manager.connection.IPetConnectionManager.EVENT_ON_REQUEST_CONNECTION_TO_HOST;
 
-public class ShareAnchorMode extends BasePetMode {
+public class SharingAnchorMode extends BasePetMode {
 
-    private final String TAG = ShareAnchorMode.class.getSimpleName();
+    private final String TAG = SharingAnchorMode.class.getSimpleName();
 
     private IPetConnectionManager mConnectionManager;
     private SharingAnchorViewController mSharingAnchorViewController;
@@ -92,7 +92,7 @@ public class ShareAnchorMode extends BasePetMode {
     @PetConstants.ShareMode
     private int mCurrentMode = PetConstants.SHARE_MODE_NONE;
 
-    public ShareAnchorMode(PetContext petContext, OnBackToHudModeListener listener) {
+    public SharingAnchorMode(PetContext petContext, OnBackToHudModeListener listener) {
         super(petContext, new SharingAnchorViewController(petContext));
 
         mConnectionManager = PetConnectionManager.getInstance();

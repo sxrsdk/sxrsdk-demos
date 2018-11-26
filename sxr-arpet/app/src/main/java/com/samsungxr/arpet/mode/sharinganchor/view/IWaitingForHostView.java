@@ -15,11 +15,11 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view;
+package com.samsungxr.arpet.mode.sharinganchor.view;
 
 import android.view.View;
 
-import com.samsungxr.arpet.mainview.IView;
+import com.samsungxr.arpet.view.IView;
 
 public interface IWaitingForHostView extends IView {
 

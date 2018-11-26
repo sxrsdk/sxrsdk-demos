@@ -15,11 +15,11 @@
  *
  */
 
-package com.samsungxr.arpet.mainview;
+package com.samsungxr.arpet.mode.sharinganchor.view;
 
-public interface IView {
+import com.samsungxr.arpet.view.IView;
 
-    void show();
+public interface IConnectionFoundView extends IView {
 
-    void show(OnViewShownCallback callback);
+    void setStatusText(CharSequence text);
 }

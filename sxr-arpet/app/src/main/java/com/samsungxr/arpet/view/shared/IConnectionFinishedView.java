@@ -15,19 +15,15 @@
  *
  */
 
-package com.samsungxr.arpet.mainview;
+package com.samsungxr.arpet.view.shared;
 
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
+import android.view.View;
 
-public interface IViewController {
+import com.samsungxr.arpet.view.IView;
 
-    void registerView(
-            Class<? extends IView> viewInterface,
-            @LayoutRes int layoutId,
-            Class<? extends BaseView> viewImplementation);
+public interface IConnectionFinishedView extends IView {
 
-    <T extends IView> T makeView(@NonNull Class<T> type);
+    void setStatusText(CharSequence text);
 
-    void showView(IView viewModel);
+    void setOkClickListener(View.OnClickListener listener);
 }

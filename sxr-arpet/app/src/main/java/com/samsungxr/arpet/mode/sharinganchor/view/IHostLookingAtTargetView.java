@@ -15,9 +15,11 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view;
+package com.samsungxr.arpet.mode.sharinganchor.view;
 
-import com.samsungxr.arpet.mainview.IView;
+import com.samsungxr.arpet.view.IView;
 
-public interface IGuestLookingAtTargetView extends IView {
+public interface IHostLookingAtTargetView extends IView {
+
+    void setStatusText(CharSequence text);
 }

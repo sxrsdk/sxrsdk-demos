@@ -19,7 +19,7 @@ package com.samsungxr.arpet.mode.photo;
 
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseViewController;
+import com.samsungxr.arpet.view.BaseViewController;
 
 public class PhotoViewController extends BaseViewController {
 

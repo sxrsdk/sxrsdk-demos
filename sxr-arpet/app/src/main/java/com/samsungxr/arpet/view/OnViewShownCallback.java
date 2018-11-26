@@ -15,13 +15,8 @@
  *
  */
 
-package com.samsungxr.arpet.mainview;
+package com.samsungxr.arpet.view;
 
-import android.view.View;
-
-public interface IConnectionFinishedView extends IView {
-
-    void setStatusText(CharSequence text);
-
-    void setOkClickListener(View.OnClickListener listener);
+public interface OnViewShownCallback {
+    void onShown();
 }

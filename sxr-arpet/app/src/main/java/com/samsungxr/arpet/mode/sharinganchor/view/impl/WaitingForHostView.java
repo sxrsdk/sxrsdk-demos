@@ -15,31 +15,26 @@
  *
  */
 
-package com.samsungxr.arpet.mainview;
+package com.samsungxr.arpet.mode.sharinganchor.view.impl;
 
 import android.view.View;
-import android.widget.TextView;
 
 import com.samsungxr.arpet.R;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
+import com.samsungxr.arpet.mode.sharinganchor.view.IWaitingForHostView;
 
-public class ConnectionFinishedView extends BaseView implements IConnectionFinishedView {
+public class WaitingForHostView extends BaseView implements IWaitingForHostView {
 
-    private TextView mStatusText;
-    private View mOkButton;
+    private View mCancelButton;
 
-    public ConnectionFinishedView(View view, IViewController controller) {
+    public WaitingForHostView(View view, IViewController controller) {
         super(view, controller);
-        this.mStatusText = view.findViewById(R.id.text_status);
-        this.mOkButton = view.findViewById(R.id.button_ok);
+        this.mCancelButton = view.findViewById(R.id.button_cancel);
     }
 
     @Override
-    public void setStatusText(CharSequence text) {
-        runOnUiThread(() -> mStatusText.setText(text));
-    }
-
-    @Override
-    public void setOkClickListener(View.OnClickListener listener) {
-        mOkButton.setOnClickListener(listener);
+    public void setCancelClickListener(View.OnClickListener listener) {
+        mCancelButton.setOnClickListener(listener);
     }
 }

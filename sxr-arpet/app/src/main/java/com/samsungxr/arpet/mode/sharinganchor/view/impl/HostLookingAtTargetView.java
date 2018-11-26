@@ -15,26 +15,27 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view.impl;
+package com.samsungxr.arpet.mode.sharinganchor.view.impl;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseView;
-import com.samsungxr.arpet.mainview.IViewController;
-import com.samsungxr.arpet.mode.sharing.view.IWaitingForHostView;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
+import com.samsungxr.arpet.mode.sharinganchor.view.IHostLookingAtTargetView;
 
-public class WaitingForHostView extends BaseView implements IWaitingForHostView {
+public class HostLookingAtTargetView extends BaseView implements IHostLookingAtTargetView {
 
-    private View mCancelButton;
+    private TextView mStatusText;
 
-    public WaitingForHostView(View view, IViewController controller) {
+    public HostLookingAtTargetView(View view, IViewController controller) {
         super(view, controller);
-        this.mCancelButton = view.findViewById(R.id.button_cancel);
+        this.mStatusText = view.findViewById(R.id.text_status);
     }
 
     @Override
-    public void setCancelClickListener(View.OnClickListener listener) {
-        mCancelButton.setOnClickListener(listener);
+    public void setStatusText(CharSequence text) {
+        runOnUiThread(() -> mStatusText.setText(text));
     }
 }

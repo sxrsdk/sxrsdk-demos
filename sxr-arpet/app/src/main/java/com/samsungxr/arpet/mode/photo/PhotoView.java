@@ -22,8 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseView;
-import com.samsungxr.arpet.mainview.IViewController;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
 
 public class PhotoView extends BaseView implements IPhotoView {
 

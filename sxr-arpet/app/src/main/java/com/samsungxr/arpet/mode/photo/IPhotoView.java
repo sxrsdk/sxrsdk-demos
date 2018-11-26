@@ -20,7 +20,7 @@ package com.samsungxr.arpet.mode.photo;
 import android.graphics.Bitmap;
 import android.view.View;
 
-import com.samsungxr.arpet.mainview.IView;
+import com.samsungxr.arpet.view.IView;
 
 public interface IPhotoView extends IView {
 

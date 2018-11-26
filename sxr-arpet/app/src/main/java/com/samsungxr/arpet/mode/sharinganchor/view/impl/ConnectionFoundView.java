@@ -15,15 +15,15 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view.impl;
+package com.samsungxr.arpet.mode.sharinganchor.view.impl;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseView;
-import com.samsungxr.arpet.mainview.IViewController;
-import com.samsungxr.arpet.mode.sharing.view.IConnectionFoundView;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
+import com.samsungxr.arpet.mode.sharinganchor.view.IConnectionFoundView;
 
 public class ConnectionFoundView extends BaseView implements IConnectionFoundView {
 

@@ -19,6 +19,9 @@ package com.samsungxr.arpet.mainview;
 
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.R;
+import com.samsungxr.arpet.view.BaseViewController;
+import com.samsungxr.arpet.view.shared.ConnectionFinishedView;
+import com.samsungxr.arpet.view.shared.IConnectionFinishedView;
 
 public class MainViewController extends BaseViewController {
 

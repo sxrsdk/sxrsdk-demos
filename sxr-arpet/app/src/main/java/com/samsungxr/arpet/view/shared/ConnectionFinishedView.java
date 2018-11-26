@@ -15,27 +15,33 @@
  *
  */
 
-package com.samsungxr.arpet.mode.sharing.view.impl;
+package com.samsungxr.arpet.view.shared;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.samsungxr.arpet.R;
-import com.samsungxr.arpet.mainview.BaseView;
-import com.samsungxr.arpet.mainview.IViewController;
-import com.samsungxr.arpet.mode.sharing.view.IHostLookingAtTargetView;
+import com.samsungxr.arpet.view.BaseView;
+import com.samsungxr.arpet.view.IViewController;
 
-public class HostLookingAtTargetView extends BaseView implements IHostLookingAtTargetView {
+public class ConnectionFinishedView extends BaseView implements IConnectionFinishedView {
 
     private TextView mStatusText;
+    private View mOkButton;
 
-    public HostLookingAtTargetView(View view, IViewController controller) {
+    public ConnectionFinishedView(View view, IViewController controller) {
         super(view, controller);
         this.mStatusText = view.findViewById(R.id.text_status);
+        this.mOkButton = view.findViewById(R.id.button_ok);
     }
 
     @Override
     public void setStatusText(CharSequence text) {
         runOnUiThread(() -> mStatusText.setText(text));
+    }
+
+    @Override
+    public void setOkClickListener(View.OnClickListener listener) {
+        mOkButton.setOnClickListener(listener);
     }
 }
