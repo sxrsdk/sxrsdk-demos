@@ -23,6 +23,7 @@ import com.samsungxr.arpet.service.MessageService;
 import com.samsungxr.arpet.service.event.UpdatePosesReceivedMessage;
 import com.samsungxr.arpet.util.EventBusUtils;
 import org.greenrobot.eventbus.Subscribe;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -120,13 +121,8 @@ public class SharedMixedReality implements IMixedReality {
     private synchronized void initAsGuest(SharedSceneObject shared) {
         shared.parent = shared.object.getParent();
         if (shared.parent != null) {
-            if (shared.parent.getComponent(SXRPlane.getComponentType()) != null) {
-                // TODO: Fix MR API
-                shared.parent.detachComponent(SXRPlane.getComponentType());
-            } else {
-                shared.parent.removeChildObject(shared.object);
-                mPetContext.getMainScene().addNode(shared.object);
-            }
+            shared.parent.removeChildObject(shared.object);
+            mPetContext.getMainScene().addNode(shared.object);
         }
     }
 
@@ -135,17 +131,13 @@ public class SharedMixedReality implements IMixedReality {
         SharedSceneObject shared;
         while (iterator.hasNext()) {
             shared = iterator.next();
-            if (shared.type.equals(ArPetObjectType.PLAYER)) {
-                mPetContext.getMainScene().removeNode(shared.object);
-                iterator.remove();
-            } else if (shared.parent != null) {
-                shared.object.getTransform().reset();
+            if (shared.parent != null) {
+                shared.object.getTransform().setModelMatrix(shared.localMtx);
                 mPetContext.getMainScene().removeNode(shared.object);
                 shared.parent.addChildObject(shared.object);
             }
         }
-        mPetContext.resetPlanes();
-        mPetContext.startDetectingPlanes();
+        mPetContext.getPlaneHandler().resetPlanes();
     }
 
     public synchronized void registerSharedObject(SXRNode object, @ArPetObjectType String type,
@@ -316,6 +308,8 @@ public class SharedMixedReality implements IMixedReality {
         SXRNode object;
         // Parent of shared object.
         SXRNode parent;
+        // Local matrix to be used in guest mode after the share experience has been finished
+        Matrix4f localMtx;
 
         boolean repeat;
 
@@ -323,6 +317,7 @@ public class SharedMixedReality implements IMixedReality {
             this.type = type;
             this.object = object;
             this.repeat = true;
+            this.localMtx = object.getTransform().getLocalModelMatrix4f();
         }
 
         @Override

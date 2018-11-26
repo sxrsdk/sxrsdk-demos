@@ -46,7 +46,7 @@ public class PetContext {
     private SXRContext mSxrContext;
     private SharedMixedReality mMixedReality;
     private PlayerSceneObject mPlayer;
-    private IPlaneEvents mPlaneListener;
+    private PlaneHandler mPlaneHandler;
     private SXRScene mMainScene = null;
     private CharacterController mPetController = null;
 
@@ -125,16 +125,12 @@ public class PetContext {
         return mMixedReality;
     }
 
-    public void startDetectingPlanes() {
-        // TODO: add support in MixedReality
+    public void setPlaneHandler(PlaneHandler planeHandler) {
+        mPlaneHandler = planeHandler;
     }
 
-    public void stopDetectingPlanes() {
-        // TODO: add support in MixedReality
-    }
-
-    public void resetPlanes() {
-        // TODO: use PlaneHandler to reset the planes
+    public PlaneHandler getPlaneHandler() {
+        return mPlaneHandler;
     }
 
     public void registerPlaneListener(@NonNull IPlaneEvents listener) {

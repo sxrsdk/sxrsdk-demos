@@ -250,6 +250,8 @@ public class CharacterView extends SXRNode implements
     @Override
     public void hide(SXRScene mainScene) {
         mainScene.removeNode(this);
+        m3DModel.getTransform().setScale(0.003f, 0.003f, 0.003f);
+        m3DModel.getTransform().setPosition(0, 0.2f, 0);
         //getAnchor().detachSceneObject(mInfinityPlan);
     }
 

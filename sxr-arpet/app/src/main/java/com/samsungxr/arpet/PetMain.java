@@ -105,8 +105,8 @@ public class PetMain extends DisableNativeSplashScreen {
             public void onSuccess() {
                 // Will wet pet's scene as the main scene
                 mCurrentSplashScreen.onHide(mPetContext.getMainScene());
-                // Start detecting planes
-                mPetContext.startDetectingPlanes();
+                // Set plane handler in pet context
+                mPetContext.setPlaneHandler(mPlaneHandler);
                 // Set pet controller in pet context
                 mPetContext.setPetController(mPet);
             }
@@ -213,6 +213,9 @@ public class PetMain extends DisableNativeSplashScreen {
                 getSXRContext().runOnGlThread(() -> showViewConnectionFinished(mode));
                 mSharedMixedReality.stopSharing();
                 mPet.stopBall();
+                if (mode == PetConstants.SHARE_MODE_GUEST) {
+                    mPet.exit();
+                }
             }
         }
     }

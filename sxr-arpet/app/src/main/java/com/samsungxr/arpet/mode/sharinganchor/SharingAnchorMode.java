@@ -111,8 +111,6 @@ public class SharingAnchorMode extends BasePetMode {
         view.setBackClickListener(v -> cancelSharing());
         view.setHostClickListener(v -> mConnectionManager.startInvitation());
         view.setGuestClickListener(v -> {
-            // Disable the planes detection
-            mPetContext.stopDetectingPlanes();
             // Start to accept invitation from the host
             mConnectionManager.findInvitationThenConnect();
         });

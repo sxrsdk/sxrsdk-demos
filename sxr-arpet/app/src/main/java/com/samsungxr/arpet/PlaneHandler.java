@@ -49,7 +49,6 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
     private PetMain mPetMain;
     private int hsvHUE = 0;
 
-    private boolean planeDetected = false;
     private SXRNode selectedPlaneObject = null;
     private PlaneBoard physicsPlane = null;
     public final static String PLANE_NAME = "Plane";
@@ -198,7 +197,7 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         SXRPlane.Type planeType = plane.getPlaneType();
 
         // Don't use planes that are downward facing, e.g ceiling
-        if (planeType == SXRPlane.Type.HORIZONTAL_DOWNWARD_FACING || selectedPlaneObject != null) {
+        if (planeType == SXRPlane.Type.HORIZONTAL_DOWNWARD_FACING) {
             return;
         }
         SXRNode planeGeo = createQuadPlane();
@@ -206,16 +205,9 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         planeGeo.attachComponent(plane);
 //        mScene.addSceneObject(planeGeo);
         plane.getSXRContext().getMainScene().addNode(planeGeo);
-
+        plane.getOwnerObject().setEnable(selectedPlaneObject == null);
 
         mPlanes.add(plane);
-
-        if (!planeDetected && planeType == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
-            planeDetected = true;
-
-            // Now physics starts working and then boards must be continuously updated
-
-        }
     }
 
     @Override
@@ -258,19 +250,20 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         }
     }
 
-    public void reset() {
-        Log.d(TAG, "reseting planes");
+    public void resetPlanes() {
+        Log.d(TAG, "resetting planes");
         if (selectedPlaneObject != null) {
             selectedPlaneObject.detachComponent(PLANEBOARD_COMP_TYPE);
             selectedPlaneObject = null;
         }
 
         for (SXRPlane plane : mPlanes) {
-            mScene.removeNode(plane.getOwnerObject());
+            SXRNode ownerObject = plane.getOwnerObject();
+            if (ownerObject != null) {
+                ownerObject.setEnable(true);
+            }
         }
-        mPlanes.clear();
         mContext.unregisterDrawFrameListener(this);
-        planeDetected = false;
     }
 
     @Override
