@@ -33,9 +33,12 @@ import com.samsungxr.arpet.connection.socket.bluetooth.BTConnectionManager;
 import com.samsungxr.arpet.connection.socket.bluetooth.BTDevice;
 import com.samsungxr.arpet.connection.socket.bluetooth.BTServerDeviceFinder;
 import com.samsungxr.arpet.constant.PetConstants;
+import com.samsungxr.arpet.context.ActivityResultEvent;
 import com.samsungxr.arpet.manager.connection.event.MessageReceivedEvent;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
 import com.samsungxr.arpet.util.EventBusUtils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -262,15 +265,17 @@ public final class PetConnectionManager extends BTConnectionManager implements I
         return mContext;
     }
 
-    private void onActivityResult(int requestCode, int resultCode) {
-        if (requestCode == REQUEST_ENABLE_BT) {
-            if (resultCode == Activity.RESULT_OK) {
+    @Subscribe
+    public void handleContextEvent(ActivityResultEvent event) {
+        EventBusUtils.unregister(this);
+        if (event.getRequestCode() == REQUEST_ENABLE_BT) {
+            if (event.getResultCode() == Activity.RESULT_OK) {
                 mEnableBTCallback.onEnabled();
             } else {
                 notifyManagerEvent(EVENT_ENABLE_BLUETOOTH_DENIED);
             }
-        } else if (requestCode == REQUEST_ENABLE_HOST_VISIBILITY) {
-            if (resultCode != Activity.RESULT_CANCELED) {
+        } else if (event.getRequestCode() == REQUEST_ENABLE_HOST_VISIBILITY) {
+            if (event.getResultCode() != Activity.RESULT_CANCELED) {
                 mEnableVisibilityCallback.onEnabled();
             } else {
                 Log.d(TAG, "Host visibility denied by user");
@@ -294,9 +299,11 @@ public final class PetConnectionManager extends BTConnectionManager implements I
     private void enableBluetooth(OnEnableBluetoothCallback callback) {
         mEnableBTCallback = callback;
         if (!mBluetoothAdapter.isEnabled()) {
+            EventBusUtils.register(this);
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             mContext.getActivity().startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         } else {
+            EventBusUtils.unregister(this);
             callback.onEnabled();
         }
     }
@@ -304,10 +311,12 @@ public final class PetConnectionManager extends BTConnectionManager implements I
     private void enableHostVisibility(OnEnableDiscoverableCallback callback) {
         mEnableVisibilityCallback = callback;
         if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            EventBusUtils.register(this);
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, PetConstants.HOST_VISIBILITY_DURATION);
             mContext.getActivity().startActivityForResult(discoverableIntent, REQUEST_ENABLE_HOST_VISIBILITY);
         } else {
+            EventBusUtils.unregister(this);
             mEnableVisibilityCallback.onEnabled();
         }
     }
