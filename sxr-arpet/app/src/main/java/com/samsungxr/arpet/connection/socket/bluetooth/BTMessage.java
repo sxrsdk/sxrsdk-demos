@@ -17,6 +17,8 @@
 
 package com.samsungxr.arpet.connection.socket.bluetooth;
 
+import android.support.annotation.NonNull;
+
 import com.samsungxr.arpet.connection.Device;
 import com.samsungxr.arpet.connection.Message;
 
@@ -55,6 +57,8 @@ public class BTMessage<Data extends Serializable> implements Message<Data> {
         return mData;
     }
 
+    @SuppressWarnings("unchecked")
+    @NonNull
     @Override
     public String toString() {
         return "BTMessage{" +

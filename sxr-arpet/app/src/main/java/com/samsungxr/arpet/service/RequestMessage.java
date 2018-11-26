@@ -17,6 +17,8 @@
 
 package com.samsungxr.arpet.service;
 
+import android.support.annotation.NonNull;
+
 import com.samsungxr.arpet.connection.socket.bluetooth.BTMessage;
 import com.samsungxr.arpet.service.data.RequestStatus;
 
@@ -45,6 +47,7 @@ public class RequestMessage<Data extends Serializable> extends BTMessage<Data> {
         this.mStatus = mStatus;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "RequestMessage{" +
