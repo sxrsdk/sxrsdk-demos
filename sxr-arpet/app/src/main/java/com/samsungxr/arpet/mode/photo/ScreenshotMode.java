@@ -96,22 +96,25 @@ public class ScreenshotMode extends BasePetMode {
 
         IPhotoView view = mPhotoViewController.makeView(IPhotoView.class);
 
-        view.setOnActionsShareClickListener(this::onSocialAppButtonClicked);
+        view.setOnActionsShareClickListener(this::onShareButtonClicked);
 
-        view.setOnCancelClickListener(
-                view1 -> mPetContext.getSXRContext()
-                        .runOnGlThread(() -> mBackToHudModeListener.OnBackToHud()));
+        view.setOnCancelClickListener(view1 -> backToHudView());
 
         view.setPhotoBitmap(photo);
         view.show();
     }
 
-    private void onSocialAppButtonClicked(View clickedButton) {
+    private void onShareButtonClicked(View clickedButton) {
         if (clickedButton.getId() == R.id.button_facebook) {
             openFacebook();
         } else if (clickedButton.getId() == R.id.button_whatsapp) {
             openWhatsApp();
         }
+    }
+
+    private void backToHudView() {
+        mPetContext.getSXRContext()
+                .runOnGlThread(() -> mBackToHudModeListener.OnBackToHud());
     }
 
     private void initPhotosDir() {
@@ -187,9 +190,8 @@ public class ScreenshotMode extends BasePetMode {
             if (hasStoragePermission()) {
                 mPermissionCallback.onGranted();
             } else {
-                Toast.makeText(mPetContext.getActivity(),
-                        "External storage access not allowed",
-                        Toast.LENGTH_LONG).show();
+                backToHudView();
+                showToastPermissionDenied();
             }
         }
     }
@@ -200,12 +202,20 @@ public class ScreenshotMode extends BasePetMode {
             if (hasStoragePermission()) {
                 mPermissionCallback.onGranted();
             } else {
-                Toast.makeText(mPetContext.getActivity(),
-                        "External storage access not allowed",
-                        Toast.LENGTH_LONG).show();
-                openAppPermissionsSettings();
+                if (mPetContext.getActivity().shouldShowRequestPermissionRationale(PERMISSION_STORAGE[0])) {
+                    backToHudView();
+                    showToastPermissionDenied();
+                } else {
+                    showToastPermissionDenied();
+                    openAppPermissionsSettings();
+                }
             }
         }
+    }
+
+    private void showToastPermissionDenied() {
+        Toast.makeText(mPetContext.getActivity(),
+                "Storage access not allowed", Toast.LENGTH_LONG).show();
     }
 
     private void openAppPermissionsSettings() {
@@ -258,7 +268,8 @@ public class ScreenshotMode extends BasePetMode {
             intent.setPackage("com.android.vending");
             context.startActivity(intent);
         } catch (Exception exception) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appName)));
+            context.startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + appName)));
         }
     }
 
