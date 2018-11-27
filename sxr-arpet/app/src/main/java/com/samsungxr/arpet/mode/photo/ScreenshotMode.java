@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -43,6 +44,7 @@ import com.samsungxr.arpet.util.EventBusUtils;
 import com.samsungxr.arpet.util.StorageUtils;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.util.AsyncExecutor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -139,15 +141,15 @@ public class ScreenshotMode extends BasePetMode {
         }
     }
 
-    private void onPhotoCaptured(Bitmap capturedPhoto) {
-        Log.d(TAG, "Photo captured " + capturedPhoto);
-        if (capturedPhoto != null) {
-            savePhoto(capturedPhoto);
-            showPhotoView(capturedPhoto);
+    private void onPhotoCaptured(Bitmap capturedPhotoBitmap) {
+        Log.d(TAG, "Photo captured " + capturedPhotoBitmap);
+        if (capturedPhotoBitmap != null) {
+            showPhotoView(capturedPhotoBitmap);
+            AsyncExecutor.create().execute(() -> savePhoto(capturedPhotoBitmap));
         }
     }
 
-    private void savePhoto(Bitmap capturedPhoto) {
+    private void savePhoto(Bitmap capturedPhotoBitmap) {
 
         if (StorageUtils.getAvailableExternalStorageSize() <= 0) {
             Log.e(TAG, "There is no free space to save the photo on this device.");
@@ -160,14 +162,20 @@ public class ScreenshotMode extends BasePetMode {
         mSavedFile = new File(mPhotosDir, fileName);
 
         try (FileOutputStream output = new FileOutputStream(mSavedFile)) {
-            capturedPhoto.compress(Bitmap.CompressFormat.PNG, 100, output);
+            capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 60, output);
             new Handler(Looper.getMainLooper()).post(() ->
                     Toast.makeText(mPetContext.getActivity(),
                             "Photo saved", Toast.LENGTH_LONG).show());
         } catch (IOException e) {
-            Log.e(TAG, "Error saving photo: " + mSavedFile, e);
             mSavedFile = null;
+            Log.e(TAG, "Error saving photo", e);
         }
+
+        // Scan file to make it available on gallery immediately
+        MediaScannerConnection.scanFile(mPetContext.getActivity(),
+                new String[]{mSavedFile.toString()}, null,
+                (path, uri) -> {
+                });
     }
 
     @Override
