@@ -17,10 +17,14 @@ package com.samsungxr.arpet.mode.photo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaScannerConnection;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -76,6 +80,8 @@ public class ScreenshotMode extends BasePetMode {
     private File mPhotosDir;
     private OnStoragePermissionGranted mPermissionCallback;
     private File mSavedFile;
+    private SoundPool mSoundPool;
+    private int mClickSoundId;
 
     public ScreenshotMode(PetContext petContext, OnBackToHudModeListener listener) {
         super(petContext, new PhotoViewController(petContext));
@@ -87,21 +93,21 @@ public class ScreenshotMode extends BasePetMode {
     protected void onEnter() {
         EventBusUtils.register(this);
         requestStoragePermission(this::takePhoto);
+        loadSounds();
     }
 
     @Override
     protected void onExit() {
         EventBusUtils.unregister(this);
+        if (mSoundPool != null) {
+            mSoundPool.release();
+        }
     }
 
     private void showPhotoView(Bitmap photo) {
-
         IPhotoView view = mPhotoViewController.makeView(IPhotoView.class);
-
         view.setOnActionsShareClickListener(this::onShareButtonClicked);
-
         view.setOnCancelClickListener(view1 -> backToHudView());
-
         view.setPhotoBitmap(photo);
         view.show();
     }
@@ -144,6 +150,7 @@ public class ScreenshotMode extends BasePetMode {
     private void onPhotoCaptured(Bitmap capturedPhotoBitmap) {
         Log.d(TAG, "Photo captured " + capturedPhotoBitmap);
         if (capturedPhotoBitmap != null) {
+            playClickSound();
             showPhotoView(capturedPhotoBitmap);
             AsyncExecutor.create().execute(() -> savePhoto(capturedPhotoBitmap));
         }
@@ -162,10 +169,10 @@ public class ScreenshotMode extends BasePetMode {
         mSavedFile = new File(mPhotosDir, fileName);
 
         try (FileOutputStream output = new FileOutputStream(mSavedFile)) {
-            capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 60, output);
+            capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             new Handler(Looper.getMainLooper()).post(() ->
                     Toast.makeText(mPetContext.getActivity(),
-                            "Photo saved", Toast.LENGTH_LONG).show());
+                            "Photo saved in the gallery", Toast.LENGTH_LONG).show());
         } catch (IOException e) {
             mSavedFile = null;
             Log.e(TAG, "Error saving photo", e);
@@ -290,6 +297,45 @@ public class ScreenshotMode extends BasePetMode {
             return false;
         }
     }
+
+    private void loadSounds() {
+
+        mPetContext.getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        mSoundPool = new SoundPool.Builder()
+                .setMaxStreams(1)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        mClickSoundId = mSoundPool.load(
+                mPetContext.getActivity(), R.raw.camera_click, 1);
+    }
+
+
+    private void playClickSound() {
+
+        AudioManager audioManager = (AudioManager) mPetContext.getActivity().getSystemService(Context.AUDIO_SERVICE);
+        float vol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float leftVolume = vol / maxVol;
+        float rightVolume = vol / maxVol;
+        int priority = 1;
+        int no_loop = 0;
+        float normal_playback_rate = 1f;
+
+        mSoundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
+            mSoundPool.release();
+        });
+
+        mSoundPool.play(mClickSoundId, leftVolume, rightVolume,
+                priority, no_loop, normal_playback_rate);
+    }
+
 
     @FunctionalInterface
     private interface OnStoragePermissionGranted {

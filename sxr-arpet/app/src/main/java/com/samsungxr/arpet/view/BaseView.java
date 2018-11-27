@@ -21,6 +21,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import com.samsungxr.arpet.PetContext;
+
 public abstract class BaseView implements IView {
 
     private View mView;
@@ -54,11 +56,11 @@ public abstract class BaseView implements IView {
         return mView;
     }
 
-    public void runOnUiThread(Runnable runnable) {
+    protected void runOnUiThread(Runnable runnable) {
         mHandler.post(runnable);
     }
 
-    public void runOnUiThread(Runnable runnable, long delay) {
+    protected void runOnUiThreadDelayed(Runnable runnable, long delay) {
         mHandler.postDelayed(runnable, delay);
     }
 }
