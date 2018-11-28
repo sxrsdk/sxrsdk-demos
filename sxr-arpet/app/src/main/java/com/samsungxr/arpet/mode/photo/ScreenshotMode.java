@@ -51,6 +51,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.util.AsyncExecutor;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -312,8 +314,7 @@ public class ScreenshotMode extends BasePetMode {
                 .setAudioAttributes(audioAttributes)
                 .build();
 
-        mClickSoundId = mSoundPool.load(
-                mPetContext.getActivity(), R.raw.camera_click, 1);
+        mClickSoundId = mSoundPool.load("/system/media/audio/ui/camera_click.ogg", 1);
     }
 
 
