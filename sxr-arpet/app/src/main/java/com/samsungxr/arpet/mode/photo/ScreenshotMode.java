@@ -51,8 +51,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.util.AsyncExecutor;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -112,6 +110,7 @@ public class ScreenshotMode extends BasePetMode {
         view.setOnCancelClickListener(view1 -> backToHudView());
         view.setPhotoBitmap(photo);
         view.show();
+        view.showToast();
     }
 
     private void onShareButtonClicked(View clickedButton) {
@@ -173,8 +172,7 @@ public class ScreenshotMode extends BasePetMode {
         try (FileOutputStream output = new FileOutputStream(mSavedFile)) {
             capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             new Handler(Looper.getMainLooper()).post(() ->
-                    Toast.makeText(mPetContext.getActivity(),
-                            "Photo saved in the gallery", Toast.LENGTH_LONG).show());
+                    Log.d(TAG, "Photo saved in the gallery"));
         } catch (IOException e) {
             mSavedFile = null;
             Log.e(TAG, "Error saving photo", e);

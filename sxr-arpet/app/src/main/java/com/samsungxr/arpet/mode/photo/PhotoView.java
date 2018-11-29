@@ -19,6 +19,7 @@ package com.samsungxr.arpet.mode.photo;
 
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -34,6 +35,7 @@ public class PhotoView extends BaseView implements IPhotoView {
     private View mPhotoTarget;
     private LinearLayout mPhotoContent;
     private View mFlashView;
+    private FrameLayout mToast_photo;
 
     public PhotoView(View view, IViewController controller) {
         super(view, controller);
@@ -46,6 +48,7 @@ public class PhotoView extends BaseView implements IPhotoView {
         this.mPhotoTarget = view.findViewById(R.id.photo_target);
         this.mPhotoContent = view.findViewById(R.id.photo_content);
         this.mFlashView = view.findViewById(R.id.view_flash);
+        this.mToast_photo = view.findViewById(R.id.toast_photo);
     }
 
     @Override
@@ -69,6 +72,11 @@ public class PhotoView extends BaseView implements IPhotoView {
             mPhoto.setScaleY(mPhoto.getScaleY() * 1.3f);
             mPhoto.setImageBitmap(bitmap);
         });
+    }
+
+    @Override
+    public void showToast() {
+        this.mToast_photo.setVisibility(View.VISIBLE);
     }
 
     private void takeFlash(Runnable onFlashEnds) {

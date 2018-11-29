@@ -29,4 +29,6 @@ public interface IPhotoView extends IView {
     void setOnActionsShareClickListener(View.OnClickListener listener);
 
     void setPhotoBitmap(Bitmap bitmap);
+
+    void showToast();
 }
