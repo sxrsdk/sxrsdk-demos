@@ -60,7 +60,7 @@ public class ScreenshotMode extends BasePetMode {
 
     private static final String PACK_NAME_FACEBOOK = "com.facebook.katana";
     private static final String PACK_NAME_TWITTER = "";
-    private static final String PACK_NAME_INSTAGRAM = "";
+    private static final String PACK_NAME_INSTAGRAM = "com.instagram.android";
     private static final String PACK_NAME_WHATSAPP = "com.whatsapp";
 
     private static final String ACTIVITY_SHARE_PICTURE =
@@ -114,10 +114,18 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void onShareButtonClicked(View clickedButton) {
-        if (clickedButton.getId() == R.id.button_facebook) {
-            openFacebook();
-        } else if (clickedButton.getId() == R.id.button_whatsapp) {
-            openWhatsApp();
+        switch (clickedButton.getId()) {
+            case R.id.button_facebook:
+                openFacebook();
+                break;
+            case R.id.button_whatsapp:
+                openWhatsApp();
+                break;
+            case R.id.button_instagram:
+                openInstagram();
+                break;
+            default:
+                Log.d(TAG, "invalid button");
         }
     }
 
@@ -253,6 +261,14 @@ public class ScreenshotMode extends BasePetMode {
         if (mSavedFile != null && checkAppInstalled(PACK_NAME_WHATSAPP)) {
             Intent intent = createIntent();
             intent.setPackage(PACK_NAME_WHATSAPP);
+            mPetContext.getActivity().startActivity(intent);
+        }
+    }
+
+    private void openInstagram() {
+        if (mSavedFile != null && checkAppInstalled(PACK_NAME_INSTAGRAM)) {
+            Intent intent = createIntent();
+            intent.setPackage(PACK_NAME_INSTAGRAM);
             mPetContext.getActivity().startActivity(intent);
         }
     }
