@@ -62,7 +62,6 @@ public class BallThrowHandler {
     private boolean thrown = false;
 
     private SXRPlane firstPlane = null; // Maybe this could be replaced by a boolean
-    private static BallThrowHandler sInstance;
     private boolean mResetOnTouchEnabled = true;
 
     private final float mDirTan;
@@ -71,7 +70,7 @@ public class BallThrowHandler {
 
     private IMessageService mMessageService;
 
-    private BallThrowHandler(PetContext petContext) {
+    BallThrowHandler(PetContext petContext) {
         mPetContext = petContext;
         mPlayer = petContext.getPlayer();
 
@@ -94,14 +93,6 @@ public class BallThrowHandler {
         if (BallCommand.THROW.equals(command.getType())) {
             throwLocalBall(command.getForceVector());
         }
-    }
-
-    // FIXME: look for a different approach for this
-    public static BallThrowHandler getInstance(PetContext petContext) {
-        if (sInstance == null) {
-            sInstance = new BallThrowHandler(petContext);
-        }
-        return sInstance;
     }
 
     public void enable() {

@@ -49,6 +49,7 @@ public class PetContext {
     private PlaneHandler mPlaneHandler;
     private SXRScene mMainScene = null;
     private CharacterController mPetController = null;
+    private BallThrowHandler mBallThrowHandler = null;
 
     public PetContext(SXRActivity activity) {
         mActivity = activity;
@@ -92,7 +93,12 @@ public class PetContext {
 
         // FIXME: Workaround to
         // You may only use GestureDetector constructor from a {@link android.os.Looper} thread.
-        BallThrowHandler.getInstance(this);
+
+        mBallThrowHandler = new BallThrowHandler(this);
+    }
+
+    public BallThrowHandler getBallThrowHandlerHandler() {
+        return mBallThrowHandler;
     }
 
     public void setPetController(CharacterController controller) {

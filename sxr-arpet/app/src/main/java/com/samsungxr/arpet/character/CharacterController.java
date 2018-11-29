@@ -59,7 +59,7 @@ public class CharacterController extends BasePetMode {
         mPetActions = new SparseArray<>();
         mDrawFrameHandler = null;
         mMixedReality = mPetContext.getMixedReality();
-        mBallThrowHandler = BallThrowHandler.getInstance(mPetContext);
+        mBallThrowHandler = petContext.getBallThrowHandlerHandler();
 
         mMessageService = MessageService.getInstance();
 
