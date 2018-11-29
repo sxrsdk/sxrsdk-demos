@@ -15,24 +15,23 @@
 
 package com.samsungxr.controls;
 
-import android.graphics.Color;
 import android.view.MotionEvent;
 
+import com.samsungxr.IApplicationEvents;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXREventListeners;
+import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMesh;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRNode;
-import com.samsungxr.SXRMain;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.SXRTextureParameters.TextureFilterType;
 import com.samsungxr.SXRTextureParameters.TextureWrapType;
-import com.samsungxr.IActivityEvents;
 import com.samsungxr.controls.anim.ActionWormAnimation;
 import com.samsungxr.controls.anim.ColorWorm;
 import com.samsungxr.controls.anim.StarBoxNode;
@@ -76,7 +75,7 @@ public class Main extends SXRMain {
     private Apple apple;
     public static ActionWormAnimation animationColor;
     private static StarBoxNode starBox;
-    private IActivityEvents activityTouchHandler = new SXREventListeners.ActivityEvents()
+    private IApplicationEvents activityTouchHandler = new SXREventListeners.ApplicationEvents()
     {
         public void dispatchTouchEvent(MotionEvent event)
         {
