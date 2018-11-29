@@ -10,22 +10,18 @@ allprojects {
         maven {
             url "http://google.bintray.com/googlevr"
         }
-        flatDir {
-            dirs '../../../../sxrsdk/SXR/sxr-libs'
-        }
     }
 }
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '28.0.3'
+
     defaultConfig {
         applicationId "com.example.org.sxrsdkapplication"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -36,14 +32,8 @@ android {
 
     // ignore the x86 and arm-v8 files from the google vr libraries
     packagingOptions {
-        exclude 'lib/x86/libgvr.so'
         pickFirst 'lib/*/libc++_shared.so'
         pickFirst 'lib/*/libgnustl_shared.so'
-        if (!project.hasProperty("ARM64")) {
-            exclude 'lib/arm64-v8a/*.so'
-        } else {
-            exclude 'lib/armeabi-v7a/*.so'
-        }
     }
 
     flavorDimensions "vr"
@@ -73,40 +63,20 @@ project.ext.daydreamVersion = '1.130.0'
 project.ext.jomlVersion = "1.9.3-SNAPSHOT"
 project.ext.gsonVersion = '2.8.2'
 
-
 dependencies {
     implementation "com.google.code.gson:gson:$gsonVersion"
     implementation "org.joml:joml-android:${jomlVersion}"
-    if (findProject(':sxrsdk')) {
-        implementation project(':sxrsdk')
-    } else {
-        debugImplementation(name: 'sxrsdk-debug', ext: 'aar')
-        releaseImplementation(name: 'sxrsdk-release', ext: 'aar')
-    }
 
-    if (findProject(':backend_monoscopic')) {
-        monoscopicImplementation project(':backend_monoscopic')
-    } else {
-        monoscopicImplementation(':backend_monoscopic-release@aar')
-    }
+    implementation "com.samsungxr:sxrsdk:$sxrVersion"
 
-    if (findProject(':backend_daydream')) {
-        daydreamImplementation project(':backend_daydream')
-    } else {
-        daydreamImplementation(':backend_daydream-release@aar')
-    }
+    monoscopicImplementation "com.samsungxr:backend_monoscopic:$sxrVersion"
+
+    daydreamImplementation "com.samsungxr:backend_daydream:$sxrVersion"
     daydreamImplementation "com.google.vr:sdk-base:${daydreamVersion}"
     daydreamImplementation "com.google.vr:sdk-controller:${daydreamVersion}"
 
-    if (findProject(':backend_oculus')) {
-        oculusImplementation project(':backend_oculus')
-    } else {
-        oculusImplementation(':backend_oculus-release@aar')
-    }
+    oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
+
     arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-    if (findProject(':sxr_adapter')) {
-        arImplementation project(':sxr_adapter')
-    } else {
-        arImplementation(':sxr_adapter-release@aar')
-    }
+    arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
 }
