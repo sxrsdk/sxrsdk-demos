@@ -76,7 +76,17 @@ public class PhotoView extends BaseView implements IPhotoView {
 
     @Override
     public void showToast() {
-        this.mToast_photo.setVisibility(View.VISIBLE);
+        runOnUiThread(() -> mToast_photo.setVisibility(View.VISIBLE));
+    }
+
+    @Override
+    public void enableButtons() {
+        runOnUiThread(() -> {
+            mFacebookButton.setClickable(true);
+            mWhatsAppButton.setClickable(true);
+            mInstagramButton.setClickable(true);
+            mTwitterButton.setClickable(true);
+        });
     }
 
     private void takeFlash(Runnable onFlashEnds) {

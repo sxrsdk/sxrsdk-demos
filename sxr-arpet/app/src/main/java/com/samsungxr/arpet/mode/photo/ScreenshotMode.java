@@ -82,6 +82,7 @@ public class ScreenshotMode extends BasePetMode {
     private File mSavedFile;
     private SoundPool mSoundPool;
     private int mClickSoundId;
+    private IPhotoView view;
 
     public ScreenshotMode(PetContext petContext, OnBackToHudModeListener listener) {
         super(petContext, new PhotoViewController(petContext));
@@ -105,12 +106,11 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void showPhotoView(Bitmap photo) {
-        IPhotoView view = mPhotoViewController.makeView(IPhotoView.class);
+        view = mPhotoViewController.makeView(IPhotoView.class);
         view.setOnActionsShareClickListener(this::onShareButtonClicked);
         view.setOnCancelClickListener(view1 -> backToHudView());
         view.setPhotoBitmap(photo);
         view.show();
-        view.showToast();
     }
 
     private void onShareButtonClicked(View clickedButton) {
@@ -180,7 +180,8 @@ public class ScreenshotMode extends BasePetMode {
         try (FileOutputStream output = new FileOutputStream(mSavedFile)) {
             capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             new Handler(Looper.getMainLooper()).post(() ->
-                    Log.d(TAG, "Photo saved in the gallery"));
+                    view.showToast());
+            view.enableButtons();
         } catch (IOException e) {
             mSavedFile = null;
             Log.e(TAG, "Error saving photo", e);
