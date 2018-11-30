@@ -82,7 +82,7 @@ public class ScreenshotMode extends BasePetMode {
     private File mSavedFile;
     private SoundPool mSoundPool;
     private int mClickSoundId;
-    private IPhotoView view;
+    private IPhotoView mView;
 
     public ScreenshotMode(PetContext petContext, OnBackToHudModeListener listener) {
         super(petContext, new PhotoViewController(petContext));
@@ -106,11 +106,11 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void showPhotoView(Bitmap photo) {
-        view = mPhotoViewController.makeView(IPhotoView.class);
-        view.setOnActionsShareClickListener(this::onShareButtonClicked);
-        view.setOnCancelClickListener(view1 -> backToHudView());
-        view.setPhotoBitmap(photo);
-        view.show();
+        mView = mPhotoViewController.makeView(IPhotoView.class);
+        mView.setOnActionsShareClickListener(this::onShareButtonClicked);
+        mView.setOnCancelClickListener(view1 -> backToHudView());
+        mView.setPhotoBitmap(photo);
+        mView.show();
     }
 
     private void onShareButtonClicked(View clickedButton) {
@@ -150,6 +150,7 @@ public class ScreenshotMode extends BasePetMode {
 
     private void takePhoto() {
         try {
+            mSavedFile = null;
             mPetContext.getSXRContext().captureScreenCenter(this::onPhotoCaptured);
         } catch (Throwable t) {
             Log.e(TAG, "Error taking photo", t);
@@ -175,17 +176,18 @@ public class ScreenshotMode extends BasePetMode {
         initPhotosDir();
 
         final String fileName = "sxr-arpet-photo-" + System.currentTimeMillis() + ".png";
-        mSavedFile = new File(mPhotosDir, fileName);
+        File file = new File(mPhotosDir, fileName);
 
-        try (FileOutputStream output = new FileOutputStream(mSavedFile)) {
-            capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
-            new Handler(Looper.getMainLooper()).post(() ->
-                    view.showToast());
-            view.enableButtons();
+        try (FileOutputStream output = new FileOutputStream(file)) {
+            capturedPhotoBitmap.compress(Bitmap.CompressFormat.PNG, 50, output);
         } catch (IOException e) {
-            mSavedFile = null;
+            file = null;
             Log.e(TAG, "Error saving photo", e);
         }
+
+        new Handler(Looper.getMainLooper()).post(() -> mView.showToast());
+        mView.enableButtons();
+        mSavedFile = file;
 
         // Scan file to make it available on gallery immediately
         MediaScannerConnection.scanFile(mPetContext.getActivity(),
