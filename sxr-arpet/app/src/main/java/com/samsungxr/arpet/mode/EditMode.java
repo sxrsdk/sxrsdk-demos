@@ -140,7 +140,7 @@ public class EditMode extends BasePetMode {
         }
     }
 
-    private class GestureHandler extends SXREventListeners.ActivityEvents
+    private class GestureHandler extends SXREventListeners.ApplicationEvents
             implements OnGestureListener, ITouchEvents, Runnable {
 
         private float[] mDraggingOffset = null;

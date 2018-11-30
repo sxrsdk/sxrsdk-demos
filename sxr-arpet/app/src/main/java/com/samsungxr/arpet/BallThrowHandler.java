@@ -18,6 +18,7 @@ package com.samsungxr.arpet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.samsungxr.IApplicationEvents;
 import com.samsungxr.SXRCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXREventListeners;
@@ -58,7 +59,7 @@ public class BallThrowHandler {
     private SXRNode mBall;
     private SXRRigidBody mRigidBody;
 
-    private SXREventListeners.ActivityEvents mEventListener;
+    private IApplicationEvents mEventListener;
     private boolean thrown = false;
 
     private SXRPlane firstPlane = null; // Maybe this could be replaced by a boolean
@@ -192,7 +193,7 @@ public class BallThrowHandler {
         };
 
         final GestureDetector gestureDetector = new GestureDetector(mPetContext.getActivity(), gestureListener);
-        mEventListener = new SXREventListeners.ActivityEvents() {
+        mEventListener = new SXREventListeners.ApplicationEvents() {
             @Override
             public void dispatchTouchEvent(MotionEvent event) {
                 gestureDetector.onTouchEvent(event);
