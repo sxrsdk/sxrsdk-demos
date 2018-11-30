@@ -30,10 +30,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Toast;
 
@@ -59,13 +59,7 @@ public class ScreenshotMode extends BasePetMode {
 
     private static final String TAG = ScreenshotMode.class.getSimpleName();
 
-    private static final String PACK_NAME_FACEBOOK = "com.facebook.katana";
-    private static final String PACK_NAME_TWITTER = "com.twitter.android";
-    private static final String PACK_NAME_INSTAGRAM = "com.instagram.android";
-    private static final String PACK_NAME_WHATSAPP = "com.whatsapp";
-
-    private static final String ACTIVITY_SHARE_PICTURE =
-            "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias";
+    private SparseArray<SocialAppInfo> mSocialApps = new SparseArray<>();
 
     private static final String APP_PHOTOS_DIR_NAME = "sxr-arpet";
     private static final String FILE_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".provider";
@@ -96,6 +90,7 @@ public class ScreenshotMode extends BasePetMode {
         EventBusUtils.register(this);
         requestStoragePermission(this::takePhoto);
         loadSounds();
+        loadSocialAppsInfo();
     }
 
     @Override
@@ -115,22 +110,7 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void onShareButtonClicked(View clickedButton) {
-        switch (clickedButton.getId()) {
-            case R.id.button_facebook:
-                openApplication(PACK_NAME_FACEBOOK);
-                break;
-            case R.id.button_whatsapp:
-                openApplication(PACK_NAME_WHATSAPP);
-                break;
-            case R.id.button_instagram:
-                openApplication(PACK_NAME_INSTAGRAM);
-                break;
-            case R.id.button_twitter:
-                openApplication(PACK_NAME_TWITTER);
-                break;
-            default:
-                Log.d(TAG, "invalid button");
-        }
+        openSocialApp(clickedButton.getId());
     }
 
     private void backToHudView() {
@@ -256,14 +236,15 @@ public class ScreenshotMode extends BasePetMode {
         context.startActivityForResult(intent, REQUEST_STORAGE_PERMISSION);
     }
 
-    private void openApplication(@NonNull String appPackageName) {
-        if (appPackageName.isEmpty()) {
-            return;
-        }
-
-        if (mSavedFile != null && checkAppInstalled(appPackageName)) {
+    private void openSocialApp(int socialAppId) {
+        SocialAppInfo info = mSocialApps.get(socialAppId);
+        if (mSavedFile != null && checkAppInstalled(info.mPackageName)) {
             Intent intent = createIntent();
-            intent.setPackage(appPackageName);
+            if (info.mActivity != null) {
+                intent.setClassName(info.mPackageName, info.mActivity);
+            } else {
+                intent.setPackage(info.mPackageName);
+            }
             mPetContext.getActivity().startActivity(intent);
         }
     }
@@ -274,7 +255,7 @@ public class ScreenshotMode extends BasePetMode {
         intent.putExtra(Intent.EXTRA_STREAM,
                 FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, mSavedFile));
         intent.setType("image/png");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }
 
@@ -338,14 +319,35 @@ public class ScreenshotMode extends BasePetMode {
         int no_loop = 0;
         float normal_playback_rate = 1f;
 
-        mSoundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
-            mSoundPool.release();
-        });
-
         mSoundPool.play(mClickSoundId, leftVolume, rightVolume,
                 priority, no_loop, normal_playback_rate);
     }
 
+    private void loadSocialAppsInfo() {
+        mSocialApps.put(R.id.button_facebook, new SocialAppInfo(
+                "com.facebook.katana",
+                "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias"));
+        mSocialApps.put(R.id.button_twitter, new SocialAppInfo(
+                "com.twitter.android",
+                "com.twitter.composer.ComposerActivity"));
+        mSocialApps.put(R.id.button_instagram, new SocialAppInfo(
+                "com.instagram.android",
+                null));
+        mSocialApps.put(R.id.button_whatsapp, new SocialAppInfo(
+                "com.whatsapp",
+                null));
+    }
+
+    private class SocialAppInfo {
+
+        String mPackageName;
+        String mActivity;
+
+        SocialAppInfo(String mPackageName, String mActivity) {
+            this.mPackageName = mPackageName;
+            this.mActivity = mActivity;
+        }
+    }
 
     @FunctionalInterface
     private interface OnStoragePermissionGranted {
