@@ -30,6 +30,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -59,7 +60,7 @@ public class ScreenshotMode extends BasePetMode {
     private static final String TAG = ScreenshotMode.class.getSimpleName();
 
     private static final String PACK_NAME_FACEBOOK = "com.facebook.katana";
-    private static final String PACK_NAME_TWITTER = "";
+    private static final String PACK_NAME_TWITTER = "com.twitter.android";
     private static final String PACK_NAME_INSTAGRAM = "com.instagram.android";
     private static final String PACK_NAME_WHATSAPP = "com.whatsapp";
 
@@ -116,13 +117,16 @@ public class ScreenshotMode extends BasePetMode {
     private void onShareButtonClicked(View clickedButton) {
         switch (clickedButton.getId()) {
             case R.id.button_facebook:
-                openFacebook();
+                openApplication(PACK_NAME_FACEBOOK);
                 break;
             case R.id.button_whatsapp:
-                openWhatsApp();
+                openApplication(PACK_NAME_WHATSAPP);
                 break;
             case R.id.button_instagram:
-                openInstagram();
+                openApplication(PACK_NAME_INSTAGRAM);
+                break;
+            case R.id.button_twitter:
+                openApplication(PACK_NAME_TWITTER);
                 break;
             default:
                 Log.d(TAG, "invalid button");
@@ -252,26 +256,14 @@ public class ScreenshotMode extends BasePetMode {
         context.startActivityForResult(intent, REQUEST_STORAGE_PERMISSION);
     }
 
-    private void openFacebook() {
-        if (mSavedFile != null && checkAppInstalled(PACK_NAME_FACEBOOK)) {
-            Intent intent = createIntent();
-            intent.setClassName(PACK_NAME_FACEBOOK, ACTIVITY_SHARE_PICTURE);
-            mPetContext.getActivity().startActivity(intent);
+    private void openApplication(@NonNull String appPackageName) {
+        if (appPackageName.isEmpty()) {
+            return;
         }
-    }
 
-    private void openWhatsApp() {
-        if (mSavedFile != null && checkAppInstalled(PACK_NAME_WHATSAPP)) {
+        if (mSavedFile != null && checkAppInstalled(appPackageName)) {
             Intent intent = createIntent();
-            intent.setPackage(PACK_NAME_WHATSAPP);
-            mPetContext.getActivity().startActivity(intent);
-        }
-    }
-
-    private void openInstagram() {
-        if (mSavedFile != null && checkAppInstalled(PACK_NAME_INSTAGRAM)) {
-            Intent intent = createIntent();
-            intent.setPackage(PACK_NAME_INSTAGRAM);
+            intent.setPackage(appPackageName);
             mPetContext.getActivity().startActivity(intent);
         }
     }
