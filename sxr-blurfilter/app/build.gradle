@@ -10,10 +10,6 @@ else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
 }
 
 android {
-    defaultConfig {
-        applicationId "org.gearvrf.test"
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -25,4 +21,8 @@ android {
         jni.srcDirs = [] // no auto generation of Android.mk
         jniLibs.srcDir 'libs' // pre-compiled libraries
     }
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:26.+'
 }
