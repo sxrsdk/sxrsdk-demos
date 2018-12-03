@@ -88,9 +88,13 @@ public class ScreenshotMode extends BasePetMode {
     @Override
     protected void onEnter() {
         EventBusUtils.register(this);
-        requestStoragePermission(this::takePhoto);
         loadSounds();
         loadSocialAppsInfo();
+        if (!hasStoragePermission()) {
+            requestStoragePermission(this::takePhoto);
+        } else {
+            takePhoto();
+        }
     }
 
     @Override
@@ -198,10 +202,10 @@ public class ScreenshotMode extends BasePetMode {
     public void handleContextEvent(ActivityResultEvent event) {
         if (event.getRequestCode() == REQUEST_STORAGE_PERMISSION) {
             if (hasStoragePermission()) {
-                mPermissionCallback.onGranted();
-            } else {
                 backToHudView();
+            } else {
                 showToastPermissionDenied();
+                backToHudView();
             }
         }
     }
@@ -291,20 +295,21 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void loadSounds() {
+        AsyncExecutor.create().execute(() -> {
+            mPetContext.getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        mPetContext.getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
 
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build();
+            mSoundPool = new SoundPool.Builder()
+                    .setMaxStreams(1)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
 
-        mSoundPool = new SoundPool.Builder()
-                .setMaxStreams(1)
-                .setAudioAttributes(audioAttributes)
-                .build();
-
-        mClickSoundId = mSoundPool.load("/system/media/audio/ui/camera_click.ogg", 1);
+            mClickSoundId = mSoundPool.load("/system/media/audio/ui/camera_click.ogg", 1);
+        });
     }
 
 
