@@ -22,82 +22,72 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center">
 
+        <View
+            android:id="@+id/photo_target"
+            android:layout_width="301.8dp"
+            android:layout_height="238.3dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+
         <LinearLayout
-            android:id="@+id/photo_content"
-            android:layout_width="365.6dp"
-            android:layout_height="288.7dp"
-            android:layout_marginStart="45.1dp"
-            android:background="@drawable/bg_square"
-            android:rotation="-6">
-
-            <View
-                android:id="@+id/photo_target"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="12dp"
-                android:scaleType="centerCrop"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52.2dp">
+            android:layout_marginStart="22.1dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/toast_photo"
-                android:layout_width="248dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/background_toast"
-                android:orientation="vertical"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="16.3dp"
+                android:paddingTop="7.4dp"
+                android:paddingEnd="16.3dp"
+                android:paddingBottom="7.4dp"
                 android:visibility="invisible">
 
                 <ImageView
                     android:layout_width="21.3dp"
                     android:layout_height="21.3dp"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="7.3dp"
                     android:src="@drawable/ic_check_mark" />
 
                 <TextView
                     style="@style/ToastPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="9.1dp"
-                    android:layout_marginEnd="27.3dp"
+                    android:layout_marginStart="12dp"
                     android:text="@string/photo_saved" />
-            </FrameLayout>
+
+            </LinearLayout>
 
             <TextView
                 style="@style/StatusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30.6dp"
-                android:layout_marginTop="55dp"
-                android:text="@string/want_to_share" />
+                android:layout_marginTop="30dp"
+                android:text="@string/want_to_share"
+                android:textSize="16sp" />
 
             <GridLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50.1dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="22dp"
                 android:columnCount="2"
                 android:orientation="vertical"
                 android:rowCount="2">
 
                 <LinearLayout
                     android:id="@+id/button_facebook"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="75dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/bg_functions_buttons"
                     android:clickable="false"
                     android:gravity="center"
@@ -111,8 +101,8 @@
 
                 <LinearLayout
                     android:id="@+id/button_whatsapp"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="27dp"
                     android:background="@drawable/bg_functions_buttons"
                     android:clickable="false"
@@ -127,10 +117,9 @@
 
                 <LinearLayout
                     android:id="@+id/button_instagram"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="56dp"
-                    android:layout_marginTop="75dp"
                     android:background="@drawable/bg_functions_buttons"
                     android:clickable="false"
                     android:gravity="center"
@@ -144,8 +133,8 @@
 
                 <LinearLayout
                     android:id="@+id/button_twitter"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="56dp"
                     android:layout_marginTop="27dp"
                     android:background="@drawable/bg_functions_buttons"
@@ -158,31 +147,40 @@
                         android:layout_height="20.5dp"
                         android:src="@drawable/tt_icon" />
                 </LinearLayout>
+
             </GridLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60.1dp"
-                android:layout_marginTop="270dp">
+                android:layout_marginTop="33.6dp">
 
                 <Button
                     android:id="@+id/cancel_photo"
                     style="@style/Button"
                     android:text="@string/ok" />
+
             </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/image_photo"
-        android:layout_width="353.6dp"
-        android:layout_height="276.7dp"
+    <LinearLayout
+        android:id="@+id/photo_content"
+        android:layout_width="365.6dp"
+        android:layout_height="288.7dp"
         android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
-        tools:ignore="ContentDescription" />
+        android:background="@drawable/bg_square">
+
+        <ImageView
+            android:id="@+id/image_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
 
     <View
         android:id="@+id/view_flash"
@@ -190,4 +188,5 @@
         android:layout_height="match_parent"
         android:alpha="0"
         android:background="#FFFFFF" />
+
 </RelativeLayout>

@@ -115,6 +115,9 @@ public class ScreenshotMode extends BasePetMode {
 
     private void onShareButtonClicked(View clickedButton) {
         openSocialApp(clickedButton.getId());
+        if (mSavedFile != null) {
+            backToHudView();
+        }
     }
 
     private void backToHudView() {
@@ -241,16 +244,18 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void openSocialApp(int socialAppId) {
-        SocialAppInfo info = mSocialApps.get(socialAppId);
-        if (mSavedFile != null && checkAppInstalled(info.mPackageName)) {
-            Intent intent = createIntent();
-            if (info.mActivity != null) {
-                intent.setClassName(info.mPackageName, info.mActivity);
-            } else {
-                intent.setPackage(info.mPackageName);
+        AsyncExecutor.create().execute(() -> {
+            SocialAppInfo info = mSocialApps.get(socialAppId);
+            if (mSavedFile != null && checkAppInstalled(info.mPackageName)) {
+                Intent intent = createIntent();
+                if (info.mActivity != null) {
+                    intent.setClassName(info.mPackageName, info.mActivity);
+                } else {
+                    intent.setPackage(info.mPackageName);
+                }
+                mPetContext.getActivity().startActivity(intent);
             }
-            mPetContext.getActivity().startActivity(intent);
-        }
+        });
     }
 
     private Intent createIntent() {

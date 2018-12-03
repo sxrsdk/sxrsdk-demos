@@ -35,7 +35,7 @@ public class PhotoView extends BaseView implements IPhotoView {
     private View mPhotoTarget;
     private LinearLayout mPhotoContent;
     private View mFlashView;
-    private FrameLayout mToast_photo;
+    private LinearLayout mToast_photo;
 
     public PhotoView(View view, IViewController controller) {
         super(view, controller);
@@ -68,8 +68,8 @@ public class PhotoView extends BaseView implements IPhotoView {
     public void setPhotoBitmap(Bitmap bitmap) {
         mPhotoTarget.post(() -> {
             takeFlash(this::animatePhoto);
-            mPhoto.setScaleX(mPhoto.getScaleX() * 1.3f);
-            mPhoto.setScaleY(mPhoto.getScaleY() * 1.3f);
+            mPhotoContent.setScaleX(mPhotoContent.getScaleX() * 1.3f);
+            mPhotoContent.setScaleY(mPhotoContent.getScaleY() * 1.3f);
             mPhoto.setImageBitmap(bitmap);
         });
     }
@@ -98,16 +98,19 @@ public class PhotoView extends BaseView implements IPhotoView {
 
     private void animatePhoto() {
 
-        float x1 = mPhoto.getX(), y1 = mPhoto.getY();
-        float w1 = mPhoto.getWidth(), h1 = mPhoto.getHeight();
-        float x2 = mPhotoContent.getX(), y2 = mPhotoContent.getY();
-        float w2 = mPhotoContent.getWidth(), h2 = mPhotoContent.getHeight();
+        int[] photoTargetPos = {0, 0};
+        mPhotoTarget.getLocationOnScreen(photoTargetPos);
 
-        mPhotoTarget.postDelayed(() -> mPhoto.animate()
+        float x1 = mPhotoContent.getX(), y1 = mPhotoContent.getY();
+        float w1 = mPhotoContent.getWidth(), h1 = mPhotoContent.getHeight();
+        float x2 = photoTargetPos[0], y2 = photoTargetPos[1];
+        float w2 = mPhotoTarget.getWidth(), h2 = mPhotoTarget.getHeight();
+
+        mPhotoTarget.postDelayed(() -> mPhotoContent.animate()
                 .setDuration(400)
                 .rotation(-6)
-                .scaleX(mPhotoTarget.getWidth() / (1f * mPhoto.getWidth()))
-                .scaleY(mPhotoTarget.getHeight() / (1f * mPhoto.getHeight()))
+                .scaleX(mPhotoTarget.getWidth() / (1f * mPhotoContent.getWidth()))
+                .scaleY(mPhotoTarget.getHeight() / (1f * mPhotoContent.getHeight()))
                 .translationXBy(x2 - x1 - w1 * (1 - w2 / w1) / 2)
                 .translationYBy(y2 - y1 - h1 * (1 - h2 / h1) / 2), 600);
     }
