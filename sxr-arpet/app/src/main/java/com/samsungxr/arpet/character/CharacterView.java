@@ -72,6 +72,7 @@ public class CharacterView extends SXRNode implements
     private String mBoneMap;
     protected ILoadEvents mLoadListener = null;
     private SXRNode mTapObject;
+    private boolean mIsDragging = false;
 
     CharacterView(@NonNull PetContext petContext) {
         super(petContext.getSXRContext());
@@ -113,10 +114,9 @@ public class CharacterView extends SXRNode implements
         mShadow = new SXRNode(sxrContext, 0.3f, 0.6f);
         mShadow.getRenderData().setMaterial(mat);
         mShadow.getTransform().setRotationByAxis(-90f, 1f, 0f, 0f);
-        mShadow.getTransform().setPosition(0f, 0.02f, -0.02f);
+        mShadow.getTransform().setPosition(0f, 0.01f, 0.15f);
         mShadow.getRenderData().setAlphaBlend(true);
         mShadow.setName("shadow");
-        mShadow.setEnable(false);
         addChildObject(mShadow);
     }
 
@@ -215,17 +215,15 @@ public class CharacterView extends SXRNode implements
     }
 
     public void startDragging() {
-        mShadow.setEnable(true);
         m3DModel.getTransform().setPositionY(0.4f);
     }
 
     public void stopDragging() {
-        mShadow.setEnable(false);
         m3DModel.getTransform().setPositionY(0.2f);
     }
 
     public boolean isDragging() {
-        return mShadow.isEnabled();
+        return m3DModel.getTransform().getPositionY() > 0.2f;
     }
 
     private synchronized void notifyScale(float factor) {
