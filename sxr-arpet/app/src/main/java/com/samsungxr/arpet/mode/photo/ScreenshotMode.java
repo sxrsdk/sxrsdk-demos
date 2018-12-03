@@ -259,7 +259,7 @@ public class ScreenshotMode extends BasePetMode {
         intent.putExtra(Intent.EXTRA_STREAM,
                 FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, mSavedFile));
         intent.setType("image/png");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
 
