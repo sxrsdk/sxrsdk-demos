@@ -50,7 +50,7 @@ public class BallThrowHandler {
     private static final float defaultPositionY = 0f;
     private static final float defaultPositionZ = -40f;
 
-    private static final float defaultScale = 20;
+    private static final float defaultScale = 0.2f;
 
     private static final float MIN_Y_OFFSET = 3 * 100;
 
