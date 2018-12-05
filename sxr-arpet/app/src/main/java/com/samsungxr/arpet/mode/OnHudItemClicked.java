@@ -17,8 +17,16 @@ package com.samsungxr.arpet.mode;
 
 public interface OnHudItemClicked {
 
+    // Actions submenu
     void onBallClicked();
 
+    void onBedClicked();
+
+    void onHydrantClicked();
+
+    void onBowlClicked();
+
+    // Main menu
     void onShareAnchorClicked();
 
     void onEditModeClicked();

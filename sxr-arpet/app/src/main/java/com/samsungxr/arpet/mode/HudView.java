@@ -169,6 +169,15 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 });
                 mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBallClicked());
                 break;
+            case R.id.btn_toSleep:
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBedClicked());
+                break;
+            case R.id.btn_hydrant:
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onHydrantClicked());
+                break;
+            case R.id.drinkWater:
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBowlClicked());
+                break;
             case R.id.btn_shareanchor:
                 mPetContext.getSXRContext().runOnGlThread(() -> mListener.onShareAnchorClicked());
                 break;

@@ -19,7 +19,6 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.samsungxr.SXRCameraRig;
-
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.character.CharacterController;
 import com.samsungxr.arpet.constant.PetConstants;
@@ -27,6 +26,7 @@ import com.samsungxr.arpet.manager.connection.PetConnectionManager;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
 import com.samsungxr.arpet.service.share.SharedMixedReality;
 import com.samsungxr.arpet.util.EventBusUtils;
+
 import org.greenrobot.eventbus.Subscribe;
 
 import static com.samsungxr.arpet.manager.connection.IPetConnectionManager.EVENT_ALL_CONNECTIONS_LOST;
@@ -77,6 +77,21 @@ public class HudMode extends BasePetMode {
         public void onBallClicked() {
             mModeChangeListener.onPlayBall();
             Log.d(TAG, "Play Ball Mode");
+        }
+
+        @Override
+        public void onBedClicked() {
+            Log.d(TAG, "Action: go to bed");
+        }
+
+        @Override
+        public void onHydrantClicked() {
+            Log.d(TAG, "Action: go to hydrant");
+        }
+
+        @Override
+        public void onBowlClicked() {
+            Log.d(TAG, "Action: go to bowl");
         }
 
         @Override
