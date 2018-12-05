@@ -27,8 +27,13 @@ import java.io.InputStream;
 
 public class LoadModelHelper {
     public static String PET_GRAB_PIVOT = "m_DnLip_JNT";
+
     public static String PET_MODEL_PATH = "objects/pet_model.dae";
     public static String BALL_MODEL_PATH = "objects/bone_model.fbx";
+    public static String BED_MODEL_PATH = "objects/bed.fbx";
+    public static String BOWL_MODEL_PATH = "objects/bowl.fbx";
+    public static String HYDRANT_MODEL_PATH = "objects/hydrant.fbx";
+
     public static String PET_BONES_MAP_PATH = "objects/anim/pet_skeleton_map.txt";
     public static String[] PET_ANIMATIONS_PATH = {
             "objects/anim/pet_anim_idle.bvh",

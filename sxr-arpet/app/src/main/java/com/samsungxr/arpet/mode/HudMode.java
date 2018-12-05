@@ -21,6 +21,7 @@ import android.util.Log;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.character.CharacterController;
+import com.samsungxr.arpet.constant.ArPetObjectType;
 import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.manager.connection.PetConnectionManager;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
@@ -38,6 +39,7 @@ public class HudMode extends BasePetMode {
     private PetConnectionManager mConnectionManager;
     private SharedMixedReality mSharedMixedReality;
     private CharacterController mPetController;
+    private VirtualObjectController mVirtualObjectController;
 
     public HudMode(PetContext petContext, CharacterController petController, OnModeChange listener) {
         super(petContext, new HudView(petContext));
@@ -50,6 +52,8 @@ public class HudMode extends BasePetMode {
 
         mConnectionManager = (PetConnectionManager) PetConnectionManager.getInstance();
         mSharedMixedReality = petContext.getMixedReality();
+
+        mVirtualObjectController = new VirtualObjectController(petContext, petController);
     }
 
     @Override
@@ -75,6 +79,9 @@ public class HudMode extends BasePetMode {
 
         @Override
         public void onBallClicked() {
+            if (mVirtualObjectController.hasActiveObject()) {
+                mVirtualObjectController.hideObject();
+            }
             mModeChangeListener.onPlayBall();
             Log.d(TAG, "Play Ball Mode");
         }
@@ -82,16 +89,19 @@ public class HudMode extends BasePetMode {
         @Override
         public void onBedClicked() {
             Log.d(TAG, "Action: go to bed");
+            mVirtualObjectController.showObject(ArPetObjectType.BED);
         }
 
         @Override
         public void onHydrantClicked() {
             Log.d(TAG, "Action: go to hydrant");
+            mVirtualObjectController.showObject(ArPetObjectType.HYDRANT);
         }
 
         @Override
         public void onBowlClicked() {
             Log.d(TAG, "Action: go to bowl");
+            mVirtualObjectController.showObject(ArPetObjectType.BOWL);
         }
 
         @Override

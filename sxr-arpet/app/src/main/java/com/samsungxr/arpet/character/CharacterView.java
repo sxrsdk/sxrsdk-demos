@@ -211,6 +211,10 @@ public class CharacterView extends SXRNode implements
         notifyScale(factor);
     }
 
+    public float getScale() {
+        return getTransform().getScaleX();
+    }
+
     public void rotate(float angle) {
         getTransform().rotateByAxis(angle, 0, 1, 0);
     }

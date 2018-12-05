@@ -25,6 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 public interface PetConstants {
     int HOST_VISIBILITY_DURATION = 5 * 60; // in seconds
     int TEXTURE_BUFFER_SIZE = 2048;
+    float MODEL3D_DEFAULT_SCALE = 0.003f;
 
     int SHARE_MODE_NONE = 0;
     int SHARE_MODE_HOST = 1;
