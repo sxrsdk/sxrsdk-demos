@@ -19,12 +19,15 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samsungxr.IApplicationEvents;
+import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCollider;
 import com.samsungxr.SXRComponent;
+import com.samsungxr.SXRContext;
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRRenderData;
+import com.samsungxr.SXRTexture;
 import com.samsungxr.io.SXRTouchPadGestureListener;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.physics.SXRRigidBody;
@@ -58,9 +61,9 @@ public class BallThrowHandler {
     private final PetContext mPetContext;
     private SXRNode mBall;
     private SXRRigidBody mRigidBody;
+    private SXRNode mBoneGaze;
 
     private IApplicationEvents mEventListener;
-    private boolean thrown = false;
 
     private SXRPlane firstPlane = null; // Maybe this could be replaced by a boolean
     private boolean mResetOnTouchEnabled = true;
@@ -74,6 +77,8 @@ public class BallThrowHandler {
     BallThrowHandler(PetContext petContext) {
         mPetContext = petContext;
         mPlayer = petContext.getPlayer();
+        mBoneGaze = createBoneGaze();
+        mBoneGaze.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
 
         createBall();
         initController();
@@ -86,6 +91,9 @@ public class BallThrowHandler {
         EventBusUtils.register(this);
 
         mMessageService = MessageService.getInstance();
+
+        mBoneGaze.getTransform().setPositionZ(-1);
+        mPlayer.setEnable(false);
     }
 
     @Subscribe
@@ -97,28 +105,70 @@ public class BallThrowHandler {
     }
 
     public void enable() {
-
-        final SXRNode parent = mBall.getParent();
-        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, defaultPositionZ);
-
-        if (parent != null) {
-            parent.removeChildObject(mBall);
+        if (mPlayer.isEnabled()) {
+            return;
         }
 
-        //mBall.getRenderData().setRenderingOrder(GVRRenderData.GVRRenderingOrder.OVERLAY);
+        mPlayer.setEnable(true);
 
         mPlayer.addChildObject(mBall);
+
+        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, defaultPositionZ);
+        mBall.getTransform().setRotation(1, 0, 0, 0);
+        mBall.setEnable(false);
+
+        mPlayer.addChildObject(mBoneGaze);
+
         mPetContext.getSXRContext().getApplication().getEventReceiver().addListener(mEventListener);
     }
 
     public void disable() {
-        final SXRNode parent = mBall.getParent();
-        thrown = false;
-        resetRigidBody();
+        if (!mPlayer.isEnabled()) {
+            return;
+        }
+
+        mPlayer.setEnable(false);
+
+        if (mBall.getParent() != null) {
+            mBall.getParent().removeChildObject(mBall);
+        }
+
+        mPlayer.removeChildObject(mBoneGaze);
+
+        mPetContext.getSXRContext().getApplication().getEventReceiver().removeListener(mEventListener);
+    }
+
+    public void reset() {
+        if (mBoneGaze.isEnabled()) {
+            return;
+        }
+
+        SXRNode parent = mBall.getParent();
         if (parent != null) {
             parent.removeChildObject(mBall);
         }
-        mPetContext.getSXRContext().getApplication().getEventReceiver().removeListener(mEventListener);
+
+        disableBallsPhysics();
+
+        mBall.setEnable(false);
+        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, defaultPositionZ);
+        mBall.getTransform().setScale(defaultScale, defaultScale, defaultScale);
+        mBall.getTransform().setRotation(1, 0, 0, 0);
+
+        mPlayer.addChildObject(mBall);
+
+        mBoneGaze.setEnable(true);
+
+        mResetOnTouchEnabled = true;
+        EventBusUtils.post(new BallThrowHandlerEvent(BallThrowHandlerEvent.RESET));
+    }
+
+    private SXRNode createBoneGaze() {
+        final SXRContext sxrContext = mPetContext.getSXRContext();
+        final SXRTexture texture = LoadModelHelper.loadTexture(sxrContext, R.drawable.bone_gaze);
+        final SXRNode gaze = new SXRNode(sxrContext, 0.5f, 0.2f, texture);
+
+        return gaze;
     }
 
     private void createBall() {
@@ -162,9 +212,6 @@ public class BallThrowHandler {
         final SXRTouchPadGestureListener gestureListener = new SXRTouchPadGestureListener() {
             @Override
             public boolean onDown(MotionEvent arg0) {
-                if (firstPlane != null && mResetOnTouchEnabled && thrown) {
-                    reset();
-                }
                 return false;
             }
 
@@ -179,7 +226,7 @@ public class BallThrowHandler {
                     final float vlen = (float) Math.sqrt((vx * vx) + (vy * vy));
                     final float vz = vlen / mDirTan;
 
-                    mForce = 50 * vlen / (float) (e2.getEventTime() - e1.getDownTime());
+                    mForce = 100 * vlen / (float) (e2.getEventTime() - e1.getDownTime());
                     mForceVector.set(mForce * -vx, mForce * vy, mForce * -vz);
 
                     throwRemoteBall(mForceVector);
@@ -209,16 +256,22 @@ public class BallThrowHandler {
 
     // FIXME: Why multiply by root matrix?
     private void throwLocalBall(Vector3f forceVector) {
+        if (mBall.getParent() != mPlayer) {
+            // The bone must the static in the player
+            return;
+        }
+
+        mBoneGaze.setEnable(false);
+        mBall.setEnable(true);
+
         //Matrix4f rootMatrix = mPetContext.getMainScene().getRoot().getTransform().getModelMatrix4f();
         //rootMatrix.invert();
 
         // Calculating the new model matrix (T') for the ball: T' = iP x T
         Matrix4f ballMatrix = mBall.getTransform().getModelMatrix4f();
-        //rootMatrix.mul(ballMatrix, ballMatrix);
 
-        // Add the ball as physics root child...
-        mBall.getParent().removeChildObject(mBall);
-        // mBall.getRenderData().setRenderingOrder(GVRRenderData.GVRRenderingOrder.GEOMETRY);
+        mPlayer.removeChildObject(mBall);
+
         mPetContext.getMainScene().addNode(mBall);
 
         // ... And set its model matrix to keep the same world matrix
@@ -235,11 +288,10 @@ public class BallThrowHandler {
 
         mRigidBody.setEnable(true);
         mRigidBody.applyCentralForce(forceVector.x(), forceVector.y(), forceVector.z());
-        thrown = true;
         EventBusUtils.post(new BallThrowHandlerEvent(BallThrowHandlerEvent.THROWN));
     }
 
-    private void resetRigidBody() {
+    public void disableBallsPhysics() {
         mRigidBody.setLinearVelocity(0f, 0f, 0f);
         mRigidBody.setAngularVelocity(0f, 0f, 0f);
         mRigidBody.setEnable(false);
@@ -247,27 +299,6 @@ public class BallThrowHandler {
 
     public SXRNode getBall() {
         return mBall;
-    }
-
-    public void reset() {
-        resetRigidBody();
-        SXRNode parent = mBall.getParent();
-        if (parent != null) {
-            parent.removeChildObject(mBall);
-        }
-        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, defaultPositionZ);
-        mBall.getTransform().setScale(defaultScale, defaultScale, defaultScale);
-        mBall.getTransform().setRotation(1, 0, 0, 0);
-        //mBall.getRenderData().setRenderingOrder(GVRRenderData.GVRRenderingOrder.OVERLAY);
-
-        mPlayer.addChildObject(mBall);
-        mResetOnTouchEnabled = true;
-        thrown = false;
-        EventBusUtils.post(new BallThrowHandlerEvent(BallThrowHandlerEvent.RESET));
-    }
-
-    public boolean canBeReseted() {
-        return thrown && mPlayer.getTransform().getPositionY() - mBall.getTransform().getPositionY() > MIN_Y_OFFSET;
     }
 
     private void load3DModel() {

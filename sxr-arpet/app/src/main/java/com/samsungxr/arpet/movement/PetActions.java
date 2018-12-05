@@ -231,10 +231,10 @@ public class PetActions {
                 pose[14] = pose[14] + mMoveTo.z;
 
                 if (!mCharacter.updatePose(pose) && mRotation.angle() < 0.2f) {
-                    mListener.onActionEnd(this);
+                    mListener.onActionEnd(this, false);
                 }
             } else {
-                mListener.onActionEnd(this);
+                mListener.onActionEnd(this, true);
             }
         }
     }
@@ -288,7 +288,11 @@ public class PetActions {
         public void onRun(float frameTime) {
 
             // Min distance to ball
-            boolean moveTowardToBall = mTargetDirection.length() > mPetRadius * 0.7f;
+            boolean success  = mTarget.getTransform().getPositionY() > mCharacter.getTransform().getPositionY()
+                    - mPetRadius;
+
+            boolean moveTowardToBall = mTargetDirection.length() > mPetRadius * 0.7f
+                    && success;
 
             if (moveTowardToBall) {
                 if (mAnimation != null) {
@@ -358,7 +362,7 @@ public class PetActions {
                     mCharacter.updatePose(pose);
                 }
             } else {
-                mListener.onActionEnd(this);
+                mListener.onActionEnd(this, success);
             }
         }
     }
@@ -412,7 +416,7 @@ public class PetActions {
                     mCharacter.updatePose(pose);
                 }
             } else {
-                mListener.onActionEnd(this);
+                mListener.onActionEnd(this, true);
             }
         }
     }
@@ -449,10 +453,10 @@ public class PetActions {
                 animate(frameTime);
 
                 if (mElapsedTime < time) {
-                    mListener.onActionEnd(this);
+                    mListener.onActionEnd(this, true);
                 }
             } else {
-                mListener.onActionEnd(this);
+                mListener.onActionEnd(this, false);
             }
         }
     }

@@ -18,5 +18,5 @@
 package com.samsungxr.arpet.movement;
 
 public interface OnPetActionListener {
-    void onActionEnd(IPetAction action);
+    void onActionEnd(IPetAction action, boolean success);
 }

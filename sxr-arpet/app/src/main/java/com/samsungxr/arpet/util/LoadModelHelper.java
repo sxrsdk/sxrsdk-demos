@@ -20,6 +20,7 @@ package com.samsungxr.arpet.util;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRTexture;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +58,13 @@ public class LoadModelHelper {
         }
 
         return sceneObject;
+    }
+
+    public static SXRTexture loadTexture(SXRContext sxrContext, int id) {
+        final SXRAndroidResource resource = new SXRAndroidResource(sxrContext, id);
+        final SXRTexture texture = sxrContext.getAssetLoader().loadTexture(resource);
+
+        return texture;
     }
 
     public static String readFile(SXRContext sxrContext, String filePath) {

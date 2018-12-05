@@ -102,22 +102,25 @@ public class CharacterController extends BasePetMode {
     private void initPet(CharacterView pet) {
         addAction(new PetActions.IDLE(mPetContext, pet));
 
-        addAction(new PetActions.TO_BALL(pet, mBallThrowHandler.getBall(), action -> {
-            setCurrentAction(PetActions.GRAB.ID);
-        }));
-
-        addAction(new PetActions.TO_PLAYER(pet, mPetContext.getPlayer(), action -> {
-            setCurrentAction(PetActions.IDLE.ID);
-        }));
-
-        addAction(new PetActions.GRAB(pet, mBallThrowHandler.getBall(), new OnPetActionListener() {
-            @Override
-            public void onActionEnd(IPetAction action) {
-                setCurrentAction(PetActions.TO_PLAYER.ID);
+        addAction(new PetActions.TO_BALL(pet, mBallThrowHandler.getBall(), (action, success) -> {
+            if (success) {
+                setCurrentAction(PetActions.GRAB.ID);
+            } else {
+                setCurrentAction(PetActions.IDLE.ID);
             }
         }));
 
-        addAction(new PetActions.TO_TAP(pet, pet.getTapObject(), action -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.TO_PLAYER(pet, mPetContext.getPlayer(), (action, success) -> {
+            setCurrentAction(PetActions.IDLE.ID);
+        }));
+
+        addAction(new PetActions.GRAB(pet, mBallThrowHandler.getBall(), (action, success) -> {
+                setCurrentAction(PetActions.TO_PLAYER.ID);
+        }));
+
+        addAction(new PetActions.TO_TAP(pet, pet.getTapObject(), (action, success) -> {
+            setCurrentAction(PetActions.IDLE.ID);
+        }));
 
         addAction(new PetActions.AT_EDIT(mPetContext, pet));
 
@@ -137,6 +140,7 @@ public class CharacterController extends BasePetMode {
         SXRNode pivot = ((CharacterView) mModeScene).getGrabPivot();
 
         if (pivot != null) {
+
             if (ball.getParent() != null) {
                 ball.getParent().removeChildObject(ball);
             }
@@ -147,16 +151,14 @@ public class CharacterController extends BasePetMode {
 
             ball.getTransform().setRotation(1, 0, 0, 0);
             ball.getTransform().setPosition(0, 0.3f, 0.42f);
-            ball.getTransform().setScale(0.36f, 0.36f, 0.36f);
+            ball.getTransform().setScale(0.003f, 0.003f, 0.003f);
 
             ((CharacterView) mModeScene).addChildObject(ball);
-
         }
     }
 
     public void playBall() {
         mIsPlaying = true;
-        mBallThrowHandler.reset();
         mBallThrowHandler.enable();
     }
 
@@ -196,9 +198,10 @@ public class CharacterController extends BasePetMode {
         if (mIsPlaying || mPetContext.getMode() == PetConstants.SHARE_MODE_GUEST) {
             if (mCurrentAction.id() == PetActions.IDLE.ID) {
                 mBallThrowHandler.reset();
-                mBallThrowHandler.enable();
+            } if (mCurrentAction.id() == PetActions.GRAB.ID) {
+                mBallThrowHandler.disableBallsPhysics();
             } else if (mCurrentAction.id() == PetActions.TO_PLAYER.ID) {
-                mBallThrowHandler.disable();
+                // TODO: Move to animation
                 grabBall(mBallThrowHandler.getBall());
             }
         }
@@ -248,11 +251,6 @@ public class CharacterController extends BasePetMode {
                 activeAction.entry();
             } else if (activeAction != null) {
                 activeAction.run(frameTime);
-            }
-
-            // FIXME: Move this to a proper place
-            if (mBallThrowHandler.canBeReseted() && activeAction != null) {
-                setCurrentAction(PetActions.IDLE.ID);
             }
         }
     }
