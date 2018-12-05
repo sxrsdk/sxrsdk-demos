@@ -28,58 +28,59 @@ import android.widget.TextView;
 import com.samsungxr.IViewEvents;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.nodes.SXRViewNode;
-import com.samsungxr.utility.Log;
-
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.R;
 import com.samsungxr.arpet.connection.socket.ConnectionMode;
 import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.util.LayoutViewUtils;
+import com.samsungxr.nodes.SXRViewNode;
+import com.samsungxr.utility.Log;
 
 public class HudView extends BasePetView implements View.OnClickListener {
     private static final String TAG = "HudView";
 
-    private LinearLayout rootLayout, menuHud, menuButton, closeButton, playBoneButton, shareAnchorButton, cameraButton, editModeButton;
+    private LinearLayout mRootLayout, mMenuOptionsHud, mMenuButton, mCloseButton, mShareAnchorButton, mCameraButton, mEditModeButton;
+    private LinearLayout mActionsButton, mPlayBoneButton, mHydrantButton, mToSleepButton, mDrinkWater, mSubmenuOptions;
     private final SXRViewNode mHudMenuObject;
     private final SXRViewNode mStartMenuObject;
     private final SXRViewNode mConnectedLabel;
     private final SXRViewNode mDisconnectViewObject;
-    private Button connectedButton, cancelButton, disconnectButton;
-    private TextView disconnectViewMessage;
+    private final SXRViewNode mSubmenuObject;
+    private Button mConnectedButton, mCancelButton, mDisconnectButton;
+    private TextView mDisconnectViewMessage;
     private OnHudItemClicked mListener;
     private OnDisconnectClicked mDisconnectListener;
     private OnClickDisconnectViewHandler mDisconnectViewHandler;
-    private Animation openAnimation;
-    private Animation closeAnimation;
+    private Animation mOpenMenuHud, mOpenSubmenu;
+    private Animation mCloseMenuHud, mCloseSubmenu;
     private boolean mIsBoneButtonClicked = false;
+    private boolean mIsActiveSubmenu = false;
 
     public HudView(PetContext petContext) {
         super(petContext);
 
         // Create a root layout to set the display metrics on it
-        rootLayout = new LinearLayout(petContext.getActivity());
+        mRootLayout = new LinearLayout(petContext.getActivity());
         final DisplayMetrics metrics = new DisplayMetrics();
         petContext.getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels));
+        mRootLayout.setLayoutParams(new LinearLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels));
 
-        View.inflate(petContext.getActivity(), R.layout.view_disconnect_sharing, rootLayout);
+        View.inflate(petContext.getActivity(), R.layout.view_disconnect_sharing, mRootLayout);
 
         mListener = null;
         mDisconnectListener = null;
         mStartMenuObject = new SXRViewNode(petContext.getSXRContext(),
                 R.layout.hud_start_layout, startMenuInitEvents);
+        mSubmenuObject = new SXRViewNode(petContext.getSXRContext(),
+                R.layout.actions_submenus_layout, startSubmenuInitEvents);
         mHudMenuObject = new SXRViewNode(petContext.getSXRContext(),
                 R.layout.hud_menus_layout, hudMenuInitEvents);
         mConnectedLabel = new SXRViewNode(petContext.getSXRContext(),
                 R.layout.share_connected_layout, connectButtonInitEvents);
-        mDisconnectViewObject = new SXRViewNode(petContext.getSXRContext(), rootLayout);
-        rootLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                disconnectViewInitEvents.onInitView(mDisconnectViewObject, rootLayout);
-                disconnectViewInitEvents.onStartRendering(mDisconnectViewObject, rootLayout);
-            }
+        mDisconnectViewObject = new SXRViewNode(petContext.getSXRContext(), mRootLayout);
+        mRootLayout.post(() -> {
+            disconnectViewInitEvents.onInitView(mDisconnectViewObject, mRootLayout);
+            disconnectViewInitEvents.onStartRendering(mDisconnectViewObject, mRootLayout);
         });
     }
 
@@ -96,9 +97,9 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
     public void showDisconnectView(@ConnectionMode int mode) {
         if (mode == ConnectionMode.SERVER) {
-            disconnectViewMessage.setText(R.string.disconnect_host);
+            mDisconnectViewMessage.setText(R.string.disconnect_host);
         } else {
-            disconnectViewMessage.setText(R.string.disconnect_guest);
+            mDisconnectViewMessage.setText(R.string.disconnect_guest);
         }
         mDisconnectViewObject.setEnable(true);
     }
@@ -132,89 +133,59 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.btn_start_menu:
-                menuButton.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        menuHud.startAnimation(openAnimation);
-                        menuHud.setVisibility(View.VISIBLE);
-                        mHudMenuObject.setEnable(true);
-                    }
+                mMenuButton.post(() -> {
+                    mMenuOptionsHud.startAnimation(mOpenMenuHud);
+                    mMenuOptionsHud.setVisibility(View.VISIBLE);
+                    mHudMenuObject.setEnable(true);
                 });
-                menuButton.setVisibility(View.GONE);
-                closeButton.setVisibility(View.VISIBLE);
-
+                mMenuButton.setVisibility(View.GONE);
+                mCloseButton.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_close:
-                closeButton.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        menuHud.startAnimation(closeAnimation);
-                        menuHud.setVisibility(View.INVISIBLE);
-                        menuHud.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mHudMenuObject.setEnable(false);
-                            }
-                        }, 500);
+                mCloseButton.post(() -> {
+                    mMenuOptionsHud.startAnimation(mCloseMenuHud);
+                    mMenuOptionsHud.setVisibility(View.INVISIBLE);
+                    mMenuOptionsHud.postDelayed(() -> mHudMenuObject.setEnable(false), 500);
+                    if (mIsActiveSubmenu) {
+                        mSubmenuOptions.startAnimation(mCloseSubmenu);
+                        mSubmenuOptions.setVisibility(View.INVISIBLE);
+                        mSubmenuOptions.postDelayed(() -> mSubmenuObject.setEnable(false), 500);
                     }
+                    mIsActiveSubmenu = false;
                 });
-
-                menuButton.setVisibility(View.VISIBLE);
-                closeButton.setVisibility(View.GONE);
-
+                mMenuButton.setVisibility(View.VISIBLE);
+                mCloseButton.setVisibility(View.GONE);
                 break;
             case R.id.btn_edit:
-                mPetContext.getSXRContext().runOnGlThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onEditModeClicked();
-                    }
-                });
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onEditModeClicked());
                 break;
             case R.id.btn_fetchbone:
-                playBoneButton.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        menuHud.startAnimation(closeAnimation);
-                        menuHud.setVisibility(View.INVISIBLE);
-                        closeButton.setVisibility(View.GONE);
-                        menuButton.setVisibility(View.VISIBLE);
-                        mIsBoneButtonClicked = !mIsBoneButtonClicked;
-                        playBoneButton.setBackgroundResource(mIsBoneButtonClicked
-                                ? R.drawable.bg_button_ball
-                                : R.drawable.bg_functions_buttons
-                        );
-                    }
+                mPlayBoneButton.post(() -> {
+                    mIsBoneButtonClicked = !mIsBoneButtonClicked;
+                    mPlayBoneButton.setBackgroundResource(mIsBoneButtonClicked
+                            ? R.drawable.bg_button_ball
+                            : R.drawable.bg_functions_buttons
+                    );
                 });
-                mPetContext.getSXRContext().runOnGlThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onBallClicked();
-                    }
-                });
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBallClicked());
                 break;
             case R.id.btn_shareanchor:
-                mPetContext.getSXRContext().runOnGlThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onShareAnchorClicked();
-                    }
-                });
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onShareAnchorClicked());
                 break;
             case R.id.btn_camera:
-                mPetContext.getSXRContext().runOnGlThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onCameraClicked();
-                    }
-                });
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onCameraClicked());
                 break;
             case R.id.btn_connected:
-                mPetContext.getSXRContext().runOnGlThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onConnectedClicked();
-                    }
+                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onConnectedClicked());
+            case R.id.btn_actions:
+                mActionsButton.post(() -> {
+                    mIsActiveSubmenu = !mIsActiveSubmenu;
+                    mSubmenuOptions.startAnimation(mIsActiveSubmenu
+                            ? mOpenSubmenu : mCloseSubmenu);
+                    mSubmenuOptions.setVisibility(mIsActiveSubmenu
+                            ? View.VISIBLE
+                            : View.INVISIBLE);
+                    mSubmenuObject.setEnable(true);
                 });
                 break;
             default:
@@ -225,17 +196,17 @@ public class HudView extends BasePetView implements View.OnClickListener {
     IViewEvents hudMenuInitEvents = new IViewEvents() {
         @Override
         public void onInitView(SXRViewNode sxrViewNode, View view) {
-            menuHud = view.findViewById(R.id.menuHud);
-            editModeButton = view.findViewById(R.id.btn_edit);
-            playBoneButton = view.findViewById(R.id.btn_fetchbone);
-            shareAnchorButton = view.findViewById(R.id.btn_shareanchor);
-            cameraButton = view.findViewById(R.id.btn_camera);
-            editModeButton.setOnClickListener(HudView.this);
-            playBoneButton.setOnClickListener(HudView.this);
-            shareAnchorButton.setOnClickListener(HudView.this);
-            cameraButton.setOnClickListener(HudView.this);
-            openAnimation = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.open);
-            closeAnimation = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.close);
+            mMenuOptionsHud = view.findViewById(R.id.menuHud);
+            mEditModeButton = view.findViewById(R.id.btn_edit);
+            mShareAnchorButton = view.findViewById(R.id.btn_shareanchor);
+            mCameraButton = view.findViewById(R.id.btn_camera);
+            mActionsButton = view.findViewById(R.id.btn_actions);
+            mEditModeButton.setOnClickListener(HudView.this);
+            mShareAnchorButton.setOnClickListener(HudView.this);
+            mCameraButton.setOnClickListener(HudView.this);
+            mActionsButton.setOnClickListener(HudView.this);
+            mOpenMenuHud = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.open);
+            mCloseMenuHud = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.close);
         }
 
         @Override
@@ -252,10 +223,10 @@ public class HudView extends BasePetView implements View.OnClickListener {
     IViewEvents startMenuInitEvents = new IViewEvents() {
         @Override
         public void onInitView(SXRViewNode sxrViewNode, View view) {
-            menuButton = view.findViewById(R.id.btn_start_menu);
-            closeButton = view.findViewById(R.id.btn_close);
-            menuButton.setOnClickListener(HudView.this);
-            closeButton.setOnClickListener(HudView.this);
+            mMenuButton = view.findViewById(R.id.btn_start_menu);
+            mCloseButton = view.findViewById(R.id.btn_close);
+            mMenuButton.setOnClickListener(HudView.this);
+            mCloseButton.setOnClickListener(HudView.this);
         }
 
         @Override
@@ -271,8 +242,8 @@ public class HudView extends BasePetView implements View.OnClickListener {
     IViewEvents connectButtonInitEvents = new IViewEvents() {
         @Override
         public void onInitView(SXRViewNode sxrViewNode, View view) {
-            connectedButton = view.findViewById(R.id.btn_connected);
-            connectedButton.setOnClickListener(HudView.this);
+            mConnectedButton = view.findViewById(R.id.btn_connected);
+            mConnectedButton.setOnClickListener(HudView.this);
         }
 
         @Override
@@ -287,12 +258,12 @@ public class HudView extends BasePetView implements View.OnClickListener {
     IViewEvents disconnectViewInitEvents = new IViewEvents() {
         @Override
         public void onInitView(SXRViewNode sxrViewNode, View view) {
-            disconnectViewMessage = view.findViewById(R.id.disconnect_message_text);
-            cancelButton = view.findViewById(R.id.button_cancel);
-            disconnectButton = view.findViewById(R.id.button_disconnect);
+            mDisconnectViewMessage = view.findViewById(R.id.disconnect_message_text);
+            mCancelButton = view.findViewById(R.id.button_cancel);
+            mDisconnectButton = view.findViewById(R.id.button_disconnect);
             mDisconnectViewHandler = new OnClickDisconnectViewHandler();
-            cancelButton.setOnClickListener(mDisconnectViewHandler);
-            disconnectButton.setOnClickListener(mDisconnectViewHandler);
+            mCancelButton.setOnClickListener(mDisconnectViewHandler);
+            mDisconnectButton.setOnClickListener(mDisconnectViewHandler);
         }
 
         @Override
@@ -301,6 +272,33 @@ public class HudView extends BasePetView implements View.OnClickListener {
             sxrViewNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
             sxrViewNode.getTransform().setPosition(0.0f, 0.0f, -0.74f);
             sxrViewNode.setEnable(false);
+            addChildObject(sxrViewNode);
+        }
+    };
+
+    IViewEvents startSubmenuInitEvents = new IViewEvents() {
+
+        @Override
+        public void onInitView(SXRViewNode sxrViewNode, View view) {
+            mSubmenuOptions = view.findViewById(R.id.submenu);
+            mPlayBoneButton = view.findViewById(R.id.btn_fetchbone);
+            mHydrantButton = view.findViewById(R.id.btn_hydrant);
+            mToSleepButton = view.findViewById(R.id.btn_toSleep);
+            mDrinkWater = view.findViewById(R.id.drinkWater);
+            mPlayBoneButton.setOnClickListener(HudView.this);
+            mHydrantButton.setOnClickListener(HudView.this);
+            mToSleepButton.setOnClickListener(HudView.this);
+            mDrinkWater.setOnClickListener(HudView.this);
+            mOpenSubmenu = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.open);
+            mCloseSubmenu = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.close);
+        }
+
+        @Override
+        public void onStartRendering(SXRViewNode sxrViewNode, View view) {
+            sxrViewNode.setTextureBufferSize(PetConstants.TEXTURE_BUFFER_SIZE);
+            sxrViewNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
+            LayoutViewUtils.setWorldPosition(mPetContext.getMainScene(),
+                    sxrViewNode, 525f, 74f, 90f, 90f);
             addChildObject(sxrViewNode);
         }
     };
