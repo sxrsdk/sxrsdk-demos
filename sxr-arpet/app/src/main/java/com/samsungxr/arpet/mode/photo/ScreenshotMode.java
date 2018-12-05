@@ -114,7 +114,9 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void onShareButtonClicked(View clickedButton) {
+
         openSocialApp(clickedButton.getId());
+
         if (mSavedFile != null) {
             backToHudView();
         }
@@ -248,18 +250,16 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void openSocialApp(int socialAppId) {
-        AsyncExecutor.create().execute(() -> {
-            SocialAppInfo info = mSocialApps.get(socialAppId);
-            if (mSavedFile != null && checkAppInstalled(info.mPackageName)) {
-                Intent intent = createIntent();
-                if (info.mActivity != null) {
-                    intent.setClassName(info.mPackageName, info.mActivity);
-                } else {
-                    intent.setPackage(info.mPackageName);
-                }
-                mPetContext.getActivity().startActivity(intent);
+        SocialAppInfo info = mSocialApps.get(socialAppId);
+        if (mSavedFile != null && checkAppInstalled(info.mPackageName)) {
+            Intent intent = createIntent();
+            if (info.mActivity != null) {
+                intent.setClassName(info.mPackageName, info.mActivity);
+            } else {
+                intent.setPackage(info.mPackageName);
             }
-        });
+            mPetContext.getActivity().startActivity(intent);
+        }
     }
 
     private Intent createIntent() {
@@ -268,7 +268,7 @@ public class ScreenshotMode extends BasePetMode {
         intent.putExtra(Intent.EXTRA_STREAM,
                 FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, mSavedFile));
         intent.setType("image/png");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
 
@@ -320,7 +320,6 @@ public class ScreenshotMode extends BasePetMode {
             mClickSoundId = mSoundPool.load("/system/media/audio/ui/camera_click.ogg", 1);
         });
     }
-
 
     private void playClickSound() {
 
