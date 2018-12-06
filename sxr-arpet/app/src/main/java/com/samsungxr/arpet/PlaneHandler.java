@@ -250,6 +250,10 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         }
     }
 
+    public SXRNode getSelectedPlane() {
+        return selectedPlaneObject;
+    }
+
     public void resetPlanes() {
         Log.d(TAG, "resetting planes");
         if (selectedPlaneObject != null) {

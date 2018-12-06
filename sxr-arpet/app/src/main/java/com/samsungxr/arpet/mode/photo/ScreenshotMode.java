@@ -121,8 +121,10 @@ public class ScreenshotMode extends BasePetMode {
     }
 
     private void backToHudView() {
-        mPetContext.getSXRContext()
-                .runOnGlThread(() -> mBackToHudModeListener.OnBackToHud());
+        mPetContext.getSXRContext().runOnGlThread(() -> {
+            mPetContext.getPlaneHandler().getSelectedPlane().setEnable(true);
+            mBackToHudModeListener.OnBackToHud();
+        });
     }
 
     private void initPhotosDir() {
@@ -142,9 +144,11 @@ public class ScreenshotMode extends BasePetMode {
     private void takePhoto() {
         try {
             mSavedFile = null;
+            mPetContext.getPlaneHandler().getSelectedPlane().setEnable(false);
             mPetContext.getSXRContext().captureScreenCenter(this::onPhotoCaptured);
         } catch (Throwable t) {
             Log.e(TAG, "Error taking photo", t);
+            mPetContext.getPlaneHandler().getSelectedPlane().setEnable(true);
         }
     }
 
