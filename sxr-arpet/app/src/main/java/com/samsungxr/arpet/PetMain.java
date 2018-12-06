@@ -15,22 +15,13 @@
 
 package com.samsungxr.arpet;
 
-import android.view.MotionEvent;
-
 import com.samsungxr.ITouchEvents;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.io.SXRCursorController;
-import com.samsungxr.io.SXRGazeCursorController;
-import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.mixedreality.IMixedReality;
-import com.samsungxr.mixedreality.SXRPlane;
-import com.samsungxr.utility.Log;
-
 import com.samsungxr.arpet.character.CharacterController;
 import com.samsungxr.arpet.constant.PetConstants;
-import com.samsungxr.arpet.view.shared.IConnectionFinishedView;
+import com.samsungxr.arpet.custom.TouchEventsAdapter;
 import com.samsungxr.arpet.mainview.IExitView;
 import com.samsungxr.arpet.mainview.MainViewController;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
@@ -45,8 +36,18 @@ import com.samsungxr.arpet.mode.sharinganchor.SharingAnchorMode;
 import com.samsungxr.arpet.movement.PetActions;
 import com.samsungxr.arpet.service.share.SharedMixedReality;
 import com.samsungxr.arpet.util.EventBusUtils;
+import com.samsungxr.arpet.view.shared.IConnectionFinishedView;
+import com.samsungxr.io.SXRCursorController;
+import com.samsungxr.io.SXRGazeCursorController;
+import com.samsungxr.io.SXRInputManager;
+import com.samsungxr.mixedreality.IMixedReality;
+import com.samsungxr.mixedreality.SXRPlane;
+import com.samsungxr.nodes.SXRViewNode;
+import com.samsungxr.utility.Log;
+
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 
 import static com.samsungxr.arpet.manager.connection.IPetConnectionManager.EVENT_ALL_CONNECTIONS_LOST;
@@ -69,11 +70,10 @@ public class PetMain extends DisableNativeSplashScreen {
 
     private CurrentSplashScreen mCurrentSplashScreen;
     private SharedMixedReality mSharedMixedReality;
-    private ExitApplicationScreen mExitApplicationScreen;
 
     private MainViewController mMainViewController;
 
-    public PetMain(PetContext petContext) {
+    PetMain(PetContext petContext) {
         mPetContext = petContext;
         EventBusUtils.register(this);
     }
@@ -97,7 +97,6 @@ public class PetMain extends DisableNativeSplashScreen {
         mPetContext.getMixedReality().resume();
 
         mSharedMixedReality = mPetContext.getMixedReality();
-        mExitApplicationScreen = new ExitApplicationScreen(mPetContext);
 
         mPet = new CharacterController(mPetContext);
         mPet.load(new ILoadEvents() {
@@ -118,11 +117,12 @@ public class PetMain extends DisableNativeSplashScreen {
         });
     }
 
-    public void onARInit(SXRContext ctx, IMixedReality mr) {
+    void onARInit(SXRContext ctx, IMixedReality mr) {
         mCursorController = null;
         SXRInputManager inputManager = ctx.getInputManager();
         final int cursorDepth = 5;
         final EnumSet<SXRPicker.EventOptions> eventOptions = EnumSet.of(
+                SXRPicker.EventOptions.SEND_PICK_EVENTS,
                 SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
                 SXRPicker.EventOptions.SEND_TO_LISTENERS,
                 SXRPicker.EventOptions.SEND_TO_HIT_OBJECT);
@@ -145,11 +145,11 @@ public class PetMain extends DisableNativeSplashScreen {
         });
     }
 
-    public void resume() {
+    void resume() {
         EventBusUtils.register(this);
     }
 
-    public void pause() {
+    void pause() {
         EventBusUtils.unregister(this);
     }
 
@@ -232,7 +232,6 @@ public class PetMain extends DisableNativeSplashScreen {
     public void handleBallEvent(BallThrowHandlerEvent event) {
         if (event.getPerformedAction().equals(BallThrowHandlerEvent.THROWN)) {
             mPet.setCurrentAction(PetActions.TO_BALL.ID);
-        } else if (event.getPerformedAction().equals(BallThrowHandlerEvent.RESET)) {
         }
     }
 
@@ -286,6 +285,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
         @Override
         public void onScreenshot() {
+
             if (mCurrentMode instanceof ScreenshotMode) {
                 return;
             }
@@ -303,7 +303,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
         @Override
         public void OnBackToHud() {
-            if (mCurrentMode instanceof EditMode) {
+            if (mCurrentMode instanceof EditMode || mCurrentMode instanceof ScreenshotMode) {
                 mCursorController.addPickEventListener(mTouchEventsHandler);
             }
 
@@ -318,37 +318,47 @@ public class PetMain extends DisableNativeSplashScreen {
         }
     }
 
-    ITouchEvents mTouchEventsHandler = new ITouchEvents() {
-        @Override
-        public void onEnter(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
-
+    /**
+     * Checks if the given picked object contains some {@link SXRViewNode}
+     *
+     * @param sxrPickedObject Holds the picked objects array
+     * @return Whether exists some clicked object of type {@link SXRViewNode}
+     */
+    private boolean hasViewNode(SXRPicker.SXRPickedObject sxrPickedObject) {
+        SXRPicker.SXRPickedObject[] picked = sxrPickedObject.getPicker().getPicked();
+        if (picked != null) {
+            return Arrays.stream(picked).anyMatch(p -> p.hitObject instanceof SXRViewNode);
         }
+        return false;
+    }
 
-        @Override
-        public void onExit(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
-
-        }
-
-        @Override
-        public void onTouchStart(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
-
-        }
+    private ITouchEvents mTouchEventsHandler = new TouchEventsAdapter() {
 
         @Override
         public void onTouchEnd(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
-            if (sxrNode == null)
+
+            // Ignores if some view is clicked
+            if (hasViewNode(sxrPickedObject)) {
                 return;
+            }
 
-            Log.d(TAG, "onTouchEnd " + sxrNode.getName());
-
+            // The MainViewController manages views in full screen
             if (mMainViewController != null && mMainViewController.isEnabled()) {
                 return;
             }
 
-            if (sxrNode.getParent() == null)
+            if (sxrNode == null) {
                 return;
+            }
 
-            SXRPlane selectedPlane = (SXRPlane)sxrNode.getParent().getComponent(SXRPlane.getComponentType());
+            Log.d(TAG, "onTouchEnd " + sxrNode.getName());
+
+
+            if (sxrNode.getParent() == null) {
+                return;
+            }
+
+            SXRPlane selectedPlane = (SXRPlane) sxrNode.getParent().getComponent(SXRPlane.getComponentType());
 
             // TODO: Improve this if
             if (selectedPlane != null) {
@@ -371,22 +381,12 @@ public class PetMain extends DisableNativeSplashScreen {
                     mPlaneHandler.setSelectedPlane(selectedPlane, sxrNode);
                 }
 
-                if (sxrNode == mPet.getPlane() && mCurrentMode instanceof  HudMode) {
+                if (sxrNode == mPet.getPlane() && mCurrentMode instanceof HudMode) {
                     final float[] hitPos = sxrPickedObject.hitLocation;
                     Log.d(TAG, "goToTap(%f, %f, %f)", hitPos[0], hitPos[1], hitPos[2]);
                     mPet.goToTap(hitPos[0], hitPos[1], hitPos[2]);
                 }
             }
-        }
-
-        @Override
-        public void onInside(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
-
-        }
-
-        @Override
-        public void onMotionOutside(SXRPicker sxrPicker, MotionEvent motionEvent) {
-
         }
     };
 }
