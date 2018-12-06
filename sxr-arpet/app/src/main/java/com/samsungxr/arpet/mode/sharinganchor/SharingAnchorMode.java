@@ -135,7 +135,7 @@ public class SharingAnchorMode extends BasePetMode {
     private void showViewHostLookingAtTarget(@StringRes int stringId) {
         IHostLookingAtTargetView view;
         String text = mResources.getString(stringId);
-        if (IHostLookingAtTargetView.class.isInstance(mSharingAnchorViewController.getCurrentView())) {
+        if (mSharingAnchorViewController.getCurrentView() instanceof IHostLookingAtTargetView) {
             view = (IHostLookingAtTargetView) mSharingAnchorViewController.getCurrentView();
             view.setStatusText(text);
         } else {
@@ -250,7 +250,7 @@ public class SharingAnchorMode extends BasePetMode {
 
     private void handleCloudAnchorException(CloudAnchorException e) {
         mPetContext.runOnPetThread(() -> {
-            if (NetworkException.class.isInstance(e.getCause())) {
+            if (e.getCause() instanceof NetworkException) {
                 Toast.makeText(mPetContext.getActivity(),
                         R.string.no_internet_connection, Toast.LENGTH_LONG).show();
             } else if (NotTrackingException.class.isInstance(e.getCause())) {
@@ -339,7 +339,7 @@ public class SharingAnchorMode extends BasePetMode {
     private void updateTotalConnectedUI() {
         if (mCurrentMode == PetConstants.SHARE_MODE_HOST) {
             IView view = mSharingAnchorViewController.getCurrentView();
-            if (IWaitingForGuestView.class.isInstance(view)) {
+            if (view instanceof IWaitingForGuestView) {
                 ((IWaitingForGuestView) view).setTotalConnected(
                         mConnectionManager.getTotalConnected());
             }
