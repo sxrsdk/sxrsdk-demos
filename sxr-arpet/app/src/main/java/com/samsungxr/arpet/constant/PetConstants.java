@@ -23,7 +23,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public interface PetConstants {
-    String GOOGLE_CLOUD_ANCHOR_KEY_NAME = "com.google.android.ar.API_KEY";
     int HOST_VISIBILITY_DURATION = 5 * 60; // in seconds
     int TEXTURE_BUFFER_SIZE = 2048;
 

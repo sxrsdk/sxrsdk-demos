@@ -32,11 +32,16 @@ def getPropertyOrDefault(propertyName, defaultValue) {
     return project.hasProperty(propertyName) ? project.property(propertyName) : defaultValue
 }
 
+def GOOGLE_CLOUD_ANCHOR_KEY_NAME = "com.google.android.ar.API_KEY"
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        manifestPlaceholders = [cloudAnchorApiKey: getPropertyOrDefault("cloudAnchorApiKey", "")]
+        buildConfigField "String", "GOOGLE_CLOUD_ANCHOR_KEY_NAME", "\"$GOOGLE_CLOUD_ANCHOR_KEY_NAME\""
+        manifestPlaceholders = [cloudAnchorApiKeyName: GOOGLE_CLOUD_ANCHOR_KEY_NAME,
+                                cloudAnchorApiKeyValue: getPropertyOrDefault("cloudAnchorApiKey", "")]
+
         minSdkVersion 24
         targetSdkVersion 28
     }

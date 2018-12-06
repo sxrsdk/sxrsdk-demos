@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.samsungxr.arpet.BuildConfig;
 import com.samsungxr.arpet.PetContext;
-import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.manager.cloud.anchor.exception.CloudAnchorException;
 import com.samsungxr.arpet.manager.cloud.anchor.exception.NetworkException;
 import com.samsungxr.arpet.util.ContextUtils;
@@ -43,7 +42,7 @@ public class CloudAnchorManager {
 
     private boolean isCloudAnchorApiKeySet() {
         boolean isKeySet = ContextUtils.isMetaDataSet(mPetContext.getSXRContext().getContext(),
-                PetConstants.GOOGLE_CLOUD_ANCHOR_KEY_NAME);
+                BuildConfig.GOOGLE_CLOUD_ANCHOR_KEY_NAME);
         if (!isKeySet && BuildConfig.DEBUG) {
             Context context = mPetContext.getActivity().getApplicationContext();
             mPetContext.runOnPetThread(() ->
