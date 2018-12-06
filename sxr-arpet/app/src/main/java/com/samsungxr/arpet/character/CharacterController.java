@@ -115,7 +115,8 @@ public class CharacterController extends BasePetMode {
         }));
 
         addAction(new PetActions.GRAB(pet, mBallThrowHandler.getBall(), (action, success) -> {
-                setCurrentAction(PetActions.TO_PLAYER.ID);
+            setCurrentAction(PetActions.TO_PLAYER.ID);
+
         }));
 
         addAction(new PetActions.TO_TAP(pet, pet.getTapObject(), (action, success) -> {
@@ -140,20 +141,17 @@ public class CharacterController extends BasePetMode {
         SXRNode pivot = ((CharacterView) mModeScene).getGrabPivot();
 
         if (pivot != null) {
-
             if (ball.getParent() != null) {
                 ball.getParent().removeChildObject(ball);
             }
             // FIXME: The ball should be attached to pet's bone(pivot) to
             // have walking animation.
 
-            SXRTransform t = ((CharacterView) mModeScene).getTransform();
-
             ball.getTransform().setRotation(1, 0, 0, 0);
-            ball.getTransform().setPosition(0, 0.3f, 0.42f);
-            ball.getTransform().setScale(0.003f, 0.003f, 0.003f);
+            ball.getTransform().setPosition(0, 0.3f, 20.0f);
+            ball.getTransform().setScale(1.5f, 1.5f, 1.5f);
 
-            ((CharacterView) mModeScene).addChildObject(ball);
+            pivot.addChildObject(ball);
         }
     }
 
@@ -200,9 +198,6 @@ public class CharacterController extends BasePetMode {
                 mBallThrowHandler.reset();
             } if (mCurrentAction.id() == PetActions.GRAB.ID) {
                 mBallThrowHandler.disableBallsPhysics();
-            } else if (mCurrentAction.id() == PetActions.TO_PLAYER.ID) {
-                // TODO: Move to animation
-                grabBall(mBallThrowHandler.getBall());
             }
         }
     }

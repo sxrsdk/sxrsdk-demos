@@ -226,7 +226,7 @@ public class BallThrowHandler {
                     final float vlen = (float) Math.sqrt((vx * vx) + (vy * vy));
                     final float vz = vlen / mDirTan;
 
-                    mForce = 100 * vlen / (float) (e2.getEventTime() - e1.getDownTime());
+                    mForce = 150 * vlen / (float) (e2.getEventTime() - e1.getDownTime());
                     mForceVector.set(mForce * -vx, mForce * vy, mForce * -vz);
 
                     throwRemoteBall(mForceVector);

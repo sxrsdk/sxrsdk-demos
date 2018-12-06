@@ -34,6 +34,7 @@ import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.animation.SXRRepeatMode;
+import com.samsungxr.animation.SXRSkeleton;
 import com.samsungxr.utility.Log;
 
 import com.samsungxr.arpet.PetContext;
@@ -72,7 +73,7 @@ public class CharacterView extends SXRNode implements
     private String mBoneMap;
     protected ILoadEvents mLoadListener = null;
     private SXRNode mTapObject;
-    private boolean mIsDragging = false;
+    private SXRNode mGrabbingPivot = null;
 
     CharacterView(@NonNull PetContext petContext) {
         super(petContext.getSXRContext());
@@ -300,12 +301,34 @@ public class CharacterView extends SXRNode implements
     }
 
     public SXRNode getGrabPivot() {
-         int i = mPetAvatar.getSkeleton().getBoneIndex(LoadModelHelper.PET_GRAB_PIVOT);
-         if (!(i < 0) && i < mPetAvatar.getSkeleton().getNumBones()) {
-             return mPetAvatar.getSkeleton().getBone(i);
-         }
+        if (mGrabbingPivot == null) {
+            int i = mPetAvatar.getSkeleton().getBoneIndex(LoadModelHelper.PET_GRAB_PIVOT);
+            if (!(i < 0) && i < mPetAvatar.getSkeleton().getNumBones()) {
+                mGrabbingPivot = mPetAvatar.getSkeleton().getBone(i);
+            }
+        }
 
-         return null;
+        return mGrabbingPivot;
+    }
+
+    public boolean isGrabbing(SXRNode item) {
+        return item.getParent() == getGrabPivot();
+    }
+
+    public void grabItem(SXRNode item) {
+        SXRNode pivot = getGrabPivot();
+
+        if (pivot != null) {
+            if (item.getParent() != null) {
+                item.getParent().removeChildObject(item);
+            }
+
+            item.getTransform().setRotation(1, 0, 0, 0);
+            item.getTransform().setPosition(0, 0.3f, 20.0f);
+            item.getTransform().setScale(1.0f, 1.0f, 1.0f);
+
+            pivot.addChildObject(item);
+        }
     }
 
     private void loadAnimations() {
@@ -341,7 +364,17 @@ public class CharacterView extends SXRNode implements
             if (sxrNode.getParent() == null) {
                 sxrContext.runOnGlThread(new Runnable() {
                     public void run() {
+                        SXRSkeleton skeleton = avatar.getSkeleton();
+
                         m3DModel = sxrNode;
+
+                        //skeleton.createSkeletonGeometry(m3DModel);
+
+                        SXRNode bone = skeleton.getBone(0);
+
+                        if (bone.getParent() != null) bone.getParent().removeChildObject(bone);
+
+                        m3DModel.addChildObject(bone);
 
                         m3DModel.getTransform().setScale(0.003f, 0.003f, 0.003f);
                         m3DModel.getTransform().setPosition(0, 0.2f, 0);

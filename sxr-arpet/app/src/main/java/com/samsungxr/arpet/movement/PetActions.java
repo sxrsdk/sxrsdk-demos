@@ -423,6 +423,7 @@ public class PetActions {
 
     public static class GRAB extends PetAction {
         public static final int ID = 4;
+        private float mHalfDuration = 0;
 
         public GRAB(CharacterView character, SXRNode target,
                        OnPetActionListener listener) {
@@ -447,6 +448,11 @@ public class PetActions {
 
         @Override
         public void onRun(float frameTime) {
+            if (mElapsedTime > mAnimDuration * 0.5f
+                    && !mCharacter.isGrabbing(mTarget)) {
+                mCharacter.grabItem(mTarget);
+            }
+
             if (mAnimation != null) {
                 float time = mElapsedTime;
 
