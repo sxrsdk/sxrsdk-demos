@@ -137,24 +137,6 @@ public class CharacterController extends BasePetMode {
         }
     }
 
-    public void grabBall(SXRNode ball) {
-        SXRNode pivot = ((CharacterView) mModeScene).getGrabPivot();
-
-        if (pivot != null) {
-            if (ball.getParent() != null) {
-                ball.getParent().removeChildObject(ball);
-            }
-            // FIXME: The ball should be attached to pet's bone(pivot) to
-            // have walking animation.
-
-            ball.getTransform().setRotation(1, 0, 0, 0);
-            ball.getTransform().setPosition(0, 0.3f, 20.0f);
-            ball.getTransform().setScale(1.5f, 1.5f, 1.5f);
-
-            pivot.addChildObject(ball);
-        }
-    }
-
     public void playBall() {
         mIsPlaying = true;
         mBallThrowHandler.enable();

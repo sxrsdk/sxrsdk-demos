@@ -325,7 +325,7 @@ public class CharacterView extends SXRNode implements
 
             item.getTransform().setRotation(1, 0, 0, 0);
             item.getTransform().setPosition(0, 0.3f, 20.0f);
-            item.getTransform().setScale(1.0f, 1.0f, 1.0f);
+            item.getTransform().setScale(2f, 2f, 2f);
 
             pivot.addChildObject(item);
         }
