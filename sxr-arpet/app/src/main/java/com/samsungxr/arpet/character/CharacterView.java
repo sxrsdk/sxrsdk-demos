@@ -253,8 +253,7 @@ public class CharacterView extends SXRNode implements
     @Override
     public void hide(SXRScene mainScene) {
         mainScene.removeNode(this);
-        m3DModel.getTransform().setScale(0.003f, 0.003f, 0.003f);
-        m3DModel.getTransform().setPosition(0, 0.2f, 0);
+        setDefaultScaleAndPosition();
         //getAnchor().detachSceneObject(mInfinityPlan);
     }
 
@@ -358,6 +357,12 @@ public class CharacterView extends SXRNode implements
         }
     }
 
+    private void setDefaultScaleAndPosition() {
+        m3DModel.getTransform().setScale(PetConstants.MODEL3D_DEFAULT_SCALE,
+                PetConstants.MODEL3D_DEFAULT_SCALE, PetConstants.MODEL3D_DEFAULT_SCALE);
+        m3DModel.getTransform().setPosition(0, 0.2f, 0);
+    }
+
     private SXRAvatar.IAvatarEvents mAvatarListener = new SXRAvatar.IAvatarEvents() {
         int contAnim = 0;
         @Override
@@ -380,8 +385,8 @@ public class CharacterView extends SXRNode implements
 
                         m3DModel.addChildObject(bone);
 
-                        m3DModel.getTransform().setScale(0.003f, 0.003f, 0.003f);
-                        m3DModel.getTransform().setPosition(0, 0.2f, 0);
+                        setDefaultScaleAndPosition();
+
                         // Get the pet's body from 3D model
                         SXRNode body = m3DModel.getNodeByName(PET_COLLIDER);
                         if (body != null) {
