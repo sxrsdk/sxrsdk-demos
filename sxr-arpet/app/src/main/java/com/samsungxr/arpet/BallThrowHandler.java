@@ -77,8 +77,6 @@ public class BallThrowHandler {
     BallThrowHandler(PetContext petContext) {
         mPetContext = petContext;
         mPlayer = petContext.getPlayer();
-        mBoneGaze = createBoneGaze();
-        mBoneGaze.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
 
         createBall();
         initController();
@@ -92,7 +90,6 @@ public class BallThrowHandler {
 
         mMessageService = MessageService.getInstance();
 
-        mBoneGaze.getTransform().setPositionZ(-1);
         mPlayer.setEnable(false);
     }
 
@@ -163,12 +160,19 @@ public class BallThrowHandler {
         EventBusUtils.post(new BallThrowHandlerEvent(BallThrowHandlerEvent.RESET));
     }
 
-    private SXRNode createBoneGaze() {
+    private void createBoneGaze(final SXRNode boneModel) {
         final SXRContext sxrContext = mPetContext.getSXRContext();
-        final SXRTexture texture = LoadModelHelper.loadTexture(sxrContext, R.drawable.bone_gaze);
-        final SXRNode gaze = new SXRNode(sxrContext, 0.5f, 0.2f, texture);
 
-        return gaze;
+        boneModel.forAllComponents(new SXRNode.ComponentVisitor() {
+            @Override
+            public boolean visit(SXRComponent sxrComponent) {
+                SXRRenderData rdata = (SXRRenderData) sxrComponent;
+                if (mBoneGaze == null) {
+                    mBoneGaze = new SXRNode(sxrContext, rdata.getMesh(), rdata.getMaterial());
+                }
+                return false;
+            }
+        }, SXRRenderData.getComponentType());
     }
 
     private void createBall() {
@@ -187,6 +191,10 @@ public class BallThrowHandler {
 
         mBall.attachComponent(mRigidBody);
         mRigidBody.setEnable(false);
+
+        createBoneGaze(mBall);
+        mBoneGaze.getTransform().setScale(0.005f, 0.005f, 0.005f);
+        mBoneGaze.getTransform().setPositionZ(-1);
     }
 
     private void createBoneCollider() {
