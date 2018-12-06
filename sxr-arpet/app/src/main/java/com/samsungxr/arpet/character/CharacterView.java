@@ -117,6 +117,7 @@ public class CharacterView extends SXRNode implements
         mShadow.getTransform().setRotationByAxis(-90f, 1f, 0f, 0f);
         mShadow.getTransform().setPosition(0f, 0.01f, 0.15f);
         mShadow.getRenderData().setAlphaBlend(true);
+        mShadow.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT + 500);
         mShadow.setName("shadow");
         addChildObject(mShadow);
     }
