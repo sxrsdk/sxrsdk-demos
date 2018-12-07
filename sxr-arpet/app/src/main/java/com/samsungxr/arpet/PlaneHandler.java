@@ -196,10 +196,11 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
     public void onPlaneDetected(SXRPlane plane) {
         SXRPlane.Type planeType = plane.getPlaneType();
 
-        // Don't use planes that are downward facing, e.g ceiling
-        if (planeType == SXRPlane.Type.HORIZONTAL_DOWNWARD_FACING) {
+        // Don't use planes that are downward facing (e.g ceiling) or vertical
+        if (planeType == SXRPlane.Type.HORIZONTAL_DOWNWARD_FACING || planeType == SXRPlane.Type.VERTICAL) {
             return;
         }
+
         SXRNode planeGeo = createQuadPlane();
 
         planeGeo.attachComponent(plane);
