@@ -22,16 +22,12 @@ import android.util.SparseArray;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRTransform;
-import com.samsungxr.utility.Log;
-
 import com.samsungxr.arpet.BallThrowHandler;
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.mode.BasePetMode;
 import com.samsungxr.arpet.mode.ILoadEvents;
 import com.samsungxr.arpet.movement.IPetAction;
-import com.samsungxr.arpet.movement.OnPetActionListener;
 import com.samsungxr.arpet.movement.PetActionType;
 import com.samsungxr.arpet.movement.PetActions;
 import com.samsungxr.arpet.service.IMessageService;
@@ -40,6 +36,8 @@ import com.samsungxr.arpet.service.data.PetActionCommand;
 import com.samsungxr.arpet.service.event.PetActionCommandReceivedMessage;
 import com.samsungxr.arpet.service.share.SharedMixedReality;
 import com.samsungxr.arpet.util.EventBusUtils;
+import com.samsungxr.utility.Log;
+
 import org.greenrobot.eventbus.Subscribe;
 
 public class CharacterController extends BasePetMode {
@@ -132,6 +130,7 @@ public class CharacterController extends BasePetMode {
         if (mCurrentAction == null
                 || mCurrentAction.id() == PetActions.IDLE.ID
                 || mCurrentAction.id() == PetActions.TO_TAP.ID) {
+            Log.d(TAG, "goToTap(%f, %f, %f)", x, y, z);
             ((CharacterView) mModeScene).setTapPosition(x, y, z);
             setCurrentAction(PetActions.TO_TAP.ID);
         }

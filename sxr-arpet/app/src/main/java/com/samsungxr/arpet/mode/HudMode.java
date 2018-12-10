@@ -89,18 +89,21 @@ public class HudMode extends BasePetMode {
         @Override
         public void onBedClicked() {
             Log.d(TAG, "Action: go to bed");
+            mPetController.goToTap(0f, 0f, 0f);
             mVirtualObjectController.showObject(ArPetObjectType.BED);
         }
 
         @Override
         public void onHydrantClicked() {
             Log.d(TAG, "Action: go to hydrant");
+            mPetController.goToTap(0f, 0f, 0f);
             mVirtualObjectController.showObject(ArPetObjectType.HYDRANT);
         }
 
         @Override
         public void onBowlClicked() {
             Log.d(TAG, "Action: go to bowl");
+            mPetController.goToTap(0f, 0f, 0f);
             mVirtualObjectController.showObject(ArPetObjectType.BOWL);
         }
 

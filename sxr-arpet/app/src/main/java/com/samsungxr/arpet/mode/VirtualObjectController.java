@@ -24,6 +24,9 @@ import com.samsungxr.arpet.util.LoadModelHelper;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.utility.Log;
 
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
+
 public class VirtualObjectController {
     private static final String TAG = VirtualObjectController.class.getSimpleName();
 
@@ -72,13 +75,22 @@ public class VirtualObjectController {
         mVirtualObject = load3DModel(objectType);
         mObjectType = objectType;
 
-        final float scale = mPetContext.getMixedReality().getARToVRScale();
-        final float planeWidth = mainPlane.getWidth() * 0.25f * scale;
-        final float[] centerPoseMtx = mPetController.getPlane().getTransform().getModelMatrix();
+        // vector to store plane's orientation
+        Vector4f orientation;
+        if (mainPlane.getWidth() >= mainPlane.getHeight()) {
+            orientation = new Vector4f(0.5f, 0f, 0f, 0);
+        } else {
+            orientation = new Vector4f(0.0f, 0.5f, 0f, 0);
+        }
+        Matrix4f mtx = mPetController.getPlane().getTransform().getModelMatrix4f();
+        // Apply plane's rotation in the vector
+        orientation.mul(mtx);
+        // Distance from the plane's center
+        orientation.mul(0.75f);
 
-        final float planeX = centerPoseMtx[12] + planeWidth;
-        final float planeY = centerPoseMtx[13];
-        final float planeZ = centerPoseMtx[14];
+        final float planeX = mtx.m30() + orientation.x;
+        final float planeY = mtx.m31() + orientation.y;
+        final float planeZ = mtx.m32() + orientation.z;
 
         final float petScale = mPetController.getView().getScale();
         mVirtualObject.getTransform().setScale(PetConstants.MODEL3D_DEFAULT_SCALE * petScale,

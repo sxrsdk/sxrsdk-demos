@@ -383,7 +383,6 @@ public class PetMain extends DisableNativeSplashScreen {
 
                 if (sxrNode == mPet.getPlane() && mCurrentMode instanceof HudMode) {
                     final float[] hitPos = sxrPickedObject.hitLocation;
-                    Log.d(TAG, "goToTap(%f, %f, %f)", hitPos[0], hitPos[1], hitPos[2]);
                     mPet.goToTap(hitPos[0], hitPos[1], hitPos[2]);
                 }
             }
