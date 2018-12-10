@@ -75,22 +75,30 @@ public class VirtualObjectController {
         mVirtualObject = load3DModel(objectType);
         mObjectType = objectType;
 
+        final float planeWidth = mainPlane.getWidth();
+        final float planeHeight = mainPlane.getHeight();
+
         // vector to store plane's orientation
         Vector4f orientation;
-        if (mainPlane.getWidth() >= mainPlane.getHeight()) {
+        if (planeWidth >= planeHeight) {
             orientation = new Vector4f(0.5f, 0f, 0f, 0);
         } else {
             orientation = new Vector4f(0.0f, 0.5f, 0f, 0);
         }
-        Matrix4f mtx = mPetController.getPlane().getTransform().getModelMatrix4f();
-        // Apply plane's rotation in the vector
-        orientation.mul(mtx);
-        // Distance from the plane's center
-        orientation.mul(0.75f);
 
-        final float planeX = mtx.m30() + orientation.x;
-        final float planeY = mtx.m31() + orientation.y;
-        final float planeZ = mtx.m32() + orientation.z;
+        Matrix4f planeMtx = mPetController.getPlane().getTransform().getModelMatrix4f();
+        // Apply plane's rotation in the vector
+        orientation.mul(planeMtx);
+        // Distance from the plane's center
+        if (planeWidth >= planeHeight) {
+            orientation.mul(planeHeight / planeWidth);
+        } else {
+            orientation.mul(planeWidth / planeHeight);
+        }
+
+        final float planeX = planeMtx.m30() + orientation.x;
+        final float planeY = planeMtx.m31() + orientation.y;
+        final float planeZ = planeMtx.m32() + orientation.z;
 
         final float petScale = mPetController.getView().getScale();
         mVirtualObject.getTransform().setScale(PetConstants.MODEL3D_DEFAULT_SCALE * petScale,
