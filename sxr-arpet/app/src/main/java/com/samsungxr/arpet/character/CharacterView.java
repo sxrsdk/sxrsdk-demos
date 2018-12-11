@@ -409,7 +409,7 @@ public class CharacterView extends SXRNode implements
 
         @Override
         public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String s, String s1) {
-            Log.d(TAG, "onAnimationLoaded %s => %s", s, s1);
+            Log.d(TAG, "onAnimationLoaded  => %s", animation.getName());
             contAnim++;
 
             animation.setRepeatMode(SXRRepeatMode.REPEATED);
