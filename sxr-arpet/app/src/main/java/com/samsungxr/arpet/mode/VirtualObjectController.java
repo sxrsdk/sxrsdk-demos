@@ -86,9 +86,21 @@ public class VirtualObjectController {
             orientation = new Vector4f(0.0f, 0.5f, 0f, 0);
         }
 
-        Matrix4f planeMtx = mPetController.getPlane().getTransform().getModelMatrix4f();
+        final Matrix4f planeMtx = mPetController.getPlane().getTransform().getModelMatrix4f();
+        final Matrix4f petMtx = mPetController.getView().getTransform().getModelMatrix4f();
+
+        Vector4f  petOrientation = new Vector4f(petMtx.m30() - planeMtx.m30(),
+                petMtx.m31() - planeMtx.m31(), petMtx.m32() - planeMtx.m32(), 0);
+
         // Apply plane's rotation in the vector
         orientation.mul(planeMtx);
+
+        // Opposite side of the Pet
+        if (petOrientation.x * orientation.x > 0
+                || petOrientation.z * orientation.z > 0) {
+            orientation.mul(-1);
+        }
+
         // Distance from the plane's center
         if (planeWidth >= planeHeight) {
             orientation.mul(planeHeight / planeWidth);
