@@ -109,7 +109,7 @@ public class CharacterView extends SXRNode implements
     private void createShadow() {
         final SXRContext sxrContext = getSXRContext();
         SXRTexture tex = sxrContext.getAssetLoader().loadTexture(
-                new SXRAndroidResource(sxrContext, R.drawable.drag_shadow));
+                new SXRAndroidResource(sxrContext, R.drawable.pet_shadow));
         SXRMaterial mat = new SXRMaterial(sxrContext);
         mat.setMainTexture(tex);
         mShadow = new SXRNode(sxrContext, 0.3f, 0.6f);

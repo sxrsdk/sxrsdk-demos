@@ -19,6 +19,7 @@ package com.samsungxr.arpet;
 
 import android.graphics.Color;
 
+import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
@@ -29,6 +30,10 @@ import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
+import com.samsungxr.SXRShaderId;
+import com.samsungxr.SXRTexture;
+import com.samsungxr.SXRTextureParameters;
+import com.samsungxr.arpet.shaders.SXRTiledMaskShader;
 import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
 import com.samsungxr.mixedreality.SXRPlane;
@@ -149,28 +154,25 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
     }
 
     private SXRNode createQuadPlane() {
+        SXRTextureParameters texParams = new SXRTextureParameters(mContext);
+        SXRTexture tex = mContext.getAssetLoader().loadTexture(
+                new SXRAndroidResource(mContext, R.drawable.gramado_01));
+        SXRMaterial material = new SXRMaterial(mContext, new SXRShaderId(SXRTiledMaskShader.class));
+        texParams.setWrapSType(SXRTextureParameters.TextureWrapType.GL_MIRRORED_REPEAT);
+        texParams.setWrapTType(SXRTextureParameters.TextureWrapType.GL_MIRRORED_REPEAT);
+        tex.updateTextureParameters(texParams);
+        material.setMainTexture(tex);
+
         SXRMesh mesh = SXRMesh.createQuad(mContext, "float3 a_position", 1, 1);
-        SXRMaterial mat = new SXRMaterial(mContext, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRNode polygonObject = new SXRNode(mContext, mesh, mat);
+        SXRNode polygonObject = new SXRNode(mContext, mesh, material);
         polygonObject.setName(PLANE_COLLIDER);
 
-        hsvHUE += 35;
-        float[] hsv = new float[3];
-        hsv[0] = hsvHUE % 360;
-        hsv[1] = 1f;
-        hsv[2] = 1f;
-
-        int c = Color.HSVToColor(50, hsv);
-        mat.setDiffuseColor(Color.red(c) / 255f, Color.green(c) / 255f,
-                Color.blue(c) / 255f, 0.5f);
-        polygonObject.getRenderData().setMaterial(mat);
         polygonObject.getRenderData().disableLight();
-        polygonObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
         polygonObject.getRenderData().setAlphaBlend(true);
         polygonObject.getTransform().setRotationByAxis(-90, 1, 0, 0);
+
         // FIXME: BoxCollider doesn't work!
         polygonObject.attachCollider(new SXRMeshCollider(mContext, true));
-        // See setSelectedPlane(...) will set the touched visible quad as selected plane
 
         SXRNode transformNode = new SXRNode(mContext);
         transformNode.addChildObject(polygonObject);
