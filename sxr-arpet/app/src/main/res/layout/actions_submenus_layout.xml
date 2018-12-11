@@ -26,62 +26,32 @@
     android:orientation="vertical"
     android:visibility="invisible">
 
-    <LinearLayout
+    <ImageView
         android:id="@+id/btn_fetchbone"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_functions_buttons"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="51dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_play_bone" />
 
-        <ImageView
-            android:layout_width="19.9dp"
-            android:layout_height="8.1dp"
-            android:src="@drawable/btn_fetchbone" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_hydrant"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_functions_buttons"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="17.4dp"
-            android:layout_height="10.3dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_toSleep"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_functions_buttons"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="13.9dp"
-            android:layout_height="13.9dp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <ImageView
         android:id="@+id/drinkWater"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/bg_functions_buttons"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_drink_water" />
 
-        <ImageView
-            android:layout_width="15.6dp"
-            android:layout_height="13.9dp" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_hydrant"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_hydrant" />
 
+    <ImageView
+        android:id="@+id/btn_toSleep"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_bed" />
 
 </LinearLayout>

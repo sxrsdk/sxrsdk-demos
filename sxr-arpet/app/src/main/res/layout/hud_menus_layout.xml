@@ -18,86 +18,46 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/menuHud"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:visibility="invisible">
+    android:id="@+id/menuHud"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:visibility="invisible">
 
-        <LinearLayout
-            android:id="@+id/btn_actions"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_functions_buttons"
-            android:gravity="center"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/btn_actions"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_actions" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_menu" />
-        </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_shareanchor"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_share" />
 
-        <LinearLayout
-            android:id="@+id/btn_shareanchor"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_functions_buttons"
-            android:gravity="center"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/btn_edit"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_edit" />
 
-            <ImageView
-                android:layout_width="19.4dp"
-                android:layout_height="12.3dp"
-                android:src="@drawable/icon_share_anchor" />
-        </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_camera"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_camera" />
 
-        <LinearLayout
-            android:id="@+id/btn_edit"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_functions_buttons"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="15.9dp"
-                android:layout_height="15.9dp"
-                android:src="@drawable/icon_edit" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btn_camera"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_functions_buttons"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="17.6dp"
-                android:layout_height="15.9dp"
-                android:src="@drawable/icon_photo" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btn_about"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_functions_buttons"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="6.2dp"
-                android:layout_height="15.9dp"
-                android:src="@drawable/btn_about" />
-        </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_about"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_about" />
 </LinearLayout>

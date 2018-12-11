@@ -21,7 +21,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,8 +41,10 @@ import com.samsungxr.utility.Log;
 public class HudView extends BasePetView implements View.OnClickListener {
     private static final String TAG = "HudView";
 
-    private LinearLayout mRootLayout, mMenuOptionsHud, mMenuButton, mCloseButton, mShareAnchorButton, mCameraButton, mEditModeButton;
-    private LinearLayout mActionsButton, mPlayBoneButton, mHydrantButton, mToSleepButton, mDrinkWater, mSubmenuOptions;
+    private View mMenuOptionsHud, mShareAnchorButton, mCameraButton, mEditModeButton, mCloseButton, mMenuButton;
+    private View mHydrantButton, mToSleepButton, mDrinkWater, mSubmenuOptions, mAboutButton;
+    private ImageView mActionsButton, mPlayBoneButton;
+    private LinearLayout mRootLayout;
     private final SXRViewNode mHudMenuObject;
     private final SXRViewNode mStartMenuObject;
     private final SXRViewNode mConnectedLabel;
@@ -53,8 +57,11 @@ public class HudView extends BasePetView implements View.OnClickListener {
     private OnClickDisconnectViewHandler mDisconnectViewHandler;
     private Animation mOpenMenuHud, mOpenSubmenu;
     private Animation mCloseMenuHud, mCloseSubmenu;
-    private boolean mIsBoneButtonClicked = false;
-    private boolean mIsActiveSubmenu = false;
+    private Animation mBounce;
+    private boolean mIsActivedSubmenu = false;
+    private boolean mIsActionsButtonActived = false;
+    private BounceInterpolator interpolator = new BounceInterpolator(0.1, 20);
+
 
     public HudView(PetContext petContext) {
         super(petContext);
@@ -133,73 +140,192 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.btn_start_menu:
-                mMenuButton.post(() -> {
-                    mMenuOptionsHud.startAnimation(mOpenMenuHud);
-                    mMenuOptionsHud.setVisibility(View.VISIBLE);
-                    mHudMenuObject.setEnable(true);
-                });
                 mMenuButton.setVisibility(View.GONE);
                 mCloseButton.setVisibility(View.VISIBLE);
+                mCloseButton.startAnimation(mBounce);
+                mMenuOptionsHud.startAnimation(mOpenMenuHud);
+                mMenuOptionsHud.setVisibility(View.VISIBLE);
+                mHudMenuObject.setEnable(true);
                 break;
             case R.id.btn_close:
-                mCloseButton.post(() -> {
-                    mMenuOptionsHud.startAnimation(mCloseMenuHud);
-                    mMenuOptionsHud.setVisibility(View.INVISIBLE);
-                    mMenuOptionsHud.postDelayed(() -> mHudMenuObject.setEnable(false), 500);
-                    if (mIsActiveSubmenu) {
-                        mSubmenuOptions.startAnimation(mCloseSubmenu);
-                        mSubmenuOptions.setVisibility(View.INVISIBLE);
-                        mSubmenuOptions.postDelayed(() -> mSubmenuObject.setEnable(false), 500);
-                    }
-                    mIsActiveSubmenu = false;
-                });
-                mMenuButton.setVisibility(View.VISIBLE);
-                mCloseButton.setVisibility(View.GONE);
+                closeMenu();
                 break;
             case R.id.btn_edit:
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onEditModeClicked());
+                mEditModeButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onEditModeClicked());
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 break;
             case R.id.btn_fetchbone:
-                mPlayBoneButton.post(() -> {
-                    mIsBoneButtonClicked = !mIsBoneButtonClicked;
-                    mPlayBoneButton.setBackgroundResource(mIsBoneButtonClicked
-                            ? R.drawable.bg_button_ball
-                            : R.drawable.bg_functions_buttons
-                    );
+                mPlayBoneButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBallClicked());
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
                 });
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBallClicked());
+                mPlayBoneButton.post(() -> closeMenu());
                 break;
             case R.id.btn_toSleep:
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBedClicked());
+                mToSleepButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBedClicked());
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mToSleepButton.post(() -> closeMenu());
                 break;
             case R.id.btn_hydrant:
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onHydrantClicked());
+                mHydrantButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onHydrantClicked());
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mHydrantButton.post(() -> closeMenu());
                 break;
             case R.id.drinkWater:
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBowlClicked());
+                mDrinkWater.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBowlClicked());
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mDrinkWater.post(() -> closeMenu());
                 break;
             case R.id.btn_shareanchor:
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onShareAnchorClicked());
+                mShareAnchorButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onShareAnchorClicked());
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 break;
             case R.id.btn_camera:
-                mPetContext.getSXRContext().runOnGlThread(() -> mListener.onCameraClicked());
+                mCameraButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onCameraClicked());
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 break;
             case R.id.btn_connected:
                 mPetContext.getSXRContext().runOnGlThread(() -> mListener.onConnectedClicked());
             case R.id.btn_actions:
+                mActionsButton.startAnimation(mBounce);
                 mActionsButton.post(() -> {
-                    mIsActiveSubmenu = !mIsActiveSubmenu;
-                    mSubmenuOptions.startAnimation(mIsActiveSubmenu
+                    mIsActionsButtonActived = !mIsActionsButtonActived;
+                    mActionsButton.setImageResource(mIsActionsButtonActived
+                            ? R.drawable.ic_actions_activated : R.drawable.ic_actions);
+                    mIsActivedSubmenu = !mIsActivedSubmenu;
+                    mSubmenuOptions.startAnimation(mIsActivedSubmenu
                             ? mOpenSubmenu : mCloseSubmenu);
-                    mSubmenuOptions.setVisibility(mIsActiveSubmenu
+                    mSubmenuOptions.setVisibility(mIsActivedSubmenu
                             ? View.VISIBLE
                             : View.INVISIBLE);
                     mSubmenuObject.setEnable(true);
                 });
                 break;
+            case R.id.btn_about:
+                mAboutButton.startAnimation(mBounce);
+                break;
             default:
                 Log.d(TAG, "Invalid Option");
         }
+    }
+
+    public void closeMenu() {
+        mMenuButton.setVisibility(View.VISIBLE);
+        mCloseButton.setVisibility(View.GONE);
+        mMenuButton.startAnimation(mBounce);
+        mMenuOptionsHud.startAnimation(mCloseMenuHud);
+        mMenuOptionsHud.setVisibility(View.INVISIBLE);
+        if (mIsActivedSubmenu) {
+            mSubmenuOptions.startAnimation(mCloseSubmenu);
+            mSubmenuOptions.setVisibility(View.INVISIBLE);
+        }
+        mIsActivedSubmenu = false;
     }
 
     IViewEvents hudMenuInitEvents = new IViewEvents() {
@@ -210,12 +336,16 @@ public class HudView extends BasePetView implements View.OnClickListener {
             mShareAnchorButton = view.findViewById(R.id.btn_shareanchor);
             mCameraButton = view.findViewById(R.id.btn_camera);
             mActionsButton = view.findViewById(R.id.btn_actions);
+            mAboutButton = view.findViewById(R.id.btn_about);
             mEditModeButton.setOnClickListener(HudView.this);
             mShareAnchorButton.setOnClickListener(HudView.this);
             mCameraButton.setOnClickListener(HudView.this);
             mActionsButton.setOnClickListener(HudView.this);
+            mAboutButton.setOnClickListener(HudView.this);
             mOpenMenuHud = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.open);
             mCloseMenuHud = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.close);
+            mBounce = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.bounce);
+            mBounce.setInterpolator(interpolator);
         }
 
         @Override
@@ -223,7 +353,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
             sxrViewNode.setTextureBufferSize(PetConstants.TEXTURE_BUFFER_SIZE);
             sxrViewNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
             LayoutViewUtils.setWorldPosition(mPetContext.getMainScene(),
-                    sxrViewNode, 590f, 20f, 44f, 270f);
+                    sxrViewNode, 593f, 20f, 44f, 270f);
             sxrViewNode.setEnable(false);
             addChildObject(sxrViewNode);
         }
@@ -243,7 +373,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
             sxrViewNode.setTextureBufferSize(PetConstants.TEXTURE_BUFFER_SIZE);
             sxrViewNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
             LayoutViewUtils.setWorldPosition(mPetContext.getMainScene(),
-                    sxrViewNode, 590f, 304f, 44f, 44f);
+                    sxrViewNode, 590f, 304f, 48f, 48f);
             addChildObject(sxrViewNode);
         }
     };
@@ -307,7 +437,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
             sxrViewNode.setTextureBufferSize(PetConstants.TEXTURE_BUFFER_SIZE);
             sxrViewNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
             LayoutViewUtils.setWorldPosition(mPetContext.getMainScene(),
-                    sxrViewNode, 525f, 74f, 90f, 90f);
+                    sxrViewNode, 522f, 74f, 90f, 90f);
             addChildObject(sxrViewNode);
         }
     };
@@ -329,6 +459,22 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 default:
                     Log.d(TAG, "invalid ID in disconnect view handler");
             }
+        }
+    }
+
+    private class BounceInterpolator implements Interpolator {
+        private double mAmplitude;
+        private double mFrequency;
+
+        BounceInterpolator(double amplitude, double frequency) {
+            mAmplitude = amplitude;
+            mFrequency = frequency;
+        }
+
+        @Override
+        public float getInterpolation(float time) {
+            return (float) (-1 * Math.pow(Math.E, -time / mAmplitude) *
+                    Math.cos(mFrequency * time) + 1);
         }
     }
 }
