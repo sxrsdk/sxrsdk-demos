@@ -40,7 +40,16 @@ public class LoadModelHelper {
             "objects/anim/pet_anim_walk.bvh",
             "objects/anim/pet_anim_run.bvh",
             "objects/anim/pet_bone_anim_walk.bvh",
-            "objects/anim/pet_bone_anim_grab.bvh"
+            "objects/anim/pet_bone_anim_grab.bvh",
+            "objects/anim/pet_anim_drik_enter.bvh",
+            "objects/anim/pet_anim_drik_exit.bvh",
+            "objects/anim/pet_anim_drik_loop.bvh",
+            "objects/anim/pet_anim_hydrant_enter.bvh",
+            "objects/anim/pet_anim_hydrant_exit.bvh",
+            "objects/anim/pet_anim_hydrant_loop.bvh",
+            "objects/anim/pet_anim_sleep_enter.bvh",
+            "objects/anim/pet_anim_sleep_exit.bvh",
+            "objects/anim/pet_anim_sleep_loop.bvh"
     };
 
     public static SXRNode loadModelSceneObject(SXRContext sxrContext, String modelPath) {
