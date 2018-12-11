@@ -120,6 +120,23 @@ public class VirtualObjectController {
         mVirtualObject.setEnable(true);
 
         mPetContext.getMainScene().addNode(mVirtualObject);
+
+        startPetsAnimation(objectType, planeX, planeY, planeZ);
+    }
+
+    private void startPetsAnimation(@ArPetObjectType String type,
+                                    float x, float y, float z) {
+        switch (type) {
+            case ArPetObjectType.BED:
+                mPetController.goToBed(x, y, z);
+                break;
+            case ArPetObjectType.BOWL:
+                mPetController.goToBowl(x, y, z);
+                break;
+            case ArPetObjectType.HYDRANT:
+                mPetController.goToHydrant(x, y, z);
+                break;
+        }
     }
 
     public boolean hasActiveObject() {

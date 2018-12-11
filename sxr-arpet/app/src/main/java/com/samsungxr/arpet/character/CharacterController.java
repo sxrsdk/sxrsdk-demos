@@ -28,6 +28,7 @@ import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.mode.BasePetMode;
 import com.samsungxr.arpet.mode.ILoadEvents;
 import com.samsungxr.arpet.movement.IPetAction;
+import com.samsungxr.arpet.movement.OnPetActionListener;
 import com.samsungxr.arpet.movement.PetActionType;
 import com.samsungxr.arpet.movement.PetActions;
 import com.samsungxr.arpet.service.IMessageService;
@@ -51,6 +52,10 @@ public class CharacterController extends BasePetMode {
     private IMessageService mMessageService;
     private boolean mIsPlaying = false;
 
+    private SXRNode mBedTarget;
+    private SXRNode mBowlTarget;
+    private SXRNode mHydrantNode;
+
     public CharacterController(PetContext petContext) {
         super(petContext, new CharacterView(petContext));
 
@@ -60,6 +65,10 @@ public class CharacterController extends BasePetMode {
         mBallThrowHandler = petContext.getBallThrowHandlerHandler();
 
         mMessageService = MessageService.getInstance();
+
+        mBedTarget = new SXRNode(petContext.getSXRContext());
+        mBowlTarget = new SXRNode(petContext.getSXRContext());
+        mHydrantNode = new SXRNode(petContext.getSXRContext());
 
         initPet((CharacterView) mModeScene);
     }
@@ -121,6 +130,12 @@ public class CharacterController extends BasePetMode {
             setCurrentAction(PetActions.IDLE.ID);
         }));
 
+        addAction(new PetActions.TO_BED(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+
+        addAction(new PetActions.TO_BOWL(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+
+        addAction(new PetActions.TO_HYDRANT(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+
         addAction(new PetActions.AT_EDIT(mPetContext, pet));
 
         setCurrentAction(PetActions.IDLE.ID);
@@ -134,6 +149,21 @@ public class CharacterController extends BasePetMode {
             ((CharacterView) mModeScene).setTapPosition(x, y, z);
             setCurrentAction(PetActions.TO_TAP.ID);
         }
+    }
+
+    public void goToBed(float x, float y, float z) {
+        mBedTarget.getTransform().setPosition(x, y, z);
+        setCurrentAction(PetActions.TO_BED.ID);
+    }
+
+    public void goToBowl(float x, float y, float z) {
+        mBowlTarget.getTransform().setPosition(x, y, z);
+        setCurrentAction(PetActions.TO_BOWL.ID);
+    }
+
+    public void goToHydrant(float x, float y, float z) {
+        mHydrantNode.getTransform().setPosition(x, y, z);
+        setCurrentAction(PetActions.TO_HYDRANT.ID);
     }
 
     public void playBall() {
@@ -189,8 +219,12 @@ public class CharacterController extends BasePetMode {
         }
     }
 
-    private void addAction(IPetAction action) {
+    public void addAction(IPetAction action) {
         mPetActions.put(action.id(), action);
+    }
+
+    public void removeAction(@PetActionType int action) {
+        mPetActions.remove(action);
     }
 
     public void enableActions() {

@@ -40,7 +40,8 @@ import java.util.Arrays;
 public class PetActions {
     private static final String TAG = "CharacterStates";
 
-    @IntDef({IDLE.ID, TO_BALL.ID, TO_PLAYER.ID, TO_TAP.ID, GRAB.ID, AT_EDIT.ID})
+    @IntDef({IDLE.ID, TO_BALL.ID, TO_PLAYER.ID, TO_TAP.ID, GRAB.ID, TO_BED.ID, TO_BOWL.ID,
+            TO_HYDRANT.ID, AT_EDIT.ID})
     public @interface Action{
     }
 
@@ -423,7 +424,6 @@ public class PetActions {
 
     public static class GRAB extends PetAction {
         public static final int ID = 4;
-        private float mHalfDuration = 0;
 
         public GRAB(CharacterView character, SXRNode target,
                        OnPetActionListener listener) {
@@ -463,6 +463,168 @@ public class PetActions {
                 }
             } else {
                 mListener.onActionEnd(this, false);
+            }
+        }
+    }
+
+    public static class TO_BED extends PetAction {
+        public static final int ID = 5;
+
+        public TO_BED(CharacterView character, SXRNode bedObject,
+                      OnPetActionListener listener) {
+            super(character, bedObject, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => TO_BED");
+            setAnimation(mCharacter.getAnimation(1));
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => TO_BED");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            mTargetDirection.y = 0;
+            // Min distance to the tap position
+            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
+
+            if (moveTowardToTapPosition) {
+                if (mAnimation != null) {
+                    animate(frameTime);
+                }
+
+                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
+                        mTargetDirection.x, 0, mTargetDirection.z);
+
+                if (mRotation.angle() < Math.PI * 0.25f) {
+                    // acceleration logic
+                    float[] pose = mCharacter.getTransform().getModelMatrix();
+                    mMoveTo.mul(mWalkingSpeed * frameTime);
+
+                    pose[12] = pose[12] + mMoveTo.x;
+                    pose[14] = pose[14] + mMoveTo.z;
+
+                    mCharacter.updatePose(pose);
+                }
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class TO_BOWL extends PetAction {
+        public static final int ID = 6;
+
+        public TO_BOWL(CharacterView character, SXRNode bowlObject,
+                      OnPetActionListener listener) {
+            super(character, bowlObject, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => TO_BOWL");
+            setAnimation(mCharacter.getAnimation(1));
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => TO_BOWL");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            mTargetDirection.y = 0;
+            // Min distance to the tap position
+            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
+
+            if (moveTowardToTapPosition) {
+                if (mAnimation != null) {
+                    animate(frameTime);
+                }
+
+                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
+                        mTargetDirection.x, 0, mTargetDirection.z);
+
+                if (mRotation.angle() < Math.PI * 0.25f) {
+                    // acceleration logic
+                    float[] pose = mCharacter.getTransform().getModelMatrix();
+                    mMoveTo.mul(mWalkingSpeed * frameTime);
+
+                    pose[12] = pose[12] + mMoveTo.x;
+                    pose[14] = pose[14] + mMoveTo.z;
+
+                    mCharacter.updatePose(pose);
+                }
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class TO_HYDRANT extends PetAction {
+        public static final int ID = 7;
+
+        public TO_HYDRANT(CharacterView character, SXRNode hydrantObject,
+                      OnPetActionListener listener) {
+            super(character, hydrantObject, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => TO_HYDRANT");
+            setAnimation(mCharacter.getAnimation(1));
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => TO_HYDRANT");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            mTargetDirection.y = 0;
+            // Min distance to the tap position
+            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
+
+            if (moveTowardToTapPosition) {
+                if (mAnimation != null) {
+                    animate(frameTime);
+                }
+
+                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
+                        mTargetDirection.x, 0, mTargetDirection.z);
+
+                if (mRotation.angle() < Math.PI * 0.25f) {
+                    // acceleration logic
+                    float[] pose = mCharacter.getTransform().getModelMatrix();
+                    mMoveTo.mul(mWalkingSpeed * frameTime);
+
+                    pose[12] = pose[12] + mMoveTo.x;
+                    pose[14] = pose[14] + mMoveTo.z;
+
+                    mCharacter.updatePose(pose);
+                }
+            } else {
+                mListener.onActionEnd(this, true);
             }
         }
     }
