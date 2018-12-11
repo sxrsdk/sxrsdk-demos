@@ -15,7 +15,6 @@
 
 package com.samsungxr.arcore.simplesample;
 
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 import com.samsungxr.SXRBoxCollider;
@@ -24,6 +23,7 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRScene;
@@ -190,16 +190,12 @@ public class SampleMain extends SXRMain {
         @Override
         public void onPlaneDetected(SXRPlane plane)
         {
-            if (plane.getPlaneType() == SXRPlane.Type.VERTICAL)
-            {
-                return;
-            }
-            SXRNode planeMesh = helper.createQuadPlane(getSXRContext());
+            SXRNode planeNode = helper.createPlaneNode(getSXRContext());
             float[] pose = new float[16];
 
             plane.getCenterPose(pose);
-            planeMesh.attachComponent(plane);
-            mainScene.addNode(planeMesh);
+            planeNode.attachComponent(plane);
+            mainScene.addNode(planeNode);
             addVirtualObject(pose);
         }
 
@@ -215,6 +211,14 @@ public class SampleMain extends SXRMain {
 
         @Override
         public void onPlaneMerging(SXRPlane SXRPlane, SXRPlane SXRPlane1) { }
+
+        @Override
+        public void onPlaneGeometryChange(SXRPlane plane) {
+            SXRMesh mesh = new SXRMesh(getSXRContext());
+            mesh.setVertices(plane.get3dPolygonAsArray());
+
+            plane.getOwnerObject().getRenderData().setMesh(mesh);
+        }
     };
 
     /**
@@ -557,6 +561,6 @@ public class SampleMain extends SXRMain {
             }
             return null;
         }
-    };
+    }
 
 }

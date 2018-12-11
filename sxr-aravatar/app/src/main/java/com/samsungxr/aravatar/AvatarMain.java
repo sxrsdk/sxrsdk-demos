@@ -25,6 +25,7 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
@@ -147,6 +148,16 @@ public class AvatarMain extends SXRMain {
             {
                 childOwner.detachComponent(SXRPlane.getComponentType());
                 childOwner.getParent().removeChildObject(childOwner);
+            }
+        }
+
+        @Override
+        public void onPlaneGeometryChange(SXRPlane plane) {
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
+                SXRMesh mesh = new SXRMesh(getSXRContext());
+                mesh.setVertices(plane.get3dPolygonAsArray());
+
+                plane.getOwnerObject().getRenderData().setMesh(mesh);
             }
         }
     };
@@ -318,6 +329,4 @@ public class AvatarMain extends SXRMain {
 
         public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
     };
-
-
 }
