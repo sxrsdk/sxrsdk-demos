@@ -38,6 +38,7 @@ import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.mixedreality.SXRAnchor;
 import com.samsungxr.mixedreality.SXRHitResult;
+import com.samsungxr.mixedreality.SXRLightEstimate;
 import com.samsungxr.mixedreality.SXRMixedReality;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.mixedreality.SXRTrackingState;
@@ -95,9 +96,10 @@ public class AvatarMain extends SXRMain {
     @Override
     public void onStep()
     {
-        if (mMixedReality != null)
+        SXRLightEstimate lightEstimate = mMixedReality.getLightEstimate();
+        if (lightEstimate != null)
         {
-            float light = mMixedReality.getLightEstimate().getPixelIntensity();
+            float light = lightEstimate.getPixelIntensity();
             mSceneLight.setAmbientIntensity(light, light, light, 1);
             mSceneLight.setDiffuseIntensity(light, light, light, 1);
             mSceneLight.setSpecularIntensity(light, light, light, 1);
@@ -252,13 +254,8 @@ public class AvatarMain extends SXRMain {
                 float scale = 0.3f /bv.radius;
                 avatarRoot.getTransform().setScale(scale, scale, scale);
                 bv = avatarRoot.getBoundingVolume();
+                avatarRoot.getTransform().setPosition(-bv.center.x, 0.3f - bv.center.y, -bv.center.z);
             }
-            float zpos = -bv.center.z;
-            if (mMixedReality.getPassThroughObject() != null)
-            {
-                zpos -= 1.5f;
-            }
-            avatarRoot.getTransform().setPosition(-bv.center.x, 0, zpos);
             avatarRoot.attachComponent(new SXRBoxCollider(mContext));
             mAvatarAnchor.addChildObject(avatarRoot);
             avatarRoot.getEventReceiver().addListener(mSelector);
@@ -295,12 +292,7 @@ public class AvatarMain extends SXRMain {
                 avatarRoot.getTransform().setScale(scale, scale, scale);
                 bv = avatarRoot.getBoundingVolume();
             }
-            float zpos = -bv.center.z;
-            if (mMixedReality.getPassThroughObject() != null)
-            {
-                zpos -= 1.5f;
-            }
-            avatarRoot.getTransform().setPosition(-bv.center.x, 0, zpos);
+            avatarRoot.getTransform().setPosition(-bv.center.x, 0, -bv.center.z);
             avatarRoot.attachComponent(new SXRBoxCollider(mContext));
             avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
                 @Override
