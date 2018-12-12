@@ -63,7 +63,7 @@ public class HudMode extends BasePetMode {
         EventBusUtils.register(this);
         if (mPetContext.getMode() != PetConstants.SHARE_MODE_NONE) {
             Log.d(TAG, "Play Ball activated by sharing mode!");
-            mPetController.playBall();
+            mPetController.playBone();
         }
     }
 
@@ -84,10 +84,10 @@ public class HudMode extends BasePetMode {
         public void onBoneClicked() {
             mVirtualObjectController.hideObject();
             if (mPetController.isPlaying()) {
-                mPetController.stopBall();
+                mPetController.stopBone();
                 Log.d(TAG, "Stop Bone");
             } else {
-                mPetController.playBall();
+                mPetController.playBone();
                 Log.d(TAG, "Play Bone");
             }
             mPetController.setCurrentAction(PetActions.IDLE.ID);
@@ -96,18 +96,27 @@ public class HudMode extends BasePetMode {
         @Override
         public void onBedClicked() {
             Log.d(TAG, "Action: go to bed");
+            if (mPetController.isPlaying()) {
+                mPetController.stopBone();
+            }
             mVirtualObjectController.showObject(ArPetObjectType.BED);
         }
 
         @Override
         public void onHydrantClicked() {
             Log.d(TAG, "Action: go to hydrant");
+            if (mPetController.isPlaying()) {
+                mPetController.stopBone();
+            }
             mVirtualObjectController.showObject(ArPetObjectType.HYDRANT);
         }
 
         @Override
         public void onBowlClicked() {
             Log.d(TAG, "Action: go to bowl");
+            if (mPetController.isPlaying()) {
+                mPetController.stopBone();
+            }
             mVirtualObjectController.showObject(ArPetObjectType.BOWL);
         }
 
@@ -157,7 +166,7 @@ public class HudMode extends BasePetMode {
                 mHudView.hideDisconnectView();
                 mHudView.hideConnectedLabel();
             });
-            mPetController.stopBall();
+            mPetController.stopBone();
         }
     }
 

@@ -212,7 +212,7 @@ public class PetMain extends DisableNativeSplashScreen {
                 int mode = mSharedMixedReality.getMode();
                 getSXRContext().runOnGlThread(() -> showViewConnectionFinished(mode));
                 mSharedMixedReality.stopSharing();
-                mPet.stopBall();
+                mPet.stopBone();
                 if (mode == PetConstants.SHARE_MODE_GUEST) {
                     mPet.exit();
                 }
@@ -249,7 +249,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
             mCurrentMode = new SharingAnchorMode(mPetContext, mHandlerBackToHud);
             mCurrentMode.enter();
-            mPet.stopBall();
+            mPet.stopBone();
             mPet.setCurrentAction(PetActions.IDLE.ID);
         }
 
@@ -266,7 +266,7 @@ public class PetMain extends DisableNativeSplashScreen {
             mCurrentMode = new EditMode(mPetContext, mHandlerBackToHud, mPet);
             mCurrentMode.enter();
             ((EditMode) mCurrentMode).onEnableGesture(mCursorController);
-            mPet.stopBall();
+            mPet.stopBone();
             mPet.setCurrentAction(PetActions.AT_EDIT.ID);
 
             // Edit mode will handle picker events
@@ -302,7 +302,7 @@ public class PetMain extends DisableNativeSplashScreen {
             mCurrentMode.enter();
 
             if (mPetContext.getMode() != PetConstants.SHARE_MODE_NONE) {
-                mPet.playBall();
+                mPet.playBone();
             }
             mPet.setCurrentAction(PetActions.IDLE.ID);
         }

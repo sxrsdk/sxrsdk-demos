@@ -28,7 +28,6 @@ import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.mode.BasePetMode;
 import com.samsungxr.arpet.mode.ILoadEvents;
 import com.samsungxr.arpet.movement.IPetAction;
-import com.samsungxr.arpet.movement.OnPetActionListener;
 import com.samsungxr.arpet.movement.PetActionType;
 import com.samsungxr.arpet.movement.PetActions;
 import com.samsungxr.arpet.service.IMessageService;
@@ -195,12 +194,12 @@ public class CharacterController extends BasePetMode {
         setCurrentAction(PetActions.TO_HYDRANT.ID);
     }
 
-    public void playBall() {
+    public void playBone() {
         mIsPlaying = true;
         mBallThrowHandler.enable();
     }
 
-    public void stopBall() {
+    public void stopBone() {
         mIsPlaying = false;
         mBallThrowHandler.disable();
     }
