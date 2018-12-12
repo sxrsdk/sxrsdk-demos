@@ -171,10 +171,12 @@ public class PetActions {
     }
 
     private static abstract class WalkAction extends LoopAction {
+        private final float mWalkError;
 
         public WalkAction(CharacterView character, SXRNode targetObject,
-                      OnPetActionListener listener) {
+                      OnPetActionListener listener, float error) {
             super(character, targetObject, listener);
+            mWalkError = error;
         }
 
         @Override
@@ -190,7 +192,7 @@ public class PetActions {
 
             mTargetDirection.y = 0;
             // Min distance to the tap position
-            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
+            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * mWalkError;
 
             if (moveTowardToTapPosition) {
                 mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
@@ -425,7 +427,7 @@ public class PetActions {
 
         public TO_TAP(CharacterView character, SXRNode tapObject,
                          OnPetActionListener listener) {
-            super(character, tapObject, listener);
+            super(character, tapObject, listener, 0.1f);
         }
 
         @Override
@@ -495,7 +497,7 @@ public class PetActions {
 
         public TO_BED(CharacterView character, SXRNode bedObject,
                       OnPetActionListener listener) {
-            super(character, bedObject, listener);
+            super(character, bedObject, listener, 0.4f);
         }
 
         @Override
@@ -512,6 +514,7 @@ public class PetActions {
         @Override
         public void onExit() {
             Log.w(TAG, "exit => TO_BED");
+            mCharacter.getTransform().setPositionY(mCharacter.getTransform().getPositionY() + 0.6f);
         }
     }
 
@@ -520,7 +523,7 @@ public class PetActions {
 
         public TO_BOWL(CharacterView character, SXRNode bowlObject,
                       OnPetActionListener listener) {
-            super(character, bowlObject, listener);
+            super(character, bowlObject, listener, 0.7f);
         }
 
         @Override
@@ -545,7 +548,7 @@ public class PetActions {
 
         public TO_HYDRANT(CharacterView character, SXRNode hydrantObject,
                       OnPetActionListener listener) {
-            super(character, hydrantObject, listener);
+            super(character, hydrantObject, listener, 1.0f);
         }
 
         @Override
