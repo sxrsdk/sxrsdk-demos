@@ -41,7 +41,9 @@ public class PetActions {
     private static final String TAG = "CharacterStates";
 
     @IntDef({IDLE.ID, TO_BALL.ID, TO_PLAYER.ID, TO_TAP.ID, GRAB.ID, TO_BED.ID, TO_BOWL.ID,
-            TO_HYDRANT.ID, AT_EDIT.ID})
+            TO_HYDRANT.ID, DRINK_ENTER.ID, DRINK_EXIT.ID, DRINK_LOOP.ID,
+            HYDRANT_ENTER.ID, HYDRANT_EXIT.ID, HYDRANT_LOOP.ID,
+            SLEEP_ENTER.ID, SLEEP_EXIT.ID, SLEEP_LOOP.ID, AT_EDIT.ID})
     public @interface Action{
     }
 
@@ -90,11 +92,11 @@ public class PetActions {
         }
 
         protected void animate(float frameTime) {
-            mAnimation.animate(mElapsedTime);
-
             mElapsedTime += frameTime;
             mElapsedTime = ((int)(mElapsedTime * 1000)) % ((int)(mAnimDuration * 1000));
             mElapsedTime /= 1000f;
+
+            mAnimation.animate(mElapsedTime);
         }
 
         @Override
@@ -154,7 +156,63 @@ public class PetActions {
         protected abstract void onRun(float fimeTime);
     }
 
-    public static class IDLE extends PetAction {
+    private static abstract class LoopAction extends PetAction {
+        public LoopAction(CharacterView character, SXRNode targetObject,
+                          OnPetActionListener listener) {
+            super(character, targetObject, listener);
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mAnimation != null) {
+                animate(frameTime);
+            }
+        }
+    }
+
+    private static abstract class WalkAction extends LoopAction {
+
+        public WalkAction(CharacterView character, SXRNode targetObject,
+                      OnPetActionListener listener) {
+            super(character, targetObject, listener);
+        }
+
+        @Override
+        public void onEntry() {
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(1));
+            }
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            super.onRun(frameTime);
+
+            mTargetDirection.y = 0;
+            // Min distance to the tap position
+            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
+
+            if (moveTowardToTapPosition) {
+                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
+                        mTargetDirection.x, 0, mTargetDirection.z);
+
+                if (mRotation.angle() < Math.PI * 0.25f) {
+                    // acceleration logic
+                    float[] pose = mCharacter.getTransform().getModelMatrix();
+                    mMoveTo.mul(mWalkingSpeed * frameTime);
+
+                    pose[12] = pose[12] + mMoveTo.x;
+                    pose[14] = pose[14] + mMoveTo.z;
+
+                    mCharacter.updatePose(pose);
+                }
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class IDLE extends LoopAction {
         public static final int ID = 0;
         private final PetContext mPetContext;
 
@@ -171,7 +229,9 @@ public class PetActions {
         @Override
         public void onEntry() {
             Log.w(TAG, "entry => IDLE");
-            setAnimation(mCharacter.getAnimation(0));
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(0));
+            }
             mPetContext.registerSharedObject(mCharacter, ArPetObjectType.PET, false);
         }
 
@@ -179,14 +239,6 @@ public class PetActions {
         public void onExit() {
             Log.w(TAG, "exit => IDLE");
             mPetContext.unregisterSharedObject(mCharacter);
-        }
-
-        @Override
-        public void onRun(float frameTime) {
-
-            if (mAnimation != null) {
-                animate(frameTime);
-            }
         }
     }
 
@@ -368,7 +420,7 @@ public class PetActions {
         }
     }
 
-    public static class TO_TAP extends PetAction {
+    public static class TO_TAP extends WalkAction {
         public static final int ID = 3;
 
         public TO_TAP(CharacterView character, SXRNode tapObject,
@@ -383,42 +435,13 @@ public class PetActions {
 
         @Override
         public void onEntry() {
+            super.onEntry();
             Log.w(TAG, "entry => MOVING_TO_TAP");
-            setAnimation(mCharacter.getAnimation(1));
         }
 
         @Override
         public void onExit() {
             Log.w(TAG, "exit => MOVING_TO_TAP");
-        }
-
-        @Override
-        public void onRun(float frameTime) {
-            mTargetDirection.y = 0;
-            // Min distance to the tap position
-            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
-
-            if (moveTowardToTapPosition) {
-                if (mAnimation != null) {
-                    animate(frameTime);
-                }
-
-                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
-                        mTargetDirection.x, 0, mTargetDirection.z);
-
-                if (mRotation.angle() < Math.PI * 0.25f) {
-                    // acceleration logic
-                    float[] pose = mCharacter.getTransform().getModelMatrix();
-                    mMoveTo.mul(mWalkingSpeed * frameTime);
-
-                    pose[12] = pose[12] + mMoveTo.x;
-                    pose[14] = pose[14] + mMoveTo.z;
-
-                    mCharacter.updatePose(pose);
-                }
-            } else {
-                mListener.onActionEnd(this, true);
-            }
         }
     }
 
@@ -467,7 +490,7 @@ public class PetActions {
         }
     }
 
-    public static class TO_BED extends PetAction {
+    public static class TO_BED extends WalkAction {
         public static final int ID = 5;
 
         public TO_BED(CharacterView character, SXRNode bedObject,
@@ -482,46 +505,17 @@ public class PetActions {
 
         @Override
         public void onEntry() {
+            super.onEntry();
             Log.w(TAG, "entry => TO_BED");
-            setAnimation(mCharacter.getAnimation(1));
         }
 
         @Override
         public void onExit() {
             Log.w(TAG, "exit => TO_BED");
         }
-
-        @Override
-        public void onRun(float frameTime) {
-            mTargetDirection.y = 0;
-            // Min distance to the tap position
-            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
-
-            if (moveTowardToTapPosition) {
-                if (mAnimation != null) {
-                    animate(frameTime);
-                }
-
-                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
-                        mTargetDirection.x, 0, mTargetDirection.z);
-
-                if (mRotation.angle() < Math.PI * 0.25f) {
-                    // acceleration logic
-                    float[] pose = mCharacter.getTransform().getModelMatrix();
-                    mMoveTo.mul(mWalkingSpeed * frameTime);
-
-                    pose[12] = pose[12] + mMoveTo.x;
-                    pose[14] = pose[14] + mMoveTo.z;
-
-                    mCharacter.updatePose(pose);
-                }
-            } else {
-                mListener.onActionEnd(this, true);
-            }
-        }
     }
 
-    public static class TO_BOWL extends PetAction {
+    public static class TO_BOWL extends WalkAction {
         public static final int ID = 6;
 
         public TO_BOWL(CharacterView character, SXRNode bowlObject,
@@ -536,46 +530,17 @@ public class PetActions {
 
         @Override
         public void onEntry() {
+            super.onEntry();
             Log.w(TAG, "entry => TO_BOWL");
-            setAnimation(mCharacter.getAnimation(1));
         }
 
         @Override
         public void onExit() {
             Log.w(TAG, "exit => TO_BOWL");
         }
-
-        @Override
-        public void onRun(float frameTime) {
-            mTargetDirection.y = 0;
-            // Min distance to the tap position
-            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
-
-            if (moveTowardToTapPosition) {
-                if (mAnimation != null) {
-                    animate(frameTime);
-                }
-
-                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
-                        mTargetDirection.x, 0, mTargetDirection.z);
-
-                if (mRotation.angle() < Math.PI * 0.25f) {
-                    // acceleration logic
-                    float[] pose = mCharacter.getTransform().getModelMatrix();
-                    mMoveTo.mul(mWalkingSpeed * frameTime);
-
-                    pose[12] = pose[12] + mMoveTo.x;
-                    pose[14] = pose[14] + mMoveTo.z;
-
-                    mCharacter.updatePose(pose);
-                }
-            } else {
-                mListener.onActionEnd(this, true);
-            }
-        }
     }
 
-    public static class TO_HYDRANT extends PetAction {
+    public static class TO_HYDRANT extends WalkAction {
         public static final int ID = 7;
 
         public TO_HYDRANT(CharacterView character, SXRNode hydrantObject,
@@ -590,39 +555,334 @@ public class PetActions {
 
         @Override
         public void onEntry() {
+            super.onEntry();
             Log.w(TAG, "entry => TO_HYDRANT");
-            setAnimation(mCharacter.getAnimation(1));
         }
 
         @Override
         public void onExit() {
             Log.w(TAG, "exit => TO_HYDRANT");
         }
+    }
+
+    public static class DRINK_ENTER extends LoopAction {
+        public static final int ID = 8;
+
+        public DRINK_ENTER(CharacterView character, SXRNode target,
+                    OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => DRINK_ENTER");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(5));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => DRINK_ENTER");
+        }
 
         @Override
         public void onRun(float frameTime) {
-            mTargetDirection.y = 0;
-            // Min distance to the tap position
-            boolean moveTowardToTapPosition = mTargetDirection.length() > mPetRadius * 0.5f;
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
 
-            if (moveTowardToTapPosition) {
-                if (mAnimation != null) {
-                    animate(frameTime);
-                }
+    public static class DRINK_EXIT extends LoopAction {
+        public static final int ID = 9;
 
-                mRotation.rotationTo(mPetDirection.x, 0, mPetDirection.z,
-                        mTargetDirection.x, 0, mTargetDirection.z);
+        public DRINK_EXIT(CharacterView character, SXRNode target,
+                           OnPetActionListener listener) {
+            super(character, target, listener);
+        }
 
-                if (mRotation.angle() < Math.PI * 0.25f) {
-                    // acceleration logic
-                    float[] pose = mCharacter.getTransform().getModelMatrix();
-                    mMoveTo.mul(mWalkingSpeed * frameTime);
+        @Override
+        public int id() {
+            return ID;
+        }
 
-                    pose[12] = pose[12] + mMoveTo.x;
-                    pose[14] = pose[14] + mMoveTo.z;
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => DRINK_EXIT");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(6));
+            }
+        }
 
-                    mCharacter.updatePose(pose);
-                }
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => DRINK_EXIT");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class DRINK_LOOP extends LoopAction {
+        public static final int ID = 10;
+
+        public DRINK_LOOP(CharacterView character, SXRNode target,
+                          OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => DRINK_LOOP");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(7));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => DRINK_LOOP");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class HYDRANT_ENTER extends LoopAction {
+        public static final int ID = 11;
+
+        public HYDRANT_ENTER(CharacterView character, SXRNode target,
+                           OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => HYDRANT_ENTER");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(8));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => HYDRANT_ENTER");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class HYDRANT_EXIT extends LoopAction {
+        public static final int ID = 12;
+
+        public HYDRANT_EXIT(CharacterView character, SXRNode target,
+                          OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => HYDRANT_EXIT");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(9));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => HYDRANT_EXIT");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class HYDRANT_LOOP extends LoopAction {
+        public static final int ID = 13;
+
+        public HYDRANT_LOOP(CharacterView character, SXRNode target,
+                          OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => HYDRANT_LOOP");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(10));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => HYDRANT_LOOP");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class SLEEP_ENTER extends LoopAction {
+        public static final int ID = 14;
+
+        public SLEEP_ENTER(CharacterView character, SXRNode target,
+                             OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => SLEEP_ENTER");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(11));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => SLEEP_ENTER");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class SLEEP_EXIT extends LoopAction {
+        public static final int ID = 15;
+
+        public SLEEP_EXIT(CharacterView character, SXRNode target,
+                          OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => SLEEP_EXIT");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(12));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => SLEEP_EXIT");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
+            } else {
+                mListener.onActionEnd(this, true);
+            }
+        }
+    }
+
+    public static class SLEEP_LOOP extends LoopAction {
+        public static final int ID = 16;
+
+        public SLEEP_LOOP(CharacterView character, SXRNode target,
+                          OnPetActionListener listener) {
+            super(character, target, listener);
+        }
+
+        @Override
+        public int id() {
+            return ID;
+        }
+
+        @Override
+        public void onEntry() {
+            Log.w(TAG, "entry => SLEEP_LOOP");
+            if (mAnimation == null) {
+                setAnimation(mCharacter.getAnimation(13));
+            }
+        }
+
+        @Override
+        public void onExit() {
+            Log.w(TAG, "exit => SLEEP_LOOP");
+        }
+
+        @Override
+        public void onRun(float frameTime) {
+            if (mElapsedTime + frameTime < mAnimDuration) {
+                super.onRun(frameTime);
             } else {
                 mListener.onActionEnd(this, true);
             }

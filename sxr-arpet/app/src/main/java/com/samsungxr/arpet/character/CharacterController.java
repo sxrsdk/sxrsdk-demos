@@ -130,11 +130,29 @@ public class CharacterController extends BasePetMode {
             setCurrentAction(PetActions.IDLE.ID);
         }));
 
-        addAction(new PetActions.TO_BED(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.TO_BED(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.SLEEP_ENTER.ID)));
 
-        addAction(new PetActions.TO_BOWL(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.TO_BOWL(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.DRINK_ENTER.ID)));
 
-        addAction(new PetActions.TO_HYDRANT(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.TO_HYDRANT(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.HYDRANT_ENTER.ID)));
+
+        addAction(new PetActions.DRINK_ENTER(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.DRINK_LOOP.ID)));
+
+        addAction(new PetActions.DRINK_EXIT(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+
+        addAction(new PetActions.DRINK_LOOP(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.DRINK_EXIT.ID)));
+
+        addAction(new PetActions.HYDRANT_ENTER(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.HYDRANT_LOOP.ID)));
+
+        addAction(new PetActions.HYDRANT_EXIT(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+
+        addAction(new PetActions.HYDRANT_LOOP(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.HYDRANT_EXIT.ID)));
+
+        addAction(new PetActions.SLEEP_ENTER(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.SLEEP_LOOP.ID)));
+
+        addAction(new PetActions.SLEEP_EXIT(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+
+        addAction(new PetActions.SLEEP_LOOP(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.SLEEP_EXIT.ID)));
 
         addAction(new PetActions.AT_EDIT(mPetContext, pet));
 

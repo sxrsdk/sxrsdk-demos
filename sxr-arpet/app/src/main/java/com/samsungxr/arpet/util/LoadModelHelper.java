@@ -36,21 +36,20 @@ public class LoadModelHelper {
 
     public static String PET_BONES_MAP_PATH = "objects/anim/pet_skeleton_map.txt";
     public static String[] PET_ANIMATIONS_PATH = {
-            "objects/anim/pet_anim_idle.bvh",
-            "objects/anim/pet_anim_walk.bvh",
-            "objects/anim/pet_anim_run.bvh",
-            "objects/anim/pet_bone_anim_walk.bvh",
-            "objects/anim/pet_bone_anim_grab.bvh",
-            "objects/anim/pet_anim_drink_enter.bvh",
-            "objects/anim/pet_anim_drink_exit.bvh",
-            "objects/anim/pet_anim_drink_loop.bvh",
-            "objects/anim/pet_anim_drink_loop.bvh",
-            "objects/anim/pet_anim_hydrant_enter.bvh",
-            "objects/anim/pet_anim_hydrant_exit.bvh",
-            "objects/anim/pet_anim_hydrant_loop.bvh",
-            "objects/anim/pet_anim_sleep_enter.bvh",
-            "objects/anim/pet_anim_sleep_exit.bvh",
-            "objects/anim/pet_anim_sleep_loop.bvh"
+            "objects/anim/pet_anim_idle.bvh",          // 0
+            "objects/anim/pet_anim_walk.bvh",          // 1
+            "objects/anim/pet_anim_run.bvh",           // 2
+            "objects/anim/pet_bone_anim_walk.bvh",     // 3
+            "objects/anim/pet_bone_anim_grab.bvh",     // 4
+            "objects/anim/pet_anim_drink_enter.bvh",   // 5
+            "objects/anim/pet_anim_drink_exit.bvh",    // 6
+            "objects/anim/pet_anim_drink_loop.bvh",    // 7
+            "objects/anim/pet_anim_hydrant_enter.bvh", // 8
+            "objects/anim/pet_anim_hydrant_exit.bvh",  // 9
+            "objects/anim/pet_anim_hydrant_loop.bvh",  // 10
+            "objects/anim/pet_anim_sleep_enter.bvh",   // 11
+            "objects/anim/pet_anim_sleep_exit.bvh",    // 12
+            "objects/anim/pet_anim_sleep_loop.bvh"     // 13
     };
 
     public static SXRNode loadModelSceneObject(SXRContext sxrContext, String modelPath) {

@@ -28,6 +28,15 @@ import android.support.annotation.IntDef;
         PetActions.TO_BED.ID,
         PetActions.TO_BOWL.ID,
         PetActions.TO_HYDRANT.ID,
+        PetActions.DRINK_ENTER.ID,
+        PetActions.DRINK_EXIT.ID,
+        PetActions.DRINK_LOOP.ID,
+        PetActions.HYDRANT_ENTER.ID,
+        PetActions.HYDRANT_EXIT.ID,
+        PetActions.HYDRANT_LOOP.ID,
+        PetActions.SLEEP_ENTER.ID,
+        PetActions.SLEEP_EXIT.ID,
+        PetActions.SLEEP_LOOP.ID,
         PetActions.AT_EDIT.ID
 })
 public @interface PetActionType {
