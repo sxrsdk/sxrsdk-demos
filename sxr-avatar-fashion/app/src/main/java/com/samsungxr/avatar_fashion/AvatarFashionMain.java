@@ -11,6 +11,7 @@ import com.samsungxr.SXRScene;
 import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.mixedreality.IAnchorEvents;
 import com.samsungxr.mixedreality.SXRAnchor;
+import com.samsungxr.mixedreality.SXRLightEstimate;
 import com.samsungxr.mixedreality.SXRMixedReality;
 import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.widgetlib.content_scene.ContentSceneController;
@@ -114,22 +115,29 @@ public class AvatarFashionMain extends SXRMain
 
         SXRScene sxrScene = mContext.getMainScene();
         SceneUtils utility = new SceneUtils();
-        mSceneLight = utility.makeSceneLight(mContext);
-        sxrScene.getMainCameraRig().getHeadTransformObject().addChildObject(mSceneLight.getOwnerObject());
-
-        mMixedReality = new SXRMixedReality(sxrScene, false);
-        mMixedReality.resume();
-
-        mMixedReality.getEventReceiver().addListener(new PlaneEventsListener(mContext, utility,
-                mMixedReality, avatarAnchor));
-
-        mMixedReality.getEventReceiver().addListener(new IAnchorEvents() {
-            @Override
-            public void onAnchorStateChange(SXRAnchor SXRAnchor, SXRTrackingState SXRTrackingState)
+        if (mMixedReality == null)
+        {
+            mMixedReality = new SXRMixedReality(sxrScene, false);
+            mMixedReality.resume();
+            mMixedReality.getEventReceiver().addListener(new PlaneEventsListener(mContext,
+                                                                                 utility,
+                                                                                 mMixedReality,
+                                                                                 avatarAnchor));
+            mMixedReality.getEventReceiver().addListener(new IAnchorEvents()
             {
-                SXRAnchor.setEnable(SXRTrackingState == SXRTrackingState.TRACKING);
-            }
-        });
+                @Override
+                public void onAnchorStateChange(SXRAnchor SXRAnchor, SXRTrackingState SXRTrackingState)
+                {
+                    SXRAnchor.setEnable(SXRTrackingState == SXRTrackingState.TRACKING);
+                }
+            });
+        }
+        if (mSceneLight != null)
+        {
+            mSceneLight = utility.makeSceneLight(mContext);
+            sxrScene.getMainCameraRig().getHeadTransformObject()
+                    .addChildObject(mSceneLight.getOwnerObject());
+        }
     }
 
     class AvatarListDataLoader extends AvatarDataLoader {
@@ -200,9 +208,12 @@ public class AvatarFashionMain extends SXRMain
     // AR part
     @Override
     public void onStep() {
-        if (mMixedReality != null && mMixedReality.getLightEstimate() != null) {
-            float light = mMixedReality.getLightEstimate().getPixelIntensity() * 1.5f;
-            if (mSceneLight != null) {
+        if ((mMixedReality != null) && (mSceneLight != null))
+        {
+            SXRLightEstimate lightEstimate = mMixedReality.getLightEstimate();
+            if (lightEstimate != null)
+            {
+                float light = lightEstimate.getPixelIntensity() * 1.5f;
                 mSceneLight.setAmbientIntensity(light, light, light, 1);
                 mSceneLight.setDiffuseIntensity(light, light, light, 1);
                 mSceneLight.setSpecularIntensity(light, light, light, 1);

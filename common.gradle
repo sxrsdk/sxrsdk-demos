@@ -16,7 +16,7 @@ allprojects {
             url "http://google.bintray.com/googlevr"
         }
         flatDir {
-            dirs '../../sxrsdk/SXR/sxr-libs', '../../../sxrsdk/SXR/sxr-libs', '../../../../sxrsdk/SXR/sxr-libs'
+            dirs '../../sxrsdk/SXR/sxr-libs', '../../../sxrsdk/SXR/sxr-libs', '../../../../sxrsdk/SXR/sxr-libs', '../../sxr/SXR/sxr-libs'
         }
     }
 }
