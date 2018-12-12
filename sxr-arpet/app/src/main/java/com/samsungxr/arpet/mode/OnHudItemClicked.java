@@ -18,7 +18,7 @@ package com.samsungxr.arpet.mode;
 public interface OnHudItemClicked {
 
     // Actions submenu
-    void onBallClicked();
+    void onBoneClicked();
 
     void onBedClicked();
 

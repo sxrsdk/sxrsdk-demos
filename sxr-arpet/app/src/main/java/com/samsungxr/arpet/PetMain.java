@@ -238,16 +238,6 @@ public class PetMain extends DisableNativeSplashScreen {
     public class HandlerModeChange implements OnModeChange {
 
         @Override
-        public void onPlayBall() {
-            if (mPet.isPlaying()) {
-                mPet.stopBall();
-            } else {
-                mPet.playBall();
-            }
-            mPet.setCurrentAction(PetActions.IDLE.ID);
-        }
-
-        @Override
         public void onShareAnchor() {
             if (mCurrentMode instanceof SharingAnchorMode) {
                 return;

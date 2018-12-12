@@ -58,13 +58,8 @@ public class HudView extends BasePetView implements View.OnClickListener {
     private Animation mOpenMenuHud, mOpenSubmenu;
     private Animation mCloseMenuHud, mCloseSubmenu;
     private Animation mBounce;
-    private OnDisableActions mDisableActions;
     private boolean mIsActivedSubmenu = false;
     private boolean mIsActionsButtonActived = false;
-    private boolean mIsBedActived = false;
-    private boolean mIsHydrantActived = false;
-    private boolean mIsBowlActived = false;
-    private boolean mIsBoneActived = false;
     private BounceInterpolator interpolator = new BounceInterpolator(0.1, 20);
 
 
@@ -81,7 +76,6 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
         mListener = null;
         mDisconnectListener = null;
-        mDisableActions = null;
         mStartMenuObject = new SXRViewNode(petContext.getSXRContext(),
                 R.layout.hud_start_layout, startMenuInitEvents);
         mSubmenuObject = new SXRViewNode(petContext.getSXRContext(),
@@ -106,10 +100,6 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
     public void hideDisconnectView() {
         mDisconnectViewObject.setEnable(false);
-    }
-
-    public void setDisableActionsListener(OnDisableActions listener) {
-        mDisableActions = listener;
     }
 
     public void showDisconnectView(@ConnectionMode int mode) {
@@ -144,7 +134,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
     @Override
     public void onClick(final View view) {
-        if (mListener == null || mDisableActions == null) {
+        if (mListener == null) {
             return;
         }
 
@@ -178,101 +168,79 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 });
                 break;
             case R.id.btn_fetchbone:
-                mIsBoneActived = !mIsBoneActived;
-                if (mIsBoneActived) {
-                    mPlayBoneButton.startAnimation(mBounce);
-                    mBounce.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                mPlayBoneButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBallClicked());
-                            mBounce.setAnimationListener(null);
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBoneClicked());
+                        mBounce.setAnimationListener(null);
+                    }
 
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                } else {
-                    mPetContext.getSXRContext().runOnGlThread(() -> mDisableActions.OnDisableBone());
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
                 mPlayBoneButton.post(() -> closeMenu());
                 break;
             case R.id.btn_toSleep:
-                mIsBedActived = !mIsBedActived;
-                if (mIsBedActived) {
-                    mToSleepButton.startAnimation(mBounce);
-                    mBounce.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                mToSleepButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBedClicked());
-                            mBounce.setAnimationListener(null);
-                        }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBedClicked());
+                        mBounce.setAnimationListener(null);
+                    }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                } else {
-                    mPetContext.getSXRContext().runOnGlThread(() -> mDisableActions.OnDisableActions());
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
                 mToSleepButton.post(() -> closeMenu());
                 break;
             case R.id.btn_hydrant:
-                mIsHydrantActived = !mIsHydrantActived;
-                if (mIsHydrantActived) {
-                    mHydrantButton.startAnimation(mBounce);
-                    mBounce.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                mHydrantButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            mPetContext.getSXRContext().runOnGlThread(() -> mListener.onHydrantClicked());
-                            mBounce.setAnimationListener(null);
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onHydrantClicked());
+                        mBounce.setAnimationListener(null);
+                    }
 
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                } else {
-                    mPetContext.getSXRContext().runOnGlThread(() -> mDisableActions.OnDisableActions());
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
                 mHydrantButton.post(() -> closeMenu());
                 break;
             case R.id.drinkWater:
-                mIsBowlActived = !mIsBowlActived;
-                if (mIsBowlActived) {
-                    mDrinkWater.startAnimation(mBounce);
-                    mBounce.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                mDrinkWater.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBowlClicked());
-                            mBounce.setAnimationListener(null);
-                        }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onBowlClicked());
+                        mBounce.setAnimationListener(null);
+                    }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                } else {
-                    mPetContext.getSXRContext().runOnGlThread(() -> mDisableActions.OnDisableActions());
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
                 mDrinkWater.post(() -> closeMenu());
                 break;
             case R.id.btn_shareanchor:

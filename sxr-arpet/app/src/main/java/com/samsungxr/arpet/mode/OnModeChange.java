@@ -17,10 +17,6 @@ package com.samsungxr.arpet.mode;
 
 public interface OnModeChange {
 
-
-    void onPlayBall();
-
-
     void onShareAnchor();
 
 

@@ -51,7 +51,6 @@ public class HudMode extends BasePetMode {
         mHudView = (HudView) mModeScene;
         mHudView.setListener(new OnHudItemClickedHandler());
         mHudView.setDisconnectListener(new OnDisconnectClickedHandler());
-        mHudView.setDisableActionsListener(new OnDisableActionsHandler());
 
         mConnectionManager = (PetConnectionManager) PetConnectionManager.getInstance();
         mSharedMixedReality = petContext.getMixedReality();
@@ -64,7 +63,7 @@ public class HudMode extends BasePetMode {
         EventBusUtils.register(this);
         if (mPetContext.getMode() != PetConstants.SHARE_MODE_NONE) {
             Log.d(TAG, "Play Ball activated by sharing mode!");
-            mModeChangeListener.onPlayBall();
+            mPetController.playBall();
         }
     }
 
@@ -82,10 +81,16 @@ public class HudMode extends BasePetMode {
     private class OnHudItemClickedHandler implements OnHudItemClicked {
 
         @Override
-        public void onBallClicked() {
+        public void onBoneClicked() {
             mVirtualObjectController.hideObject();
-            mModeChangeListener.onPlayBall();
-            Log.d(TAG, "Play Ball Mode");
+            if (mPetController.isPlaying()) {
+                mPetController.stopBall();
+                Log.d(TAG, "Stop Bone");
+            } else {
+                mPetController.playBall();
+                Log.d(TAG, "Play Bone");
+            }
+            mPetController.setCurrentAction(PetActions.IDLE.ID);
         }
 
         @Override
@@ -180,21 +185,6 @@ public class HudMode extends BasePetMode {
             //TODO: after finish the sharing anchor experience as guest, the scene will be reseted
             // and the user should be notified to detect planes and positioning the pet again
             mPetController.exit();
-        }
-    }
-
-    private class OnDisableActionsHandler implements OnDisableActions {
-
-        @Override
-        public void OnDisableActions() {
-            Log.d(TAG, "Disable Actions");
-            mVirtualObjectController.hideObject();
-        }
-
-        @Override
-        public void OnDisableBone() {
-            Log.d(TAG, "Disable Bone");
-            mPetController.stopBall();
         }
     }
 
