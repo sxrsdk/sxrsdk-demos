@@ -68,6 +68,9 @@ public class HudMode extends BasePetMode {
     @Override
     protected void onExit() {
         EventBusUtils.unregister(this);
+        if (mVirtualObjectController.hasActiveObject()) {
+            mVirtualObjectController.hideObject();
+        }
     }
 
     @Override
