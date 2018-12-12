@@ -129,7 +129,7 @@ public class Avatar extends GroupWidget {
                 blendAnim.addAnimation(animation.getAnimation(1));
             }
             countAnim++;
-            Log.i("printAnimation"," name "+animation.getName());
+
             /*
             Log.d(TAG, "onAnimationLoaded , %s, errors = %s", filePath, errors);
             if (errors != null) {
@@ -153,7 +153,7 @@ public class Avatar extends GroupWidget {
 
 
 
-            if(countAnim==2)
+            if(countAnim==3)
             {
                 blendAnim.sendAvatar(avatar.getModel(),avatar, getAnimMap());
                 String map = getAnimMap();
