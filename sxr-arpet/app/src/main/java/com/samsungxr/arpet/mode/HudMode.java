@@ -51,6 +51,7 @@ public class HudMode extends BasePetMode {
         mHudView = (HudView) mModeScene;
         mHudView.setListener(new OnHudItemClickedHandler());
         mHudView.setDisconnectListener(new OnDisconnectClickedHandler());
+        mHudView.setDisableActionsListener(new OnDisableActionsHandler());
 
         mConnectionManager = (PetConnectionManager) PetConnectionManager.getInstance();
         mSharedMixedReality = petContext.getMixedReality();
@@ -181,4 +182,20 @@ public class HudMode extends BasePetMode {
             mPetController.exit();
         }
     }
+
+    private class OnDisableActionsHandler implements OnDisableActions {
+
+        @Override
+        public void OnDisableActions() {
+            Log.d(TAG, "Disable Actions");
+            mVirtualObjectController.hideObject();
+        }
+
+        @Override
+        public void OnDisableBone() {
+            Log.d(TAG, "Disable Bone");
+            mPetController.stopBall();
+        }
+    }
+
 }
