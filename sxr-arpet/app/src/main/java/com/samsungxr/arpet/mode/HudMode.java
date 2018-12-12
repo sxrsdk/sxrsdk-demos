@@ -25,6 +25,8 @@ import com.samsungxr.arpet.constant.ArPetObjectType;
 import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.manager.connection.PetConnectionManager;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
+import com.samsungxr.arpet.movement.IPetAction;
+import com.samsungxr.arpet.movement.PetActions;
 import com.samsungxr.arpet.service.share.SharedMixedReality;
 import com.samsungxr.arpet.util.EventBusUtils;
 
@@ -82,9 +84,7 @@ public class HudMode extends BasePetMode {
 
         @Override
         public void onBallClicked() {
-            if (mVirtualObjectController.hasActiveObject()) {
-                mVirtualObjectController.hideObject();
-            }
+            mVirtualObjectController.hideObject();
             mModeChangeListener.onPlayBall();
             Log.d(TAG, "Play Ball Mode");
         }
@@ -166,6 +166,13 @@ public class HudMode extends BasePetMode {
                 mHudView.hideDisconnectView();
                 mHudView.hideConnectedLabel();
             });
+        }
+    }
+
+    @Subscribe
+    public void onPetActionChanged(IPetAction action) {
+        if (action.id() == PetActions.IDLE.ID) {
+            mVirtualObjectController.hideObject();
         }
     }
 

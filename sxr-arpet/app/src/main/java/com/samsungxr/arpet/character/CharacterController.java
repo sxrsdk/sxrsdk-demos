@@ -138,21 +138,32 @@ public class CharacterController extends BasePetMode {
 
         addAction(new PetActions.DRINK_ENTER(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.DRINK_LOOP.ID)));
 
-        addAction(new PetActions.DRINK_EXIT(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.DRINK_EXIT(pet, mBowlTarget, (action, success) -> {
+            ((CharacterView) mModeScene).setTapPosition(0, 0, 0);
+            setCurrentAction(PetActions.TO_TAP.ID);
+        }));
 
         addAction(new PetActions.DRINK_LOOP(pet, mBowlTarget, (action, success) -> setCurrentAction(PetActions.DRINK_EXIT.ID)));
 
         addAction(new PetActions.HYDRANT_ENTER(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.HYDRANT_LOOP.ID)));
 
-        addAction(new PetActions.HYDRANT_EXIT(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.HYDRANT_EXIT(pet, mHydrantNode, (action, success) -> {
+            ((CharacterView) mModeScene).setTapPosition(0, 0, 0);
+            setCurrentAction(PetActions.TO_TAP.ID);
+        }));
 
         addAction(new PetActions.HYDRANT_LOOP(pet, mHydrantNode, (action, success) -> setCurrentAction(PetActions.HYDRANT_EXIT.ID)));
 
         addAction(new PetActions.SLEEP_ENTER(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.SLEEP_LOOP.ID)));
 
-        addAction(new PetActions.SLEEP_EXIT(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.IDLE.ID)));
+        addAction(new PetActions.SLEEP_EXIT(pet, mBedTarget, (action, success) -> {
+            ((CharacterView) mModeScene).setTapPosition(0, 0, 0);
+            setCurrentAction(PetActions.TO_TAP.ID);
+        }));
 
-        addAction(new PetActions.SLEEP_LOOP(pet, mBedTarget, (action, success) -> setCurrentAction(PetActions.SLEEP_EXIT.ID)));
+        addAction(new PetActions.SLEEP_LOOP(pet, mBedTarget, (action, success) -> {
+            setCurrentAction(PetActions.SLEEP_EXIT.ID);
+        }));
 
         addAction(new PetActions.AT_EDIT(mPetContext, pet));
 
@@ -228,6 +239,10 @@ public class CharacterController extends BasePetMode {
             } if (mCurrentAction.id() == PetActions.GRAB.ID) {
                 mBallThrowHandler.disableBallsPhysics();
             }
+        }
+
+        if (mCurrentAction != null && action == PetActions.IDLE.ID) {
+            EventBusUtils.post(mCurrentAction);
         }
     }
 

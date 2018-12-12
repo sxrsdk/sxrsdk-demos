@@ -64,12 +64,12 @@ public class VirtualObjectController {
             return;
         }
 
-        if (mObjectType.equals(objectType)) {
+        if (objectType.equals(mObjectType)) {
             Log.d(TAG, "%s is already on the scene", objectType);
             return;
-        } else if (hasActiveObject()) {
-            mPetContext.getMainScene().removeNode(mVirtualObject);
-            mVirtualObject = null;
+        } else {
+            // Hide if there is a previous visible
+            hideObject();
         }
 
         mVirtualObject = load3DModel(objectType);
@@ -117,7 +117,6 @@ public class VirtualObjectController {
                 PetConstants.MODEL3D_DEFAULT_SCALE * petScale,
                 PetConstants.MODEL3D_DEFAULT_SCALE * petScale);
         mVirtualObject.getTransform().setPosition(planeX, planeY, planeZ);
-        mVirtualObject.setEnable(true);
 
         mPetContext.getMainScene().addNode(mVirtualObject);
 
@@ -139,13 +138,11 @@ public class VirtualObjectController {
         }
     }
 
-    public boolean hasActiveObject() {
-        return (mVirtualObject != null && mVirtualObject.isEnabled());
-    }
-
     public void hideObject() {
-        mPetContext.getMainScene().removeNode(mVirtualObject);
-        mVirtualObject = null;
-        mObjectType = "";
+        if (mVirtualObject != null && mVirtualObject.getParent() != null) {
+            mVirtualObject.getParent().removeChildObject(mVirtualObject);
+            mVirtualObject = null;
+            mObjectType = "";
+        }
     }
 }
