@@ -22,6 +22,7 @@ import android.util.SparseArray;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRTransform;
 import com.samsungxr.arpet.BallThrowHandler;
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.constant.PetConstants;
@@ -39,6 +40,7 @@ import com.samsungxr.arpet.util.EventBusUtils;
 import com.samsungxr.utility.Log;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.joml.Vector2f;
 
 public class CharacterController extends BasePetMode {
 
@@ -190,7 +192,17 @@ public class CharacterController extends BasePetMode {
     }
 
     public void goToHydrant(float x, float y, float z) {
-        mHydrantNode.getTransform().setPosition(x, y, z);
+        SXRTransform t = getView().getTransform();
+        float x0 = t.getPositionX();
+        float z0 = t.getPositionZ();
+        Vector2f vecHydrant = new Vector2f(x - x0, z - z0);
+        Vector2f perpendicular = new Vector2f(vecHydrant.y, vecHydrant.x * -1);
+
+        perpendicular.normalize();
+        perpendicular.mul(getView().getBoundingVolume().radius * 0.5f);
+
+        mHydrantNode.getTransform().setPosition(x + perpendicular.x, y, z + perpendicular.y);
+
         setCurrentAction(PetActions.TO_HYDRANT.ID);
     }
 

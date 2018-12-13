@@ -548,7 +548,7 @@ public class PetActions {
 
         public TO_HYDRANT(CharacterView character, SXRNode hydrantObject,
                       OnPetActionListener listener) {
-            super(character, hydrantObject, listener, 1.0f);
+            super(character, hydrantObject, listener, 0.1f);
         }
 
         @Override
