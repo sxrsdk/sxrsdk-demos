@@ -15,6 +15,7 @@
 
 package com.samsungxr.arpet.mode;
 
+import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRNode;
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.character.CharacterController;
@@ -34,6 +35,8 @@ public class VirtualObjectController {
     private CharacterController mPetController;
     private SXRNode mVirtualObject = null;
     private String mObjectType = "";
+
+    private VirtualObjectShow virtualObjectShow = new VirtualObjectShow();
 
     public VirtualObjectController(PetContext petContext, CharacterController petController) {
         mPetContext = petContext;
@@ -112,20 +115,68 @@ public class VirtualObjectController {
         final float planeY = planeMtx.m31() + orientation.y;
         final float planeZ = planeMtx.m32() + orientation.z;
 
-        final float petScale = mPetController.getView().getScale();
-        mVirtualObject.getTransform().setScale(PetConstants.MODEL3D_DEFAULT_SCALE * petScale,
-                PetConstants.MODEL3D_DEFAULT_SCALE * petScale,
-                PetConstants.MODEL3D_DEFAULT_SCALE * petScale);
-        mVirtualObject.getTransform().setPosition(planeX, planeY, planeZ);
+        final float scale = mPetController.getView().getScale() * PetConstants.MODEL3D_DEFAULT_SCALE;
 
-        mPetContext.getMainScene().addNode(mVirtualObject);
-
-        startPetsAnimation(objectType, planeX, planeY, planeZ);
+        virtualObjectShow.startAnimation(scale, planeX, planeY, planeZ);
     }
 
-    private void startPetsAnimation(@ArPetObjectType String type,
-                                    float x, float y, float z) {
-        switch (type) {
+    private class VirtualObjectShow implements SXRDrawFrameListener {
+        private float scale;
+        private float posY;
+        private float countTime = -1f;
+        private final float TOTAL_TIME = 0.5f;
+
+        VirtualObjectShow() {
+
+        }
+
+        void startAnimation(float scale, float posX, float posY, float posZ) {
+            this.scale = scale;
+            this.posY = posY;
+
+            float minScale = scale * 0.1f;
+            mVirtualObject.getTransform().setPosition(posX, posY, posZ);
+            mVirtualObject.getTransform().setScale(minScale, minScale, minScale);
+            mPetContext.getMainScene().addNode(mVirtualObject);
+
+            mPetContext.getSXRContext().registerDrawFrameListener(this);
+        }
+
+        @Override
+        public void onDrawFrame(float d) {
+            if (countTime < 0f) {
+                countTime = 0f;
+            } else {
+                if (countTime >= TOTAL_TIME) {
+                    mPetContext.getSXRContext().unregisterDrawFrameListener(this);
+                    countTime = -1;
+                    mVirtualObject.getTransform().setPositionY(posY);
+                    mVirtualObject.getTransform().setScale(scale, scale, scale);
+
+                    startPetAnimation();
+                } else {
+                    // Position animation: object will "jump"
+                    float t = countTime - 0.25f;
+                    float h = t * t * -150f + 10f;
+                    mVirtualObject.getTransform().setPositionY(posY + h);
+
+                    // Scale animation: object will grow from 10% to 110% scale and then shrink
+                    // to 100%
+                    t = countTime - 0.38f;
+                    float s = (t * t * -7f + 1.1f) * scale;
+                    mVirtualObject.getTransform().setScale(s, s, s);
+
+                    countTime += d;
+                }
+            }
+        }
+    }
+
+    private void startPetAnimation() {
+        float x = mVirtualObject.getTransform().getPositionX();
+        float y = mVirtualObject.getTransform().getPositionY();
+        float z = mVirtualObject.getTransform().getPositionZ();
+        switch (mObjectType) {
             case ArPetObjectType.BED:
                 mPetController.goToBed(x, y, z);
                 break;
