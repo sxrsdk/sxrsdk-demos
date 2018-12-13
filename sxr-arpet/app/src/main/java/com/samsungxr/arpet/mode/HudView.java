@@ -427,7 +427,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
             sxrViewNode.setTextureBufferSize(PetConstants.TEXTURE_BUFFER_SIZE);
             sxrViewNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
             LayoutViewUtils.setWorldPosition(mPetContext.getMainScene(),
-                    sxrViewNode, 522f, 74f, 90f, 90f);
+                    sxrViewNode, 522f, 69f, 90f, 90f);
             addChildObject(sxrViewNode);
         }
     };

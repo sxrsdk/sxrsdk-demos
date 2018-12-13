@@ -28,7 +28,7 @@
 
     <ImageView
         android:id="@+id/btn_fetchbone"
-        android:layout_width="51dp"
+        android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="5dp"
         android:src="@drawable/ic_play_bone" />
