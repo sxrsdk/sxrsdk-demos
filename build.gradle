@@ -4,7 +4,7 @@ buildscript {
         // Gradle 4.1 and higher include support for Google's Maven repo using
         // the google() method. And you need to include this repo to download
         // Android plugin 3.0.0 or higher.
-	    google()
+        google()
         jcenter()
     }
     dependencies {
