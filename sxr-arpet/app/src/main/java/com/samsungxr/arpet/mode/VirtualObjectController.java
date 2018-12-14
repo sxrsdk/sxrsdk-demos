@@ -15,14 +15,28 @@
 
 package com.samsungxr.arpet.mode;
 
+import android.opengl.GLES30;
+
+import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDrawFrameListener;
+import com.samsungxr.SXRMaterial;
+import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRRenderData;
+import com.samsungxr.SXRShaderId;
+import com.samsungxr.SXRTexture;
+import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.arpet.PetContext;
+import com.samsungxr.arpet.R;
+import com.samsungxr.arpet.animations.DustyAnimation;
 import com.samsungxr.arpet.character.CharacterController;
 import com.samsungxr.arpet.constant.ArPetObjectType;
 import com.samsungxr.arpet.constant.PetConstants;
+import com.samsungxr.arpet.shaders.SXRDustyShader;
 import com.samsungxr.arpet.util.LoadModelHelper;
 import com.samsungxr.mixedreality.SXRPlane;
+import com.samsungxr.shaders.SXRTextureShader;
 import com.samsungxr.utility.Log;
 
 import org.joml.Matrix4f;
@@ -34,6 +48,7 @@ public class VirtualObjectController {
     private PetContext mPetContext;
     private CharacterController mPetController;
     private SXRNode mVirtualObject = null;
+    private final DustyAnimation mDustyAnimation;
     private String mObjectType = "";
 
     private VirtualObjectShow virtualObjectShow = new VirtualObjectShow();
@@ -41,6 +56,8 @@ public class VirtualObjectController {
     public VirtualObjectController(PetContext petContext, CharacterController petController) {
         mPetContext = petContext;
         mPetController = petController;
+
+        mDustyAnimation = new DustyAnimation(petContext.getSXRContext(), 2);
     }
 
     private SXRNode load3DModel(@ArPetObjectType String type) {
@@ -117,7 +134,7 @@ public class VirtualObjectController {
 
         final float scale = mPetController.getView().getScale() * PetConstants.MODEL3D_DEFAULT_SCALE;
 
-        virtualObjectShow.startAnimation(scale, planeX, planeY, planeZ);
+        virtualObjectShow.startAnimation(scale, planeX, planeY + 2, planeZ);
     }
 
     private class VirtualObjectShow implements SXRDrawFrameListener {
@@ -153,6 +170,7 @@ public class VirtualObjectController {
                     mVirtualObject.getTransform().setPositionY(posY);
                     mVirtualObject.getTransform().setScale(scale, scale, scale);
 
+                    startDustyAnimation();
                     startPetAnimation();
                 } else {
                     // Position animation: object will "jump"
@@ -170,6 +188,17 @@ public class VirtualObjectController {
                 }
             }
         }
+    }
+
+    private void startDustyAnimation() {
+        final float x = mVirtualObject.getTransform().getPositionX();
+        final float y = mVirtualObject.getTransform().getPositionY();
+        final float z = mVirtualObject.getTransform().getPositionZ();
+
+        mDustyAnimation.setDustySize(mVirtualObject.getBoundingVolume().radius * 4);
+        mDustyAnimation.setDustyPosition(x, y, z);
+
+        mPetContext.getSXRContext().getAnimationEngine().start(mDustyAnimation);
     }
 
     private void startPetAnimation() {

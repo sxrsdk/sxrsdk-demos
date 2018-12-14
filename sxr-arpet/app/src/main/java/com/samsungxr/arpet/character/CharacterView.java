@@ -170,7 +170,7 @@ public class CharacterView extends SXRNode implements
         if (mPetContext.getMode() != PetConstants.SHARE_MODE_GUEST) {
             float[] planeModel = mBoundaryPlane.getTransform().getModelMatrix();
             Vector3f centerPlane = new Vector3f(planeModel[12], planeModel[13], planeModel[14]);
-            poseMatrix[13] = planeModel[13];
+            poseMatrix[13] = planeModel[13] + 2;
 
             final boolean infinityPlane = false;
             if (!infinityPlane) {
