@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.samsungxr.IViewEvents;
+import com.samsungxr.SXRDrawFrameListener;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.arpet.PetContext;
@@ -63,6 +64,8 @@ public class HudView extends BasePetView implements View.OnClickListener {
     private BounceInterpolator interpolator = new BounceInterpolator(0.1, 20);
 
     private final PetContext mPetContext;
+    
+    private BounceView bounceView = new BounceView();
 
     public HudView(PetContext petContext) {
         super(petContext);
@@ -134,6 +137,40 @@ public class HudView extends BasePetView implements View.OnClickListener {
         mDisconnectListener = listener;
     }
 
+    private class BounceView implements SXRDrawFrameListener {
+        private float scaleX, scaleY, scaleZ;
+        private float countTime;
+        private final float DURATION = 0.5f;
+        private final float TIME_OFFSET = 0.34f;
+        private final float BOUNCE_LIMIT = 1.2f;
+        private final float ACCELERATION = 7.8f;
+        private SXRViewNode target;
+
+        void startAnimation(SXRViewNode viewNode) {
+            scaleX = viewNode.getTransform().getScaleX();
+            scaleY = viewNode.getTransform().getScaleY();
+            scaleZ = viewNode.getTransform().getScaleZ();
+            countTime = 0f;
+            target = viewNode;
+
+            mPetContext.getSXRContext().registerDrawFrameListener(this);
+        }
+
+        @Override
+        public void onDrawFrame(float d) {
+            if (countTime >= DURATION) {
+                mPetContext.getSXRContext().unregisterDrawFrameListener(this);
+                target.getTransform().setScale(scaleX, scaleY, scaleZ);
+                target = null;
+            } else {
+                float t = countTime - TIME_OFFSET;
+                float s = -1f * ACCELERATION * t * t + BOUNCE_LIMIT;
+                target.getTransform().setScale(scaleX * s, scaleY * s, scaleZ);
+                countTime += d;
+            }
+        }
+    }
+
     @Override
     public void onClick(final View view) {
         if (mListener == null) {
@@ -144,7 +181,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
             case R.id.btn_start_menu:
                 mMenuButton.setVisibility(View.GONE);
                 mCloseButton.setVisibility(View.VISIBLE);
-                mCloseButton.startAnimation(mBounce);
+                bounceView.startAnimation(mStartMenuObject);
                 mMenuOptionsHud.startAnimation(mOpenMenuHud);
                 mMenuOptionsHud.setVisibility(View.VISIBLE);
                 mHudMenuObject.setEnable(true);
@@ -319,7 +356,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
     public void closeMenu() {
         mMenuButton.setVisibility(View.VISIBLE);
         mCloseButton.setVisibility(View.GONE);
-        mMenuButton.startAnimation(mBounce);
+        bounceView.startAnimation(mStartMenuObject);
         mMenuOptionsHud.startAnimation(mCloseMenuHud);
         mMenuOptionsHud.setVisibility(View.INVISIBLE);
         if (mIsActivedSubmenu) {
