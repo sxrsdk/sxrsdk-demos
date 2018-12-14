@@ -64,7 +64,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
     private BounceInterpolator interpolator = new BounceInterpolator(0.1, 20);
 
     private final PetContext mPetContext;
-    
+
     private BounceView bounceView = new BounceView();
 
     public HudView(PetContext petContext) {

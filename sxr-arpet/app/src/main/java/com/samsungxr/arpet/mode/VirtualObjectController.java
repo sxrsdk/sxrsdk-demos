@@ -140,8 +140,11 @@ public class VirtualObjectController {
     private class VirtualObjectShow implements SXRDrawFrameListener {
         private float scale;
         private float posY;
-        private float countTime = -1f;
-        private final float TOTAL_TIME = 0.5f;
+        private float countTime;
+        private boolean jumpEnded;
+        private final float DURATION1 = 0.5f;
+        private final float DURATION2 = 0.7f;
+        private final float DURATION3 = 0.9f;
 
         VirtualObjectShow() {
 
@@ -156,37 +159,56 @@ public class VirtualObjectController {
             mVirtualObject.getTransform().setScale(minScale, minScale, minScale);
             mPetContext.getMainScene().addNode(mVirtualObject);
 
+            countTime = 0f;
+            jumpEnded = false;
             mPetContext.getSXRContext().registerDrawFrameListener(this);
         }
 
         @Override
         public void onDrawFrame(float d) {
-            if (countTime < 0f) {
-                countTime = 0f;
-            } else {
-                if (countTime >= TOTAL_TIME) {
-                    mPetContext.getSXRContext().unregisterDrawFrameListener(this);
-                    countTime = -1;
-                    mVirtualObject.getTransform().setPositionY(posY);
-                    mVirtualObject.getTransform().setScale(scale, scale, scale);
-
-                    startDustyAnimation();
-                    startPetAnimation();
-                } else {
-                    // Position animation: object will "jump"
-                    float t = countTime - 0.25f;
-                    float h = t * t * -150f + 10f;
-                    mVirtualObject.getTransform().setPositionY(posY + h);
-
-                    // Scale animation: object will grow from 10% to 110% scale and then shrink
-                    // to 100%
-                    t = countTime - 0.38f;
-                    float s = (t * t * -7f + 1.1f) * scale;
-                    mVirtualObject.getTransform().setScale(s, s, s);
-
-                    countTime += d;
-                }
+            if (mVirtualObject == null) {
+                mPetContext.getSXRContext().unregisterDrawFrameListener(this);
+                return;
             }
+
+            if (countTime >= DURATION3) {
+                mPetContext.getSXRContext().unregisterDrawFrameListener(this);
+                mVirtualObject.getTransform().setPositionY(posY);
+                mVirtualObject.getTransform().setScale(scale, scale, scale);
+
+                startPetAnimation();
+            } else if (countTime >= DURATION2) {
+                // Scale animation 3: object will grow to 100% in Y axis only
+                float t = countTime - 1.02f;
+                float s = (t * t * -7f + 1.1f) * scale;
+                mVirtualObject.getTransform().setScaleY(s);
+            } else if (countTime >= DURATION1) {
+                // Ensure that the virtual object will be at the correct position after "jump"
+                // animation
+                if (!jumpEnded) {
+                    mVirtualObject.getTransform().setPositionY(posY);
+                    startDustyAnimation();
+                    jumpEnded = true;
+                }
+
+                // Scale animation 2: object will shrink to 15% in Y axis only
+                float t = countTime - 0.38f;
+                float s = (t * t * -7f + 1.1f) * scale;
+                mVirtualObject.getTransform().setScaleY(s);
+            } else {
+                // Position animation: object will "jump"
+                float t = countTime - 0.25f;
+                float h = t * t * -160f + 10f;
+                mVirtualObject.getTransform().setPositionY(posY + h);
+
+                // Scale animation 1: object will grow from 10% to 110% scale and then shrink
+                // to 100%
+                t = countTime - 0.38f;
+                float s = (t * t * -7f + 1.1f) * scale;
+                mVirtualObject.getTransform().setScale(s, s, s);
+
+            }
+            countTime += d;
         }
     }
 
