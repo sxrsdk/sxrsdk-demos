@@ -62,6 +62,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
     private boolean mIsActionsButtonActived = false;
     private BounceInterpolator interpolator = new BounceInterpolator(0.1, 20);
 
+    private final PetContext mPetContext;
 
     public HudView(PetContext petContext) {
         super(petContext);
@@ -70,6 +71,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
         mRootLayout = new LinearLayout(petContext.getActivity());
         final DisplayMetrics metrics = new DisplayMetrics();
         petContext.getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        mPetContext = petContext;
         mRootLayout.setLayoutParams(new LinearLayout.LayoutParams(metrics.widthPixels, metrics.heightPixels));
 
         View.inflate(petContext.getActivity(), R.layout.view_disconnect_sharing, mRootLayout);
@@ -282,6 +284,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 break;
             case R.id.btn_actions:
                 mActionsButton.startAnimation(mBounce);
+                setStateInActionButtons();
                 mActionsButton.post(() -> {
                     mIsActionsButtonActived = !mIsActionsButtonActived;
                     mActionsButton.setImageResource(mIsActionsButtonActived
@@ -301,6 +304,16 @@ public class HudView extends BasePetView implements View.OnClickListener {
             default:
                 Log.d(TAG, "Invalid Option");
         }
+    }
+
+    public void setStateInActionButtons() {
+        final int shareMode = mPetContext.getMode();
+        mHydrantButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
+        mHydrantButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
+        mToSleepButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
+        mToSleepButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
+        mDrinkWater.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
+        mDrinkWater.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
     }
 
     public void closeMenu() {

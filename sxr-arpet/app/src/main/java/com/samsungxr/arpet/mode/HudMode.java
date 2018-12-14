@@ -165,6 +165,7 @@ public class HudMode extends BasePetMode {
             mPetContext.getActivity().runOnUiThread(() -> {
                 mHudView.hideDisconnectView();
                 mHudView.hideConnectedLabel();
+                mHudView.setStateInActionButtons();
             });
             mPetController.stopBone();
         }
@@ -178,6 +179,7 @@ public class HudMode extends BasePetMode {
             mPetContext.getActivity().runOnUiThread(() -> {
                 mHudView.hideDisconnectView();
                 mHudView.hideConnectedLabel();
+                mHudView.setStateInActionButtons();
             });
         }
     }

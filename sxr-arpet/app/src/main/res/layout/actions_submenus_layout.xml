@@ -38,20 +38,20 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_drink_water" />
+        android:src="@drawable/action_bowl_button" />
 
     <ImageView
         android:id="@+id/btn_hydrant"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_hydrant" />
+        android:src="@drawable/action_hydrant_button" />
 
     <ImageView
         android:id="@+id/btn_toSleep"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_bed" />
+        android:background="@drawable/action_bed_button" />
 
 </LinearLayout>
