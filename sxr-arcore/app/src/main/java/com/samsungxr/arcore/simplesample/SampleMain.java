@@ -38,6 +38,7 @@ import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.mixedreality.IAnchorEvents;
 import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
+import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.utility.Log;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -87,6 +88,7 @@ public class SampleMain extends SXRMain {
         mixedReality = new SXRMixedReality(mainScene);
         mixedReality.getEventReceiver().addListener(planeEventsListener);
         mixedReality.getEventReceiver().addListener(anchorEventsListener);
+        mixedReality.getEventReceiver().addListener(mrEventsListener);
         mSelector = new SelectionHandler(ctx, mixedReality);
         mixedReality.resume();
     }
@@ -159,19 +161,14 @@ public class SampleMain extends SXRMain {
         }
     }
 
-    /**
-     * The plane events listener handles plane detection events.
-     * It also handles initialization and shutdown.
-     */
-    private IPlaneEvents planeEventsListener = new IPlaneEvents()
-    {
+    private IMixedRealityEvents mrEventsListener = new IMixedRealityEvents() {
         /**
          * Get the depth of the touch screen in the 3D world
          * and give it to the cursor controller so touch
          * events will be handled properly.
          */
         @Override
-        public void onStartPlaneDetection(IMixedReality mr)
+        public void onMixedRealityStart(IMixedReality mr)
         {
             float screenDepth = mr.getScreenDepth();
             mr.getPassThroughObject().getEventReceiver().addListener(mTouchHandler);
@@ -179,8 +176,18 @@ public class SampleMain extends SXRMain {
         }
 
         @Override
-        public void onStopPlaneDetection(IMixedReality mr) { }
+        public void onMixedRealityStop(IMixedReality mr) { }
 
+        @Override
+        public void onMixedRealityUpdate(IMixedReality mr) { }
+    };
+
+    /**
+     * The plane events listener handles plane detection events.
+     * It also handles initialization and shutdown.
+     */
+    private IPlaneEvents planeEventsListener = new IPlaneEvents()
+    {
         /**
          * Place a transparent quad in the 3D scene to indicate
          * vertically upward planes (floor, table top).
