@@ -15,9 +15,6 @@
 
 package com.samsungxr.aravatar;
 
-import android.graphics.Color;
-import android.view.Gravity;
-
 import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
@@ -25,12 +22,12 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRTransform;
 import com.samsungxr.SystemPropertyUtil;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
@@ -45,7 +42,7 @@ import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.mixedreality.IAnchorEvents;
 import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
-import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.utility.Log;
 
 public class AvatarMain extends SXRMain {
@@ -90,6 +87,7 @@ public class AvatarMain extends SXRMain {
         mMixedReality = new SXRMixedReality(mScene, false);
         mMixedReality.getEventReceiver().addListener(planeEventsListener);
         mMixedReality.getEventReceiver().addListener(anchorEventsListener);
+        mMixedReality.getEventReceiver().addListener(mrEventsListener);
         mMixedReality.resume();
     }
 
@@ -106,11 +104,9 @@ public class AvatarMain extends SXRMain {
         }
     }
 
-
-    private IPlaneEvents planeEventsListener = new IPlaneEvents()
-    {
+    private IMixedRealityEvents mrEventsListener = new IMixedRealityEvents() {
         @Override
-        public void onStartPlaneDetection(IMixedReality mr)
+        public void onMixedRealityStart(IMixedReality mr)
         {
             mUtility.initCursorController(getSXRContext(),
                     mTouchHandler,
@@ -118,8 +114,14 @@ public class AvatarMain extends SXRMain {
         }
 
         @Override
-        public void onStopPlaneDetection(IMixedReality mr) { }
+        public void onMixedRealityStop(IMixedReality mr) { }
 
+        @Override
+        public void onMixedRealityUpdate(IMixedReality mr) { }
+    };
+
+    private IPlaneEvents planeEventsListener = new IPlaneEvents()
+    {
         @Override
         public void onPlaneDetected(SXRPlane plane)
         {
@@ -149,6 +151,16 @@ public class AvatarMain extends SXRMain {
             {
                 childOwner.detachComponent(SXRPlane.getComponentType());
                 childOwner.getParent().removeChildObject(childOwner);
+            }
+        }
+
+        @Override
+        public void onPlaneGeometryChange(SXRPlane plane) {
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
+                SXRMesh mesh = new SXRMesh(getSXRContext());
+                mesh.setVertices(plane.get3dPolygonAsArray());
+
+                plane.getOwnerObject().getRenderData().setMesh(mesh);
             }
         }
     };
@@ -310,6 +322,4 @@ public class AvatarMain extends SXRMain {
 
         public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
     };
-
-
 }
