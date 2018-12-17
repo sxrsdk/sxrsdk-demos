@@ -187,13 +187,19 @@ dependencies {
     } else {
         oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
     }
+
     arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':sxr_adapter')) {
-            arImplementation project(':sxr_adapter')
+    if (new File("../SXR").exists()) {
+        if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+            if (findProject(':sxr_adapter')) {
+                arImplementation project(':sxr_adapter')
+            } else {
+                arImplementation(':sxr_adapter-release@aar')
+            }
         } else {
-            arImplementation(':sxr_adapter-release@aar')
+            arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
         }
+    } else {
+        arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
     }
 }
-
