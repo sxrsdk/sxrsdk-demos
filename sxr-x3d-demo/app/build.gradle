@@ -12,15 +12,14 @@ else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
 dependencies {
     if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
         if (findProject(':script')) {
-			implementation project (':script')
-		} else {
-			debugImplementation(name: 'script-debug', ext: 'aar')
-			releaseImplementation(name: 'script-release', ext: 'aar')
-		}
+            implementation project(':script')
+        } else {
+            debugImplementation(name: 'script-debug', ext: 'aar')
+            releaseImplementation(name: 'script-release', ext: 'aar')
+        }
     } else {
         implementation "org.gearvrf:script:$gearvrfVersion"
     }
-
     if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
         if (findProject(':x3d')) {
             implementation project(':x3d')
@@ -33,9 +32,8 @@ dependencies {
     }
     implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
     // ARCore library (copied from gvr-arcore
-    implementation "com.google.ar:core:1.2.0"
+    implementation 'com.google.ar:core:1.2.0'
     implementation 'com.android.support:support-v4:26.+'
-
     if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
         debugImplementation(name: 'MixedReality-debug', ext: 'aar')
         releaseImplementation(name: 'MixedReality-release', ext: 'aar')
@@ -55,5 +53,6 @@ android {
         jni.srcDirs = [] // no auto generation of Android.mk
         jniLibs.srcDir 'libs' // pre-compiled libraries
     }
-    compileSdkVersion 23
+    compileSdkVersion 24
+    buildToolsVersion '26.0.2'
 }
