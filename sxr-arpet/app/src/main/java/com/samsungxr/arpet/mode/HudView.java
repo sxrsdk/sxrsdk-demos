@@ -43,7 +43,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
     private static final String TAG = "HudView";
 
     private View mMenuOptionsHud, mShareAnchorButton, mCameraButton, mEditModeButton, mCloseButton, mMenuButton;
-    private View mHydrantButton, mToSleepButton, mDrinkWater, mSubmenuOptions, mAboutButton;
+    private View mHydrantButton, mBedButton, mBowlButton, mSubmenuOptions, mAboutButton;
     private ImageView mActionsButton, mPlayBoneButton;
     private LinearLayout mRootLayout;
     private final SXRViewNode mHudMenuObject;
@@ -225,8 +225,8 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 });
                 mPlayBoneButton.post(() -> closeMenu());
                 break;
-            case R.id.btn_toSleep:
-                mToSleepButton.startAnimation(mBounce);
+            case R.id.btn_bed:
+                mBedButton.startAnimation(mBounce);
                 mBounce.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -242,7 +242,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mToSleepButton.post(() -> closeMenu());
+                mBedButton.post(() -> closeMenu());
                 break;
             case R.id.btn_hydrant:
                 mHydrantButton.startAnimation(mBounce);
@@ -263,8 +263,8 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 });
                 mHydrantButton.post(() -> closeMenu());
                 break;
-            case R.id.drinkWater:
-                mDrinkWater.startAnimation(mBounce);
+            case R.id.btn_bowl:
+                mBowlButton.startAnimation(mBounce);
                 mBounce.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -280,7 +280,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mDrinkWater.post(() -> closeMenu());
+                mBowlButton.post(() -> closeMenu());
                 break;
             case R.id.btn_shareanchor:
                 mShareAnchorButton.startAnimation(mBounce);
@@ -347,10 +347,10 @@ public class HudView extends BasePetView implements View.OnClickListener {
         final int shareMode = mPetContext.getMode();
         mHydrantButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
         mHydrantButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
-        mToSleepButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
-        mToSleepButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
-        mDrinkWater.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
-        mDrinkWater.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
+        mBedButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
+        mBedButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
+        mBowlButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
+        mBowlButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
     }
 
     public void closeMenu() {
@@ -462,12 +462,12 @@ public class HudView extends BasePetView implements View.OnClickListener {
             mSubmenuOptions = view.findViewById(R.id.submenu);
             mPlayBoneButton = view.findViewById(R.id.btn_fetchbone);
             mHydrantButton = view.findViewById(R.id.btn_hydrant);
-            mToSleepButton = view.findViewById(R.id.btn_toSleep);
-            mDrinkWater = view.findViewById(R.id.drinkWater);
+            mBedButton = view.findViewById(R.id.btn_bed);
+            mBowlButton = view.findViewById(R.id.btn_bowl);
             mPlayBoneButton.setOnClickListener(HudView.this);
             mHydrantButton.setOnClickListener(HudView.this);
-            mToSleepButton.setOnClickListener(HudView.this);
-            mDrinkWater.setOnClickListener(HudView.this);
+            mBedButton.setOnClickListener(HudView.this);
+            mBowlButton.setOnClickListener(HudView.this);
             mOpenSubmenu = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.open);
             mCloseSubmenu = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.close);
         }

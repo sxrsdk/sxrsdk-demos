@@ -34,7 +34,7 @@
         android:src="@drawable/ic_play_bone" />
 
     <ImageView
-        android:id="@+id/drinkWater"
+        android:id="@+id/btn_bowl"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="5dp"
@@ -48,7 +48,7 @@
         android:src="@drawable/action_hydrant_button" />
 
     <ImageView
-        android:id="@+id/btn_toSleep"
+        android:id="@+id/btn_bed"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginBottom="5dp"
