@@ -25,14 +25,20 @@ import java.io.InputStream;
 
 public class AvatarMain extends SXRMain {
     private final String mModelPath = "YBot/ybot.fbx";
-    private final String[] mAnimationPaths =  { "animation/mixamo/Ybot_SambaDancing.bvh" };
+   //  private final String mModelPath = "Gyle/Gyle_Skin.fbx";
+     private final String[] mAnimationPaths =  {"YBot/Zombie_Stand_Up_mixamo.com.bvh","YBot/Football_Hike_mixamo.com.bvh", "YBot/Samba_Dancing_mixamo.com.bvh"};//,"YBot/Football_Hike_mixamo.com.bvh"};
+    // private final String[] mAnimationPaths =  {"Gyle/hiphop_mixamo.com.bvh","Gyle/idle_Anim.bvh", "Gyle/running_Dance_mixamo.com.bvh"};
     private final String mBoneMapPath = "animation/mixamo/mixamo_map.txt";
+  //private final String mBoneMapPath = "Gyle/bonemap.txt";
     private static final String TAG = "AVATAR";
     private SXRContext mContext;
     private SXRScene mScene;
     private SXRActivity mActivity;
     private int mNumAnimsLoaded = 0;
     private String mBoneMap;
+    private SXRAnimator blendAnim = null;
+    private int countAnim =0;
+    SXRAnimator interpolationAnim=null;
 
     public AvatarMain(SXRActivity activity) {
         mActivity = activity;
@@ -63,6 +69,32 @@ public class AvatarMain extends SXRMain {
         @Override
         public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors)
         {
+
+            if(mNumAnimsLoaded==0)
+            {
+                interpolationAnim = animation;
+            }
+            else
+            {
+                interpolationAnim.addAnimation(animation.getAnimation(0));
+                interpolationAnim.addAnimation(animation.getAnimation(1));
+            }
+
+            if (mNumAnimsLoaded < mAnimationPaths.length-1)
+            {
+                ++mNumAnimsLoaded;
+                loadNextAnimation(avatar, mBoneMap);
+            }
+            else
+            {
+                interpolationAnim.setAvatar(avatar.getModel(),avatar, mBoneMap);
+                interpolationAnim.setRepeatMode(SXRRepeatMode.REPEATED);
+                interpolationAnim.setRepeatCount(-1);
+                // // interpolationAnim.setSpeed(0.9f);
+                interpolationAnim.start(1f);
+                // interpolationAnim.start();
+            }
+/*
             animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
             ++mNumAnimsLoaded;
@@ -77,7 +109,7 @@ public class AvatarMain extends SXRMain {
             if (mNumAnimsLoaded < mAnimationPaths.length)
             {
                 loadNextAnimation(avatar, mBoneMap);
-            }
+            }*/
         }
 
         public void onModelLoaded(SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) { }

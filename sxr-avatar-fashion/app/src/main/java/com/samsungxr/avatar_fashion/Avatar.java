@@ -119,6 +119,11 @@ public class Avatar extends GroupWidget {
 
         @Override
         public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors) {
+            Log.d(TAG, "onAnimationLoaded , %s, errors = %s", filePath, errors);
+            if (errors != null) {
+                Log.w(TAG, "Animation loading fail!");
+                return;
+            }
             if(countAnim==0)
             {
                 blendAnim = animation;
@@ -130,56 +135,15 @@ public class Avatar extends GroupWidget {
             }
             countAnim++;
 
-            /*
-            Log.d(TAG, "onAnimationLoaded , %s, errors = %s", filePath, errors);
-            if (errors != null) {
-                Log.w(TAG, "Animation loading fail!");
-                return;
-            }
-            animation.setName(filePath);
-            animation.setRepeatMode(SXRRepeatMode.ONCE);
-            animation.setSpeed(1f);
-            if (mAnimEnabled) {
-                if (!avatar.isRunning()) {
-                    avatar.startAll(SXRRepeatMode.REPEATED);
-                } else {
-                    avatar.start(animation.getName());
-                }
-            }
-            Log.d(TAG, "onAnimationLoaded count = %d , loaded = %d", mAnimCount, avatar.getAnimationCount());
-*/
-
-///////////////////////////blending Animations////////////////////////
-
-
-
-            if(countAnim==3)
+            if(countAnim==mAnimCount)
             {
-                blendAnim.sendAvatar(avatar.getModel(),avatar, getAnimMap());
-                String map = getAnimMap();
+                blendAnim.setAvatar(avatar.getModel(),avatar, getAnimMap());
                 blendAnim.setRepeatMode(SXRRepeatMode.REPEATED);
                 blendAnim.setRepeatCount(-1);
-                // // interpolationAnim.setSpeed(0.9f);
-                blendAnim.start(1);
-                // interpolationAnim.start();
+                blendAnim.start(0.25f);
 
             }
-
-
-///////////////////////////blending Animations////////////////////////
-
-
-
-
-
-
-
-
-//            if (mAnimCount == avatar.getAnimationCount()) {
-//                if (mAvatarViewer.getAvatar() == Avatar.this) {
-//                    mAvatarViewer.createAnimationList();
-//                }
-//            }
+            Log.d(TAG, "onAnimationLoaded count = %d , loaded = %d", mAnimCount, avatar.getAnimationCount());
         }
 
         @Override
