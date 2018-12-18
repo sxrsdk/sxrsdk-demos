@@ -22,6 +22,8 @@ import com.samsungxr.arpet.service.IMessageService;
 import com.samsungxr.arpet.service.MessageService;
 import com.samsungxr.arpet.service.event.UpdatePosesReceivedMessage;
 import com.samsungxr.arpet.util.EventBusUtils;
+import com.samsungxr.mixedreality.SXRPointCloud;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.joml.Matrix4f;
 
@@ -244,6 +246,11 @@ public class SharedMixedReality implements IMixedReality {
     @Override
     public float[] makeInterpolated(float[] poseA, float[] poseB, float t) {
         return mMixedReality.makeInterpolated(poseA, poseB, t);
+    }
+
+    @Override
+    public SXRPointCloud acquirePointCloud() {
+        return mMixedReality.acquirePointCloud();
     }
 
     @PetConstants.ShareMode

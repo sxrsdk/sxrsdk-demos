@@ -143,8 +143,6 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
 
     private LinkedList<SXRPlane> mPlanes = new LinkedList<>();
 
-    private IMixedReality mixedReality;
-
     PlaneHandler(PetMain petMain, PetContext petContext) {
         mContext = petContext.getSXRContext();
         mScene = petContext.getMainScene();
@@ -181,19 +179,6 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
 
     private boolean updatePlanes = true;
 
-    /*
-     * ARCore session guaranteed to be initialized here.
-     */
-    @Override
-    public void onStartPlaneDetection(IMixedReality mr)
-    {
-        mixedReality = mr;
-        mPetMain.onARInit(mContext, mr);
-    }
-
-    @Override
-    public void onStopPlaneDetection(IMixedReality mr) { }
-
     @Override
     public void onPlaneDetected(SXRPlane plane) {
         SXRPlane.Type planeType = plane.getPlaneType();
@@ -228,6 +213,11 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         // that parentPlane "contains" childPlane
         //childPlane.getOwnerObject().detachComponent(PLANEBOARD_COMP_TYPE);
         mPlanes.remove(childPlane);
+    }
+
+    @Override
+    public void onPlaneGeometryChange(SXRPlane sxrPlane) {
+
     }
 
     public void setSelectedPlane(SXRPlane mainPlane, SXRNode visibleColliderPlane) {

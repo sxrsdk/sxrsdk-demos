@@ -41,6 +41,7 @@ import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRGazeCursorController;
 import com.samsungxr.io.SXRInputManager;
 import com.samsungxr.mixedreality.IMixedReality;
+import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.nodes.SXRViewNode;
 import com.samsungxr.utility.Log;
@@ -98,6 +99,8 @@ public class PetMain extends DisableNativeSplashScreen {
 
         mSharedMixedReality = mPetContext.getMixedReality();
 
+        mSharedMixedReality.getEventReceiver().addListener(mMixedRealityHandler);
+
         mPet = new CharacterController(mPetContext);
         mPet.load(new ILoadEvents() {
             @Override
@@ -117,9 +120,9 @@ public class PetMain extends DisableNativeSplashScreen {
         });
     }
 
-    void onARInit(SXRContext ctx, IMixedReality mr) {
+    void onARInit(IMixedReality mr) {
         mCursorController = null;
-        SXRInputManager inputManager = ctx.getInputManager();
+        SXRInputManager inputManager = mPetContext.getSXRContext().getInputManager();
         final int cursorDepth = 5;
         final EnumSet<SXRPicker.EventOptions> eventOptions = EnumSet.of(
                 SXRPicker.EventOptions.SEND_PICK_EVENTS,
@@ -376,6 +379,23 @@ public class PetMain extends DisableNativeSplashScreen {
                     mPet.goToTap(hitPos[0], hitPos[1], hitPos[2]);
                 }
             }
+        }
+    };
+
+    private IMixedRealityEvents mMixedRealityHandler = new IMixedRealityEvents() {
+        @Override
+        public void onMixedRealityStart(IMixedReality mixedReality) {
+            onARInit(mixedReality);
+        }
+
+        @Override
+        public void onMixedRealityStop(IMixedReality mixedReality) {
+
+        }
+
+        @Override
+        public void onMixedRealityUpdate(IMixedReality mixedReality) {
+
         }
     };
 }
