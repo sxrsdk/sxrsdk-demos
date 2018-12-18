@@ -82,21 +82,21 @@ android {
                 }
             }
         }
-        ar {
-            dimension "vr"
-            applicationIdSuffix ".ar"
-            versionNameSuffix "-ar"
-            manifestPlaceholders = [metaDataName: "com.samsung.android.sxr.application.type", metaDataValue: "ar"]
-            resValue 'string', 'app_name', System.getProperty("appName") + "-ar"
-
-             ndk {
-                if (project.hasProperty("SXRSDK_ABI_FILTER")) {
-                    abiFilters project.property("SXRSDK_ABI_FILTER")
-                } else {
-                    abiFilters "armeabi-v7a", "arm64-v8a"
-                }
-             }
-        }
+     //   ar {
+     //       dimension "vr"
+     //       applicationIdSuffix ".ar"
+     //       versionNameSuffix "-ar"
+     //       manifestPlaceholders = [metaDataName: "com.samsung.android.sxr.application.type", metaDataValue: "ar"]
+     //       resValue 'string', 'app_name', System.getProperty("appName") + "-ar"
+//
+     //        ndk {
+     //           if (project.hasProperty("SXRSDK_ABI_FILTER")) {
+     //               abiFilters project.property("SXRSDK_ABI_FILTER")
+     //           } else {
+     //               abiFilters "armeabi-v7a", "arm64-v8a"
+     //           }
+     //        }
+     //   }
     }
 
     defaultConfig {
@@ -187,13 +187,13 @@ dependencies {
     } else {
         oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
     }
-    arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':sxr_adapter')) {
-            arImplementation project(':sxr_adapter')
-        } else {
-            arImplementation(':sxr_adapter-release@aar')
-        }
-    }
+  //  arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
+  //  if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+  //      if (findProject(':sxr_adapter')) {
+  //          arImplementation project(':sxr_adapter')
+  //      } else {
+  //          arImplementation(':sxr_adapter-release@aar')
+  //      }
+  //  }
 }
 
