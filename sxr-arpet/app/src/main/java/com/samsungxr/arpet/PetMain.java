@@ -333,6 +333,11 @@ public class PetMain extends DisableNativeSplashScreen {
         @Override
         public void onTouchEnd(SXRNode sxrNode, SXRPicker.SXRPickedObject sxrPickedObject) {
 
+            // Ignores if is playing with bone
+            if (mPet.isPlaying()) {
+                return;
+            }
+
             // Ignores if some view is clicked
             if (hasViewNode(sxrPickedObject)) {
                 return;
