@@ -76,7 +76,7 @@ public class PetMain extends DisableNativeSplashScreen {
     private MainViewController mMainViewController = null;
 
     private ViewInitialMessage mViewInitialMessage;
-    private ViewChoosePlan mChoosePlan;
+    private ViewChoosePlan mChoosePlan = null;
 
     PetMain(PetContext petContext) {
         mPetContext = petContext;
@@ -240,8 +240,10 @@ public class PetMain extends DisableNativeSplashScreen {
     @Subscribe
     public void handlePlaneDetected(SXRPlane plane) {
         mViewInitialMessage.onHide(mPetContext.getMainScene());
-        mChoosePlan = new ViewChoosePlan(mPetContext);
-        mChoosePlan.onShow(mPetContext.getMainScene());
+        if (mChoosePlan == null) {
+            mChoosePlan = new ViewChoosePlan(mPetContext);
+            mChoosePlan.onShow(mPetContext.getMainScene());
+        }
     }
 
     @Override
@@ -362,6 +364,7 @@ public class PetMain extends DisableNativeSplashScreen {
             // TODO: Improve this if
             if (selectedPlane != null) {
                 mChoosePlan.onHide(mPetContext.getMainScene());
+                mChoosePlan = null;
                 final float[] modelMtx = sxrNode.getTransform().getModelMatrix();
 
                 if (!mPet.isRunning()) {
