@@ -61,6 +61,8 @@ public class PetMain extends DisableNativeSplashScreen {
 
     private PlaneHandler mPlaneHandler;
 
+    private PointCloudHandler mPointCloudHandler;
+
     private IPetMode mCurrentMode;
     private HandlerModeChange mHandlerModeChange;
     private HandlerBackToHud mHandlerBackToHud;
@@ -92,14 +94,15 @@ public class PetMain extends DisableNativeSplashScreen {
         mHandlerBackToHud = new HandlerBackToHud();
 
         mPlaneHandler = new PlaneHandler(this, mPetContext);
-
-        // FIXME: resume after plane listening
-        mPetContext.registerPlaneListener(mPlaneHandler);
-        mPetContext.getMixedReality().resume();
+        mPointCloudHandler = new PointCloudHandler(mPetContext);
 
         mSharedMixedReality = mPetContext.getMixedReality();
 
+        mPetContext.registerPlaneListener(mPlaneHandler);
         mSharedMixedReality.getEventReceiver().addListener(mMixedRealityHandler);
+        mSharedMixedReality.getEventReceiver().addListener(mPointCloudHandler);
+        mPetContext.getMixedReality().resume();
+
 
         mPet = new CharacterController(mPetContext);
         mPet.load(new ILoadEvents() {
@@ -372,6 +375,10 @@ public class PetMain extends DisableNativeSplashScreen {
                     }
 
                     mPlaneHandler.setSelectedPlane(selectedPlane, sxrNode);
+
+                    // remove point cloud
+                    mPointCloudHandler.removeFromScene();
+                    mSharedMixedReality.getEventReceiver().removeListener(mPointCloudHandler);
                 }
 
                 if (sxrNode == mPet.getPlane() && mCurrentMode instanceof HudMode) {
