@@ -25,7 +25,6 @@ import com.samsungxr.arpet.custom.TouchEventsAdapter;
 import com.samsungxr.arpet.mainview.IExitView;
 import com.samsungxr.arpet.mainview.MainViewController;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
-import com.samsungxr.arpet.mode.EditMode;
 import com.samsungxr.arpet.mode.HudMode;
 import com.samsungxr.arpet.mode.ILoadEvents;
 import com.samsungxr.arpet.mode.IPetMode;
@@ -201,7 +200,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
     @Override
     public boolean onBackPress() {
-        if (mCurrentMode instanceof SharingAnchorMode || mCurrentMode instanceof EditMode || mCurrentMode instanceof ScreenshotMode) {
+        if (mCurrentMode instanceof SharingAnchorMode || mCurrentMode instanceof ScreenshotMode) {
             getSXRContext().runOnGlThread(() -> mHandlerBackToHud.OnBackToHud());
         }
 
@@ -260,26 +259,6 @@ public class PetMain extends DisableNativeSplashScreen {
         }
 
         @Override
-        public void onEditMode() {
-            if (mCurrentMode instanceof EditMode) {
-                return;
-            }
-
-            if (mCurrentMode != null) {
-                mCurrentMode.exit();
-            }
-
-            mCurrentMode = new EditMode(mPetContext, mHandlerBackToHud, mPet);
-            mCurrentMode.enter();
-            ((EditMode) mCurrentMode).onEnableGesture(mCursorController);
-            mPet.stopBone();
-            mPet.setCurrentAction(PetActions.AT_EDIT.ID);
-
-            // Edit mode will handle picker events
-            mCursorController.removePickEventListener(mTouchEventsHandler);
-        }
-
-        @Override
         public void onScreenshot() {
 
             if (mCurrentMode instanceof ScreenshotMode) {
@@ -299,7 +278,7 @@ public class PetMain extends DisableNativeSplashScreen {
 
         @Override
         public void OnBackToHud() {
-            if (mCurrentMode instanceof EditMode || mCurrentMode instanceof ScreenshotMode) {
+            if (mCurrentMode instanceof ScreenshotMode) {
                 mCursorController.addPickEventListener(mTouchEventsHandler);
             }
 

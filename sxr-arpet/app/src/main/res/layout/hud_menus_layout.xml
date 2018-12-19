@@ -42,11 +42,11 @@
         android:src="@drawable/icon_share" />
 
     <ImageView
-        android:id="@+id/btn_edit"
+        android:id="@+id/btn_clean"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="5dp"
-        android:src="@drawable/icon_edit" />
+        android:src="@drawable/ic_clean" />
 
     <ImageView
         android:id="@+id/btn_camera"

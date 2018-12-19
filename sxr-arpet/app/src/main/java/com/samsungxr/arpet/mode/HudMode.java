@@ -127,9 +127,8 @@ public class HudMode extends BasePetMode {
         }
 
         @Override
-        public void onEditModeClicked() {
-            mModeChangeListener.onEditMode();
-            Log.d(TAG, "Edit Mode");
+        public void onCleanClicked() {
+            Log.d(TAG, "Clean button clicked");
         }
 
         @Override

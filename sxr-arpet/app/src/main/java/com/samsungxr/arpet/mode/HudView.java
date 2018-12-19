@@ -42,7 +42,7 @@ import com.samsungxr.utility.Log;
 public class HudView extends BasePetView implements View.OnClickListener {
     private static final String TAG = "HudView";
 
-    private View mMenuOptionsHud, mShareAnchorButton, mCameraButton, mEditModeButton, mCloseButton, mMenuButton;
+    private View mMenuOptionsHud, mShareAnchorButton, mCameraButton, mCleanButton, mCloseButton, mMenuButton;
     private View mHydrantButton, mBedButton, mBowlButton, mSubmenuOptions, mAboutButton;
     private ImageView mActionsButton, mPlayBoneButton;
     private LinearLayout mRootLayout;
@@ -189,8 +189,8 @@ public class HudView extends BasePetView implements View.OnClickListener {
             case R.id.btn_close:
                 closeMenu();
                 break;
-            case R.id.btn_edit:
-                mEditModeButton.startAnimation(mBounce);
+            case R.id.btn_clean:
+                mCleanButton.startAnimation(mBounce);
                 mBounce.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -198,7 +198,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onEditModeClicked());
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onCleanClicked());
                     }
 
                     @Override
@@ -372,12 +372,12 @@ public class HudView extends BasePetView implements View.OnClickListener {
         @Override
         public void onInitView(SXRViewNode sxrViewNode, View view) {
             mMenuOptionsHud = view.findViewById(R.id.menuHud);
-            mEditModeButton = view.findViewById(R.id.btn_edit);
+            mCleanButton = view.findViewById(R.id.btn_clean);
             mShareAnchorButton = view.findViewById(R.id.btn_shareanchor);
             mCameraButton = view.findViewById(R.id.btn_camera);
             mActionsButton = view.findViewById(R.id.btn_actions);
             mAboutButton = view.findViewById(R.id.btn_about);
-            mEditModeButton.setOnClickListener(HudView.this);
+            mCleanButton.setOnClickListener(HudView.this);
             mShareAnchorButton.setOnClickListener(HudView.this);
             mCameraButton.setOnClickListener(HudView.this);
             mActionsButton.setOnClickListener(HudView.this);

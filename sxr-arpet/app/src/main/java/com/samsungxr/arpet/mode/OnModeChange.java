@@ -19,10 +19,5 @@ public interface OnModeChange {
 
     void onShareAnchor();
 
-
-    void onEditMode();
-
-
     void onScreenshot();
-
 }

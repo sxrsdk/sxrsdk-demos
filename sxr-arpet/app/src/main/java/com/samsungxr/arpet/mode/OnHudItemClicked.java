@@ -29,7 +29,7 @@ public interface OnHudItemClicked {
     // Main menu
     void onShareAnchorClicked();
 
-    void onEditModeClicked();
+    void onCleanClicked();
 
     void onCameraClicked();
 
