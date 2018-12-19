@@ -60,4 +60,6 @@
         <item quantity="one">Guest</item>
         <item quantity="other">Guests</item>
     </plurals>
+    <string translatable="false" name="message_initial">MOVE AROUND TO FIND A HORIZONTAL SURFACE</string>
+    <string translatable="false" name="choose_a_plan">CHOOSE A PLAN TO APPEAR PET</string>
 </resources>

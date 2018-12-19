@@ -18,4 +18,5 @@
     <font app:font="@font/roboto_medium" />
     <font app:font="@font/roboto_bold" />
     <font app:font="@font/roboto_light" />
+    <font app:font="@font/luckiest_guy" />
 </font-family>

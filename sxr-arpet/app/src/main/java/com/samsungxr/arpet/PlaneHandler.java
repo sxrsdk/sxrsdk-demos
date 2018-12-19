@@ -17,8 +17,6 @@
 
 package com.samsungxr.arpet;
 
-import android.graphics.Color;
-
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRComponent;
@@ -28,21 +26,18 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.arpet.shaders.SXRTiledMaskShader;
-import com.samsungxr.mixedreality.IMixedReality;
+import com.samsungxr.arpet.util.EventBusUtils;
 import com.samsungxr.mixedreality.IPlaneEvents;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.utility.Log;
-
-import com.samsungxr.arpet.util.EventBusUtils;
 
 import java.util.LinkedList;
 
@@ -52,7 +47,6 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
     private SXRContext mContext;
     private SXRScene mScene;
     private PetMain mPetMain;
-    private int hsvHUE = 0;
 
     private SXRNode selectedPlaneObject = null;
     private PlaneBoard physicsPlane = null;
@@ -177,8 +171,6 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         return transformNode;
     }
 
-    private boolean updatePlanes = true;
-
     @Override
     public void onPlaneDetected(SXRPlane plane) {
         SXRPlane.Type planeType = plane.getPlaneType();
@@ -191,11 +183,15 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         SXRNode planeGeo = createQuadPlane();
 
         planeGeo.attachComponent(plane);
-//        mScene.addSceneObject(planeGeo);
         plane.getSXRContext().getMainScene().addNode(planeGeo);
         plane.getOwnerObject().setEnable(selectedPlaneObject == null);
 
         mPlanes.add(plane);
+
+        // Show message by tapping the plan
+        if (selectedPlaneObject == null) {
+            EventBusUtils.post(plane);
+        }
     }
 
     @Override
@@ -229,7 +225,7 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
     }
 
     public void setSelectedPlane(SXRPlane mainPlane, SXRNode visibleColliderPlane) {
-        for (SXRPlane plane: mPlanes) {
+        for (SXRPlane plane : mPlanes) {
             if (plane != mainPlane) {
                 plane.getOwnerObject().setEnable(mainPlane == null);
             }

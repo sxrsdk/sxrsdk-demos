@@ -75,6 +75,9 @@ public class PetMain extends DisableNativeSplashScreen {
 
     private MainViewController mMainViewController;
 
+    private ViewInitialMessage mViewInitialMessage;
+    private ViewChoosePlan mChoosePlan;
+
     PetMain(PetContext petContext) {
         mPetContext = petContext;
         EventBusUtils.register(this);
@@ -109,10 +112,16 @@ public class PetMain extends DisableNativeSplashScreen {
             public void onSuccess() {
                 // Will wet pet's scene as the main scene
                 mCurrentSplashScreen.onHide(mPetContext.getMainScene());
+                //Show initial message
+                mViewInitialMessage = new ViewInitialMessage(mPetContext);
+                mViewInitialMessage.onShow(mPetContext.getMainScene());
+
                 // Set plane handler in pet context
                 mPetContext.setPlaneHandler(mPlaneHandler);
+
                 // Set pet controller in pet context
                 mPetContext.setPetController(mPet);
+
             }
 
             @Override
@@ -223,6 +232,13 @@ public class PetMain extends DisableNativeSplashScreen {
                 }
             }
         }
+    }
+
+    @Subscribe
+    public void handlePlaneDetected(SXRPlane plane) {
+        mViewInitialMessage.onHide(mPetContext.getMainScene());
+        mChoosePlan = new ViewChoosePlan(mPetContext);
+        mChoosePlan.onShow(mPetContext.getMainScene());
     }
 
     @Override
@@ -342,9 +358,11 @@ public class PetMain extends DisableNativeSplashScreen {
 
             // TODO: Improve this if
             if (selectedPlane != null) {
+                mChoosePlan.onHide(mPetContext.getMainScene());
                 final float[] modelMtx = sxrNode.getTransform().getModelMatrix();
 
                 if (!mPet.isRunning()) {
+
                     mPet.setPlane(sxrNode);
                     mPet.getView().getTransform().setPosition(modelMtx[12], modelMtx[13], modelMtx[14]);
                     mPet.enter();
