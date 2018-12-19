@@ -43,7 +43,7 @@ public class CloudAnchorManager {
     private boolean isCloudAnchorApiKeySet() {
         boolean isKeySet = ContextUtils.isMetaDataSet(mPetContext.getSXRContext().getContext(),
                 BuildConfig.GOOGLE_CLOUD_ANCHOR_KEY_NAME);
-        if (!isKeySet && BuildConfig.DEBUG) {
+        if (!isKeySet) {
             Context context = mPetContext.getActivity().getApplicationContext();
             mPetContext.runOnPetThread(() ->
                     Toast.makeText(context, "Cloud anchor API is not set",
