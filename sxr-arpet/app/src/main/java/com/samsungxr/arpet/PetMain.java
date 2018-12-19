@@ -73,7 +73,7 @@ public class PetMain extends DisableNativeSplashScreen {
     private CurrentSplashScreen mCurrentSplashScreen;
     private SharedMixedReality mSharedMixedReality;
 
-    private MainViewController mMainViewController;
+    private MainViewController mMainViewController = null;
 
     private ViewInitialMessage mViewInitialMessage;
     private ViewChoosePlan mChoosePlan;
@@ -168,22 +168,25 @@ public class PetMain extends DisableNativeSplashScreen {
     }
 
     private void showViewExit() {
+        if (mMainViewController == null) {
+            mMainViewController = new MainViewController(mPetContext);
+            mMainViewController.onShow(mPetContext.getMainScene());
+            IExitView iExitView = mMainViewController.makeView(IExitView.class);
 
-        mMainViewController = new MainViewController(mPetContext);
-        mMainViewController.onShow(mPetContext.getMainScene());
-        IExitView iExitView = mMainViewController.makeView(IExitView.class);
+            iExitView.setOnCancelClickListener(view -> {
+                if (mMainViewController != null) {
+                    mMainViewController.onHide(mPetContext.getMainScene());
+                    mMainViewController = null;
+                }
+            });
+            iExitView.setOnConfirmClickListener(view -> {
+                getSXRContext().getActivity().finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            });
 
-        iExitView.setOnCancelClickListener(view -> {
-            mMainViewController.onHide(mPetContext.getMainScene());
-            mMainViewController = null;
-        });
-        iExitView.setOnConfirmClickListener(view -> {
-            getSXRContext().getActivity().finish();
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
-        });
-
-        iExitView.show();
+            iExitView.show();
+        }
     }
 
     private void showViewConnectionFinished(@PetConstants.ShareMode int mode) {
