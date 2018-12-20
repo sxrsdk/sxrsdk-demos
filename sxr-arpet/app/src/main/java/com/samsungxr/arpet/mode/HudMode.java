@@ -97,6 +97,7 @@ public class HudMode extends BasePetMode {
             Log.d(TAG, "Action: go to bed");
             if (mPetController.isPlaying()) {
                 mPetController.stopBone();
+                mHudView.deactivateBoneButton();
             }
             mVirtualObjectController.showObject(ArPetObjectType.BED);
         }
@@ -106,6 +107,7 @@ public class HudMode extends BasePetMode {
             Log.d(TAG, "Action: go to hydrant");
             if (mPetController.isPlaying()) {
                 mPetController.stopBone();
+                mHudView.deactivateBoneButton();
             }
             mVirtualObjectController.showObject(ArPetObjectType.HYDRANT);
         }
@@ -115,6 +117,7 @@ public class HudMode extends BasePetMode {
             Log.d(TAG, "Action: go to bowl");
             if (mPetController.isPlaying()) {
                 mPetController.stopBone();
+                mHudView.deactivateBoneButton();
             }
             mVirtualObjectController.showObject(ArPetObjectType.BOWL);
         }

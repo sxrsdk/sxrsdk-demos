@@ -345,6 +345,10 @@ public class HudView extends BasePetView implements View.OnClickListener {
         }
     }
 
+    public void deactivateBoneButton() {
+        mPlayBoneButton.setActivated(false);
+    }
+
     public void setStateInActionButtons() {
         final int shareMode = mPetContext.getMode();
         mHydrantButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
