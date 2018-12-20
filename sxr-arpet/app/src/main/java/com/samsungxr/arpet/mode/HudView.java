@@ -339,6 +339,21 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 break;
             case R.id.btn_about:
                 mAboutButton.startAnimation(mBounce);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPetContext.getSXRContext().runOnGlThread(() -> mListener.onAbout());
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+                mAboutButton.post(() -> closeMenu());
                 break;
             default:
                 Log.d(TAG, "Invalid Option");
@@ -387,6 +402,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
             mShareAnchorButton.setOnClickListener(HudView.this);
             mCameraButton.setOnClickListener(HudView.this);
             mActionsButton.setOnClickListener(HudView.this);
+            mAboutButton.setOnClickListener(HudView.this);
             mAboutButton.setOnClickListener(HudView.this);
             mOpenMenuHud = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.open);
             mCloseMenuHud = AnimationUtils.loadAnimation(mPetContext.getActivity(), R.anim.close);

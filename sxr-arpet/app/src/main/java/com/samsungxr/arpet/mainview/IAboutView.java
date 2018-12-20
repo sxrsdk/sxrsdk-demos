@@ -1,39 +1,28 @@
-/* Copyright 2015 Samsung Electronics Co., LTD
+/*
+ * Copyright 2015 Samsung Electronics Co., LTD
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.samsungxr.arpet.mode;
+package com.samsungxr.arpet.mainview;
 
-public interface OnHudItemClicked {
+import android.view.View;
 
-    // Actions submenu
-    void onBoneClicked();
+import com.samsungxr.arpet.view.IView;
 
-    void onBedClicked();
+public interface IAboutView extends IView {
 
-    void onHydrantClicked();
+    void setBackClickListener(View.OnClickListener listener);
 
-    void onBowlClicked();
-
-    // Main menu
-    void onShareAnchorClicked();
-
-    void onCleanClicked();
-
-    void onCameraClicked();
-
-    void onConnectedClicked();
-
-    void onAbout();
 }

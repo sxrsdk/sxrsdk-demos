@@ -23,6 +23,7 @@ import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.character.CharacterController;
 import com.samsungxr.arpet.constant.ArPetObjectType;
 import com.samsungxr.arpet.constant.PetConstants;
+import com.samsungxr.arpet.mainview.IAboutView;
 import com.samsungxr.arpet.mainview.ICleanView;
 import com.samsungxr.arpet.mainview.MainViewController;
 import com.samsungxr.arpet.manager.connection.PetConnectionManager;
@@ -148,6 +149,12 @@ public class HudMode extends BasePetMode {
                 mHudView.hideConnectedLabel();
             });
         }
+
+        @Override
+        public void onAbout() {
+            Log.d(TAG, "About clicked");
+            showAboutView();
+        }
     }
 
     private void showCleanView() {
@@ -167,6 +174,23 @@ public class HudMode extends BasePetMode {
             });
 
             iCleanView.show();
+        }
+    }
+
+    private void showAboutView() {
+        if (mMainViewController == null) {
+            mMainViewController = new MainViewController(mPetContext);
+            mMainViewController.onShow(mPetContext.getMainScene());
+            IAboutView iAboutView = mMainViewController.makeView(IAboutView.class);
+
+            iAboutView.setBackClickListener(view -> {
+                if (mMainViewController != null) {
+                    mMainViewController.onHide(mPetContext.getMainScene());
+                    mMainViewController = null;
+                }
+            });
+
+            iAboutView.show();
         }
     }
 
