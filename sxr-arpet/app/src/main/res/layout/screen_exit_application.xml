@@ -51,7 +51,7 @@
             <Button
                 android:id="@+id/cancel_button_screen"
                 style="@style/Button"
-                android:text="@string/__arcore_cancel" />
+                android:text="@string/common_text_cancel" />
 
             <Button
                 android:id="@+id/button_confirm"
