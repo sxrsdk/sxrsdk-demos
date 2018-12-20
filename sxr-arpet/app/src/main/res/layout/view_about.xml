@@ -49,15 +49,16 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_margin="8.2dp"
                 android:layout_toEndOf="@id/ic_pet"
                 android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
                 android:text="@string/sxr"
                 android:textColor="#ffffff" />
 
@@ -76,18 +77,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="14sp"
             android:layout_marginTop="19.9dp"
-            android:text="@string/team" />
+            android:text="@string/team"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:textStyle="bold"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="10dp"
+            android:text="@string/site"
             android:textColor="#ffffff"
-            android:text="@string/site"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>
