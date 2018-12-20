@@ -74,6 +74,8 @@ public class BallThrowHandler {
 
     private IMessageService mMessageService;
 
+    private float mDistanceZ = defaultPositionZ;
+
     BallThrowHandler(PetContext petContext) {
         mPetContext = petContext;
         mPlayer = petContext.getPlayer();
@@ -110,8 +112,12 @@ public class BallThrowHandler {
 
         mPlayer.addChildObject(mBall);
 
-        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, defaultPositionZ);
+        float scale = mPetContext.getPetController().getView().getScale() / 150f;
+        mDistanceZ = -200f * scale;
+
+        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, mDistanceZ);
         mBall.getTransform().setRotation(1, 0, 0, 0);
+        mBall.getTransform().setScale(scale, scale, scale);
         mBall.setEnable(false);
 
         mPlayer.addChildObject(mBoneGaze);
@@ -147,9 +153,12 @@ public class BallThrowHandler {
 
         disableBallsPhysics();
 
+        float scale = mPetContext.getPetController().getView().getScale() / 150f;
+        mDistanceZ = -200f * scale;
+
         mBall.setEnable(false);
-        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, defaultPositionZ);
-        mBall.getTransform().setScale(defaultScale, defaultScale, defaultScale);
+        mBall.getTransform().setPosition(defaultPositionX, defaultPositionY, mDistanceZ);
+        mBall.getTransform().setScale(scale, scale, scale);
         mBall.getTransform().setRotation(1, 0, 0, 0);
 
         mPlayer.addChildObject(mBall);
