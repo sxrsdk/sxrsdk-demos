@@ -205,6 +205,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
+                mCleanButton.post(() -> closeMenu());
                 break;
             case R.id.btn_fetchbone:
                 mPlayBoneButton.startAnimation(mBounce);

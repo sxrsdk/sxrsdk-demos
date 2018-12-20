@@ -28,6 +28,7 @@ public class MainViewController extends BaseViewController {
     public MainViewController(PetContext petContext) {
         super(petContext);
         registerView(IExitView.class, R.layout.screen_exit_application, ExitView.class);
+        registerView(ICleanView.class, R.layout.view_clean, CleanView.class);
         registerView(IConnectionFinishedView.class, R.layout.view_connection_finished, ConnectionFinishedView.class);
     }
 }

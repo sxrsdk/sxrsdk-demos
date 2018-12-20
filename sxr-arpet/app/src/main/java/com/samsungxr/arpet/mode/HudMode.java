@@ -23,6 +23,8 @@ import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.character.CharacterController;
 import com.samsungxr.arpet.constant.ArPetObjectType;
 import com.samsungxr.arpet.constant.PetConstants;
+import com.samsungxr.arpet.mainview.ICleanView;
+import com.samsungxr.arpet.mainview.MainViewController;
 import com.samsungxr.arpet.manager.connection.PetConnectionManager;
 import com.samsungxr.arpet.manager.connection.event.PetConnectionEvent;
 import com.samsungxr.arpet.movement.IPetAction;
@@ -37,6 +39,7 @@ import static com.samsungxr.arpet.manager.connection.IPetConnectionManager.EVENT
 public class HudMode extends BasePetMode {
     private OnModeChange mModeChangeListener;
     private HudView mHudView;
+    private MainViewController mMainViewController = null;
 
     private PetConnectionManager mConnectionManager;
     private SharedMixedReality mSharedMixedReality;
@@ -128,6 +131,7 @@ public class HudMode extends BasePetMode {
 
         @Override
         public void onCleanClicked() {
+            showCleanView();
             Log.d(TAG, "Clean button clicked");
         }
 
@@ -144,6 +148,26 @@ public class HudMode extends BasePetMode {
                 mHudView.showDisconnectView(mConnectionManager.getConnectionMode());
                 mHudView.hideConnectedLabel();
             });
+        }
+    }
+
+    private void showCleanView() {
+        if (mMainViewController == null) {
+            mMainViewController = new MainViewController(mPetContext);
+            mMainViewController.onShow(mPetContext.getMainScene());
+            ICleanView iCleanView = mMainViewController.makeView(ICleanView.class);
+
+            iCleanView.setOnCancelClickListener(view -> {
+                if (mMainViewController != null) {
+                    mMainViewController.onHide(mPetContext.getMainScene());
+                    mMainViewController = null;
+                }
+            });
+            iCleanView.setOnConfirmClickListener(view -> {
+                Log.d(TAG, "Cleaning scene");
+            });
+
+            iCleanView.show();
         }
     }
 

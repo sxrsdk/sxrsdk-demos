@@ -62,4 +62,5 @@
     </plurals>
     <string translatable="false" name="message_initial">MOVE AROUND TO FIND A HORIZONTAL SURFACE</string>
     <string translatable="false" name="choose_a_plan">CHOOSE A PLAN TO APPEAR PET</string>
+    <string name="clear">Do you want to clear the screen start\n a new experience with the pet?</string>
 </resources>
