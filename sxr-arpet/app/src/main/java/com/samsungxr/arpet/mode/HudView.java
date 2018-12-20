@@ -200,13 +200,14 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         mPetContext.getSXRContext().runOnGlThread(() -> mListener.onCleanClicked());
+                        mBounce.setAnimationListener(null);
                     }
 
                     @Override
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mCleanButton.post(() -> closeMenu());
+                mCleanButton.post(this::closeMenu);
                 break;
             case R.id.btn_fetchbone:
                 mPlayBoneButton.startAnimation(mBounce);
@@ -226,7 +227,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mPlayBoneButton.post(() -> closeMenu());
+                mPlayBoneButton.post(this::closeMenu);
                 break;
             case R.id.btn_bed:
                 mBedButton.startAnimation(mBounce);
@@ -245,7 +246,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mBedButton.post(() -> closeMenu());
+                mBedButton.post(this::closeMenu);
                 break;
             case R.id.btn_hydrant:
                 mHydrantButton.startAnimation(mBounce);
@@ -264,7 +265,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mHydrantButton.post(() -> closeMenu());
+                mHydrantButton.post(this::closeMenu);
                 break;
             case R.id.btn_bowl:
                 mBowlButton.startAnimation(mBounce);
@@ -283,7 +284,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mBowlButton.post(() -> closeMenu());
+                mBowlButton.post(this::closeMenu);
                 break;
             case R.id.btn_shareanchor:
                 mShareAnchorButton.startAnimation(mBounce);
@@ -324,18 +325,32 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 break;
             case R.id.btn_actions:
                 mActionsButton.startAnimation(mBounce);
-                setStateInActionButtons();
-                mActionsButton.post(() -> {
-                    mIsActionsButtonActived = !mIsActionsButtonActived;
-                    mActionsButton.setImageResource(mIsActionsButtonActived
-                            ? R.drawable.ic_actions_activated : R.drawable.ic_actions);
-                    mIsActivedSubmenu = !mIsActivedSubmenu;
-                    mSubmenuOptions.startAnimation(mIsActivedSubmenu
-                            ? mOpenSubmenu : mCloseSubmenu);
-                    mSubmenuOptions.setVisibility(mIsActivedSubmenu
-                            ? View.VISIBLE
-                            : View.INVISIBLE);
-                    mSubmenuObject.setEnable(true);
+                mBounce.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        setStateInActionButtons();
+                        mIsActionsButtonActived = !mIsActionsButtonActived;
+                        mActionsButton.setImageResource(mIsActionsButtonActived
+                                ? R.drawable.ic_actions_activated : R.drawable.ic_actions);
+                        mIsActivedSubmenu = !mIsActivedSubmenu;
+                        mSubmenuOptions.startAnimation(mIsActivedSubmenu
+                                ? mOpenSubmenu : mCloseSubmenu);
+                        mSubmenuOptions.setVisibility(mIsActivedSubmenu
+                                ? View.VISIBLE
+                                : View.INVISIBLE);
+                        mSubmenuObject.setEnable(true);
+                        mBounce.setAnimationListener(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
                 });
                 break;
             case R.id.btn_about:
@@ -348,13 +363,14 @@ public class HudView extends BasePetView implements View.OnClickListener {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         mPetContext.getSXRContext().runOnGlThread(() -> mListener.onAbout());
+                        mBounce.setAnimationListener(null);
                     }
 
                     @Override
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                mAboutButton.post(() -> closeMenu());
+                mAboutButton.post(this::closeMenu);
                 break;
             default:
                 Log.d(TAG, "Invalid Option");
