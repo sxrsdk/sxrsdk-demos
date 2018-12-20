@@ -160,9 +160,13 @@ public class SharedMixedReality implements IMixedReality {
     }
 
     public synchronized void unregisterSharedObject(SXRNode object) {
-        for (SharedSceneObject shared : mSharedSceneObjects) {
-            if (shared.object == object)
-                mSharedSceneObjects.remove(shared);
+        Iterator<SharedSceneObject> iterator = mSharedSceneObjects.iterator();
+        SharedSceneObject shared;
+        while (iterator.hasNext()) {
+            shared = iterator.next();
+            if (shared.object == object) {
+                iterator.remove();
+            }
         }
     }
     @Override

@@ -50,7 +50,7 @@ public class ViewChoosePlan extends BasePetView {
         SXROpacityAnimation mAnimation;
         mAnimation = new SXROpacityAnimation(mViewChoosePlan, .8f, 0);
         mAnimation.setOnFinish(sxrAnimation -> {
-            mPetContext.getMainScene().getMainCameraRig().removeChildObject(mViewChoosePlan);
+            mainScene.getMainCameraRig().removeChildObject(mViewChoosePlan);
         });
         mAnimation.start(mPetContext.getSXRContext().getAnimationEngine());
         setEnable(false);

@@ -171,6 +171,12 @@ public class HudMode extends BasePetMode {
             });
             iCleanView.setOnConfirmClickListener(view -> {
                 Log.d(TAG, "Cleaning scene");
+                mPetController.exit();
+                mPetContext.getPlaneHandler().resetPlanes();
+                if (mMainViewController != null) {
+                    mMainViewController.onHide(mPetContext.getMainScene());
+                    mMainViewController = null;
+                }
             });
 
             iCleanView.show();

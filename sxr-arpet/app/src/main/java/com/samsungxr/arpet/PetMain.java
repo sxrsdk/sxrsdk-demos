@@ -345,16 +345,11 @@ public class PetMain extends DisableNativeSplashScreen {
                 return;
             }
 
-            if (sxrNode == null) {
+            if (sxrNode == null || sxrNode.getParent() == null) {
                 return;
             }
 
             Log.d(TAG, "onTouchEnd " + sxrNode.getName());
-
-
-            if (sxrNode.getParent() == null) {
-                return;
-            }
 
             SXRPlane selectedPlane = (SXRPlane) sxrNode.getParent().getComponent(SXRPlane.getComponentType());
 
@@ -368,7 +363,6 @@ public class PetMain extends DisableNativeSplashScreen {
                 final float[] modelMtx = sxrNode.getTransform().getModelMatrix();
 
                 if (!mPet.isRunning()) {
-
                     mPet.setPlane(sxrNode);
                     mPet.getView().getTransform().setPosition(modelMtx[12], modelMtx[13], modelMtx[14]);
                     mPet.enter();

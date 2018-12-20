@@ -262,6 +262,8 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
             SXRNode ownerObject = plane.getOwnerObject();
             if (ownerObject != null) {
                 ownerObject.setEnable(true);
+                // Just to notify as a new plane detected
+                EventBusUtils.post(plane);
             }
         }
         mContext.unregisterDrawFrameListener(this);
