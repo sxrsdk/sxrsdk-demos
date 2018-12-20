@@ -65,6 +65,6 @@
     <string name="clear">Do you want to clear the screen start\n a new experience with the pet?</string>
     <string name="sxr">Eva AR\n Project by Sidia</string>
     <string name="lorem_ipsum">“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</string>
-    <string name="team"><b>Afonso Rabelo</b> -Engenieer\n <b>Ana Franco</b> - Designer\n <b>André Naveca</b> - Engenieer\n <b>Cristiano Bozzetto</b> - Sr. Engenieer\n <b>Diego Azulay</b> - Engenieer\n <b>Flávio Ribeiro</b> - Designer\n <b>Heimar de Oliveira</b> - Project Lead\n <b>Marcos Souza</b> - Product Owner\n <b>Ragner Nascimento</b> - Tech Leader\n <b>Rachel Lima</b> - Engenieer\n <b>Susana Silva</b> - Tester</string>
+    <string name="team"><b>Afonso Costa</b> -Engineer\n <b>Ana Franco</b> - Designer\n <b>André Naveca</b> - Engineer\n <b>Cristiano Bozzetto</b> - Sr. Engineer\n <b>Diego Azulay</b> - Engineer\n <b>Flávio Ribeiro</b> - Designer\n <b>Heimar de Oliveira</b> - Project Leader\n <b>Marcos Souza</b> - Product Owner\n <b>Ragner Nascimento</b> - Tech Leader\n <b>Rachel Lima</b> - Engineer\n <b>Susana Silva</b> - QA Engineer</string>
     <string name="site">www.sidia.org.br</string>
 </resources>
