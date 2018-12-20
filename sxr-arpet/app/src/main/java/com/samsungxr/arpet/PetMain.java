@@ -217,7 +217,9 @@ public class PetMain extends DisableNativeSplashScreen {
         }
 
         if (mCurrentMode instanceof HudMode || mCurrentMode == null) {
-            getSXRContext().runOnGlThread(this::showViewExit);
+            if (!((HudMode) mCurrentMode).isPromptEnabled()) {
+                getSXRContext().runOnGlThread(this::showViewExit);
+            }
         }
         return true;
     }

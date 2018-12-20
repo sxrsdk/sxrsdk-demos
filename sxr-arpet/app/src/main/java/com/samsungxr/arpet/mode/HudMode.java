@@ -183,6 +183,10 @@ public class HudMode extends BasePetMode {
         }
     }
 
+    public boolean isPromptEnabled(){
+        return mMainViewController != null;
+    }
+
     private void showAboutView() {
         if (mMainViewController == null) {
             mMainViewController = new MainViewController(mPetContext);
