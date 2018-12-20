@@ -363,8 +363,11 @@ public class PetMain extends DisableNativeSplashScreen {
 
             // TODO: Improve this if
             if (selectedPlane != null) {
-                mChoosePlan.onHide(mPetContext.getMainScene());
-                mChoosePlan = null;
+                if (mChoosePlan != null) {
+                    mChoosePlan.onHide(mPetContext.getMainScene());
+                    mChoosePlan = null;
+                }
+
                 final float[] modelMtx = sxrNode.getTransform().getModelMatrix();
 
                 if (!mPet.isRunning()) {
