@@ -16,6 +16,7 @@
 package com.samsungxr.aravatar;
 
 import android.graphics.Color;
+import android.opengl.GLES30;
 import android.util.Log;
 
 import com.samsungxr.SXRAndroidResource;
@@ -81,24 +82,25 @@ public class SceneUtils
        };
     }
 
-    public SXRNode createPlane(SXRContext SXRContext)
+    public SXRNode createPlane(SXRContext sxrContext)
     {
-        SXRNode plane = new SXRNode(SXRContext);
-        SXRMesh mesh = SXRMesh.createQuad(SXRContext,
-                "float3 a_position", 1.0f, 1.0f);
-        SXRMaterial mat = new SXRMaterial(SXRContext, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRNode polygonObject = new SXRNode(SXRContext, mesh, mat);
         Vector4f color = mColors[mPlaneIndex % mColors.length];
 
-        plane.setName("Plane" + mPlaneIndex);
-        polygonObject.setName("PlaneGeometry" + mPlaneIndex);
-        mPlaneIndex++;
+        SXRMaterial mat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
         mat.setDiffuseColor(color.x, color.y, color.x, color.w);
-        polygonObject.getRenderData().setAlphaBlend(true);
-        polygonObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
-        polygonObject.getRenderData().disableLight();
-        polygonObject.getTransform().setRotationByAxis(-90, 1, 0, 0);
-        plane.addChildObject(polygonObject);
+
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
+        renderData.setAlphaBlend(true);
+        renderData.setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
+        renderData.disableLight();
+        renderData.setDrawMode(GLES30.GL_TRIANGLE_FAN);
+        renderData.setMaterial(mat);
+
+        SXRNode plane = new SXRNode(sxrContext);
+        plane.attachComponent(renderData);
+        plane.setName("Plane" + mPlaneIndex);
+        mPlaneIndex++;
+
         return plane;
     }
 

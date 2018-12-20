@@ -15,9 +15,6 @@
 
 package com.samsungxr.aravatar;
 
-import android.graphics.Color;
-import android.view.Gravity;
-
 import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
@@ -25,12 +22,12 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRTransform;
 import com.samsungxr.SystemPropertyUtil;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
@@ -38,13 +35,14 @@ import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.mixedreality.SXRAnchor;
 import com.samsungxr.mixedreality.SXRHitResult;
+import com.samsungxr.mixedreality.SXRLightEstimate;
 import com.samsungxr.mixedreality.SXRMixedReality;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.mixedreality.IAnchorEvents;
 import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
-import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.utility.Log;
 
 public class AvatarMain extends SXRMain {
@@ -89,26 +87,26 @@ public class AvatarMain extends SXRMain {
         mMixedReality = new SXRMixedReality(mScene, false);
         mMixedReality.getEventReceiver().addListener(planeEventsListener);
         mMixedReality.getEventReceiver().addListener(anchorEventsListener);
+        mMixedReality.getEventReceiver().addListener(mrEventsListener);
         mMixedReality.resume();
     }
 
     @Override
     public void onStep()
     {
-        if (mMixedReality != null)
+        SXRLightEstimate lightEstimate = mMixedReality.getLightEstimate();
+        if (lightEstimate != null)
         {
-            float light = mMixedReality.getLightEstimate().getPixelIntensity();
+            float light = lightEstimate.getPixelIntensity();
             mSceneLight.setAmbientIntensity(light, light, light, 1);
             mSceneLight.setDiffuseIntensity(light, light, light, 1);
             mSceneLight.setSpecularIntensity(light, light, light, 1);
         }
     }
 
-
-    private IPlaneEvents planeEventsListener = new IPlaneEvents()
-    {
+    private IMixedRealityEvents mrEventsListener = new IMixedRealityEvents() {
         @Override
-        public void onStartPlaneDetection(IMixedReality mr)
+        public void onMixedRealityStart(IMixedReality mr)
         {
             mUtility.initCursorController(getSXRContext(),
                     mTouchHandler,
@@ -116,8 +114,14 @@ public class AvatarMain extends SXRMain {
         }
 
         @Override
-        public void onStopPlaneDetection(IMixedReality mr) { }
+        public void onMixedRealityStop(IMixedReality mr) { }
 
+        @Override
+        public void onMixedRealityUpdate(IMixedReality mr) { }
+    };
+
+    private IPlaneEvents planeEventsListener = new IPlaneEvents()
+    {
         @Override
         public void onPlaneDetected(SXRPlane plane)
         {
@@ -147,6 +151,16 @@ public class AvatarMain extends SXRMain {
             {
                 childOwner.detachComponent(SXRPlane.getComponentType());
                 childOwner.getParent().removeChildObject(childOwner);
+            }
+        }
+
+        @Override
+        public void onPlaneGeometryChange(SXRPlane plane) {
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
+                SXRMesh mesh = new SXRMesh(getSXRContext());
+                mesh.setVertices(plane.get3dPolygonAsArray());
+
+                plane.getOwnerObject().getRenderData().setMesh(mesh);
             }
         }
     };
@@ -252,13 +266,8 @@ public class AvatarMain extends SXRMain {
                 float scale = 0.3f /bv.radius;
                 avatarRoot.getTransform().setScale(scale, scale, scale);
                 bv = avatarRoot.getBoundingVolume();
+                avatarRoot.getTransform().setPosition(-bv.center.x, 0.3f - bv.center.y, -bv.center.z);
             }
-            float zpos = -bv.center.z;
-            if (mMixedReality.getPassThroughObject() != null)
-            {
-                zpos -= 1.5f;
-            }
-            avatarRoot.getTransform().setPosition(-bv.center.x, 0, zpos);
             avatarRoot.attachComponent(new SXRBoxCollider(mContext));
             mAvatarAnchor.addChildObject(avatarRoot);
             avatarRoot.getEventReceiver().addListener(mSelector);
@@ -295,12 +304,7 @@ public class AvatarMain extends SXRMain {
                 avatarRoot.getTransform().setScale(scale, scale, scale);
                 bv = avatarRoot.getBoundingVolume();
             }
-            float zpos = -bv.center.z;
-            if (mMixedReality.getPassThroughObject() != null)
-            {
-                zpos -= 1.5f;
-            }
-            avatarRoot.getTransform().setPosition(-bv.center.x, 0, zpos);
+            avatarRoot.getTransform().setPosition(-bv.center.x, 0, -bv.center.z);
             avatarRoot.attachComponent(new SXRBoxCollider(mContext));
             avatarRoot.forAllComponents(new SXRNode.ComponentVisitor() {
                 @Override
@@ -318,6 +322,4 @@ public class AvatarMain extends SXRMain {
 
         public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
     };
-
-
 }
