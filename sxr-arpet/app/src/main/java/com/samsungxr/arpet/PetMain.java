@@ -307,9 +307,6 @@ public class PetMain extends DisableNativeSplashScreen {
             mCurrentMode = new HudMode(mPetContext, mPet, mHandlerModeChange);
             mCurrentMode.enter();
 
-            if (mPetContext.getMode() != PetConstants.SHARE_MODE_NONE) {
-                mPet.playBone();
-            }
             mPet.setCurrentAction(PetActions.IDLE.ID);
         }
     }
