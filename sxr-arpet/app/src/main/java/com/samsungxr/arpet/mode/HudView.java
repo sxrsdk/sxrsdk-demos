@@ -209,6 +209,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
                 break;
             case R.id.btn_fetchbone:
                 mPlayBoneButton.startAnimation(mBounce);
+                mPlayBoneButton.setActivated(!mPlayBoneButton.isActivated());
                 mBounce.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {

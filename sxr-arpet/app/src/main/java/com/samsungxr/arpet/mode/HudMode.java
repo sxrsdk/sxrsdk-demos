@@ -64,10 +64,6 @@ public class HudMode extends BasePetMode {
     @Override
     protected void onEnter() {
         EventBusUtils.register(this);
-        if (mPetContext.getMode() != PetConstants.SHARE_MODE_NONE) {
-            Log.d(TAG, "Play Ball activated by sharing mode!");
-            mPetController.playBone();
-        }
     }
 
     @Override
