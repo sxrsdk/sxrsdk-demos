@@ -48,6 +48,8 @@ import com.samsungxr.arpet.mode.ILoadEvents;
 import com.samsungxr.arpet.mode.IPetView;
 import com.samsungxr.arpet.shaders.SXRTiledMaskShader;
 import com.samsungxr.arpet.util.LoadModelHelper;
+
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.io.IOException;
@@ -323,15 +325,29 @@ public class CharacterView extends SXRNode implements
         SXRNode pivot = getGrabPivot();
 
         if (pivot != null) {
+            Matrix4f m = item.getTransform().getModelMatrix4f();
+            Vector3f scale = new Vector3f();
+            m.getScale(scale);
+
             if (item.getParent() != null) {
                 item.getParent().removeChildObject(item);
             }
 
             item.getTransform().setRotation(1, 0, 0, 0);
             item.getTransform().setPosition(0, 0.3f, 20.0f);
-            item.getTransform().setScale(2f, 2f, 2f);
 
             pivot.addChildObject(item);
+
+            Matrix4f m2 = item.getTransform().getModelMatrix4f();
+            Vector3f scale2 = new Vector3f();
+            m2.getScale(scale2);
+            scale.div(scale2);
+            item.getTransform().setScale(item.getTransform().getScaleX() * scale.x,
+                    item.getTransform().getScaleY() * scale.y,
+                    item.getTransform().getScaleZ() * scale.z);
+
+            BoundingVolume b = item.getBoundingVolume();
+            Log.e("GRAB_ITEM", "Bounding volume=" + b.minCorner + " " + b.maxCorner + " " + b.radius);
         }
     }
 
