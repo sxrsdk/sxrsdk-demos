@@ -63,6 +63,8 @@
     <string translatable="false" name="message_initial">MOVE AROUND TO FIND A HORIZONTAL SURFACE</string>
     <string translatable="false" name="choose_a_plan">CHOOSE A PLAN TO APPEAR PET</string>
     <string name="clear">Do you want to clear the screen start\n a new experience with the pet?</string>
-    <string name="sxr">SXR\nEVA</string>
+    <string name="sxr">Eva AR\n Project by Sidia</string>
     <string name="lorem_ipsum">“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</string>
+    <string name="team">Afonso Rabelo -Engenieer\n Ana Franco - Designer\n André Naveca - Engenieer\n Cristiano Bozzetto - Sr. Engenieer\n Diego Azulay - Engenieer\n Flávio Ribeiro - Designer\n Heimar de Oliveira - Project Lead\n Marcos Souza - Product Owner\n Ragner Nascimento - Tech Leader\n Rachel Lima - Engenieer\n Susana Silva - Tester</string>
+    <string name="site">www.sidia.org.br</string>
 </resources>
