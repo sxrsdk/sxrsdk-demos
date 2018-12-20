@@ -46,7 +46,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="5dp"
-        android:src="@drawable/ic_clean" />
+        android:src="@drawable/menu_clean_button" />
 
     <ImageView
         android:id="@+id/btn_camera"

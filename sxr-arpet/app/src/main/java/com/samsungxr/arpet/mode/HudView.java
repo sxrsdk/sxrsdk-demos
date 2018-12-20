@@ -179,6 +179,7 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.btn_start_menu:
+                setStateInMenuButtons();
                 mMenuButton.setVisibility(View.GONE);
                 mCloseButton.setVisibility(View.VISIBLE);
                 bounceView.startAnimation(mStartMenuObject);
@@ -362,6 +363,12 @@ public class HudView extends BasePetView implements View.OnClickListener {
 
     public void deactivateBoneButton() {
         mPlayBoneButton.setActivated(false);
+    }
+
+    public void setStateInMenuButtons() {
+        final int shareMode = mPetContext.getMode();
+        mCleanButton.setEnabled(shareMode == PetConstants.SHARE_MODE_NONE);
+        mCleanButton.setClickable(shareMode == PetConstants.SHARE_MODE_NONE);
     }
 
     public void setStateInActionButtons() {
