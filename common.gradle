@@ -189,7 +189,7 @@ dependencies {
     }
 
     arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-    if (new File("../SXR").exists()) {
+	if (file("../../../SXR").exists()) {
         if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
             if (findProject(':sxr_adapter')) {
                 arImplementation project(':sxr_adapter')
