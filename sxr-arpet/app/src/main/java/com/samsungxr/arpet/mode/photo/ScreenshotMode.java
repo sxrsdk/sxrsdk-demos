@@ -172,11 +172,11 @@ public class ScreenshotMode extends BasePetMode {
 
         initPhotosDir();
 
-        final String fileName = "sxr-arpet-photo-" + System.currentTimeMillis() + ".png";
+        final String fileName = "sxr-arpet-photo-" + System.currentTimeMillis() + ".jpeg";
         File file = new File(mPhotosDir, fileName);
 
         try (FileOutputStream output = new FileOutputStream(file)) {
-            capturedPhotoBitmap.compress(Bitmap.CompressFormat.PNG, 50, output);
+            capturedPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
         } catch (IOException e) {
             file = null;
             Log.e(TAG, "Error saving photo", e);
@@ -267,7 +267,7 @@ public class ScreenshotMode extends BasePetMode {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_STREAM,
                 FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, mSavedFile));
-        intent.setType("image/png");
+        intent.setType("image/jpeg");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;
     }
