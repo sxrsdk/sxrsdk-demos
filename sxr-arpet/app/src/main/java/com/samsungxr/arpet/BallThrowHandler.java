@@ -15,11 +15,11 @@
 
 package com.samsungxr.arpet;
 
+import android.content.res.Configuration;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samsungxr.IApplicationEvents;
-import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCollider;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
@@ -27,11 +27,6 @@ import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRTexture;
-import com.samsungxr.io.SXRTouchPadGestureListener;
-import com.samsungxr.mixedreality.SXRPlane;
-import com.samsungxr.physics.SXRRigidBody;
-
 import com.samsungxr.arpet.constant.PetConstants;
 import com.samsungxr.arpet.service.IMessageService;
 import com.samsungxr.arpet.service.MessageService;
@@ -40,6 +35,10 @@ import com.samsungxr.arpet.service.event.BallCommandReceivedMessage;
 import com.samsungxr.arpet.service.share.PlayerSceneObject;
 import com.samsungxr.arpet.util.EventBusUtils;
 import com.samsungxr.arpet.util.LoadModelHelper;
+import com.samsungxr.io.SXRTouchPadGestureListener;
+import com.samsungxr.mixedreality.SXRPlane;
+import com.samsungxr.physics.SXRRigidBody;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -76,6 +75,8 @@ public class BallThrowHandler {
 
     private float mDistanceZ = defaultPositionZ;
 
+    private int mCurrentOrientation;
+
     BallThrowHandler(PetContext petContext) {
         mPetContext = petContext;
         mPlayer = petContext.getPlayer();
@@ -93,6 +94,8 @@ public class BallThrowHandler {
         mMessageService = MessageService.getInstance();
 
         mPlayer.setEnable(false);
+
+        mCurrentOrientation = Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Subscribe
@@ -316,6 +319,22 @@ public class BallThrowHandler {
 
     public SXRNode getBall() {
         return mBall;
+    }
+
+    public void rotateBone(int orientation) {
+        if (orientation == mCurrentOrientation) {
+            return;
+        }
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mBoneGaze.getTransform().setRotation(1, 0f, 0f, 0f);
+            mBall.getTransform().setRotation(1, 0f, 0f, 0f);
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mBoneGaze.getTransform().setRotationByAxis(-90, 0f, 0f, 1.0f);
+            mBall.getTransform().setRotationByAxis(-90, 0f, 0f, 1.0f);
+        }
+
+        mCurrentOrientation = orientation;
     }
 
     private void load3DModel() {
