@@ -73,10 +73,6 @@ public abstract class BasePetMode implements IPetMode {
         return mModeScene;
     }
 
-    public void handleOrientation() {
-        onHandleOrientation(mPetContext.getMainScene().getMainCameraRig());
-    }
-
     public boolean isRunning() {
         return mIsRunning;
     }
@@ -89,5 +85,4 @@ public abstract class BasePetMode implements IPetMode {
 
     abstract protected void onExit();
 
-    abstract protected void onHandleOrientation(SXRCameraRig cameraRig);
 }

@@ -251,9 +251,6 @@ public class PetMain extends DisableNativeSplashScreen {
     @Override
     public void onStep() {
         super.onStep();
-        if (mCurrentMode != null) {
-            mCurrentMode.handleOrientation();
-        }
     }
 
     @Subscribe

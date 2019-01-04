@@ -74,18 +74,6 @@ public class HudMode extends BasePetMode {
         mVirtualObjectController.hideObject();
     }
 
-    @Override
-    protected void onHandleOrientation(SXRCameraRig cameraRig) {
-        if (mPetController.isPlaying()) {
-            float rotationRoll = cameraRig.getTransform().getRotationRoll();
-            if (rotationRoll <= -89.0f || rotationRoll >= 89.0f) {
-                mPetContext.getBallThrowHandlerHandler().rotateBone(Configuration.ORIENTATION_PORTRAIT);
-            } else {
-                mPetContext.getBallThrowHandlerHandler().rotateBone(Configuration.ORIENTATION_LANDSCAPE);
-            }
-        }
-    }
-
     private class OnHudItemClickedHandler implements OnHudItemClicked {
 
         @Override

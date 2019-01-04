@@ -270,10 +270,6 @@ public class SharingAnchorMode extends BasePetMode {
         EventBusUtils.unregister(this);
     }
 
-    @Override
-    protected void onHandleOrientation(SXRCameraRig cameraRig) {
-    }
-
     private void onConnectionEstablished() {
 
         showViewConnectionFound();

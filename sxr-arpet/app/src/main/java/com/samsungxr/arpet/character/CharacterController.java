@@ -103,10 +103,6 @@ public class CharacterController extends BasePetMode {
         mModeScene.unload();
     }
 
-    @Override
-    protected void onHandleOrientation(SXRCameraRig cameraRig) {
-    }
-
     private void initPet(CharacterView pet) {
         addAction(new PetActions.IDLE(mPetContext, pet));
 

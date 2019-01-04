@@ -193,10 +193,6 @@ public class ScreenshotMode extends BasePetMode {
                 });
     }
 
-    @Override
-    protected void onHandleOrientation(SXRCameraRig cameraRig) {
-    }
-
     private void requestStoragePermission(OnStoragePermissionGranted callback) {
         mPermissionCallback = callback;
         mPetContext.getActivity().requestPermissions(PERMISSION_STORAGE, REQUEST_STORAGE_PERMISSION);

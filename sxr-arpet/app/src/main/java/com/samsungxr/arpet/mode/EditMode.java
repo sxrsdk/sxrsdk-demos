@@ -78,11 +78,6 @@ public class EditMode extends BasePetMode {
         onDisableGesture();
     }
 
-    @Override
-    protected void onHandleOrientation(SXRCameraRig cameraRig) {
-
-    }
-
     public void onEnableGesture(SXRCursorController cursorController) {
         if (mCursorController == null) {
             mCursorController = cursorController;
