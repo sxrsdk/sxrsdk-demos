@@ -78,19 +78,7 @@ public class EditMode extends BasePetMode {
         onDisableGesture();
     }
 
-    public void onEnableGesture(SXRCursorController cursorController) {
-        if (mCursorController == null) {
-            mCursorController = cursorController;
-
-            mCursorController.addPickEventListener(mGestureHandler);
-            mPetContext.getSXRContext().getApplication().getEventReceiver().addListener(mGestureHandler);
-
-            mScaleDetector.setEnabled(true);
-            mRotationDetector.setEnabled(true);
-        }
-    }
-
-    public void onDisableGesture() {
+    private void onDisableGesture() {
         if (mCursorController != null) {
             mCursorController.removePickEventListener(mGestureHandler);
             mPetContext.getSXRContext().getApplication().getEventReceiver().removeListener(mGestureHandler);
