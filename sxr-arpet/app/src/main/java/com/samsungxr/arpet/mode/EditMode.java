@@ -44,7 +44,6 @@ import org.joml.Vector4f;
 public class EditMode extends BasePetMode {
     private OnBackToHudModeListener mBackToHudModeListener;
     private final CharacterView mCharacterView;
-    private final IMixedReality mMixedReality;
     private GestureDetector mRotationDetector;
     private GestureDetector mScaleDetector;
     private SXRCursorController mCursorController = null;
@@ -56,7 +55,6 @@ public class EditMode extends BasePetMode {
         mBackToHudModeListener = listener;
         ((EditView) mModeScene).setListenerEditMode(new OnEditModeClickedListenerHandler());
         mCharacterView = controller.getView();
-        mMixedReality = petContext.getMixedReality();
 
         mVibrator = (Vibrator) petContext.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
