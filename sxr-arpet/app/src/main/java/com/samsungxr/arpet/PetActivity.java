@@ -21,15 +21,15 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.samsungxr.SXRActivity;
-import com.samsungxr.utility.Log;
-
 import com.samsungxr.arpet.context.ActivityResultEvent;
 import com.samsungxr.arpet.context.RequestPermissionResultEvent;
 import com.samsungxr.arpet.manager.permission.OnPermissionResultListener;
 import com.samsungxr.arpet.manager.permission.PermissionManager;
 import com.samsungxr.arpet.util.EventBusUtils;
+import com.samsungxr.utility.Log;
 
 public class PetActivity extends SXRActivity {
+
     private static final String TAG = "SXR_ARPET";
 
     private PetMain mMain;
@@ -106,5 +106,4 @@ public class PetActivity extends SXRActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         EventBusUtils.post(new ActivityResultEvent(requestCode, resultCode, data));
     }
-
 }

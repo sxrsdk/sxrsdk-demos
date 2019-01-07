@@ -30,6 +30,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -37,7 +38,6 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.Toast;
 
-import com.samsungxr.SXRCameraRig;
 import com.samsungxr.arpet.BuildConfig;
 import com.samsungxr.arpet.PetContext;
 import com.samsungxr.arpet.R;
@@ -54,6 +54,8 @@ import org.greenrobot.eventbus.util.AsyncExecutor;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class ScreenshotMode extends BasePetMode {
 
@@ -78,6 +80,11 @@ public class ScreenshotMode extends BasePetMode {
     private SoundPool mSoundPool;
     private int mClickSoundId;
     private IPhotoView mView;
+
+    @IntDef({R.id.button_facebook, R.id.button_twitter, R.id.button_instagram, R.id.button_whatsapp})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface SocialAppId {
+    }
 
     public ScreenshotMode(PetContext petContext, OnBackToHudModeListener listener) {
         super(petContext, new PhotoViewController(petContext));
@@ -245,7 +252,7 @@ public class ScreenshotMode extends BasePetMode {
         context.startActivityForResult(intent, REQUEST_STORAGE_PERMISSION);
     }
 
-    private void openSocialApp(int socialAppId) {
+    private void openSocialApp(@SocialAppId int socialAppId) {
         SocialAppInfo info = mSocialApps.get(socialAppId);
         if (mSavedFile != null && checkAppInstalled(info.mPackageName)) {
             Intent intent = createIntent();
@@ -264,7 +271,7 @@ public class ScreenshotMode extends BasePetMode {
         intent.putExtra(Intent.EXTRA_STREAM,
                 FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, mSavedFile));
         intent.setType("image/jpeg");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
 
