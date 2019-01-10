@@ -173,6 +173,7 @@ public class SampleMain extends SXRMain {
             float screenDepth = mr.getScreenDepth();
             mr.getPassThroughObject().getEventReceiver().addListener(mTouchHandler);
             helper.initCursorController(mSXRContext, mTouchHandler, screenDepth);
+            mr.setPlaneFindingMode(SXRMixedReality.PlaneFindingMode.HORIZONTAL);
         }
 
         @Override
@@ -190,20 +191,22 @@ public class SampleMain extends SXRMain {
     {
         /**
          * Place a transparent quad in the 3D scene to indicate
-         * vertically upward planes (floor, table top).
+         * horizontally upward planes (floor, table top).
          * We don't need colliders on these since they are
          * not pickable.
           */
         @Override
         public void onPlaneDetected(SXRPlane plane)
         {
-            SXRNode planeNode = helper.createPlaneNode(getSXRContext());
-            float[] pose = new float[16];
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
+                SXRNode planeNode = helper.createPlaneNode(getSXRContext());
+                float[] pose = new float[16];
 
-            plane.getCenterPose(pose);
-            planeNode.attachComponent(plane);
-            mainScene.addNode(planeNode);
-            addVirtualObject(pose);
+                plane.getCenterPose(pose);
+                planeNode.attachComponent(plane);
+                mainScene.addNode(planeNode);
+                addVirtualObject(pose);
+            }
         }
 
         /**
