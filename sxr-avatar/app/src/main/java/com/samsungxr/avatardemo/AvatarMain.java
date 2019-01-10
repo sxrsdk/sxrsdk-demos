@@ -32,7 +32,7 @@ public class AvatarMain extends SXRMain {
     private SXRActivity mActivity;
     private int mNumAnimsLoaded = 0;
     private String mBoneMap;
-    SXRAnimator interpolationAnim=null;
+    private SXRAnimator blendAnimation=null;
 
     public AvatarMain(SXRActivity activity) {
         mActivity = activity;
@@ -65,12 +65,12 @@ public class AvatarMain extends SXRMain {
         {
             if(mNumAnimsLoaded==0)
             {
-                interpolationAnim = animation;
+                blendAnimation = animation;
             }
             else
             {
-                interpolationAnim.addAnimation(animation.getAnimation(0));
-                interpolationAnim.addAnimation(animation.getAnimation(1));
+                blendAnimation.addAnimation(animation.getAnimation(0));
+                blendAnimation.addAnimation(animation.getAnimation(1));
             }
 
             if (mNumAnimsLoaded < mAnimationPaths.length-1)
@@ -80,10 +80,10 @@ public class AvatarMain extends SXRMain {
             }
             else
             {
-                interpolationAnim.setAvatar(avatar, mBoneMap);
-                interpolationAnim.setRepeatMode(SXRRepeatMode.PINGPONG);
-                interpolationAnim.setRepeatCount(-1);
-                interpolationAnim.start(1f);
+                blendAnimation.setAvatar(avatar, mBoneMap);
+                blendAnimation.setRepeatMode(SXRRepeatMode.PINGPONG);
+                blendAnimation.setRepeatCount(-1);
+                blendAnimation.start(1f);
             }
 
         }
