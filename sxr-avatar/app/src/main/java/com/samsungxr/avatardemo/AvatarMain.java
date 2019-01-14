@@ -1,5 +1,6 @@
 package com.samsungxr.avatardemo;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import com.samsungxr.SXRActivity;
@@ -24,7 +25,7 @@ import java.io.InputStream;
 
 public class AvatarMain extends SXRMain {
     private final String mModelPath = "YBot/ybot.fbx";
-    private final String[] mAnimationPaths =  {"YBot/Zombie_Stand_Up_mixamo.com.bvh","YBot/Football_Hike_mixamo.com.bvh", "YBot/Samba_Dancing_mixamo.com.bvh"};
+    private final String[] mAnimationPaths =  { "animation/mixamo/Ybot_SambaDancing.bvh" };
     private final String mBoneMapPath = "animation/mixamo/mixamo_map.txt";
     private static final String TAG = "AVATAR";
     private SXRContext mContext;
@@ -32,7 +33,6 @@ public class AvatarMain extends SXRMain {
     private SXRActivity mActivity;
     private int mNumAnimsLoaded = 0;
     private String mBoneMap;
-    private SXRAnimator blendAnimation=null;
 
     public AvatarMain(SXRActivity activity) {
         mActivity = activity;
@@ -69,29 +69,18 @@ public class AvatarMain extends SXRMain {
         @Override
         public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors)
         {
-            if(mNumAnimsLoaded==0)
+            animation.setRepeatMode(SXRRepeatMode.ONCE);
+            animation.setSpeed(1f);
+            ++mNumAnimsLoaded;
+            if (!avatar.isRunning())
             {
-                blendAnimation = animation;
+                avatar.startAll(SXRRepeatMode.REPEATED);
             }
             else
             {
-                blendAnimation.addAnimation(animation.getAnimation(0));
-                blendAnimation.addAnimation(animation.getAnimation(1));
+                avatar.start(animation.getName());
             }
-
-            if (mNumAnimsLoaded < mAnimationPaths.length-1)
-            {
-                ++mNumAnimsLoaded;
-                loadNextAnimation(avatar, mBoneMap);
-            }
-            else
-            {
-                blendAnimation.setAvatar(avatar, mBoneMap);
-                blendAnimation.setRepeatMode(SXRRepeatMode.PINGPONG);
-                blendAnimation.setRepeatCount(-1);
-                blendAnimation.start(1f);
-            }
-
+            loadNextAnimation(avatar, mBoneMap);
         }
 
         public void onModelLoaded(SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) { }
