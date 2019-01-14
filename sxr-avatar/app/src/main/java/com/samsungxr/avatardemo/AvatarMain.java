@@ -18,6 +18,8 @@ import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRAvatar;
 import com.samsungxr.animation.SXRRepeatMode;
+import com.samsungxr.animation.SXRSkeleton;
+import com.samsungxr.animation.keyframe.SXRSkeletonAnimation;
 import com.samsungxr.nodes.SXRSphereNode;
 
 import java.io.IOException;
@@ -25,20 +27,15 @@ import java.io.InputStream;
 
 public class AvatarMain extends SXRMain {
     private final String mModelPath = "YBot/ybot.fbx";
-    //  private final String mModelPath = "Gyle/Gyle_Skin.fbx";
-    private final String[] mAnimationPaths =  {"YBot/Zombie_Stand_Up_mixamo.com.bvh"};//,"YBot/Football_Hike_mixamo.com.bvh"};//, "YBot/Samba_Dancing_mixamo.com.bvh"};//,"YBot/Football_Hike_mixamo.com.bvh"};
-    // private final String[] mAnimationPaths =  {"Gyle/hiphop_mixamo.com.bvh","Gyle/idle_Anim.bvh", "Gyle/running_Dance_mixamo.com.bvh"};
+    private final String[] mAnimationPaths =  {"YBot/Zombie_Stand_Up_mixamo.com.bvh","YBot/Football_Hike_mixamo.com.bvh", "YBot/Samba_Dancing_mixamo.com.bvh"};
     private final String mBoneMapPath = "animation/mixamo/mixamo_map.txt";
-    //private final String mBoneMapPath = "Gyle/bonemap.txt";
     private static final String TAG = "AVATAR";
     private SXRContext mContext;
     private SXRScene mScene;
     private SXRActivity mActivity;
     private int mNumAnimsLoaded = 0;
     private String mBoneMap;
-    private SXRAnimator blendAnim = null;
-    private int countAnim =0;
-    SXRAnimator interpolationAnim=null;
+    private SXRNode  mSkeletonGeometry;
 
     public AvatarMain(SXRActivity activity) {
         mActivity = activity;
@@ -50,9 +47,7 @@ public class AvatarMain extends SXRMain {
         {
             if (avatarRoot.getParent() == null)
             {
-                mScene.addNode(avatarRoot);
-                loadNextAnimation(avatar, mBoneMap);
-                mContext.runOnGlThreadPostRender(1, new Runnable()
+                mContext.runOnGlThread(new Runnable()
                 {
                     public void run()
                     {
@@ -61,57 +56,47 @@ public class AvatarMain extends SXRMain {
                         avatarRoot.getTransform().setScale(sf, sf, sf);
                         bv = avatarRoot.getBoundingVolume();
                         avatarRoot.getTransform().setPosition(-bv.center.x, -bv.minCorner.y, -bv.center.z - bv.radius);
-                        mContext.runOnTheFrameworkThread(new Runnable()
-                        {
-                            public void run() {
-                                loadNextAnimation(avatar, mBoneMap);
-                            }
-                        });
+                        mScene.addNode(avatarRoot);
                     }
                 });
             }
+            loadNextAnimation(avatar, mBoneMap);
         }
 
         @Override
         public void onAnimationLoaded(SXRAvatar avatar, SXRAnimator animation, String filePath, String errors)
-        {/*
-            if(mNumAnimsLoaded==0)
-            {
-                interpolationAnim = animation;
-               // ++mNumAnimsLoaded;
-            }
-            else
-            {
-                interpolationAnim.addAnimation(animation.getAnimation(0));
-                interpolationAnim.addAnimation(animation.getAnimation(1));
-            }
-            if (mNumAnimsLoaded < mAnimationPaths.length-1)
-            {
-                ++mNumAnimsLoaded;
-                loadNextAnimation(avatar, mBoneMap);
-            }
-            else
-            {
-                com.samsungxr.utility.Log.i("debugSkeleton","animationNum");
-                ++mNumAnimsLoaded;
-                interpolationAnim.setAvatar(avatar.getModel(),avatar, mBoneMap);
-                interpolationAnim.setRepeatMode(SXRRepeatMode.REPEATED);
-               // interpolationAnim.setRepeatCount(-1);
-                interpolationAnim.start(1);
+        {
 
-            }*/
-
-           // animation.setRepeatMode(SXRRepeatMode.PINGPONG);
-            animation.setRepeatCount(2);
+            animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
             ++mNumAnimsLoaded;
-            if (!avatar.isRunning()) {
-                avatar.startAll(SXRRepeatMode.REPEATED);
+            SXRSkeletonAnimation skelAnim = (SXRSkeletonAnimation) animation.getAnimation(0);
+            SXRSkeleton skel = skelAnim.getSkeleton();
 
-            } else {
+            //create geometry
+            if (mSkeletonGeometry == null)
+            {
+                mSkeletonGeometry = new SXRNode(mContext);
+                mSkeletonGeometry.setName("SkeletonGeometry");
+                skel.createSkeletonGeometry(mSkeletonGeometry);
+                SXRNode.BoundingVolume bv = mSkeletonGeometry.getBoundingVolume();
+                float sf = 1.0f / bv.radius;
+                mSkeletonGeometry.getTransform().setScale(sf/2, sf/2, sf/2);
+                bv = mSkeletonGeometry.getBoundingVolume();
+                mSkeletonGeometry.getTransform().setPosition(-bv.center.x-0.4f, -bv.minCorner.y-0.1f, -bv.center.z - bv.radius);
+                mScene.addNode(mSkeletonGeometry);
+            }
+
+            if (!avatar.isRunning())
+            {
+                avatar.startAll(SXRRepeatMode.REPEATED);
+            }
+            else
+            {
                 avatar.start(animation.getName());
             }
-            if (mNumAnimsLoaded < mAnimationPaths.length) {
+            if (mNumAnimsLoaded < mAnimationPaths.length)
+            {
                 loadNextAnimation(avatar, mBoneMap);
             }
         }
@@ -120,7 +105,13 @@ public class AvatarMain extends SXRMain {
 
         public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }
 
-        public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
+        public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) {
+            SXRSkeletonAnimation skelAnim = (SXRSkeletonAnimation)animator. getAnimation(0);
+            SXRSkeleton skel = skelAnim.getSkeleton();
+            mSkeletonGeometry.removeChildObject(mSkeletonGeometry.getChildByIndex(0));
+            mSkeletonGeometry.attachComponent(skel);
+            skel.createSkeletonGeometry(mSkeletonGeometry);
+        }
     };
 
 
@@ -188,7 +179,7 @@ public class AvatarMain extends SXRMain {
         skyMtl.setSpecularColor(0, 0, 0, 1);
         skyMtl.setSpecularExponent(0);
         rig.getHeadTransformObject().attachComponent(headLight);
-        headLight.setShadowRange(0.1f, 20);
+//        headLight.setShadowRange(0.1f, 20);
         topLightObj.attachComponent(topLight);
         topLightObj.getTransform().rotateByAxis(-90, 1, 0, 0);
         topLightObj.getTransform().setPosition(0, 2, -1);
@@ -199,20 +190,11 @@ public class AvatarMain extends SXRMain {
         return env;
     }
 
-    private void loadNextAnimation(SXRAvatar avatar, String bonemap)
-    {
-        if (mNumAnimsLoaded >= mAnimationPaths.length)
-        {
-            return;
-        }
-        try
-        {
-            SXRAndroidResource res =
-                new SXRAndroidResource(mContext, mAnimationPaths[mNumAnimsLoaded]);
+    private void loadNextAnimation(SXRAvatar avatar, String bonemap) {
+        try {
+            SXRAndroidResource res = new SXRAndroidResource(mContext, mAnimationPaths[mNumAnimsLoaded]);
             avatar.loadAnimation(res, bonemap);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
             mActivity.finish();
             mActivity = null;
