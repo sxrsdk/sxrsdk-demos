@@ -15,10 +15,11 @@
 
 package com.samsungxr.arcore.simplesample;
 
+import android.opengl.GLES30;
+
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRNode;
@@ -70,24 +71,23 @@ public class SampleHelper {
        };
     }
 
-    public SXRNode createQuadPlane(SXRContext SXRContext)
+    public SXRNode createPlaneNode(SXRContext sxrContext)
     {
-        SXRNode plane = new SXRNode(SXRContext);
-        SXRMesh mesh = SXRMesh.createQuad(SXRContext,
-                "float3 a_position", 1.0f, 1.0f);
-        SXRMaterial mat = new SXRMaterial(SXRContext, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRNode polygonObject = new SXRNode(SXRContext, mesh, mat);
         Vector4f color = mColors[mPlaneIndex % mColors.length];
-
-        plane.setName("Plane" + mPlaneIndex);
-        polygonObject.setName("PlaneGeometry" + mPlaneIndex);
-        mPlaneIndex++;
+        SXRMaterial mat = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.Phong.ID);
         mat.setDiffuseColor(color.x, color.y, color.x, color.w);
-        polygonObject.getRenderData().disableLight();
-        polygonObject.getRenderData().setAlphaBlend(true);
-        polygonObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
-        polygonObject.getTransform().setRotationByAxis(-90, 1, 0, 0);
-        plane.addChildObject(polygonObject);
+
+        SXRRenderData renderData = new SXRRenderData(sxrContext);
+        renderData.disableLight();
+        renderData.setAlphaBlend(true);
+        renderData.setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
+        renderData.setDrawMode(GLES30.GL_TRIANGLE_FAN);
+        renderData.setMaterial(mat);
+
+        SXRNode plane = new SXRNode(sxrContext);
+        plane.attachComponent(renderData);
+        plane.setName("Plane" + mPlaneIndex);
+        mPlaneIndex++;
         return plane;
     }
 

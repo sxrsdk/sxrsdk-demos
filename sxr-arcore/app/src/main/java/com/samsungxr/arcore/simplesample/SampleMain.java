@@ -15,7 +15,6 @@
 
 package com.samsungxr.arcore.simplesample;
 
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 import com.samsungxr.SXRBoxCollider;
@@ -24,6 +23,7 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRScene;
@@ -38,6 +38,7 @@ import com.samsungxr.mixedreality.SXRTrackingState;
 import com.samsungxr.mixedreality.IAnchorEvents;
 import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
+import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.utility.Log;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -87,6 +88,7 @@ public class SampleMain extends SXRMain {
         mixedReality = new SXRMixedReality(mainScene);
         mixedReality.getEventReceiver().addListener(planeEventsListener);
         mixedReality.getEventReceiver().addListener(anchorEventsListener);
+        mixedReality.getEventReceiver().addListener(mrEventsListener);
         mSelector = new SelectionHandler(ctx, mixedReality);
         mixedReality.resume();
     }
@@ -159,6 +161,28 @@ public class SampleMain extends SXRMain {
         }
     }
 
+    private IMixedRealityEvents mrEventsListener = new IMixedRealityEvents() {
+        /**
+         * Get the depth of the touch screen in the 3D world
+         * and give it to the cursor controller so touch
+         * events will be handled properly.
+         */
+        @Override
+        public void onMixedRealityStart(IMixedReality mr)
+        {
+            float screenDepth = mr.getScreenDepth();
+            mr.getPassThroughObject().getEventReceiver().addListener(mTouchHandler);
+            helper.initCursorController(mSXRContext, mTouchHandler, screenDepth);
+            mr.setPlaneFindingMode(SXRMixedReality.PlaneFindingMode.HORIZONTAL);
+        }
+
+        @Override
+        public void onMixedRealityStop(IMixedReality mr) { }
+
+        @Override
+        public void onMixedRealityUpdate(IMixedReality mr) { }
+    };
+
     /**
      * The plane events listener handles plane detection events.
      * It also handles initialization and shutdown.
@@ -166,41 +190,23 @@ public class SampleMain extends SXRMain {
     private IPlaneEvents planeEventsListener = new IPlaneEvents()
     {
         /**
-         * Get the depth of the touch screen in the 3D world
-         * and give it to the cursor controller so touch
-         * events will be handled properly.
-         */
-        @Override
-        public void onStartPlaneDetection(IMixedReality mr)
-        {
-            float screenDepth = mr.getScreenDepth();
-            mr.getPassThroughObject().getEventReceiver().addListener(mTouchHandler);
-            helper.initCursorController(mSXRContext, mTouchHandler, screenDepth);
-        }
-
-        @Override
-        public void onStopPlaneDetection(IMixedReality mr) { }
-
-        /**
          * Place a transparent quad in the 3D scene to indicate
-         * vertically upward planes (floor, table top).
+         * horizontally upward planes (floor, table top).
          * We don't need colliders on these since they are
          * not pickable.
           */
         @Override
         public void onPlaneDetected(SXRPlane plane)
         {
-            if (plane.getPlaneType() == SXRPlane.Type.VERTICAL)
-            {
-                return;
-            }
-            SXRNode planeMesh = helper.createQuadPlane(getSXRContext());
-            float[] pose = new float[16];
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
+                SXRNode planeNode = helper.createPlaneNode(getSXRContext());
+                float[] pose = new float[16];
 
-            plane.getCenterPose(pose);
-            planeMesh.attachComponent(plane);
-            mainScene.addNode(planeMesh);
-            addVirtualObject(pose);
+                plane.getCenterPose(pose);
+                planeNode.attachComponent(plane);
+                mainScene.addNode(planeNode);
+                addVirtualObject(pose);
+            }
         }
 
         /**
@@ -215,6 +221,14 @@ public class SampleMain extends SXRMain {
 
         @Override
         public void onPlaneMerging(SXRPlane SXRPlane, SXRPlane SXRPlane1) { }
+
+        @Override
+        public void onPlaneGeometryChange(SXRPlane plane) {
+            SXRMesh mesh = new SXRMesh(getSXRContext());
+            mesh.setVertices(plane.get3dPolygonAsArray());
+
+            plane.getOwnerObject().getRenderData().setMesh(mesh);
+        }
     };
 
     /**
@@ -557,6 +571,6 @@ public class SampleMain extends SXRMain {
             }
             return null;
         }
-    };
+    }
 
 }
