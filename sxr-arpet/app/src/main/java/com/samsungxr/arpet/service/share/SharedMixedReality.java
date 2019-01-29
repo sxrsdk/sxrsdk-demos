@@ -257,6 +257,11 @@ public class SharedMixedReality implements IMixedReality {
         return mMixedReality.acquirePointCloud();
     }
 
+    @Override
+    public void setPlaneFindingMode(SXRMixedReality.PlaneFindingMode planeFindingMode) {
+        mMixedReality.setPlaneFindingMode(planeFindingMode);
+    }
+
     @PetConstants.ShareMode
     public int getMode() {
         return mMode;
