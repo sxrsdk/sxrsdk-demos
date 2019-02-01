@@ -75,7 +75,7 @@ public class SampleActivity extends SXRActivity {
             try
             {
                 addModeltoScene(filePath, new Vector3f(0.05f,0.05f,0.05f),
-                        new Vector3f(0, -8.5f, -6.5f));
+                        new Vector3f(0, -2, -10));
             }
             catch (IOException ex)
             {
