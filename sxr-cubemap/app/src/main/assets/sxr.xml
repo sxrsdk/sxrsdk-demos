@@ -54,9 +54,9 @@
             resolveDepth="false" />
 
         <head-model-parms
-            eyeHeight="DEFAULT"
-            headModelDepth="DEFAULT"
-            headModelHeight="DEFAULT"
+            eyeHeight="0"
+            headModelDepth="0"
+            headModelHeight="0"
             interpupillaryDistance="DEFAULT" />
     </vr-app-settings>
 
