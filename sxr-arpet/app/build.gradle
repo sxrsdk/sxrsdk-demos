@@ -32,6 +32,7 @@ def getPropertyOrDefault(propertyName, defaultValue) {
     return project.hasProperty(propertyName) ? project.property(propertyName) : defaultValue
 }
 
+// See README.md file to get info about how to obtain and set this API key
 def GOOGLE_CLOUD_ANCHOR_KEY_NAME = "com.google.android.ar.API_KEY"
 
 android {
