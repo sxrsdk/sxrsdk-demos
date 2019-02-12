@@ -29,7 +29,6 @@
         framebufferPixelsWide="DEFAULT"
         showLoadingIcon="true"
         useProtectedFramebuffer="false"
-        useAndroidWearTouchpad="true"
         useSrgbFramebuffer="false" >
 
         <mono-mode-parms
@@ -49,14 +48,14 @@
             depthFormat="DEPTH_24"
             fov-y="DEFAULT"
             multiSamples="2"
-            resolutionWidth="2048"
-            resolutionHeight="2048"
+            resolutionWidth="DEFAULT"
+            resolutionHeight="DEFAULT"
             resolveDepth="false" />
 
         <head-model-parms
-            eyeHeight="0"
-            headModelDepth="0"
-            headModelHeight="0"
+            eyeHeight="DEFAULT"
+            headModelDepth="DEFAULT"
+            headModelHeight="DEFAULT"
             interpupillaryDistance="DEFAULT" />
     </vr-app-settings>
 

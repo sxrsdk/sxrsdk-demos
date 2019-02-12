@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2015 Samsung Electronics Co., LTD
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_overlay"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <View
+            android:id="@+id/photo_target"
+            android:layout_width="301.8dp"
+            android:layout_height="238.3dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22.1dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/toast_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_toast"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="16.3dp"
+                android:paddingTop="7.4dp"
+                android:paddingEnd="16.3dp"
+                android:paddingBottom="7.4dp"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="21.3dp"
+                    android:layout_height="21.3dp"
+                    android:src="@drawable/ic_check_mark" />
+
+                <TextView
+                    style="@style/ToastPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/photo_saved" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/StatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/want_to_share"
+                android:textSize="16sp" />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:columnCount="2"
+                android:orientation="vertical"
+                android:rowCount="2">
+
+                <LinearLayout
+                    android:id="@+id/button_facebook"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_functions_buttons"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20.5dp"
+                        android:layout_height="20.5dp"
+                        android:src="@drawable/fb_icn" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_whatsapp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/bg_functions_buttons"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20.5dp"
+                        android:layout_height="20.5dp"
+                        android:src="@drawable/wpp_icn" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_instagram"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="56dp"
+                    android:background="@drawable/bg_functions_buttons"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20.5dp"
+                        android:layout_height="20.5dp"
+                        android:src="@drawable/insta_icn" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_twitter"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="56dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/bg_functions_buttons"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20.5dp"
+                        android:layout_height="20.5dp"
+                        android:src="@drawable/tt_icon" />
+                </LinearLayout>
+
+            </GridLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33.6dp">
+
+                <Button
+                    android:id="@+id/cancel_photo"
+                    style="@style/Button"
+                    android:text="@string/ok" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/photo_content"
+        android:layout_width="340.6dp"
+        android:layout_height="263.7dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_square">
+
+        <ImageView
+            android:id="@+id/image_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_flash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="#FFFFFF" />
+
+</RelativeLayout>

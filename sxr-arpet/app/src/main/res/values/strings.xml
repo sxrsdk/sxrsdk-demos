@@ -1,0 +1,70 @@
+<!--/* Copyright 2015 Samsung Electronics Co., LTD
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */-->
+
+<resources>
+    <string name="editing_mode">Editing Mode</string>
+    <string name="save">SAVE</string>
+    <string name="guest_looking_at_target">Make sure you and your friends are side-by-side looking\n at the same thing.</string>
+    <string name="common_text_host">Host</string>
+    <string name="common_text_guest">Guest</string>
+    <string name="view_waiting_for_guests_status_text">Waiting for the guests to\nenter on the Sharing Anchor.</string>
+    <string name="view_waiting_for_host_status_text">Waiting for the host to\nenter on the Sharing Anchor.</string>
+    <string name="view_sharing_error_status_text">Pairing error!\nWould you like to try again?</string>
+    <string name="common_text_shared">Shared</string>
+    <string name="stay_in_position">Stay in this position while we connect the phones.</string>
+    <string name="view_no_connection_found_status_text">No %1$s found!\nWould you like to try again?</string>
+    <string name="common_text_retry">Retry</string>
+    <string translatable="false" name="common_text_cancel">Cancel</string>
+    <string name="common_text_continue">Continue</string>
+    <string name="connected">CONNECTED</string>
+    <string name="application_permissions">The application needs camera and location permissions</string>
+    <string name="disconnect_host">Do you want to disconnect from Sharing Anchor?\n Your friends will also be disconnected.</string>
+    <string name="disconnect">DISCONNECT</string>
+    <string name="disconnect_guest">Do you want to disconnect from\n Sharing Anchor?</string>
+    <string name="host_found">1 connection found\non sharing anchor</string>
+    <string name="center_pet">Center the pet in your scene</string>
+    <string name="move_around">Move around the device for at least a few seconds</string>
+    <string name="no_internet_connection">No internet connection available</string>
+    <string name="not_tracking">You\'re not looking at the pet</string>
+    <string name="bluetooth_disabled">Bluetooth is disabled</string>
+    <string name="device_not_visible">This device is not visible to other devices</string>
+    <string name="view_lets_start_status_text">Let’s start Sharing Anchor!\nWhat role do you want to play?</string>
+    <string name="view_host_disconnected">The host has finished sharing</string>
+    <string name="view_guests_disconnected">Your friends disconnected</string>
+    <string name="exit_message">Do you want really exit the application?</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="ok">OK</string>
+    <string name="want_to_share">Do you want to share?</string>
+    <string name="photo_saved">Photo was saved in gallery</string>
+    <plurals name="guests_found">
+        <item quantity="one">1 guest found\non sharing anchor</item>
+        <item quantity="other">%d guests found\non sharing anchor</item>
+    </plurals>
+    <plurals name="hosts_found">
+        <item quantity="one">1 host found\non sharing anchor</item>
+        <item quantity="other">%d hosts found\non sharing anchor</item>
+    </plurals>
+    <plurals name="common_text_guest">
+        <item quantity="one">Guest</item>
+        <item quantity="other">Guests</item>
+    </plurals>
+    <string translatable="false" name="message_initial">MOVE AROUND TO FIND A HORIZONTAL SURFACE</string>
+    <string translatable="false" name="choose_a_plan">CHOOSE A PLAN TO APPEAR PET</string>
+    <string name="clear">Do you want to clear the screen and start\n a new experience with the pet?</string>
+    <string name="sxr">Eva AR\n Project by Sidia</string>
+    <string name="lorem_ipsum">“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.”</string>
+    <string name="team"><b>Afonso Costa</b> -Engineer\n <b>Ana Franco</b> - Designer\n <b>André Naveca</b> - Engineer\n <b>Cristiano Bozzetto</b> - Sr. Engineer\n <b>Diego Azulay</b> - Engineer\n <b>Flávio Ribeiro</b> - Designer\n <b>Heimar de Oliveira</b> - Project Leader\n <b>Marcos Souza</b> - Product Owner\n <b>Ragner Nascimento</b> - Tech Leader\n <b>Rachel Lima</b> - Engineer\n <b>Susana Silva</b> - QA Engineer</string>
+    <string name="site">www.sidia.org.br</string>
+</resources>
