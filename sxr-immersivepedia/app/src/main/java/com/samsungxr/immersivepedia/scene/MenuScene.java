@@ -32,6 +32,7 @@ import com.samsungxr.immersivepedia.Main;
 import com.samsungxr.immersivepedia.R;
 import com.samsungxr.immersivepedia.focus.OnClickListener;
 import com.samsungxr.immersivepedia.util.AudioClip;
+import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 
 public class MenuScene extends SXRScene {
 
@@ -169,8 +170,7 @@ public class MenuScene extends SXRScene {
         SXRMesh meshGround = getSXRContext().getAssetLoader().loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.environment_ground_mesh));
         SXRTexture textureGround = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(getSXRContext(), R.drawable.menu_ground_tex_diffuse));
         SXRNode skyboxGround = new SXRNode(getSXRContext(), meshGround, textureGround);
-        skyboxGround.getRenderData().setRenderingOrder(0);
-
+        skyboxGround.getRenderData().setRenderingOrder(RenderingOrderApplication.SKYBOX);
         skybox.addChildObject(skyboxGround);
         return skybox;
     }
@@ -186,7 +186,7 @@ public class MenuScene extends SXRScene {
                 textureParameters);
         SXRNode skybox = new SXRNode(getSXRContext(), mesh, texture);
         skybox.getTransform().setScale(1, 1, 1);
-        skybox.getRenderData().setRenderingOrder(0);
+        skybox.getRenderData().setRenderingOrder(RenderingOrderApplication.SKYBOX);
         return skybox;
     }
 

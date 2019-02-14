@@ -28,7 +28,7 @@ else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
 
 android {
     defaultConfig {
-        applicationId "org.gearvrf.io.cursorsimple"
+        applicationId "com.samsungxr.io.cursorsimple"
     }
 
     buildTypes {

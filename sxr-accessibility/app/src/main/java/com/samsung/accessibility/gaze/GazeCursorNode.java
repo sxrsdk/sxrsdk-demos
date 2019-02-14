@@ -26,7 +26,7 @@ public class GazeCursorNode extends SXRNode {
     private static final float NEAR_CLIPPING_OFFSET = 0.00001f;
     private static final float DEFAULT_NEAR_CLIPPING_DISTANCE = 0.1f;
     private static final float NORMAL_CURSOR_SIZE = 0.5f;
-    private static final int CURSOR_RENDER_ORDER = 100000;
+    private static final int CURSOR_RENDER_ORDER = SXRRenderData.SXRRenderingOrder.OVERLAY + 10;
 
     private SXRNode rightCursor;
     private SXRNode leftCursor;

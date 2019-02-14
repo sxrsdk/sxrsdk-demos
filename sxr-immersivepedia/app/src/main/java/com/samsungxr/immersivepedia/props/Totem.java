@@ -31,6 +31,8 @@ import com.samsungxr.immersivepedia.util.PlayPauseButton;
 import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 import com.samsungxr.nodes.SXRTextViewNode;
 
+import static com.samsungxr.immersivepedia.util.RenderingOrderApplication.TOTEM;
+
 public class Totem extends FocusableNode implements FocusListener {
 
     private static final float TEXT_HEIGHT = 2f;
@@ -62,7 +64,7 @@ public class Totem extends FocusableNode implements FocusListener {
     private void prepareTotem(SXRContext sxrContext) {
         this.sxrContext = sxrContext;
         this.getRenderData().setCullFace(SXRCullFaceEnum.None);
-        getRenderData().setRenderingOrder(RenderingOrderApplication.TOTEM);
+        getRenderData().setRenderingOrder(TOTEM);
         this.attachCollider(new SXRMeshCollider(getSXRContext(), true));
         this.focusListener = this;
     }
@@ -123,14 +125,16 @@ public class Totem extends FocusableNode implements FocusListener {
         textTitle.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
         textTitle.getTransform().setPosition(0f, .6f, -0.1f);
         textTitle.getTransform().rotateByAxis(-180, 0, 1, 0);
+        textTitle.getRenderData().setRenderingOrder(TOTEM);
         addChildObject(textTitle);
     }
 
     public void setIcon(int iconPath) {
         icon = new PlayPauseButton(sxrContext, .3f, .3f,
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, iconPath)));
-        icon.getTransform().setPosition(0f, 1f, -0.11f);
+        icon.getTransform().setPosition(0f, 1f, -0.3f);
         icon.getTransform().rotateByAxis(-180, 0, 1, 0);
+        icon.getRenderData().setRenderingOrder(TOTEM);
         this.attachCollider(new SXRMeshCollider(getSXRContext(), false));
         addChildObject(icon);
     }

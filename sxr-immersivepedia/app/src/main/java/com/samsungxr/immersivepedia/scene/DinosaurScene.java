@@ -34,6 +34,7 @@ import com.samsungxr.immersivepedia.model.RotateDinosaurGroup;
 import com.samsungxr.immersivepedia.model.TextDinosaurGroup;
 import com.samsungxr.immersivepedia.model.VideoDinosaurGroup;
 import com.samsungxr.immersivepedia.util.FPSCounter;
+import com.samsungxr.immersivepedia.util.RenderingOrderApplication;
 
 import java.io.IOException;
 
@@ -153,22 +154,22 @@ public class DinosaurScene extends SXRScene {
         final SXRNode skybox = new SXRNode(getSXRContext(), mesh, texture);
 
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
-        skybox.getRenderData().setRenderingOrder(0);
+        skybox.getRenderData().setRenderingOrder(RenderingOrderApplication.SKYBOX);
 
         SXRMesh meshGround = loader.loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.environment_ground_mesh));
         SXRTexture textureGround = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.raw.environment_ground_tex_diffuse));
         final SXRNode skyboxGround = new SXRNode(getSXRContext(), meshGround, textureGround);
 
-        skyboxGround.getRenderData().setRenderingOrder(0);
+        skyboxGround.getRenderData().setRenderingOrder(RenderingOrderApplication.SKYBOX);
 
         SXRMesh meshFx = loader.loadMesh(new SXRAndroidResource(getSXRContext(), R.raw.windows_fx_mesh));
         SXRTexture textureFx = getSXRContext().getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
         SXRNode skyboxFx = new SXRNode(getSXRContext(), meshFx, textureFx);
-        skyboxGround.getRenderData().setRenderingOrder(0);
+        skyboxFx.getRenderData().setRenderingOrder(RenderingOrderApplication.SKYBOX + 1);
 
         skybox.addChildObject(skyboxFx);
         skybox.addChildObject(skyboxGround);
-
+        skyboxFx.getRenderData().setAlphaBlend(true);
         return skybox;
     }
 
@@ -179,7 +180,8 @@ public class DinosaurScene extends SXRScene {
                 SXRAndroidResource(getSXRContext(), R.drawable.dino_skybox_tex_diffuse));
         SXRNode skybox = new SXRNode(getSXRContext(), mesh, texture);
         skybox.getTransform().setScale(1, 1, 1);
-        skybox.getRenderData().setRenderingOrder(0);
+        skybox.getRenderData().setRenderingOrder(RenderingOrderApplication.SKYBOX);
+        skybox.setName("skybox");
         return skybox;
     }
 

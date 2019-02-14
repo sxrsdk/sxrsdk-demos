@@ -25,7 +25,7 @@ public class MenuBox extends SXRNode {
 
     public static final float FRAME_INITITAL_POSITION_Y = -0.8f;
     private static final float MENU_BOX_Y = 0.5f;
-    private static final float MENU_BOX_Z = -7f;
+    private static final float MENU_BOX_Z = -4f;
 
     private MenuHeader mMenu;
     private MenuFrame frameWrapper;

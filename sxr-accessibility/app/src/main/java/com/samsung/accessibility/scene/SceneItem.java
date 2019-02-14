@@ -14,6 +14,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
@@ -39,8 +40,7 @@ public class SceneItem extends FocusableNode {
         final SXRNode onFocusNode = new SXRNode(sxrContext, sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                 R.raw.edge_box_normal)), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.edge_box)));
         onFocusNode.getTransform().setPositionZ(-.1f);
-        onFocusNode.getRenderData().setRenderingOrder(getRenderData().getRenderingOrder() + 1);
-        onFocusNode.getRenderData().setDepthTest(false);
+        onFocusNode.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
 
         setOnFocusListener(new OnFocusListener() {
 

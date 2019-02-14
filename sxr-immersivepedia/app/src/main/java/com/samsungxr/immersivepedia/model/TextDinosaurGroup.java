@@ -164,6 +164,7 @@ public class TextDinosaurGroup extends SXRNode implements TotemEventListener, On
         title.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
         title.getTransform().setPosition(-2f, 2.6f, 3f);
         addChildObject(title);
+        title.getRenderData().setRenderingOrder(RenderingOrderApplication.TEXT_BACKGROUND);
         title.getRenderData().getMaterial().setOpacity(0);
     }
 

@@ -29,48 +29,13 @@ public class MainActivity extends SXRActivity
 {
     private GestureDetector mDetector = null;
     private Main main;
-    private static final int TAP_INTERVAL = 300;
-    private long mLatestTap = 0;
-    private SwipeListener swipeListener = new SwipeListener();
-
-    class SwipeListener extends SXRTouchPadGestureListener
-    {
-        @Override
-        public boolean onSingleTapUp(MotionEvent e)
-        {
-            if (System.currentTimeMillis() > mLatestTap + TAP_INTERVAL)
-            {
-                mLatestTap = System.currentTimeMillis();
-                TouchPadInput.onSingleTap();
-            }
-
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e)
-        {
-            TouchPadInput.onLongPress();
-        }
-
-        @Override
-        public boolean onSwipe(MotionEvent e, Action action, float velocityX, float velocityY)
-        {
-            TouchPadInput.onSwipe(action);
-            return false;
-        }
-
-        public void onSwiping(MotionEvent e, MotionEvent e2, float vx, float vy, SXRTouchPadGestureListener.Action action) { }
-
-        public void onSwipeOppositeLastDirection() { }
-    };
 
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         main = new Main();
         setMain(main, "sxr.xml");
-        mDetector = new GestureDetector(getBaseContext(), swipeListener);
+        enableGestureDetector();
     }
 
     @Override
@@ -117,16 +82,6 @@ public class MainActivity extends SXRActivity
             }
         }
         return handled;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (mDetector == null) {
-            return false;
-        }
-        TouchPadInput.input(event);
-        mDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 
 
