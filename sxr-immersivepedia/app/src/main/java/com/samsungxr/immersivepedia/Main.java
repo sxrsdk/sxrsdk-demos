@@ -97,6 +97,7 @@ public class Main extends SXRMain {
     @Override
     public void onSingleTapUp(MotionEvent event) {
         if (null != mGvrContext) {
+            TouchPadInput.input(event);
             FocusableController.clickProcess(mGvrContext, pickHandler);
         }
     }

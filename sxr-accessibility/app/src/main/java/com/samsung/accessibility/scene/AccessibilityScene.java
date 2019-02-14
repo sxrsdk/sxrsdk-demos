@@ -15,6 +15,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
+import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
@@ -57,17 +58,17 @@ public class AccessibilityScene extends SXRScene {
         SXRNode skybox = new SXRNode(sxrContext, mesh, texture);
         skybox.getTransform().rotateByAxisWithPivot(-90, 1, 0, 0, 0, 0, 0);
         skybox.getTransform().setPositionY(-1.6f);
-        skybox.getRenderData().setRenderingOrder(0);
+        skybox.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
 
         SXRMesh meshGround = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.environment_ground_mesh));
         SXRTexture textureGround = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.environment_ground_tex_diffuse));
         SXRNode skyboxGround = new SXRNode(sxrContext, meshGround, textureGround);
-        skyboxGround.getRenderData().setRenderingOrder(0);
+        skyboxGround.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
 
         SXRMesh meshFx = sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext, R.raw.windows_fx_mesh));
         SXRTexture textureFx = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.windows_fx_tex_diffuse));
         SXRNode skyboxFx = new SXRNode(sxrContext, meshFx, textureFx);
-        skyboxGround.getRenderData().setRenderingOrder(0);
+        skyboxGround.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
         skybox.addChildObject(skyboxFx);
         skybox.addChildObject(skyboxGround);
         return skybox;

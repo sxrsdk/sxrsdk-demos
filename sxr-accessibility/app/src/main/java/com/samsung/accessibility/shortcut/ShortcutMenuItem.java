@@ -120,7 +120,6 @@ public class ShortcutMenuItem extends FocusableNode {
 
             @Override
             public void onClick() {
-                Log.d("NOLA", "Menu click " + typeItem.name());
                 switch (typeItem) {
                 case TALK_BACK:
                     talkBack();

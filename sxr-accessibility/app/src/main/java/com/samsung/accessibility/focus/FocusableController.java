@@ -21,7 +21,6 @@ public final class FocusableController {
     public static boolean clickProcess(SXRNode pickedObject) {
         if(pickedObject != null) {
             FocusableNode object = (FocusableNode) pickedObject;
-            Log.d("NOLA", "clickProcess " + object.getClass().getSimpleName());
             object.dispatchInClick();
             return true;
         }

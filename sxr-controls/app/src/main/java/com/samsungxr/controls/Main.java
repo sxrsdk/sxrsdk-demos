@@ -46,6 +46,7 @@ import com.samsungxr.controls.model.touchpad.TouchPad;
 import com.samsungxr.controls.shaders.TileShader;
 import com.samsungxr.controls.util.Constants;
 import com.samsungxr.controls.util.RenderingOrder;
+import com.samsungxr.io.SXRTouchPadGestureListener;
 
 public class Main extends SXRMain {
 
@@ -62,6 +63,7 @@ public class Main extends SXRMain {
     private float CLOUDS_DISTANCE = 15;
     private float SCENE_SIZE = 0.75f;
     private float SCENE_Y = -1.0f;
+    private float SCENE_Z = -7.0f;
     private float GROUND_SIZE = 55;
     private float SUN_SIZE = 25;
     private int NUMBER_OF_CLOUDS = 8;
@@ -91,27 +93,24 @@ public class Main extends SXRMain {
         mSXRContext = sxrContext;
 
         scene = sxrContext.getMainScene();
-        //mSXRContext.getActivity().getEventReceiver().addListener(activityTouchHandler);
-        // set background color
         SXRCameraRig mainCameraRig = scene.getMainCameraRig();
         mainCameraRig.getTransform().setPositionY(0);
         createSkybox();
         createClouds();
         createGround();
         createGazeCursor();
-
         createSun();
         createSurroundings();
         createWorm();
         createFence();
         createMenu();
         createGamepad3D();
+
         for (int i = 0; i < Constants.NUMBER_OF_APPLES; i++) {
             createApple();
         }
 
         createTouchPad3D();
-
         createStar();
         enableAnimationWorm();
     }
@@ -193,6 +192,7 @@ public class Main extends SXRMain {
         fence.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         fence.getRenderData().setCullFace(SXRCullFaceEnum.None);
         fence.getRenderData().setRenderingOrder(RenderingOrder.FENCE);
+        fence.getRenderData().setAlphaBlend(true);
         fence.setName("fence");
         scene.addNode(fence);
     }
@@ -264,7 +264,6 @@ public class Main extends SXRMain {
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
         scene.addNode(surroundings);
-        // ground.addChildObject(surroundings);
 
         mesh = mSXRContext.getAssetLoader().loadMesh(
                 new SXRAndroidResource(mSXRContext, R.raw.grass));
@@ -274,9 +273,10 @@ public class Main extends SXRMain {
         surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addNode(surroundings);
-        // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.GRASS);
+        surroundings.getRenderData().setAlphaBlend(true);
+        surroundings.getRenderData().setDepthTest(false);
+        scene.addNode(surroundings);
 
         mesh = mSXRContext.getAssetLoader().loadMesh(
                 new SXRAndroidResource(mSXRContext, R.raw.flowers));
@@ -286,9 +286,8 @@ public class Main extends SXRMain {
         surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addNode(surroundings);
-        // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
+        scene.addNode(surroundings);
 
         mesh = mSXRContext.getAssetLoader().loadMesh(
                 new SXRAndroidResource(mSXRContext, R.raw.wood));
@@ -298,10 +297,10 @@ public class Main extends SXRMain {
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setCullFace(SXRCullFaceEnum.None);
-        scene.addNode(surroundings);
         surroundings.setName("surroundings");
-        // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.WOOD);
+        surroundings.getRenderData().setAlphaBlend(true);
+        scene.addNode(surroundings);
     }
 
     private void createSun() {
@@ -336,6 +335,16 @@ public class Main extends SXRMain {
             gamepadObject.inputControl();
         }
         worm.checkWormEatingApple(mSXRContext);
+    }
+
+    @Override
+    public void onSingleTapUp(MotionEvent e) {
+        TouchPadInput.onSingleTap();
+    }
+
+    @Override
+    public void onSwipe(SXRTouchPadGestureListener.Action action, float vx) {
+        TouchPadInput.onSwipe(action);
     }
 
     private void createMenu() {

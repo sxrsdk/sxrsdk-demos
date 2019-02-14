@@ -59,7 +59,7 @@ public class ButtonBoard extends SXRNode {
     private void createButtonPlayAndPause() {
         playPauseButton = new PlayPauseButton(sxrContext, WIDTH, HEIGHT,
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.play)));
-        playPauseButton.getRenderData().setRenderingOrder(RenderingOrderApplication.BUTTON_BOARD + 1);
+        playPauseButton.getRenderData().setRenderingOrder(RenderingOrderApplication.PLAY_BUTTON);
         playPauseButton.getTransform().setPosition(PLAY_PAUSE_X_POSITION, PLAY_PAUSE_Y_POSITION, PLAY_PAUSE_Z_POSITION);
         playPauseButton.attachCollider(new SXRMeshCollider(sxrContext, false));
         renderTextureButton(PlayPauseButton.PAUSE_NORMAL, playPauseButton);
