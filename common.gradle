@@ -16,7 +16,7 @@ allprojects {
             url "http://google.bintray.com/googlevr"
         }
         flatDir {
-            dirs '../../sxrsdk/SXR/sxr-libs', '../../../sxrsdk/SXR/sxr-libs', '../../../../sxrsdk/SXR/sxr-libs', '../../sxr/SXR/sxr-libs'
+            dirs '../../sxrsdk/SXR/sxr-libs', '../../../sxrsdk/SXR/sxr-libs', '../../../../sxrsdk/SXR/sxr-libs', '../../sxr/SXR/sxr-libs', '../sxr/SXR/sxr-libs'
         }
     }
 }
@@ -187,6 +187,7 @@ dependencies {
     } else {
         oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
     }
+
    // arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
    // if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
      //   if (findProject(':sxr_adapter')) {
@@ -195,5 +196,5 @@ dependencies {
      //       arImplementation(':sxr_adapter-release@aar')
      //   }
    // }
-}
 
+}
