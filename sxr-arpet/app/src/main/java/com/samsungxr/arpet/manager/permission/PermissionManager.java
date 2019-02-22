@@ -73,7 +73,7 @@ public class PermissionManager {
 
     public void requestPermissions() {
         ActivityCompat.requestPermissions(mActivity, new String[] {
-                CAMERA_PERMISSION, LOCATION_PERMISSION}, PERMISSIONS_CODE);
+                CAMERA_PERMISSION, LOCATION_PERMISSION, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_CODE);
     }
 
     public void handlePermissionResults(int requestCode) {
