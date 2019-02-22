@@ -55,8 +55,7 @@ public class SXRShaderAnimation extends SXRMaterialAnimation {
         this(getMaterial(target), key, duration, finalValue);
     }
 
-    @Override
-    protected void animate(SXRHybridObject target, float ratio) {
-        mMaterial.setFloat(mKey, mInitialValue + mDeltaValue * ratio);
+    public void animate(float timeInSec) {
+        mMaterial.setFloat(mKey, mInitialValue + mDeltaValue * (timeInSec/getDuration()));
     }
 }
