@@ -143,7 +143,7 @@ public class SolarMain extends SXRMain {
 
         counterClockwise(marsRevolutionObject, 1200f);
         counterClockwise(marsRotationObject, 200f);
-        mAnimator.start();
+        mAnimator.start(getSXRContext().getAnimationEngine());
         mMainScene.setMainCameraRig(newRig);
     }
 
