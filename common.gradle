@@ -8,6 +8,7 @@ if (file("../../../../extra_properties.gradle").exists()) {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots/"
