@@ -42,7 +42,7 @@ android {
             dimension "vr"
             applicationIdSuffix ".monoscopic"
             versionNameSuffix "-monoscopic"
-            manifestPlaceholders = [metaDataName: "dummy", metaDataValue: "notapplicable"]
+            manifestPlaceholders = [metaDataName: "dummy", metaDataValue: "notapplicable", enableVrMode: ""]
             resValue 'string', 'app_name', System.getProperty("appName") + "-monoscopic"
 
             ndk {
@@ -57,7 +57,7 @@ android {
             dimension "vr"
             applicationIdSuffix ".daydream"
             versionNameSuffix "-daydream"
-            manifestPlaceholders = [metaDataName: "dummy", metaDataValue: "notapplicable"]
+            manifestPlaceholders = [metaDataName: "dummy", metaDataValue: "notapplicable", enableVrMode: "@string/gvr_vr_mode_component"]
             resValue 'string', 'app_name', System.getProperty("appName") + "-daydream"
 
             ndk {
@@ -72,7 +72,7 @@ android {
             dimension "vr"
             applicationIdSuffix ".oculus"
             versionNameSuffix "-oculus"
-            manifestPlaceholders = [metaDataName: "com.samsung.android.vr.application.mode", metaDataValue: "vr_only"]
+            manifestPlaceholders = [metaDataName: "com.samsung.android.vr.application.mode", metaDataValue: "vr_only", enableVrMode: ""]
             resValue 'string', 'app_name', System.getProperty("appName") + "-oculus"
 
             ndk {
@@ -87,7 +87,7 @@ android {
             dimension "vr"
             applicationIdSuffix ".ar"
             versionNameSuffix "-ar"
-            manifestPlaceholders = [metaDataName: "com.samsung.android.sxr.application.type", metaDataValue: "ar"]
+            manifestPlaceholders = [metaDataName: "com.samsung.android.sxr.application.type", metaDataValue: "ar", enableVrMode: ""]
             resValue 'string', 'app_name', System.getProperty("appName") + "-ar"
 
              ndk {
