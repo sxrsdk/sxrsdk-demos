@@ -8,6 +8,7 @@ if (file("../../../../extra_properties.gradle").exists()) {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -189,12 +190,18 @@ dependencies {
     }
 
     arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':sxr_adapter')) {
-            arImplementation project(':sxr_adapter')
+	if (file("../../../SXR").exists()) {
+        if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+            if (findProject(':sxr_adapter')) {
+                arImplementation project(':sxr_adapter')
+            } else {
+                arImplementation(':sxr_adapter-release@aar')
+            }
         } else {
-            arImplementation(':sxr_adapter-release@aar')
+            arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
         }
+    } else {
+        arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
     }
-
 }
+

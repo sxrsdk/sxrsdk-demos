@@ -42,7 +42,7 @@ android {
         buildConfigField "String", "GOOGLE_CLOUD_ANCHOR_KEY_NAME", "\"$GOOGLE_CLOUD_ANCHOR_KEY_NAME\""
         manifestPlaceholders = [cloudAnchorApiKeyName : GOOGLE_CLOUD_ANCHOR_KEY_NAME,
                                 cloudAnchorApiKeyValue: getPropertyOrDefault("cloudAnchorApiKey", "")]
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 4
         versionName '0.0.4'
