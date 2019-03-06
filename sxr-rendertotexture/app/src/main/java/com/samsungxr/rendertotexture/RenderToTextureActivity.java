@@ -80,7 +80,7 @@ public final class RenderToTextureActivity extends SXRActivity {
 
                 model.getTransform()
                         .setRotationByAxis(45.0f, 0.0f, 1.0f, 0.0f)
-                        .setScale(0.0015f, 0.0015f, 0.0015f)
+                        .setScale(2f, 2f, 2f)
                         .setPosition(0.0f, -0.15f, -0.3f);
 
                 SXRAnimator animations = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
