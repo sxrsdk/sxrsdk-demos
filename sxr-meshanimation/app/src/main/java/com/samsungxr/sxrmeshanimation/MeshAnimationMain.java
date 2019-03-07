@@ -56,7 +56,7 @@ public class MeshAnimationMain extends SXRMain {
             mActivity = null;
             Log.e(TAG, "One or more assets could not be loaded.");
         }
-        mAssimpAnimation.start();
+        mAssimpAnimation.start(getSXRContext().getAnimationEngine());
     }
 
     @Override

@@ -50,10 +50,9 @@ public class DustyAnimation extends SXRAnimation {
         }
     }
 
-    @Override
-    protected void animate(SXRHybridObject sxrHybridObject, float ratio) {
-        mDustyMaterial.setFloat("u_ratio", 1f - ratio);
-        mDustyMaterial.setFloat("u_opacity", 1f - ratio);
+    public void animate(float timeInSec) {
+        mDustyMaterial.setFloat("u_ratio", 1f - (timeInSec/getDuration()));
+        mDustyMaterial.setFloat("u_opacity", 1f - (timeInSec/getDuration()));
     }
 
     private static SXRNode createDustyObject(SXRContext context) {

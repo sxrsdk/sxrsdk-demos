@@ -25,7 +25,7 @@ import java.io.InputStream;
 
 public class AvatarMain extends SXRMain {
     private final String mModelPath = "YBot/ybot.fbx";
-    private final String[] mAnimationPaths =  { "animation/mixamo/Ybot_SambaDancing.bvh" };
+    private final String[] mAnimationPaths =  { "YBot/Zombie_Stand_Up_mixamo.com.bvh", "YBot/Football_Hike_mixamo.com.bvh" };
     private final String mBoneMapPath = "animation/mixamo/mixamo_map.txt";
     private static final String TAG = "AVATAR";
     private SXRContext mContext;
@@ -71,6 +71,7 @@ public class AvatarMain extends SXRMain {
         {
             animation.setRepeatMode(SXRRepeatMode.ONCE);
             animation.setSpeed(1f);
+            avatar.setBlend(1);
             ++mNumAnimsLoaded;
             if (!avatar.isRunning())
             {
@@ -85,7 +86,7 @@ public class AvatarMain extends SXRMain {
 
         public void onModelLoaded(SXRAvatar avatar, final SXRNode avatarRoot, String filePath, String errors) { }
 
-        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator, SXRAnimation animation) { }
+        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator) { }
 
         public void onAnimationStarted(SXRAvatar avatar, SXRAnimator animator) { }
     };

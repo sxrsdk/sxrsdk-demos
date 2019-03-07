@@ -89,11 +89,10 @@ public class SXRColorSwapAnimation extends SXRMaterialAnimation {
         this(target, duration, Colors.toColors(color));
     }
 
-    @Override
-    protected void animate(SXRHybridObject target, float ratio) {
+    public void animate(float timeInSec) {
 
-        mMaterial.setVec4(ColorSwapShader.COLOR, mStartR + ratio * mDeltaR, mStartG + ratio
-                * mDeltaG, mStartB + ratio * mDeltaB,
+        mMaterial.setVec4(ColorSwapShader.COLOR, mStartR + (timeInSec/getDuration()) * mDeltaR, mStartG + (timeInSec/getDuration())
+                * mDeltaG, mStartB + (timeInSec/getDuration()) * mDeltaB,
                 1);
 
     }

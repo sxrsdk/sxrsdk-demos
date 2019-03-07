@@ -27,6 +27,8 @@ import com.samsungxr.SXRMain;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
+import com.samsungxr.animation.SXRAnimator;
+
 import org.joml.Quaternionf;
 
 import android.util.Log;
@@ -49,6 +51,7 @@ public class MultiLightMain extends SXRMain {
 
         SXRNode root = new SXRNode(sxrContext);
         SXRNode character = createCharacter(sxrContext);
+
         SXRNode light1 = createLight(sxrContext, 1, 0, 0, 0.8f);
         SXRNode light2 = createLight(sxrContext, 0, 1, 0, -0.8f);
         

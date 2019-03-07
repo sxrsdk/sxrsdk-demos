@@ -451,7 +451,7 @@ public class CharacterView extends SXRNode implements
         }
 
         @Override
-        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator sxrAnimator, SXRAnimation sxrAnimation) {
+        public void onAnimationFinished(SXRAvatar avatar, SXRAnimator animator) {
             Log.d(TAG, "onAnimationFinished");
         }
     };

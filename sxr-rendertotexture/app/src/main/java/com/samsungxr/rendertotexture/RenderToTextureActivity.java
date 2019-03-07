@@ -80,14 +80,14 @@ public final class RenderToTextureActivity extends SXRActivity {
 
                 model.getTransform()
                         .setRotationByAxis(45.0f, 0.0f, 1.0f, 0.0f)
-                        .setScale(2, 2, 2)
+                        .setScale(2f, 2f, 2f)
                         .setPosition(0.0f, -0.15f, -0.3f);
 
                 SXRAnimator animations = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
                 if (animations != null) {
                     animations.setRepeatMode(SXRRepeatMode.REPEATED);
                     animations.setRepeatCount(-1);
-                    animations.start();
+                    animations.start(getSXRContext().getAnimationEngine());
                 }
             } catch (final IOException e) {
                 Log.e(TAG, "Failed to load a model: %s", e);

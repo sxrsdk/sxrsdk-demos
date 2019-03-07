@@ -35,7 +35,7 @@ function onInit(sxr) {
   {
       animation.setRepeatMode(1);
       animation.setRepeatCount(-1);
-      animation.start();
+      animation.start(animation.getSXRContext().getAnimationEngine());
   }
 
   mainScene.setFrustumCulling(false);

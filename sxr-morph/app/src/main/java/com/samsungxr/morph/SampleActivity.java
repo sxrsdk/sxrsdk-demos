@@ -84,7 +84,7 @@ public class SampleActivity extends SXRActivity {
             scene.addNode(mObjectRoot);
 
             SXRAnimator animator = setupAnimation(mObjectRoot);
-            animator.start();
+            animator.start(getSXRContext().getAnimationEngine());
         }
 
         private SXRAnimator setupAnimation(SXRNode root)
