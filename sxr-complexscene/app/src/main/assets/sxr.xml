@@ -29,7 +29,8 @@
         framebufferPixelsWide="DEFAULT"
         showLoadingIcon="true"
         useProtectedFramebuffer="false"
-        useSrgbFramebuffer="false" >
+        useSrgbFramebuffer="false"
+        useCursorLayer="true">
 
         <mono-mode-parms
             monoFullScreen="false"

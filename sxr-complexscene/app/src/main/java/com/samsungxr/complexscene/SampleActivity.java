@@ -27,7 +27,7 @@ public class SampleActivity extends SXRActivity {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         mMain = new SampleMain();
-        setMain(mMain);
+        setMain(mMain, "sxr.xml");
     }
 
 }
