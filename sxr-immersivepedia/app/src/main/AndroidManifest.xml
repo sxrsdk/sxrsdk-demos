@@ -21,6 +21,8 @@
             android:name="com.samsungxr.immersivepedia.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
+            android:enableVrMode="${enableVrMode}"
+            android:resizeableActivity="false"
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
