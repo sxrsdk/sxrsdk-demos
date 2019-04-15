@@ -102,7 +102,7 @@ android {
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 23
+        targetSdkVersion 26
     }
 
     applicationVariants.all { variant ->
@@ -132,7 +132,6 @@ file("../../..").eachDir {
     def fn = it.toString() + "/sxrsdk-demos_build.gradle"
     if (file(fn).exists()) {
         apply from: fn
-        println "importing build file from " + it.toString()
     }
 }
 
@@ -146,59 +145,56 @@ dependencies {
     implementation "com.google.code.gson:gson:$gsonVersion"
     implementation "org.joml:joml-android:${jomlVersion}"
 
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':sxrsdk')) {
-            implementation project(':sxrsdk')
-        } else {
-            debugImplementation(name: 'sxrsdk-debug', ext: 'aar')
-            releaseImplementation(name: 'sxrsdk-release', ext: 'aar')
+    def useLocalDependencies = false
+
+    allprojects.repositories.flatDir.dirs.each {
+        it.each {
+            if (file(it).exists()) {
+                useLocalDependencies = true
+                return true
+            }
         }
+    }
+
+    if (findProject(':sxrsdk')) {
+        implementation project(':sxrsdk')
+    } else if (useLocalDependencies) {
+        debugImplementation(name: 'sxrsdk-debug', ext: 'aar')
+        releaseImplementation(name: 'sxrsdk-release', ext: 'aar')
     } else {
         implementation "com.samsungxr:sxrsdk:$sxrVersion"
     }
 
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':backend_monoscopic')) {
-            monoscopicImplementation project(':backend_monoscopic')
-        } else {
-            monoscopicImplementation(':backend_monoscopic-release@aar')
-        }
+    if (findProject(':backend_monoscopic')) {
+        monoscopicImplementation project(':backend_monoscopic')
+    } else if (useLocalDependencies) {
+        monoscopicImplementation(':backend_monoscopic-release@aar')
     } else {
         monoscopicImplementation "com.samsungxr:backend_monoscopic:$sxrVersion"
     }
 
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':backend_daydream')) {
-            daydreamImplementation project(':backend_daydream')
-        } else {
-            daydreamImplementation(':backend_daydream-release@aar')
-        }
+    if (findProject(':backend_daydream')) {
+        daydreamImplementation project(':backend_daydream')
+    } else if (useLocalDependencies) {
+        daydreamImplementation(':backend_daydream-release@aar')
     } else {
         daydreamImplementation "com.samsungxr:backend_daydream:$sxrVersion"
     }
     daydreamImplementation "com.google.vr:sdk-base:${daydreamVersion}"
 
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':backend_oculus')) {
-            oculusImplementation project(':backend_oculus')
-        } else {
-            oculusImplementation(':backend_oculus-release@aar')
-        }
+    if (findProject(':backend_oculus')) {
+        oculusImplementation project(':backend_oculus')
+    } else if (useLocalDependencies) {
+        oculusImplementation(':backend_oculus-release@aar')
     } else {
         oculusImplementation "com.samsungxr:backend_oculus:$sxrVersion"
     }
 
     arImplementation 'com.google.protobuf:protobuf-lite:3.0.0'
-	if (file("../../../SXR").exists()) {
-        if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-            if (findProject(':sxr_adapter')) {
-                arImplementation project(':sxr_adapter')
-            } else {
-                arImplementation(':sxr_adapter-release@aar')
-            }
-        } else {
-            arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
-        }
+    if (findProject(':sxr_adapter')) {
+        arImplementation project(':sxr_adapter')
+    } else if (useLocalDependencies) {
+        arImplementation(':sxr_adapter-release@aar')
     } else {
         arImplementation "com.samsungxr:sxr_adapter:$sxrVersion"
     }
