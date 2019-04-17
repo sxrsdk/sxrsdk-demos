@@ -123,6 +123,16 @@ public class SampleMain extends SXRMain {
         mSceneLight.setAmbientIntensity(lightEstimate, lightEstimate, lightEstimate, 1);
         mSceneLight.setDiffuseIntensity(0.4f, 0.4f, 0.4f, 1);
         mSceneLight.setSpecularIntensity(0.2f, 0.2f, 0.2f, 1);
+        Vector3f v = mainScene.getMainCameraRig().getTransform().getModelMatrix4f().getEulerAnglesZYX(new Vector3f());
+        if(Math.abs(v.z)>3*Math.PI/4) {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(180,0,0,1);
+        } else if (v.z > Math.PI/4) {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(270,0,0,1);
+        } else if (v.z > -Math.PI/4) {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(0,0,0,1);
+        } else {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(90,0,0,1);
+        }
     }
 
 
