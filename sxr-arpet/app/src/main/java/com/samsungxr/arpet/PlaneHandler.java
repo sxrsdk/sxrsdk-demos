@@ -155,7 +155,7 @@ public final class PlaneHandler implements IPlaneEvents, SXRDrawFrameListener {
         tex.updateTextureParameters(texParams);
         material.setMainTexture(tex);
 
-        SXRMesh mesh = SXRMesh.createQuad(mContext, "float3 a_position", 1, 1);
+        SXRMesh mesh = SXRMesh.createQuad(mContext, "float3 a_position", 100, 100);
         SXRNode polygonObject = new SXRNode(mContext, mesh, material);
         polygonObject.setName(PLANE_COLLIDER);
 

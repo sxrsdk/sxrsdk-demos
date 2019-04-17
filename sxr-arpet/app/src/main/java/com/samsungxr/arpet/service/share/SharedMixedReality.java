@@ -63,6 +63,8 @@ public class SharedMixedReality implements IMixedReality {
     @Override
     public float getARToVRScale() { return mMixedReality.getARToVRScale(); }
 
+    public void setARToVRScale(float s) { mMixedReality.setARToVRScale(s); }
+
     @Override
     public void resume() {
         mMixedReality.resume();
@@ -72,6 +74,8 @@ public class SharedMixedReality implements IMixedReality {
     public void pause() {
         mMixedReality.pause();
     }
+
+    public void onMixedRealityError(IMixedReality mr, String errmsg) { }
 
     public SXREventReceiver getEventReceiver() { return mMixedReality.getEventReceiver(); }
 
@@ -183,13 +187,8 @@ public class SharedMixedReality implements IMixedReality {
     }
 
     @Override
-    public SXRAnchor createAnchor(float[] pose) {
-        return mMixedReality.createAnchor(pose);
-    }
-
-    @Override
-    public SXRNode createAnchorNode(float[] pose) {
-        return mMixedReality.createAnchorNode(pose);
+    public SXRAnchor createAnchor(float[] pose, SXRNode node) {
+        return mMixedReality.createAnchor(pose, node);
     }
 
     @Override

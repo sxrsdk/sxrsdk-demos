@@ -179,7 +179,7 @@ public class SharingAnchorMode extends BasePetMode {
             // Get the model matrix from the actual Pet's position and create an anchor to be
             // hosted by Cloud Anchor service
             float[] anchorMatrix = mPetContext.getPetController().getView().getTransform().getModelMatrix();
-            SXRAnchor petAnchor = mSharedMixedReality.createAnchor(anchorMatrix);
+            SXRAnchor petAnchor = mSharedMixedReality.createAnchor(anchorMatrix, null);
             managedAnchor = new ManagedAnchor<>(ArPetObjectType.PET, petAnchor);
         } catch (Throwable throwable) {
             isHosting.set(false);
