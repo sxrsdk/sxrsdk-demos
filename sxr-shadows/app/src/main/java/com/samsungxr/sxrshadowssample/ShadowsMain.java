@@ -103,7 +103,7 @@ public class ShadowsMain extends SXRMain {
         light.setSpecularIntensity(1, 1, 1, 1);
         light.setInnerConeAngle(40);
         light.setOuterConeAngle(55);
-        light.setShadowRange(0.2f, 100.0f);
+        light.setShadowRange(1f, 100.0f);
         lightNode.setName("SpotLight");
 
         return lightNode;
