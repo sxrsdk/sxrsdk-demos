@@ -123,6 +123,21 @@ public class SampleMain extends SXRMain {
         mSceneLight.setAmbientIntensity(lightEstimate, lightEstimate, lightEstimate, 1);
         mSceneLight.setDiffuseIntensity(0.4f, 0.4f, 0.4f, 1);
         mSceneLight.setSpecularIntensity(0.2f, 0.2f, 0.2f, 1);
+        Quaternionf q = mainScene.getMainCameraRig().getTransform().getModelMatrix4f().getUnnormalizedRotation(new Quaternionf());
+        float q0 = (q.x()-q.y())*(q.x()-q.y())+(q.z()-q.w())*(q.z()-q.w());
+        float q1 = (q.x()+q.y())*(q.x()+q.y())+(q.z()+q.w())*(q.z()+q.w());
+        float q2 = q.x()*q.x() + q.z()*q.z();
+        float q3 = q.y()*q.y() + q.w()*q.w();
+
+        if(q0<q1 && q0<q2 && q0<q3) {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(270,0,0,1);
+        } else if (q1<q2 && q1<q3) {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(90,0,0,1);
+        } else if (q2<q3) {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(0,0,0,1);
+        } else {
+            helper.getCursorController().getCursor().getTransform().setRotationByAxis(180,0,0,1);
+        }
     }
 
 
