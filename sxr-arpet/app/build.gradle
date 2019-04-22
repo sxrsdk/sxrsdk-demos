@@ -70,13 +70,22 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     debugImplementation(name: 'sxr-physics-debug', ext: 'aar')
     releaseImplementation(name: 'sxr-physics-release', ext: 'aar')
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':MixedReality')) {
-            implementation project(':MixedReality')
-        } else {
-            debugImplementation(name: 'MixedReality-debug', ext: 'aar')
-            releaseImplementation(name: 'MixedReality-release', ext: 'aar')
+
+    def useLocalDependencies = false
+    allprojects.repositories.flatDir.dirs.each {
+        it.each {
+            if (file(it).exists()) {
+                useLocalDependencies = true
+                return true
+            }
         }
+    }
+
+    if (findProject(':MixedReality')) {
+        implementation project(':MixedReality')
+    } else if (useLocalDependencies) {
+        debugImplementation(name: 'MixedReality-debug', ext: 'aar')
+        releaseImplementation(name: 'MixedReality-release', ext: 'aar')
     } else {
         implementation "com.samsungxr:MixedReality:$sxrVersion"
     }

@@ -28,13 +28,21 @@ dependencies {
     implementation "com.google.ar:core:1.5.0"
     implementation 'com.android.support:support-v4:27.0.2'
 
-    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':MixedReality')) {
-            implementation project(':MixedReality')
-        } else {
-            debugImplementation(name: 'MixedReality-debug', ext: 'aar')
-            releaseImplementation(name: 'MixedReality-release', ext: 'aar')
+    def useLocalDependencies = false
+    allprojects.repositories.flatDir.dirs.each {
+        it.each {
+            if (file(it).exists()) {
+                useLocalDependencies = true
+                return true
+            }
         }
+    }
+
+    if (findProject(':MixedReality')) {
+        implementation project(':MixedReality')
+    } else if (useLocalDependencies) {
+        debugImplementation(name: 'MixedReality-debug', ext: 'aar')
+        releaseImplementation(name: 'MixedReality-release', ext: 'aar')
     } else {
         implementation "com.samsungxr:MixedReality:$sxrVersion"
     }
