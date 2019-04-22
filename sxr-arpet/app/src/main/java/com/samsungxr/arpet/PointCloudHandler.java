@@ -54,15 +54,22 @@ public class PointCloudHandler implements IMixedRealityEvents {
 
     }
 
+    public void onMixedRealityError(IMixedReality iMixedReality, String errmsg) {
+
+    }
+
     @Override
     public void onMixedRealityUpdate(IMixedReality iMixedReality) {
         SXRPointCloud newPointCloud = mMixedReality.acquirePointCloud();
         if (mOldPointCloud != newPointCloud) {
-            SXRMesh mesh = new SXRMesh(mPetContext.getSXRContext());
-            mesh.setVertices(newPointCloud.getPoints());
-            mPointCloudNode.getRenderData().setMesh(mesh);
-
-            mOldPointCloud = newPointCloud;
+            float[] verts = newPointCloud.getPoints();
+            if ((verts != null) && (verts.length > 0))
+            {
+                SXRMesh mesh = new SXRMesh(mPetContext.getSXRContext());
+                mesh.setVertices(newPointCloud.getPoints());
+                mPointCloudNode.getRenderData().setMesh(mesh);
+                mOldPointCloud = newPointCloud;
+            }
             newPointCloud.release();
         }
     }

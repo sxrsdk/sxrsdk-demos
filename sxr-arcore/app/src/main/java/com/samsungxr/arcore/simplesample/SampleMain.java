@@ -17,6 +17,8 @@ package com.samsungxr.arcore.simplesample;
 
 import android.view.MotionEvent;
 
+import com.samsungxr.SXRActivity;
+import com.samsungxr.SXRApplication;
 import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
@@ -32,6 +34,7 @@ import com.samsungxr.SXRTransform;
 import com.samsungxr.ITouchEvents;
 import com.samsungxr.mixedreality.SXRAnchor;
 import com.samsungxr.mixedreality.SXRHitResult;
+import com.samsungxr.mixedreality.SXRLightEstimate;
 import com.samsungxr.mixedreality.SXRMixedReality;
 import com.samsungxr.mixedreality.SXRPlane;
 import com.samsungxr.mixedreality.SXRTrackingState;
@@ -40,6 +43,8 @@ import com.samsungxr.mixedreality.IMixedReality;
 import com.samsungxr.mixedreality.IPlaneEvents;
 import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.utility.Log;
+import com.samsungxr.utility.VrAppSettings;
+
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -52,7 +57,8 @@ import java.util.List;
  * This sample illustrates how to load, place and move a 3D model
  * on a plane in the real world.
  */
-public class SampleMain extends SXRMain {
+public class SampleMain extends SXRMain
+{
     private static String TAG = "SXR_ARCORE";
     private static int MAX_VIRTUAL_OBJECTS = 20;
 
@@ -65,6 +71,8 @@ public class SampleMain extends SXRMain {
     private int mVirtObjCount = 0;
     private SXRDirectLight mSceneLight;
     private SelectionHandler mSelector;
+    private boolean mIsMonoscopic = false;
+
 
     /**
      * Initialize the MixedReality extension and
@@ -77,6 +85,7 @@ public class SampleMain extends SXRMain {
     @Override
     public void onInit(SXRContext ctx)
     {
+        mIsMonoscopic = BuildConfig.APPLICATION_ID.endsWith("monoscopic");
         mSXRContext = ctx;
         mainScene = mSXRContext.getMainScene();
         helper = new SampleHelper();
@@ -89,7 +98,7 @@ public class SampleMain extends SXRMain {
         mixedReality.getEventReceiver().addListener(planeEventsListener);
         mixedReality.getEventReceiver().addListener(anchorEventsListener);
         mixedReality.getEventReceiver().addListener(mrEventsListener);
-        mSelector = new SelectionHandler(ctx, mixedReality);
+        mSelector = new SelectionHandler(ctx, mixedReality, mIsMonoscopic);
         mixedReality.resume();
     }
 
@@ -107,6 +116,7 @@ public class SampleMain extends SXRMain {
         final SXRNode sceneObject = ctx.getAssetLoader().loadModel("objects/andy.obj");
         sceneObject.attachComponent(new SXRBoxCollider(ctx));
         sceneObject.getEventReceiver().addListener(mSelector);
+        sceneObject.getTransform().setScale(50, 50, 50);
         return sceneObject;
     }
 
@@ -119,10 +129,14 @@ public class SampleMain extends SXRMain {
     public void onStep()
     {
         super.onStep();
-        float lightEstimate = mixedReality.getLightEstimate().getPixelIntensity();
-        mSceneLight.setAmbientIntensity(lightEstimate, lightEstimate, lightEstimate, 1);
-        mSceneLight.setDiffuseIntensity(0.4f, 0.4f, 0.4f, 1);
-        mSceneLight.setSpecularIntensity(0.2f, 0.2f, 0.2f, 1);
+        SXRLightEstimate lightEstimate = mixedReality.getLightEstimate();
+        if (lightEstimate != null)
+        {
+            float light = lightEstimate.getPixelIntensity();
+            mSceneLight.setAmbientIntensity(light, light, light, 1);
+            mSceneLight.setDiffuseIntensity(0.4f, 0.4f, 0.4f, 1);
+            mSceneLight.setSpecularIntensity(0.2f, 0.2f, 0.2f, 1);
+        }
     }
 
 
@@ -138,7 +152,7 @@ public class SampleMain extends SXRMain {
      * (which is why we scale/rotate the child instead).
      * @param pose
      */
-    public void addVirtualObject(float[] pose)
+    public void addVirtualObject(SXRPlane plane, float[] pose)
     {
         if (mVirtObjCount >= MAX_VIRTUAL_OBJECTS)
         {
@@ -147,9 +161,18 @@ public class SampleMain extends SXRMain {
         try
         {
             SXRNode andy = load3dModel(getSXRContext());
-            SXRNode anchorObj = mixedReality.createAnchorNode(pose);
+            SXRAnchor anchor;
+            SXRNode anchorObj = new SXRNode(mSXRContext);
+
+            if (plane != null)
+            {
+                anchor = plane.createAnchor(pose, anchorObj);
+            }
+            else
+            {
+                anchor = mixedReality.createAnchor(pose, anchorObj);
+            }
             anchorObj.addChildObject(andy);
-            SXRAnchor anchor = (SXRAnchor) anchorObj.getComponent(SXRAnchor.getComponentType());
             mVirtualObjects.add(anchor);
             mainScene.addNode(anchorObj);
             mVirtObjCount++;
@@ -161,7 +184,8 @@ public class SampleMain extends SXRMain {
         }
     }
 
-    private IMixedRealityEvents mrEventsListener = new IMixedRealityEvents() {
+    private IMixedRealityEvents mrEventsListener = new IMixedRealityEvents()
+    {
         /**
          * Get the depth of the touch screen in the 3D world
          * and give it to the cursor controller so touch
@@ -181,6 +205,8 @@ public class SampleMain extends SXRMain {
 
         @Override
         public void onMixedRealityUpdate(IMixedReality mr) { }
+
+        public void onMixedRealityError(IMixedReality mr, String errmsg) { }
     };
 
     /**
@@ -198,14 +224,17 @@ public class SampleMain extends SXRMain {
         @Override
         public void onPlaneDetected(SXRPlane plane)
         {
-            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING)
+            {
                 SXRNode planeNode = helper.createPlaneNode(getSXRContext());
                 float[] pose = new float[16];
+                SXRMesh mesh = new SXRMesh(getSXRContext());
 
+                mesh.setVertices(plane.get3dPolygonAsArray());
+                planeNode.getRenderData().setMesh(mesh);
                 plane.getCenterPose(pose);
                 planeNode.attachComponent(plane);
                 mainScene.addNode(planeNode);
-                addVirtualObject(pose);
             }
         }
 
@@ -223,7 +252,8 @@ public class SampleMain extends SXRMain {
         public void onPlaneMerging(SXRPlane SXRPlane, SXRPlane SXRPlane1) { }
 
         @Override
-        public void onPlaneGeometryChange(SXRPlane plane) {
+        public void onPlaneGeometryChange(SXRPlane plane)
+        {
             SXRMesh mesh = new SXRMesh(getSXRContext());
             mesh.setVertices(plane.get3dPolygonAsArray());
 
@@ -265,10 +295,12 @@ public class SampleMain extends SXRMain {
         private IMixedReality mMixedReality;
         private float mHitY;
         private float mHitX;
+        private boolean mIsMonoscopic;
 
-        public SelectionHandler(SXRContext ctx, IMixedReality mr)
+        public SelectionHandler(SXRContext ctx, IMixedReality mr, boolean mono)
         {
             super();
+            mIsMonoscopic = mono;
             mMixedReality = mr;
             mSelectionLight = new SXRNode(ctx);
             mSelectionLight.setName("SelectionLight");
@@ -343,10 +375,13 @@ public class SampleMain extends SXRMain {
             }
             if (mSelected == null)
             {
-                startTouch(sceneObj,
-                           pickInfo.motionEvent.getX(),
-                           pickInfo.motionEvent.getY(),
-                           SCALE_ROTATE);
+                float x = pickInfo.motionEvent.getX();
+                float y = pickInfo.motionEvent.getY();
+                if (!mIsMonoscopic)
+                {
+                    x /= 2;
+                }
+                startTouch(sceneObj, x, y, SCALE_ROTATE);
             }
         }
 
@@ -414,6 +449,11 @@ public class SampleMain extends SXRMain {
             float x = pickInfo.motionEvent.getX();
             float y = pickInfo.motionEvent.getY();
 
+            if (!mIsMonoscopic)
+            {
+                x /= 2;
+                y /= 2;
+            }
             if (mSelectionMode == SCALE_ROTATE)
             {
                 float dx = (x - mHitX) / 100.0f;
@@ -507,10 +547,14 @@ public class SampleMain extends SXRMain {
                 }
                 float x = pickInfo.motionEvent.getX();
                 float y = pickInfo.motionEvent.getY();
+                if (!mIsMonoscopic)
+                {
+                    x /= 2;
+                }
                 SXRHitResult hit = mixedReality.hitTest(x, y);
                 if (hit != null)
                 {
-                    addVirtualObject(hit.getPose());
+                    addVirtualObject(null, hit.getPose());
                 }
             }
         }
@@ -537,11 +581,14 @@ public class SampleMain extends SXRMain {
                                                       150);
                     if (anchor != null)
                     {
+                        float x = pickInfo.motionEvent.getX();
+                        float y = pickInfo.motionEvent.getY();
+                        if (!mIsMonoscopic)
+                        {
+                            x /= 2;
+                        }
                         selected = anchor.getOwnerObject();
-                        mSelector.startTouch(selected.getChildByIndex(0),
-                                             pickInfo.motionEvent.getX(),
-                                             pickInfo.motionEvent.getY(),
-                                             SelectionHandler.DRAG);
+                        mSelector.startTouch(selected.getChildByIndex(0), x, y, SelectionHandler.DRAG);
                     }
                 }
             }

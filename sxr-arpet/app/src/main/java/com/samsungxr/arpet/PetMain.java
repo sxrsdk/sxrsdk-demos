@@ -407,5 +407,10 @@ public class PetMain extends DisableNativeSplashScreen {
         public void onMixedRealityUpdate(IMixedReality mixedReality) {
 
         }
+
+        @Override
+        public void onMixedRealityError(IMixedReality mixedReality, String errmsg) {
+
+        }
     };
 }

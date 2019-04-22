@@ -88,6 +88,7 @@ public class AvatarMain extends SXRMain {
         mMixedReality.getEventReceiver().addListener(planeEventsListener);
         mMixedReality.getEventReceiver().addListener(anchorEventsListener);
         mMixedReality.getEventReceiver().addListener(mrEventsListener);
+        mMixedReality.setARToVRScale(1);
         mMixedReality.resume();
     }
 
@@ -118,6 +119,8 @@ public class AvatarMain extends SXRMain {
 
         @Override
         public void onMixedRealityUpdate(IMixedReality mr) { }
+
+        public void onMixedRealityError(IMixedReality mr, String errmsg) { }
     };
 
     private IPlaneEvents planeEventsListener = new IPlaneEvents()
@@ -155,12 +158,18 @@ public class AvatarMain extends SXRMain {
         }
 
         @Override
-        public void onPlaneGeometryChange(SXRPlane plane) {
-            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING) {
-                SXRMesh mesh = new SXRMesh(getSXRContext());
-                mesh.setVertices(plane.get3dPolygonAsArray());
+        public void onPlaneGeometryChange(SXRPlane plane)
+        {
+            if (plane.getPlaneType() == SXRPlane.Type.HORIZONTAL_UPWARD_FACING)
+            {
+                SXRNode owner = plane.getOwnerObject();
 
-                plane.getOwnerObject().getRenderData().setMesh(mesh);
+                if (owner != null)
+                {
+                    SXRMesh mesh = new SXRMesh(getSXRContext());
+                    mesh.setVertices(plane.get3dPolygonAsArray());
+                    owner.getRenderData().setMesh(mesh);
+                }
             }
         }
     };
@@ -250,8 +259,7 @@ public class AvatarMain extends SXRMain {
         }
         else
         {
-            anchor = mMixedReality.createAnchor(pose);
-            mAvatarAnchor.attachComponent(anchor);
+            anchor = mMixedReality.createAnchor(pose, mAvatarAnchor);
         }
     }
 
