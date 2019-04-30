@@ -3,6 +3,7 @@ package com.samsungxr.arpet.service.share;
 import android.graphics.Bitmap;
 import android.opengl.Matrix;
 import android.util.Log;
+import android.media.Image;
 
 import com.samsungxr.SXREventReceiver;
 import com.samsungxr.SXRNode;
@@ -23,6 +24,8 @@ import com.samsungxr.arpet.service.MessageService;
 import com.samsungxr.arpet.service.event.UpdatePosesReceivedMessage;
 import com.samsungxr.arpet.util.EventBusUtils;
 import com.samsungxr.mixedreality.SXRPointCloud;
+
+import com.google.ar.core.exceptions.NotYetAvailableException;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.joml.Matrix4f;
@@ -254,6 +257,11 @@ public class SharedMixedReality implements IMixedReality {
     @Override
     public SXRPointCloud acquirePointCloud() {
         return mMixedReality.acquirePointCloud();
+    }
+
+    @Override
+    public Image acquireCameraImage() throws NotYetAvailableException {
+        return mMixedReality.acquireCameraImage();
     }
 
     @Override
