@@ -119,7 +119,7 @@ public class SceneUtils
 
     public void initCursorController(SXRContext SXRContext, final ITouchEvents handler, final float screenDepth)
     {
-        final int cursorDepth = 10;
+        final float cursorDepth = 1;
         SXRInputManager inputManager = SXRContext.getInputManager();
         final EnumSet<SXRPicker.EventOptions> eventOptions = EnumSet.of(
                 SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
@@ -137,7 +137,7 @@ public class SceneUtils
                 newController.setCursorDepth(cursorDepth);
                 newController.setCursorControl(SXRCursorController.CursorControl.PROJECT_CURSOR_ON_SURFACE);
                 newController.getPicker().setEventOptions(eventOptions);
-                if (newController instanceof SXRGazeCursorController)
+                if ((screenDepth > 0) && (newController instanceof SXRGazeCursorController))
                 {
                     ((SXRGazeCursorController) newController).setTouchScreenDepth(screenDepth);
                     newController.setCursor(null);

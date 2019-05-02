@@ -194,7 +194,7 @@ public class SampleMain extends SXRMain
         @Override
         public void onMixedRealityStart(IMixedReality mr)
         {
-            float screenDepth = mr.getScreenDepth();
+            float screenDepth = mIsMonoscopic ? mr.getScreenDepth() : 0;
             mr.getPassThroughObject().getEventReceiver().addListener(mTouchHandler);
             helper.initCursorController(mSXRContext, mTouchHandler, screenDepth);
             mr.setPlaneFindingMode(SXRMixedReality.PlaneFindingMode.HORIZONTAL);
