@@ -38,11 +38,11 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.FileDataSource;
 import com.google.android.exoplayer2.util.Util;
-
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRExternalTexture;
+import com.samsungxr.SXRExternalImage;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.nodes.SXRVideoNode;
@@ -64,7 +64,7 @@ public class Player extends FadeableObject {
     private static final String TAG = Player.class.getSimpleName();
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
-    private SXRContext mGvrContext;
+    private SXRContext mSxrContext;
     private DefaultExoPlayer mMediaPlayer;
     private Video[] mFiles;
     private LinkedList<Video> mPlayingNowQueue;
@@ -82,7 +82,7 @@ public class Player extends FadeableObject {
     public Player(final SXRContext sxrContext) {
         super(sxrContext);
 
-        this.mGvrContext = sxrContext;
+        this.mSxrContext = sxrContext;
 
         this.mFileDataSourceFactory = new DataSource.Factory() {
             @Override
@@ -96,21 +96,22 @@ public class Player extends FadeableObject {
     }
 
     private void createVideoNode() {
-        SXRExternalTexture texture = new SXRExternalTexture(mGvrContext);
+        final SXRExternalImage image = new SXRExternalImage(mSxrContext);
+        final SXRTexture texture = new SXRTexture(image);
         SurfaceTexture surfaceTexture = new SurfaceTexture(texture.getId());
         Surface surface = new Surface(surfaceTexture);
 
-        mMediaPlayer = new DefaultExoPlayer(ExoPlayerFactory.newSimpleInstance(mGvrContext.getContext(), new DefaultTrackSelector()));
+        mMediaPlayer = new DefaultExoPlayer(ExoPlayerFactory.newSimpleInstance(mSxrContext.getContext(), new DefaultTrackSelector()));
         mMediaPlayer.getPlayer().addListener(mPlayerListener);
 
-        mFlatVideo = new SXRVideoNode(mGvrContext, mGvrContext.createQuad(1, .6f), mMediaPlayer, texture, SXRVideoType.MONO);
+        mFlatVideo = new SXRVideoNode(mSxrContext, mSxrContext.createQuad(1, .6f), mMediaPlayer, texture, SXRVideoType.MONO);
         mFlatVideo.attachCollider(new SXRMeshCollider(getSXRContext(), true));
         mFlatVideo.getTransform().setScale(10, 10, 1);
         mFlatVideo.getTransform().setPositionZ(-8.1f);
         addChildObject(mFlatVideo);
 
-        SXRSphereNode sphere = new SXRSphereNode(mGvrContext, 72, 144, false);
-        m360Video = new SXRVideoNode(mGvrContext, sphere.getRenderData().getMesh(), mMediaPlayer, texture, SXRVideoType.MONO);
+        SXRSphereNode sphere = new SXRSphereNode(mSxrContext, 72, 144, false);
+        m360Video = new SXRVideoNode(mSxrContext, sphere.getRenderData().getMesh(), mMediaPlayer, texture, SXRVideoType.MONO);
         m360Video.getTransform().setScale(100f, 100f, 100f);
         addChildObject(m360Video);
 
