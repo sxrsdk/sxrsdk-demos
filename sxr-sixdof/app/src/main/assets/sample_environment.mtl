@@ -1,0 +1,36 @@
+# MTL written from C:\Users\m1.badillo\Desktop\TOM\sample_environment.obj
+newmtl Blue
+Kd 0 0 0.8
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+newmtl Red
+Kd 0.8 0 2.88054e-009
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+newmtl default
+Kd 0.48 0.48 0.48
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+newmtl green
+Kd 0 0.405663 2.88054e-009
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+newmtl ground
+Kd 0.0841206 0.0841206 0.0841206
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
