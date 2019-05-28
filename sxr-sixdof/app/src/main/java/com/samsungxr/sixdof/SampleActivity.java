@@ -38,7 +38,7 @@ import java.util.EnumSet;
 
 public class SampleActivity extends SXRActivity {
 
-    private String TAG = "sxr-sixdof";
+    private static final String TAG = "sxr-sixdof";
 
     @Override
     protected void onCreate(Bundle icicle) {
