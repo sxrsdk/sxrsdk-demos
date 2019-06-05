@@ -91,19 +91,11 @@ public class SampleHelper {
         return plane;
     }
 
-    public void initCursorController(SXRContext SXRContext, final ITouchEvents handler, final float displayDepth)
+    public void initCursorController(final SXRContext ctx, final ITouchEvents handler, final float displayDepth)
     {
         final float cursorDepth = 100.0f;
-        SXRContext.getMainScene().getEventReceiver().addListener(handler);
-        SXRInputManager inputManager = SXRContext.getInputManager();
-        mCursor = new SXRNode(SXRContext,
-                SXRContext.createQuad(0.2f * cursorDepth,
-                        0.2f * cursorDepth),
-                SXRContext.getAssetLoader().loadTexture(new SXRAndroidResource(SXRContext,
-                        R.raw.cursor)));
-        mCursor.getRenderData().setDepthTest(false);
-        mCursor.getRenderData().disableLight();
-        mCursor.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
+        ctx.getMainScene().getEventReceiver().addListener(handler);
+        SXRInputManager inputManager = ctx.getInputManager();
         final EnumSet<SXRPicker.EventOptions> eventOptions = EnumSet.of(
                 SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
                 SXRPicker.EventOptions.SEND_TO_HIT_OBJECT,
@@ -121,7 +113,18 @@ public class SampleHelper {
                 {
                     ((SXRGazeCursorController) newController).setTouchScreenDepth(displayDepth);
                 }
-                newController.setCursor(mCursor);
+                if (displayDepth == 0)
+                {
+                    mCursor = new SXRNode(ctx, ctx.createQuad(0.2f * cursorDepth, 0.2f * cursorDepth), ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.raw.cursor)));
+                    mCursor.getRenderData().setDepthTest(false);
+                    mCursor.getRenderData().disableLight();
+                    mCursor.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.OVERLAY);
+                    newController.setCursor(mCursor);
+                }
+                else
+                {
+                    newController.setCursor(null);
+                }
                 newController.getPicker().setPickClosest(false);
                 newController.setCursorDepth(cursorDepth);
                 newController.setCursorControl(SXRCursorController.CursorControl.CURSOR_CONSTANT_DEPTH);
