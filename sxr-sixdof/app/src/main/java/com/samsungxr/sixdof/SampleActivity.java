@@ -69,25 +69,14 @@ public class SampleActivity extends SXRActivity {
             scene.setBackgroundColor(1, 1, 1, 1);
 
             try {
-                float eyeheight = -2.0f; // default to 2 meters
-
-                // try to read a system prop eye height if we want to override it
-                String eyeHeightString = SystemProperties.read("debug.samsungxr.eyeheight");
-                if(eyeHeightString != null && !eyeHeightString.isEmpty()) {
-                    eyeheight = Float.parseFloat(eyeHeightString);
-                    android.util.Log.d(TAG, "eye height set to: " + eyeheight);
-                }
-
                 String roomPath = new String("sample_environment.obj");
                 String gizmoPath = new String("transformgizmo.obj");
                 String groundPath = new String("groundplane.obj");
 
                 mRoom = sxrContext.getAssetLoader().loadModel(roomPath, scene);
-                mRoom.getTransform().setPosition(0.0f, eyeheight, 0.0f);
                 SXRNode gizmo = sxrContext.getAssetLoader().loadModel(gizmoPath, scene);
-                gizmo.getTransform().setPosition(0.0f, eyeheight, 0.0f);
                 SXRNode groundplane = sxrContext.getAssetLoader().loadModel(groundPath, scene);
-                groundplane.getTransform().setPosition(0.0f, eyeheight+0.001f, 0.0f);
+                groundplane.getTransform().setPosition(0.0f, 0.001f, 0.0f);
 
                 SXRNode node = new SXRNode(getSXRContext(), 0.5f, 0.5f);
                 node.getRenderData().getMaterial().setDiffuseColor(1, 0,0,1);
@@ -124,7 +113,6 @@ public class SampleActivity extends SXRActivity {
     private static class SystemProperties {
 
         private static String GETPROP_EXECUTABLE_PATH = "/system/bin/getprop";
-        private static String TAG = "TVR";
 
         public static String read(String propName) {
             Process process = null;
