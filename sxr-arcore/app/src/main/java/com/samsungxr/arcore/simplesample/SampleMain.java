@@ -170,7 +170,6 @@ public class SampleMain extends SXRMain
 
             root.addChildObject(andy);
             root.addChildObject(platform);
-            Log.d("NOLA", "AddObject %f, %f", pose[12], pose[13]);
             if (plane != null)
             {
                 mCurrentAnchor = plane.createAnchor(pose, anchorObj);
@@ -459,27 +458,12 @@ public class SampleMain extends SXRMain
         {
             mSelectionMode = mode;
             mSelected = sceneObj;
-
             mHitX = hitx;
             mHitY = hity;
-            Log.d("NOLA", "startTouch %s %s %f, %f",
-                    sceneObj.getName(),
-                    (mode == SCALE_ROTATE) ? "scale/rotate" : "drag",
-                    hitx,
-                    hity);
-
         }
 
         public void endTouch()
         {
-            if (mSelected != null)
-            {
-                Log.d("NOLA", "endTouch %s", mSelected.getName());
-            }
-            else
-            {
-                Log.d("NOLA", "endTouch");
-            }
             mSelected = null;
             mSelectionMode = UNTOUCHED;
         }
@@ -517,8 +501,6 @@ public class SampleMain extends SXRMain
                                                   pickInfo.hitLocation[1],
                                                   pickInfo.hitLocation[2],
                                                   3.0f * AR_TO_VR_SCALE);
-                Log.d("NOLA", "touchEnd PassThru %f, %f",
-                        pickInfo.hitLocation[0], pickInfo.hitLocation[1]);
                 if (anchor == null)
                 {
                     processHit(pickInfo);
