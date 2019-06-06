@@ -500,7 +500,7 @@ public class SampleMain extends SXRMain
                 SXRAnchor anchor = findAnchorNear(pickInfo.hitLocation[0],
                                                   pickInfo.hitLocation[1],
                                                   pickInfo.hitLocation[2],
-                                                  3.0f * AR_TO_VR_SCALE);
+                                                  AR_TO_VR_SCALE);
                 if (anchor == null)
                 {
                     processHit(pickInfo);
