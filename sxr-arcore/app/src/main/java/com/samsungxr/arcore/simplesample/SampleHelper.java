@@ -94,7 +94,6 @@ public class SampleHelper {
     public void initCursorController(final SXRContext ctx, final ITouchEvents handler, final float displayDepth)
     {
         final float cursorDepth = 100.0f;
-        ctx.getMainScene().getEventReceiver().addListener(handler);
         SXRInputManager inputManager = ctx.getInputManager();
         final EnumSet<SXRPicker.EventOptions> eventOptions = EnumSet.of(
                 SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
@@ -104,9 +103,13 @@ public class SampleHelper {
         {
             public void onCursorControllerSelected(SXRCursorController newController, SXRCursorController oldController)
             {
-                if (oldController != null)
+                if (handler != null)
                 {
-                    oldController.removePickEventListener(handler);
+                    if (oldController != null)
+                    {
+                        oldController.removePickEventListener(handler);
+                    }
+                    newController.addPickEventListener(handler);
                 }
                 mCursorController = newController;
                 if (newController instanceof SXRGazeCursorController)
@@ -127,7 +130,7 @@ public class SampleHelper {
                 }
                 newController.getPicker().setPickClosest(false);
                 newController.setCursorDepth(cursorDepth);
-                newController.setCursorControl(SXRCursorController.CursorControl.CURSOR_CONSTANT_DEPTH);
+                newController.setCursorControl(SXRCursorController.CursorControl.PROJECT_CURSOR_ON_SURFACE);
                 newController.getPicker().setEventOptions(eventOptions);
             }
         });
