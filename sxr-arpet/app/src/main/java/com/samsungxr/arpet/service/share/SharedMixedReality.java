@@ -33,6 +33,7 @@ import org.joml.Matrix4f;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class SharedMixedReality implements IMixedReality {
 
@@ -77,6 +78,9 @@ public class SharedMixedReality implements IMixedReality {
     public void pause() {
         mMixedReality.pause();
     }
+
+    @Override
+    public boolean isPaused() { return mMixedReality.isPaused(); }
 
     public void onMixedRealityError(IMixedReality mr, String errmsg) { }
 
@@ -235,13 +239,13 @@ public class SharedMixedReality implements IMixedReality {
     }
 
     @Override
-    public void setMarker(Bitmap bitmap) {
-        mMixedReality.setMarker(bitmap);
+    public void addMarker(String name, Bitmap bitmap) {
+        mMixedReality.addMarker(name, bitmap);
     }
 
     @Override
-    public void setMarkers(ArrayList<Bitmap> arrayList) {
-        mMixedReality.setMarkers(arrayList);
+    public void addMarkers(Map<String, Bitmap> markers) {
+        mMixedReality.addMarkers(markers);
     }
 
     @Override

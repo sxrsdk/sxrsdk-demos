@@ -100,7 +100,6 @@ public class PetMain extends DisableNativeSplashScreen {
         mPointCloudHandler = new PointCloudHandler(mPetContext);
 
         mSharedMixedReality = mPetContext.getMixedReality();
-
         mPetContext.registerPlaneListener(mPlaneHandler);
         mSharedMixedReality.getEventReceiver().addListener(mMixedRealityHandler);
         mSharedMixedReality.getEventReceiver().addListener(mPointCloudHandler);
