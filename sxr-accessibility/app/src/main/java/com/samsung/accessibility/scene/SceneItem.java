@@ -17,7 +17,7 @@ import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 
 import com.samsung.accessibility.R;
@@ -73,7 +73,7 @@ public class SceneItem extends FocusableNode {
         if (!isAnimating) {
             isAnimating = true;
             if (isActive) {
-                new SXRRelativeMotionAnimation(this, duration, newPosition[0] - initialPosition[0], newPosition[1] - initialPosition[1],
+                new SXRPositionAnimation(this, duration, newPosition[0] - initialPosition[0], newPosition[1] - initialPosition[1],
                         newPosition[2] - initialPosition[2]).start(getSXRContext().getAnimationEngine())
                         .setInterpolator(InterpolatorBackEaseOut.getInstance()).setOnFinish(new SXROnFinish() {
 
@@ -85,7 +85,7 @@ public class SceneItem extends FocusableNode {
 
                                             @Override
                                             public void finished(SXRAnimation animation) {
-                                                new SXRRelativeMotionAnimation(SceneItem.this, duration, initialPosition[0]
+                                                new SXRPositionAnimation(SceneItem.this, duration, initialPosition[0]
                                                         - newPosition[0],
                                                         initialPosition[1] - newPosition[1], initialPosition[2] - newPosition[2])
                                                         .start(getSXRContext().getAnimationEngine())
@@ -103,7 +103,7 @@ public class SceneItem extends FocusableNode {
                             }
                         });
             } else {
-                new SXRRelativeMotionAnimation(this, duration, newPosition[0] - initialPosition[0], newPosition[1] - initialPosition[1],
+                new SXRPositionAnimation(this, duration, newPosition[0] - initialPosition[0], newPosition[1] - initialPosition[1],
                         newPosition[2] - initialPosition[2]).start(getSXRContext().getAnimationEngine())
                         .setInterpolator(InterpolatorBackEaseOut.getInstance()).setOnFinish(new SXROnFinish() {
 
@@ -115,7 +115,7 @@ public class SceneItem extends FocusableNode {
 
                                             @Override
                                             public void finished(SXRAnimation animation) {
-                                                new SXRRelativeMotionAnimation(SceneItem.this, duration, initialPosition[0]
+                                                new SXRPositionAnimation(SceneItem.this, duration, initialPosition[0]
                                                         - newPosition[0],
                                                         initialPosition[1] - newPosition[1], initialPosition[2] - newPosition[2])
                                                         .start(getSXRContext().getAnimationEngine())
