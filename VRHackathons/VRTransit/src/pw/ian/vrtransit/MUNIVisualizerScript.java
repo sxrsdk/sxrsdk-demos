@@ -18,7 +18,7 @@ import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.nodes.SXRTextViewNode;
 
 import pw.ian.vrtransit.data.BusUpdate;
@@ -168,7 +168,7 @@ public class MUNIVisualizerScript extends SXRScript {
 		float dy = scaleCoordY((float) lon, 5f)
 				- bus.getTransform().getPositionY();
 
-		SXRAnimation anim = new SXRRelativeMotionAnimation(bus, 1.0f, dx, dy,
+		SXRAnimation anim = new SXRPositionAnimation(bus, 1.0f, dx, dy,
 				0f);
 		anim.start(mCtx.getAnimationEngine());
 		return bus;
@@ -252,12 +252,12 @@ public class MUNIVisualizerScript extends SXRScript {
 
 			Log.i("VRTransit", "Move to " + xc + " " + yc + " " + zc);
 
-			zoomAnim = new SXRRelativeMotionAnimation(rig.getTransform(),
+			zoomAnim = new SXRPositionAnimation(rig.getTransform(),
 					1.0f, xc, yc, zc);
 			zoomAnim.start(mCtx.getAnimationEngine());
 		} else {
 			Log.i("VRTransit", "Move to " + -xc + " " + -yc + " " + -zc);
-			zoomAnim = new SXRRelativeMotionAnimation(rig.getTransform(),
+			zoomAnim = new SXRPositionAnimation(rig.getTransform(),
 					1.0f, -xc, -yc, -zc);
 			zoomAnim.start(mCtx.getAnimationEngine());
 		}

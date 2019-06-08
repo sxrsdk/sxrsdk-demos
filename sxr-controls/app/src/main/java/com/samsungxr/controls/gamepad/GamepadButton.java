@@ -27,7 +27,7 @@ import com.samsungxr.SXRTextureParameters.TextureFilterType;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.controls.R;
@@ -168,7 +168,7 @@ public class GamepadButton extends SXRNode {
 
             if (!isDown) {
 
-                SXRRelativeMotionAnimation eventDown = new SXRRelativeMotionAnimation(this,
+                SXRPositionAnimation eventDown = new SXRPositionAnimation(this,
                         DOWN_SIMPLE_BUTTON_TIME,
                         this.getTransform().getPositionX(),
                         this.getTransform().getPositionY(),
@@ -187,7 +187,7 @@ public class GamepadButton extends SXRNode {
 
             if (isDown) {
 
-                SXRRelativeMotionAnimation evDown = new SXRRelativeMotionAnimation(this,
+                SXRPositionAnimation evDown = new SXRPositionAnimation(this,
                         DOWN_SIMPLE_BUTTON_TIME,
                         this.getTransform().getPositionX(),
                         this.getTransform().getPositionY(),

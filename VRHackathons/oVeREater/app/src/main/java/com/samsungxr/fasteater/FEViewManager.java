@@ -24,7 +24,7 @@ import com.samsungxr.SXRTransform;
 import com.samsungxr.ZipLoader;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
@@ -494,7 +494,7 @@ public class FEViewManager extends SXRScript {
 	*/
 
 	private void relativeMotionAnimation(SXRNode object, float duration, float x, float y, float z) {
-		runOnce(new SXRRelativeMotionAnimation(object, duration, x, y, z));
+		runOnce(new SXRPositionAnimation(object, duration, x, y, z));
 	}
 
 	private void attachDefaultEyePointee(SXRNode sceneObject) {

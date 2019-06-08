@@ -22,7 +22,7 @@ import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.R;
@@ -41,9 +41,9 @@ public class MenuFrame extends SXRNode {
     public static boolean isOpen = false;
 
     private SXRScaleAnimation scaleCollapse;
-    private SXRRelativeMotionAnimation rmCollapse;
+    private SXRPositionAnimation rmCollapse;
     private SXRScaleAnimation scaleExpand;
-    private SXRRelativeMotionAnimation rmExpand;
+    private SXRPositionAnimation rmExpand;
 
     private SXRNode pivot = null;
 
@@ -79,7 +79,7 @@ public class MenuFrame extends SXRNode {
             scaleExpand.setRepeatMode(SXRRepeatMode.ONCE);
             scaleExpand.start(this.getSXRContext().getAnimationEngine());
 
-            rmExpand = new SXRRelativeMotionAnimation(this, ANIMATION_TIME, 0, -ANIMATION_FRAME_RESIZE, 0);
+            rmExpand = new SXRPositionAnimation(this, ANIMATION_TIME, 0, -ANIMATION_FRAME_RESIZE, 0);
             rmExpand.setRepeatMode(SXRRepeatMode.ONCE);
             rmExpand.start(this.getSXRContext().getAnimationEngine()).setOnFinish(new SXROnFinish() {
 
@@ -125,7 +125,7 @@ public class MenuFrame extends SXRNode {
             scaleCollapse.setRepeatMode(SXRRepeatMode.ONCE);
             scaleCollapse.start(getSXRContext().getAnimationEngine());
 
-            rmCollapse = new SXRRelativeMotionAnimation(this, ANIMATION_TIME, 0, ANIMATION_FRAME_RESIZE, 0);
+            rmCollapse = new SXRPositionAnimation(this, ANIMATION_TIME, 0, ANIMATION_FRAME_RESIZE, 0);
             rmCollapse.setRepeatMode(SXRRepeatMode.ONCE);
             rmCollapse.setOnFinish(new SXROnFinish() {
 
