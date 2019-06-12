@@ -9,7 +9,7 @@ function onInit(sxr) {
   // 3D Boat Scene
   var boat = sxr.getAssetLoader().loadModel("RowBoatFBX/RowBoatAnimated.fbx", mainScene);
   boat.setName("boat");
-  boat.getTransform().setRotationByAxis(-90, 0, 0, 1);
+ste  boat.getTransform().setRotationByAxis(-90, 0, 0, 1);
   boat.getTransform().setPosition(20, -20, -40);
 
   // Text
