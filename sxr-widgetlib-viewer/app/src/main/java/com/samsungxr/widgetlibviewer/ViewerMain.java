@@ -17,6 +17,7 @@ package com.samsungxr.widgetlibviewer;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.widgetlib.content_scene.ContentSceneController;
@@ -98,7 +99,9 @@ public class ViewerMain extends SXRMain {
     public void onInit(final SXRContext sxrContext) {
         mSXRContext = sxrContext;
         try {
-            mWidgetLib = WidgetLib.init(sxrContext, "app_metadata.json");
+            SXRNode widgetRoot = new SXRNode(sxrContext);
+            sxrContext.getMainScene().addNode(widgetRoot);
+            mWidgetLib = WidgetLib.init(widgetRoot, "app_metadata.json");
             mContentSceneController = WidgetLib.getContentSceneController();
 
             mMainScene = WidgetLib.getMainScene();
@@ -110,8 +113,6 @@ public class ViewerMain extends SXRMain {
             mLight.getLightScene().getTransform().setPosition(0, 10, 0);
             mLight.getLightScene().getTransform().rotateByAxis(-90, 1, 0, 0);
             mMainScene.addNode(mLight.getLightScene());
-
-
         } catch (Exception e) {
             Log.e(TAG, "Could not initialize Widget library");
             e.printStackTrace();
