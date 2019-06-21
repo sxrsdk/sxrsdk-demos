@@ -1,8 +1,10 @@
 package com.samsungxr.sxrmeshanimation;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.samsungxr.SXRActivity;
+import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRMain;
@@ -11,8 +13,12 @@ import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.SXRNode;
+import com.samsungxr.animation.SXRSkeleton;
 
+import android.graphics.Color;
 import android.util.Log;
+
+import org.joml.Matrix4f;
 
 public class MeshAnimationMain extends SXRMain {
 
@@ -39,14 +45,14 @@ public class MeshAnimationMain extends SXRMain {
         mAnimationEngine = sxrContext.getAnimationEngine();
 
         SXRScene mainScene = sxrContext.getMainScene();
-
+        mainScene.getMainCameraRig().getCenterCamera().setBackgroundColor(Color.LTGRAY);
 
         try {
             mCharacter = sxrContext.getAssetLoader().loadModel(mModelPath, mainScene);
-            mCharacter.getTransform().setPosition(0.0f, -10.0f, -10.0f);
-            mCharacter.getTransform().setRotationByAxis(40.0f, 1.0f, 0.0f, 0.0f);
+            SXRNode.BoundingVolume bv = mCharacter.getBoundingVolume();
+            mCharacter.getTransform().setPositionZ(-0.2f);
+            mCharacter.getTransform().setRotationByAxis(90.0f, 1.0f, 0.0f, 0.0f);
             mCharacter.getTransform().setScale(1.5f, 1.5f, 1.5f);
-
             mAssimpAnimation = (SXRAnimator) mCharacter.getComponent(SXRAnimator.getComponentType());
             mAssimpAnimation.setRepeatMode(SXRRepeatMode.REPEATED);
             mAssimpAnimation.setRepeatCount(-1);
