@@ -10,7 +10,7 @@ import android.view.Surface;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDrawFrameListener;
-import com.samsungxr.SXRExternalTexture;
+import com.samsungxr.SXRExternalImage;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
@@ -36,7 +36,9 @@ public class SXRFPSCounter extends SXRNode {
     public SXRFPSCounter(final SXRContext sxrContext) {
         super(sxrContext, sxrContext.createQuad(1.0f, 1.0f));
 
-        final SXRTexture texture = new SXRExternalTexture(sxrContext);
+        final SXRExternalImage image = new SXRExternalImage(sxrContext);
+        final SXRTexture texture = new SXRTexture(image);
+
         final SXRMaterial material = new SXRMaterial(sxrContext, SXRMaterial.SXRShaderType.OES.ID);
 
         mActivity = sxrContext.getActivity();

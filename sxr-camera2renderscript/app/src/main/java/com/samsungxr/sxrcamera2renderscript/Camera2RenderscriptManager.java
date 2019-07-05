@@ -9,11 +9,12 @@ import android.view.Surface;
 import com.samsungxr.SXRActivity;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDrawFrameListener;
-import com.samsungxr.SXRExternalTexture;
+import com.samsungxr.SXRExternalImage;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMaterial.SXRShaderType;
-import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRScene;
+import com.samsungxr.SXRTexture;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,8 @@ public class Camera2RenderscriptManager extends SXRMain {
 	public void onInit(SXRContext sxrContext) throws Throwable {
 		SXRScene mainScene = sxrContext.getMainScene();
 
-		SXRExternalTexture passThroughTexture = new SXRExternalTexture(sxrContext);
+		final SXRExternalImage passThroughImage = new SXRExternalImage(sxrContext);
+		final SXRTexture passThroughTexture = new SXRTexture(passThroughImage);
 		mSurfaceTexture = new SurfaceTexture(passThroughTexture.getId());
 
 		SXRNode passThroughObject = new SXRNode(sxrContext, sxrContext.createQuad(3.0f, 1.5f), passThroughTexture,SXRShaderType.OES.ID);
@@ -49,7 +51,8 @@ public class Camera2RenderscriptManager extends SXRMain {
 		passThroughObject.getTransform().setPositionZ(-3.0f);
 		mainScene.getMainCameraRig().addChildObject(passThroughObject);
 
-		SXRExternalTexture effectTexture = new SXRExternalTexture(sxrContext);
+		final SXRExternalImage effectImage = new SXRExternalImage(sxrContext);
+		final SXRTexture effectTexture = new SXRTexture(effectImage);
 		mEffectTexture = new SurfaceTexture(effectTexture.getId());
 
 		SXRNode effectObject = new SXRNode(sxrContext, sxrContext.createQuad(3.0f, 1.5f), effectTexture,SXRShaderType.OES.ID);

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-System.setProperty("appName", "sxr-widgetlib-viewer")
+System.setProperty("appName", "sxr-sixdof")
 
 if(file("../../common.gradle").exists()) {
     apply from: '../../common.gradle'
@@ -23,17 +23,9 @@ android {
     }
 }
 
+ext.sxrVersion = '5.0.1-SNAPSHOT'
+
 dependencies {
-    if(project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
-        if (findProject(':widgetLib')) {
-            implementation project (':widgetLib')
-        } else {
-            implementation(name: 'widgetLib-debug', ext: 'aar')
-        }
-
-    } else {
-        implementation "com.samsungxr:widgetLib:$sxrVersion"
-    }
-
-    implementation 'com.android.support:support-v4:26.0.1'
+    implementation "com.samsungxr:platformsdk_support:$sxrVersion"
 }
+

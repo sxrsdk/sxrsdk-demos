@@ -1,0 +1,31 @@
+# MTL written from C:\downloads\Tom\export\controller.obj
+newmtl Default
+newmtl Texture
+Kd 0.48 0.48 0.48
+Ns 1024
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.04 0.04 0.04
+map_Kd Texture_Base_Color.png
+newmtl x
+Kd 1 0 0
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 1 1 1
+newmtl y
+Kd 0 1 0
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 1 1 1
+newmtl z
+Kd 0 0 1
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 1 1 1
