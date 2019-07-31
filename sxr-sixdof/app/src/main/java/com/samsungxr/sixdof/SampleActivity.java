@@ -27,6 +27,7 @@ import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.io.SXRCursorController;
+import com.samsungxr.io.SXRGearCursorController;
 import com.samsungxr.io.SXRInputManager;
 
 import com.samsungxr.PlatformEntitlementCheck;
@@ -78,6 +79,11 @@ public class SampleActivity extends SXRActivity {
                 SXRNode groundplane = sxrContext.getAssetLoader().loadModel(groundPath, scene);
                 groundplane.getTransform().setPosition(0.0f, 0.001f, 0.0f);
 
+                float eyeheight = -1.0f;
+                mRoom.getTransform().setPosition(0.0f, eyeheight, 0.0f);
+                gizmo.getTransform().setPosition(0.0f, eyeheight, 0.0f);
+                groundplane.getTransform().setPosition(0.0f, eyeheight+0.001f, 0.0f);
+
                 SXRNode node = new SXRNode(getSXRContext(), 0.5f, 0.5f);
                 node.getRenderData().getMaterial().setDiffuseColor(1, 0,0,1);
                 node.getRenderData().getMaterial().setColor(1, 0, 0);
@@ -88,10 +94,9 @@ public class SampleActivity extends SXRActivity {
                 e.printStackTrace();
             }
 
-
-            getSXRContext().getInputManager().selectController(new SXRInputManager.ICursorControllerSelectListener()
+            SXRInputManager.ICursorControllerListener l = new SXRInputManager.ICursorControllerListener()
             {
-                public void onCursorControllerSelected(SXRCursorController newController, SXRCursorController oldController)
+                public void onCursorControllerAdded(SXRCursorController newController)
                 {
                     SXRNode cursor = new SXRNode(sxrContext, sxrContext.createQuad(1f, 1f),
                             sxrContext.getAssetLoader().loadTexture(
@@ -105,8 +110,17 @@ public class SampleActivity extends SXRActivity {
                     newController.getPicker().setEventOptions(EnumSet.of(
                             SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
                             SXRPicker.EventOptions.SEND_TO_LISTENERS));
+                    ((SXRGearCursorController) newController).showControllerModel(true);
+                    newController.setEnable(true);
                 }
-            });
+
+                public void onCursorControllerRemoved(SXRCursorController oldController)
+                {
+
+                }
+            };
+            getSXRContext().getInputManager().getEventReceiver().addListener(l);
+            getSXRContext().getInputManager().selectController();
         }
     }
 
