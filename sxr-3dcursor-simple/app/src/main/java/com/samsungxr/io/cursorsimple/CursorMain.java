@@ -34,7 +34,6 @@ import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.io.cursor3d.Cursor;
 import com.samsungxr.io.cursor3d.CursorManager;
-import com.samsungxr.io.cursor3d.IoDevice;
 import com.samsungxr.io.cursor3d.MovableBehavior;
 import com.samsungxr.io.cursor3d.SelectableBehavior;
 import com.samsungxr.io.cursor3d.SelectableBehavior.ObjectState;
@@ -65,22 +64,8 @@ public class CursorMain extends SXRMain {
         mainScene = sxrContext.getMainScene();
         mainScene.getMainCameraRig().getLeftCamera().setBackgroundColor(Color.BLACK);
         mainScene.getMainCameraRig().getRightCamera().setBackgroundColor(Color.BLACK);
-        List<IoDevice> devices = new ArrayList<IoDevice>();
 
-        //_VENDOR_TODO_ register the devices with Cursor Manager here.
-        /*
-        TemplateDevice device1 = new TemplateDevice(sxrContext, "template_1", "Right controller");
-        TemplateDevice device2 = new TemplateDevice(sxrContext, "template_2", "Left controller");
-        devices.add(device1);
-        devices.add(device2);
-        */
-
-        /*
-        HandTemplateDevice device = new HandTemplateDevice(sxrContext, mainScene);
-        devices.addAll(device.getDeviceList());
-        */
-
-        cursorManager = new CursorManager(sxrContext, mainScene, devices);
+        cursorManager = new CursorManager(sxrContext, mainScene);
         SXRNode astronautModel, rocketModel;
 
         float[] position = new float[]{5.0f, 0.0f, -20.0f};

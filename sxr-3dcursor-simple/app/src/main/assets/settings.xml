@@ -65,18 +65,18 @@
             type="laser">
         <io deviceId="controller"
             priority="1"
-            productId="2"
-            vendorId="2" />
+            productId="42240"
+            vendorId="1256" />
         <io deviceId="mouse"
-            priority="1"
-            productId="0"
-            vendorId="0"/>
-        <io deviceId="android_gamepad"
             priority="2"
-            productId="1"
-            vendorId="1"/>
-        <io deviceId="gearvr"
+            productId="10291"
+            vendorId="352"/>
+        <io deviceId="android_gamepad"
             priority="3"
+            productId="40960"
+            vendorId="1256"/>
+        <io deviceId="gearvr"
+            priority="4"
             productId="42240"
             vendorId="1256"/>
     </cursor>

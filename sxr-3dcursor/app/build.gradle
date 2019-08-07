@@ -51,11 +51,6 @@ dependencies {
         } else {
             implementation(name: '3DCursorLibrary-debug', ext: 'aar')
         }
-        if (findProject(':GearWearIoDevice')) {
-            implementation project (':GearWearIoDevice')
-        } else {
-            implementation(name: 'GearWearIoDevice-debug', ext: 'aar')
-        }
         if (findProject(':gearwearlibrary')) {
             implementation project (':gearwearlibrary')
         } else {
