@@ -85,6 +85,7 @@ public class PetContext {
 
         PetConnectionManager.getInstance().init(this);
         mMixedReality = new SharedMixedReality(this);
+        mMixedReality.setARToVRScale(100);
 
         mPlayer = new PlayerSceneObject(mSxrContext);
         mMainScene.getMainCameraRig().addChildObject(mPlayer);

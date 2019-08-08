@@ -17,49 +17,22 @@ package com.samsungxr.armarker;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.MotionEvent;
-
-import com.samsungxr.SXRAndroidResource;
-import com.samsungxr.SXRBoxCollider;
-import com.samsungxr.SXRContext;
-import com.samsungxr.SXRDirectLight;
-import com.samsungxr.SXREventListeners;
-import com.samsungxr.SXRLight;
-import com.samsungxr.SXRMain;
-import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRPointLight;
-import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRScene;
-import com.samsungxr.SXRNode;
-import com.samsungxr.SXRTransform;
-import com.samsungxr.ITouchEvents;
-import com.samsungxr.io.SXRCursorController;
-import com.samsungxr.io.SXRGazeCursorController;
-import com.samsungxr.io.SXRInputManager;
-import com.samsungxr.mixedreality.IMarkerEvents;
-import com.samsungxr.mixedreality.SXRAnchor;
-import com.samsungxr.mixedreality.SXRHitResult;
-import com.samsungxr.mixedreality.SXRMarker;
-import com.samsungxr.mixedreality.SXRMixedReality;
-import com.samsungxr.mixedreality.SXRPlane;
-import com.samsungxr.mixedreality.SXRTrackingState;
-import com.samsungxr.mixedreality.IAnchorEvents;
-import com.samsungxr.mixedreality.IMixedReality;
-import com.samsungxr.mixedreality.IPlaneEvents;
-import com.samsungxr.mixedreality.IMixedRealityEvents;
-import com.samsungxr.nodes.SXRCubeNode;
-import com.samsungxr.utility.Log;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+
+import com.samsungxr.SXRContext;
+import com.samsungxr.SXRDirectLight;
+import com.samsungxr.SXRMain;
+import com.samsungxr.SXRMaterial;
+import com.samsungxr.SXRScene;
+import com.samsungxr.SXRNode;
+import com.samsungxr.mixedreality.IMarkerEvents;
+import com.samsungxr.mixedreality.SXRMarker;
+import com.samsungxr.mixedreality.SXRMixedReality;
+import com.samsungxr.mixedreality.SXRTrackingState;
+import com.samsungxr.nodes.SXRCubeNode;
+
 
 /**
  * This sample illustrates how to load, place and move a 3D model
@@ -72,7 +45,7 @@ public class SampleMain extends SXRMain {
     private SXRScene mainScene;
     private SXRMixedReality mixedReality;
     private SXRDirectLight mSceneLight;
-    private SXRNode mAndyAnchor = null;
+    private SXRNode mAnchor = null;
 
     /**
      * Initialize the MixedReality extension and
@@ -88,12 +61,12 @@ public class SampleMain extends SXRMain {
         mSXRContext = ctx;
         mainScene = mSXRContext.getMainScene();
         mSceneLight = new SXRDirectLight(ctx);
-        mainScene.getMainCameraRig().setNearClippingDistance(1);
-        mainScene.getMainCameraRig().setFarClippingDistance(300);
+        mainScene.getMainCameraRig().setNearClippingDistance(0.1f);
+        mainScene.getMainCameraRig().setFarClippingDistance(100);
         mainScene.getMainCameraRig().getHeadTransformObject().attachComponent(mSceneLight);
         mixedReality = new SXRMixedReality(mainScene);
+        mixedReality.setARToVRScale(1.0f);
         mixedReality.getEventReceiver().addListener(markerListener);
-        mixedReality.getEventReceiver().addListener(anchorEventsListener);
         mixedReality.resume();
         addMarker("chips.jpg");
     }
@@ -116,24 +89,25 @@ public class SampleMain extends SXRMain {
 
 
     /**
-     * Load a 3D model and place it in the virtual world
-     * at the marker position. The pose is a 4x4 matrix
-     * giving the real world position/orientation of
-     * the object. We create an anchor (and a corresponding
+     * Create a tall box and place it in the virtual world
+     * at the marker position. We make sure the bottom of the
+     * box is at (0,0,0) or tracking will not work properly.
+     * We create an anchor (and a corresponding
      * node) to link the real and virtual pose together.
      * The node attached to the anchor will be moved and
      * oriented by the framework.
      */
     public void addVirtualObject(SXRMarker marker)
     {
-            SXRMaterial mtl = new SXRMaterial(mSXRContext, SXRMaterial.SXRShaderType.Phong.ID);
-            SXRNode object = new SXRCubeNode(mSXRContext, true, mtl, new Vector3f(10, 10, 10));
+        SXRMaterial mtl = new SXRMaterial(mSXRContext, SXRMaterial.SXRShaderType.Phong.ID);
+        SXRNode object = new SXRCubeNode(mSXRContext, true, mtl, new Vector3f(0.1f, 1.6f, 0.1f));
 
-            mAndyAnchor = new SXRNode(mSXRContext);
-            mtl.setDiffuseColor(0, 1, 0.8f, 1);
-            marker.createAnchor(mAndyAnchor);
-            mAndyAnchor.addChildObject(object);
-            mainScene.addNode(mAndyAnchor);
+        object.getTransform().setPositionY(0.8f);
+        mAnchor = new SXRNode(mSXRContext);
+        mtl.setDiffuseColor(0, 1, 0.8f, 1);
+        marker.createAnchor(mAnchor);
+        mAnchor.addChildObject(object);
+        mainScene.addNode(mAnchor);
     }
 
     /**
@@ -148,7 +122,7 @@ public class SampleMain extends SXRMain {
             Bitmap bitmap = BitmapFactory.decodeStream(stream);
             if (bitmap != null)
             {
-                mixedReality.setMarker(bitmap);
+                mixedReality.addMarker(filename, bitmap);
             }
         }
         catch (IOException ex)
@@ -170,27 +144,13 @@ public class SampleMain extends SXRMain {
         {
             if (state == SXRTrackingState.TRACKING)
             {
-                if (mAndyAnchor == null)
+                if (mAnchor == null)
                 {
                     addVirtualObject(marker);
                 }
             }
         }
 
-    };
-
-
-    /**
-     * Show/hide the 3D node associated with the anchor
-     * based on whether it is being tracked or not.
-     */
-    private IAnchorEvents anchorEventsListener = new IAnchorEvents()
-    {
-        @Override
-        public void onAnchorStateChange(SXRAnchor anchor, SXRTrackingState state)
-        {
-            anchor.setEnable(state == SXRTrackingState.TRACKING);
-        }
     };
 
 }

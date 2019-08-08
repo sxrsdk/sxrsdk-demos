@@ -20,7 +20,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROpacityAnimation;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.util.MathUtils;
 
@@ -50,7 +50,7 @@ public class Star extends SXRNode {
         getTransform().rotateByAxis(
                 MathUtils.getYRotationAngle(this, sxrContext.getMainScene().getMainCameraRig()), 0,
                 1, 0);
-        SXRAnimation anim = new SXRRelativeMotionAnimation(this, ANIMATION_DURATION, 0,
+        SXRAnimation anim = new SXRPositionAnimation(this, ANIMATION_DURATION, 0,
                 Y_ANIMATION_DELTA, 0);
         anim.start(sxrContext.getAnimationEngine());
         playOpacityAnimation(sxrContext);

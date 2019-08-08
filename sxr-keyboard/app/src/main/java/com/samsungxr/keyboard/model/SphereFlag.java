@@ -29,7 +29,7 @@ import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.keyboard.R;
@@ -161,7 +161,7 @@ public class SphereFlag extends SXRNode {
             float intensity = 1;
             float randomValue = 0.7f + ((float) Math.random() * 1.0f);
 
-            floatingAnimation = new SXRRelativeMotionAnimation
+            floatingAnimation = new SXRPositionAnimation
                     (getParent(), intensity * 3 * randomValue, 0, getParent().getTransform()
                             .getPositionY() - intensity * 2 * randomValue, 0);
 
@@ -218,7 +218,7 @@ public class SphereFlag extends SXRNode {
         scaleThisAnimation = new SXRScaleAnimation(this, 1.2f, 1 / scaleFactor).start(sxrContext
                 .getAnimationEngine());
 
-        return new SXRRelativeMotionAnimation(getParent(), 1.2f, newPosition[0]
+        return new SXRPositionAnimation(getParent(), 1.2f, newPosition[0]
                 - getParent().getTransform().getPositionX(),
                 newPosition[1] - getParent().getTransform().getPositionY(),
                 newPosition[2] - getParent().getTransform().getPositionZ())
@@ -251,7 +251,7 @@ public class SphereFlag extends SXRNode {
         scaleThisAnimation = new SXRScaleAnimation(this, 1.2f, 1 / scaleFactor).start(sxrContext
                 .getAnimationEngine());
 
-        return new SXRRelativeMotionAnimation(getParent(), 1.2f, (float) getInitialPositionVector()
+        return new SXRPositionAnimation(getParent(), 1.2f, (float) getInitialPositionVector()
                 .getX() - getParent().getTransform().getPositionX(),
                 (float) getInitialPositionVector().getY()
                         - getParent().getTransform().getPositionY(),
@@ -276,7 +276,7 @@ public class SphereFlag extends SXRNode {
         }
 
         if(hit != null)
-        snapAnimation = new SXRRelativeMotionAnimation(this, 1.2f, hit[0]
+        snapAnimation = new SXRPositionAnimation(this, 1.2f, hit[0]
                 - getTransform().getPositionX(),
                 hit[1] - getTransform().getPositionY(), 0f).start(sxrContext.getAnimationEngine());
 
@@ -288,7 +288,7 @@ public class SphereFlag extends SXRNode {
                 sxrContext.getAnimationEngine().stop(snapAnimation);
             }
             isUnsnappingSphere = true;
-            snapAnimation = new SXRRelativeMotionAnimation(this, duration, -getTransform()
+            snapAnimation = new SXRPositionAnimation(this, duration, -getTransform()
                     .getPositionX(),
                     -getTransform().getPositionY(), 0f).start(sxrContext.getAnimationEngine())
                     .setInterpolator(new InterpolatorExpoEaseInOut())
@@ -360,7 +360,7 @@ public class SphereFlag extends SXRNode {
         float y = desiredY - getParent().getTransform().getPositionY();
         float z = desiredZ - getParent().getTransform().getPositionZ();
 
-        followCursorAnimation = new SXRRelativeMotionAnimation(getParent(), 0.8f, x, y, z)
+        followCursorAnimation = new SXRPositionAnimation(getParent(), 0.8f, x, y, z)
                 .setInterpolator(new InterpolatorExpoEaseOut()).start(
                         getSXRContext().getAnimationEngine());
     }
@@ -393,7 +393,7 @@ public class SphereFlag extends SXRNode {
         float z = (float) getInitialPositionVector().getZ()
                 - getParent().getTransform().getPositionZ();
 
-        followCursorAnimation = new SXRRelativeMotionAnimation(getParent(), duration, x, y, z)
+        followCursorAnimation = new SXRPositionAnimation(getParent(), duration, x, y, z)
                 .setInterpolator(new InterpolatorExpoEaseInOut())
                 .start(getSXRContext().getAnimationEngine()).setOnFinish(new SXROnFinish() {
                     @Override
@@ -436,7 +436,7 @@ public class SphereFlag extends SXRNode {
                 scaleThisAnimation = new SXRScaleAnimation(sphereFlag, duration, 1 / scaleFactor).start(getSXRContext()
                         .getAnimationEngine());
 
-                new SXRRelativeMotionAnimation(getParent(), duration, newPosition[0]
+                new SXRPositionAnimation(getParent(), duration, newPosition[0]
                         - getParent().getTransform().getPositionX(),
                         newPosition[1] - getParent().getTransform().getPositionY(),
                         newPosition[2] - getParent().getTransform().getPositionZ())
@@ -476,7 +476,7 @@ public class SphereFlag extends SXRNode {
                 .start(getSXRContext()
                         .getAnimationEngine());
 
-        new SXRRelativeMotionAnimation(getParent(), duration, newPosition[0]
+        new SXRPositionAnimation(getParent(), duration, newPosition[0]
                 - getParent().getTransform().getPositionX(),
                 newPosition[1] - getParent().getTransform().getPositionY(),
                 newPosition[2] - getParent().getTransform().getPositionZ())

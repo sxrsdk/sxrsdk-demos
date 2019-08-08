@@ -21,7 +21,7 @@ import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRInterpolator;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.controls.anim.AnimationsTime;
 import com.samsungxr.controls.model.Apple;
@@ -55,7 +55,7 @@ public class MenuPreview extends SXRNode {
         apple.getTransform().setPositionY(APPLE_INITIAL_POSITION_Y);
         apple.getRenderData().getMaterial().setOpacity(1f);
 
-        appleAnimation = new SXRRelativeMotionAnimation(apple, AnimationsTime.getDropTime(), 0,
+        appleAnimation = new SXRPositionAnimation(apple, AnimationsTime.getDropTime(), 0,
                 Y_ANIMATION_DELTA, 0)
                 .setInterpolator(animationInterpolator)
                 .setRepeatMode(SXRRepeatMode.REPEATED)

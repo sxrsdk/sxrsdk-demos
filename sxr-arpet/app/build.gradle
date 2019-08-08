@@ -24,8 +24,8 @@ project.ext.backend_monoscopic = true
 
 if (file("../../common.gradle").exists()) {
     apply from: '../../common.gradle'
-} else if (file("../../../../GearVRf-Demos/common.gradle").exists()) {
-    apply from: '../../../../GearVRf-Demos/common.gradle'
+} else if (file("../../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../../sxrsdk-demos/common.gradle'
 }
 
 def getPropertyOrDefault(propertyName, defaultValue) {
@@ -65,11 +65,9 @@ android {
 
 dependencies {
     // ARCore library
-    implementation 'com.google.ar:core:1.5.0'
+    implementation 'com.google.ar:core:1.8.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
-    debugImplementation(name: 'sxr-physics-debug', ext: 'aar')
-    releaseImplementation(name: 'sxr-physics-release', ext: 'aar')
 
     def useLocalDependencies = false
     allprojects.repositories.flatDir.dirs.each {
@@ -80,7 +78,14 @@ dependencies {
             }
         }
     }
-
+    if (findProject(':sxr-physics')) {
+        implementation project(':sxr-physics')
+    } else if (useLocalDependencies) {
+        debugImplementation(name: 'sxr-physics-debug', ext: 'aar')
+        releaseImplementation(name: 'sxr-physics-release', ext: 'aar')
+    } else {
+        implementation "com.samsungxr:sxr-physics:$sxrVersion"
+    }
     if (findProject(':MixedReality')) {
         implementation project(':MixedReality')
     } else if (useLocalDependencies) {

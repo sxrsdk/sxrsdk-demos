@@ -30,7 +30,7 @@ import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRInterpolator;
 import com.samsungxr.animation.SXROpacityAnimation;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.Main;
 import com.samsungxr.controls.R;
@@ -181,7 +181,7 @@ public class Apple extends SXRNode {
 
     public void playAnimation(SXRContext sxrContext) {
 
-        SXRAnimation anim = new SXRRelativeMotionAnimation(this, AnimationsTime.getDropTime(), 0,
+        SXRAnimation anim = new SXRPositionAnimation(this, AnimationsTime.getDropTime(), 0,
                 -Constants.APPLE_INICIAL_YPOS - 1, 0);
         anim.setInterpolator(defineInterpolator(motion));
         anim.start(sxrContext.getAnimationEngine());
