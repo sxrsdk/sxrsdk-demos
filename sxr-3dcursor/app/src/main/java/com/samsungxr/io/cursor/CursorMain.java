@@ -729,50 +729,18 @@ public class CursorMain extends SXRMain {
                 }
 
                 boolean rightThemeAttached = false;
-                if (currentIoDeviceUsed)
+                for (Cursor cursor : handCursors)
                 {
-                    for (Cursor cursor : handCursors)
+                    if (cursor.getController() != null)
                     {
-                        if (cursor.getController() != null)
+                        if (!rightThemeAttached)
                         {
-                            if (cursor.getController() == currentController)
-                            {
-                                setUpRightCursor(cursor);
-                            }
-                            else
-                            {
-                                setUpLeftCursor(cursor);
-                            }
+                            setUpRightCursor(cursor);
+                            rightThemeAttached = true;
                         }
-                    }
-                }
-                else
-                {
-                    for (Cursor cursor : handCursors)
-                    {
-                        if (cursor.getCompatibleControllers().contains(currentController))
+                        else
                         {
-                            try
-                            {
-                                cursor.attachController(currentController);
-                            }
-                            catch (IOException e)
-                            {
-                                Log.e(TAG, "IO device " + currentController.getName() + " cannot be " + "attached");
-                            }
-                            currentIoDeviceUsed = true;
-                        }
-                        if (cursor.getController() != null)
-                        {
-                            if (!rightThemeAttached)
-                            {
-                                setUpRightCursor(cursor);
-                                rightThemeAttached = true;
-                            }
-                            else
-                            {
-                                setUpLeftCursor(cursor);
-                            }
+                            setUpLeftCursor(cursor);
                         }
                     }
                 }
@@ -789,16 +757,23 @@ public class CursorMain extends SXRMain {
             setCursorPosition(rightCursorPosition, cursor);
         }
 
-        private void enablePointCursors(List<Cursor> cursors) {
-            for (Cursor cursor : cursors) {
-                if (cursor.getCursorType() == CursorType.OBJECT) {
-                    cursor.activate();
-                    if (cursor.getController() == currentController) {
-                        currentIoDeviceUsed = true;
+        private void enablePointCursors(List<Cursor> cursors)
+        {
+            for (Cursor cursor : cursors)
+            {
+                if (cursor.getCursorType() == CursorType.OBJECT)
+                {
+                    if (cursor.getController() == null)
+                    {
+                        cursor.setEnable(true);
+                        cursor.activate();
                     }
                     handCursors.add(cursor);
-                } else if (cursor.getCursorType() == CursorType.LASER) {
+                }
+                else if (cursor.getCursorType() == CursorType.LASER)
+                {
                     cursor.deactivate();
+                    cursor.setEnable(false);
                 }
             }
         }
