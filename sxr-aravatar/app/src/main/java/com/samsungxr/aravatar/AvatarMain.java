@@ -16,6 +16,7 @@
 package com.samsungxr.aravatar;
 
 import com.samsungxr.SXRBoxCollider;
+import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
@@ -23,6 +24,7 @@ import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRMesh;
+import com.samsungxr.SXRPerspectiveCamera;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
@@ -45,6 +47,8 @@ import com.samsungxr.mixedreality.IPlaneEvents;
 import com.samsungxr.mixedreality.IMixedRealityEvents;
 import com.samsungxr.utility.Log;
 
+import org.joml.Math;
+
 public class AvatarMain extends SXRMain {
     private static String TAG = "ARAVATAR";
     private SXRContext        mContext;
@@ -56,7 +60,8 @@ public class AvatarMain extends SXRMain {
     private SelectionHandler  mSelector;
     private SXRDirectLight    mSceneLight;
     private AvatarManager     mAvManager;
-    public SXRNode            mAvatarAnchor;
+    private SXRNode           mAvatarAnchor;
+    private boolean           mIsMono = true;
 
     @Override
     public void onInit(SXRContext ctx)
@@ -67,10 +72,16 @@ public class AvatarMain extends SXRMain {
         mTouchHandler = new TouchHandler();
         mSelector = new SelectionHandler(ctx);
         mSceneLight = mUtility.makeSceneLight(ctx);
-        mScene.getMainCameraRig().getHeadTransformObject().addChildObject(mSceneLight.getOwnerObject());
-
+        SXRCameraRig rig = mScene.getMainCameraRig();
+        final SXRPerspectiveCamera centerCam = rig.getCenterCamera();
         String avatarName = SystemPropertyUtil.getSystemPropertyString("debug.samsungxr.avatarname");
 
+        rig.getHeadTransformObject().addChildObject(mSceneLight.getOwnerObject());
+        rig.setNearClippingDistance(0.1f);
+        rig.setFarClippingDistance(30.0f);
+        final float aspect = centerCam.getAspectRatio();
+
+        mIsMono = Math.abs(1.0f - aspect) > 0.0001f;
         if ((avatarName == null) || (avatarName == ""))
         {
             avatarName = "GYLE";
@@ -109,9 +120,9 @@ public class AvatarMain extends SXRMain {
         @Override
         public void onMixedRealityStart(IMixedReality mr)
         {
+            float screenDepth = mIsMono ?  mr.getScreenDepth() : 0;
             mUtility.initCursorController(getSXRContext(),
-                    mTouchHandler,
-                    mr.getScreenDepth());
+                    mTouchHandler, screenDepth);
         }
 
         @Override

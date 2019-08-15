@@ -32,6 +32,11 @@ public class DustyAnimation extends SXRAnimation {
         mDustyObject.getTransform().setPosition(x, y, z);
     }
 
+    public SXRAnimation copy()
+    {
+       return new DustyAnimation(mContext, getDuration());
+    }
+
     @Override
     public void onStart() {
         super.onStart();

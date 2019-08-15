@@ -17,7 +17,7 @@ package com.samsungxr.controls.anim;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.controls.Main;
 import com.samsungxr.controls.util.Util;
@@ -53,7 +53,7 @@ public class WormApplyTransformAnims {
         float currentPartPositionX = part.getTransform().getPositionX();
         float newPartPositionX = ratio * currentPartPositionX;
 
-        new SXRRelativeMotionAnimation(part, AnimationsTime.getScaleTime(),
+        new SXRPositionAnimation(part, AnimationsTime.getScaleTime(),
                 newPartPositionX
                         - currentPartPositionX, 0, 0).start(sxrContext
                 .getAnimationEngine());
@@ -72,7 +72,7 @@ public class WormApplyTransformAnims {
         float newX = newPosition[0] - moveablePart.getTransform().getPositionX();
         float newZ = newPosition[2] - moveablePart.getTransform().getPositionZ();
 
-        new SXRRelativeMotionAnimation(moveablePart, AnimationsTime.getScaleTime(), newX, 0, newZ)
+        new SXRPositionAnimation(moveablePart, AnimationsTime.getScaleTime(), newX, 0, newZ)
                 .start(sxrContext.getAnimationEngine());
     }
 
@@ -83,7 +83,7 @@ public class WormApplyTransformAnims {
                 .start(sxrContext.getAnimationEngine());
     }
 
-    public static SXRRelativeMotionAnimation moveWormPartReset(SXRNode moveablePart,
+    public static SXRPositionAnimation moveWormPartReset(SXRNode moveablePart,
             SXRNode basePart) {
 
         float scaleRatio = ScaleWorm.getLastSize()[0] / basePart.getTransform().getScaleX();
@@ -95,6 +95,6 @@ public class WormApplyTransformAnims {
         float newX = newPosition[0] - moveablePart.getTransform().getPositionX();
         float newZ = newPosition[2] - moveablePart.getTransform().getPositionZ();
 
-        return new SXRRelativeMotionAnimation(moveablePart, 0f, newX, 0, newZ);
+        return new SXRPositionAnimation(moveablePart, 0f, newX, 0, newZ);
     }
 }

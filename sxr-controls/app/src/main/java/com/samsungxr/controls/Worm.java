@@ -23,7 +23,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
@@ -270,7 +270,7 @@ public class Worm extends SXRNode {
                 wormParent.getTransform()) > Constants.MAX_WORM_MOVE_DISTANCE)
             return;
 
-        wormParentAnimation = new SXRRelativeMotionAnimation(wormParent.getTransform(),
+        wormParentAnimation = new SXRPositionAnimation(wormParent.getTransform(),
                 duration, newPosition[0] - wormParent.getTransform().getPositionX(),
                 0,
                 newPosition[2] - wormParent.getTransform().getPositionZ())
@@ -412,7 +412,7 @@ public class Worm extends SXRNode {
         float currentPartPositionX = part.getTransform().getPositionX();
         float newPartPositionX = ratio * currentPartPositionX;
 
-        new SXRRelativeMotionAnimation(part, 0.1f,
+        new SXRPositionAnimation(part, 0.1f,
                 newPartPositionX
                         - currentPartPositionX, 0, 0).start(getSXRContext()
                 .getAnimationEngine());

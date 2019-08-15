@@ -18,7 +18,7 @@ package com.samsungxr.controls.menu.scale;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.controls.Main;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.Worm;
@@ -312,7 +312,7 @@ public class ScaleMenu extends MenuWindow {
 
         if (canScaleLess()) {
             if(scaleWorms(-WORM_SCALE_FACTOR))
-                new SXRRelativeMotionAnimation(worm, .1f, -0.015f, 0.015f, 0).start(getSXRContext()
+                new SXRPositionAnimation(worm, .1f, -0.015f, 0.015f, 0).start(getSXRContext()
                     .getAnimationEngine());
         }
     }
@@ -320,7 +320,7 @@ public class ScaleMenu extends MenuWindow {
     private void plus() {
         if (canScaleMore()) {
             if(scaleWorms(WORM_SCALE_FACTOR))
-                new SXRRelativeMotionAnimation(worm, .1f, 0.015f, -0.015f, 0).start(getSXRContext()
+                new SXRPositionAnimation(worm, .1f, 0.015f, -0.015f, 0).start(getSXRContext()
                     .getAnimationEngine());
         }
     }

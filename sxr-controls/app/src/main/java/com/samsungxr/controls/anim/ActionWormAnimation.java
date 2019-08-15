@@ -21,7 +21,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
-import com.samsungxr.animation.SXRRelativeMotionAnimation;
+import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.controls.Main;
 import com.samsungxr.controls.R;
 import com.samsungxr.controls.focus.GamepadTouchImpl;
@@ -220,7 +220,7 @@ public class ActionWormAnimation extends SXRNode {
 
     private void resetPositionParts() {
 
-        SXRRelativeMotionAnimation headAnimation = WormApplyTransformAnims.moveWormPartReset(
+        SXRPositionAnimation headAnimation = WormApplyTransformAnims.moveWormPartReset(
                 Main.worm.getHead().getParent(), Main.worm.getMiddle());
         headAnimation.start(getSXRContext().getAnimationEngine()).setOnFinish(new SXROnFinish() {
 
@@ -232,7 +232,7 @@ public class ActionWormAnimation extends SXRNode {
             }
         });
 
-        SXRRelativeMotionAnimation endAnimation = WormApplyTransformAnims.moveWormPartReset(
+        SXRPositionAnimation endAnimation = WormApplyTransformAnims.moveWormPartReset(
                 Main.worm.getEnd(), Main.worm.getMiddle());
         endAnimation.start(getSXRContext().getAnimationEngine()).setOnFinish(new SXROnFinish() {
 

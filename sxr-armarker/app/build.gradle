@@ -25,8 +25,8 @@ android {
 
 dependencies {
     // ARCore library
-    implementation "com.google.ar:core:1.5.0"
-    implementation 'com.android.support:support-v4:27.0.2'
+    implementation "com.google.ar:core:1.8.0"
+    implementation 'com.android.support:support-v4:26.1.0'
 
     def useLocalDependencies = false
     allprojects.repositories.flatDir.dirs.each {
