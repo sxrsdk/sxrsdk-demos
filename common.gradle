@@ -158,6 +158,8 @@ dependencies {
 
     if (findProject(':sxrsdk')) {
         implementation project(':sxrsdk')
+    } else if (useLocalDependencies) {
+        implementation(':sxrsdk-release@aar')
     } else {
         implementation "com.samsungxr:sxrsdk:$sxrVersion"
     }
