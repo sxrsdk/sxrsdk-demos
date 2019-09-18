@@ -28,7 +28,8 @@
         framebufferPixelsWide="DEFAULT"
         showLoadingIcon="true"
         useProtectedFramebuffer="false"
-        useControllerTypes="gaze,mouse,gamepad,controller,weartouchpad"
+        useControllerTypes="gaze,mouse,gamepad,weartouchpad,controller"
+        numControllers="2"
         useSrgbFramebuffer="false" >
 
         <mono-mode-parms

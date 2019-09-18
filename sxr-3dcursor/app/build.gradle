@@ -28,7 +28,7 @@ else if(file("../../../../sxrsdk-demos/common.gradle").exists()) {
 
 android {
     defaultConfig {
-        applicationId "org.gearvrf.io.cursor"
+        applicationId "com.samsungxr.io.cursor"
     }
 
     buildTypes {
@@ -51,11 +51,6 @@ dependencies {
         } else {
             implementation(name: '3DCursorLibrary-debug', ext: 'aar')
         }
-        if (findProject(':GearWearIoDevice')) {
-            implementation project (':GearWearIoDevice')
-        } else {
-            implementation(name: 'GearWearIoDevice-debug', ext: 'aar')
-        }
         if (findProject(':gearwearlibrary')) {
             implementation project (':gearwearlibrary')
         } else {
@@ -63,7 +58,6 @@ dependencies {
         }
     } else {
         implementation "com.samsungxr:3DCursorLibrary:$sxrVersion"
-        implementation "com.samsungxr:GearWearIoDevice:$sxrVersion"
         implementation "com.samsungxr:gearwearlibrary:$sxrVersion"
     }
     //_VENDOR_TODO_ add the device to sxr-3dcursor here

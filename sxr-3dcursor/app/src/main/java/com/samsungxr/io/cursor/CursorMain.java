@@ -24,7 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gearvrf.io.gearwear.GearWearableDevice;
+import com.samsungxr.io.SXRControllerType;
+import com.samsungxr.io.cursor3d.SXRGearWearCursorController;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRApplication;
@@ -47,7 +48,6 @@ import com.samsungxr.io.cursor3d.CursorManager;
 import com.samsungxr.io.cursor3d.CursorTheme;
 import com.samsungxr.io.cursor3d.CursorType;
 import com.samsungxr.io.cursor3d.ICursorActivationListener;
-import com.samsungxr.io.cursor3d.IoDevice;
 import com.samsungxr.io.cursor3d.MovableBehavior;
 import com.samsungxr.io.cursor3d.SelectableBehavior;
 import com.samsungxr.nodes.SXRViewNode;
@@ -147,7 +147,7 @@ public class CursorMain extends SXRMain {
     private String[] textViewStrings;
     private Map<String, SXRMesh> meshMap;
     private Map<String, SXRMaterial> materialMap;
-    private GearWearableDevice gearWearableDevice;
+    private SXRGearWearCursorController gearWearableDevice;
 
     public CursorMain(SXRApplication application) {
         Resources resources = application.getActivity().getResources();
@@ -248,7 +248,8 @@ public class CursorMain extends SXRMain {
         mainScene.getMainCameraRig().getRightCamera().setBackgroundColor(Color.BLACK);
 
         SXRInputManager inputManager = sxrContext.getInputManager();
-        List<IoDevice> devices = new ArrayList<IoDevice>();
+        gearWearableDevice = new SXRGearWearCursorController(sxrContext);
+        inputManager.addExternalController(gearWearableDevice);
 
         //_VENDOR_TODO_ register the devices with Cursor Manager here.
         /*
@@ -263,8 +264,6 @@ public class CursorMain extends SXRMain {
         devices.addAll(device.getDeviceList());
         */
 
-        gearWearableDevice = new GearWearableDevice(sxrContext, GEARS2_DEVICE_ID, "Gear Wearable");
-        devices.add(gearWearableDevice);
         inputManager.getEventReceiver().addListener(
                 new SXRInputManager.ICursorControllerSelectListener()
                 {
@@ -275,7 +274,7 @@ public class CursorMain extends SXRMain {
                     }
                 });
 
-        cursorManager = new CursorManager(sxrContext, mainScene, devices);
+        cursorManager = new CursorManager(sxrContext, mainScene);
         List<CursorTheme> themes = cursorManager.getCursorThemes();
         laserCursorThemes = new ArrayList<CursorTheme>();
         pointCursorThemes = new ArrayList<CursorTheme>();
@@ -551,13 +550,10 @@ public class CursorMain extends SXRMain {
                 cursors.add(newCursor);
             }
 
-            List<IoDevice> ioDevices = newCursor.getAvailableIoDevices();
-            if (currentType != newCursor.getCursorType()) {
+            List<SXRCursorController> ioDevices = newCursor.getAvailableControllers();
+            if (currentType != newCursor.getCursorType())
+            {
                 currentType = newCursor.getCursorType();
-            }
-            Log.d(TAG, "Available Io devices for Cursor are: ");
-            for (int i = 0; i < ioDevices.size(); i++) {
-                Log.d(TAG, "IO Device:" + ioDevices.get(i).getDeviceId());
             }
         }
     };
@@ -676,8 +672,9 @@ public class CursorMain extends SXRMain {
     }
 
     private void setCursorPosition(Vector3f position, Cursor cursor) {
-        if (cursor.getIoDevice()!= null && !cursor.getIoDevice().getDeviceId().equals
-                (GEARVR_DEVICE_ID)) {
+        if ((cursor.getController() != null) &&
+            (cursor.getController().getControllerType() != SXRControllerType.CONTROLLER))
+        {
             cursor.setPosition(position.x, position.y, position.z);
         }
     }
@@ -685,7 +682,7 @@ public class CursorMain extends SXRMain {
     private class HandCursorButton extends SpaceObject {
         private List<Cursor> handCursors;
         private boolean currentIoDeviceUsed;
-        private IoDevice currentIoDevice;
+        private SXRCursorController currentController;
         private static final String RIGHT_HAND = "right_hand";
         private static final String LEFT_HAND = "left_hand";
         private CursorTheme rightHandTheme, leftHandTheme;
@@ -711,54 +708,38 @@ public class CursorMain extends SXRMain {
 
         @Override
         public void onTouchEnd(Cursor c, SXRPicker.SXRPickedObject hit) {
-            Cursor currentCursor = c;
-            currentIoDevice = c.getIoDevice();
-            currentIoDeviceUsed = false;
-            handCursors.clear();
-            setOffsetPositionFromCursor(rightCursorPosition,currentCursor);
-            leftCursorPosition.set(rightCursorPosition);
-
-            if (c.getCursorType() == CursorType.LASER) ;
+            synchronized (handCursors)
             {
-                currentCursor.deactivate();
-            }
+                Cursor currentCursor = c;
+                currentController = c.getController();
+                currentIoDeviceUsed = false;
+                handCursors.clear();
+                setOffsetPositionFromCursor(rightCursorPosition, currentCursor);
+                leftCursorPosition.set(rightCursorPosition);
 
-            List<Cursor> activeCursors;
-            synchronized (cursors) {
-                activeCursors = new ArrayList<Cursor>(cursors);
-            }
-            enablePointCursors(activeCursors);
-            if (handCursors.size() < 2) {
-                enablePointCursors(cursorManager.getInactiveCursors());
-            }
-
-            boolean rightThemeAttached = false;
-            if (currentIoDeviceUsed) {
-                for (Cursor cursor : handCursors) {
-                    if (cursor.getIoDevice() != null) {
-                        if (cursor.getIoDevice() == currentIoDevice) {
-                            setUpRightCursor(cursor);
-                        } else {
-                            setUpLeftCursor(cursor);
-                        }
-                    }
+                List<Cursor> activeCursors;
+                synchronized(cursors)
+                {
+                    activeCursors = new ArrayList<Cursor>(cursors);
                 }
-            } else {
-                for (Cursor cursor : handCursors) {
-                    if (cursor.getCompatibleIoDevices().contains(currentIoDevice)) {
-                        try {
-                            cursor.attachIoDevice(currentIoDevice);
-                        } catch (IOException e) {
-                            Log.e(TAG, "IO device " + currentIoDevice.getName() + " cannot be " +
-                                    "attached");
-                        }
-                        currentIoDeviceUsed = true;
-                    }
-                    if (cursor.getIoDevice() != null) {
-                        if (!rightThemeAttached) {
+                enablePointCursors(activeCursors);
+                if (handCursors.size() < 2)
+                {
+                    enablePointCursors(cursorManager.getInactiveCursors());
+                }
+
+                boolean rightThemeAttached = false;
+                for (Cursor cursor : handCursors)
+                {
+                    if (cursor.getController() != null)
+                    {
+                        if (!rightThemeAttached)
+                        {
                             setUpRightCursor(cursor);
                             rightThemeAttached = true;
-                        } else {
+                        }
+                        else
+                        {
                             setUpLeftCursor(cursor);
                         }
                     }
@@ -776,16 +757,23 @@ public class CursorMain extends SXRMain {
             setCursorPosition(rightCursorPosition, cursor);
         }
 
-        private void enablePointCursors(List<Cursor> cursors) {
-            for (Cursor cursor : cursors) {
-                if (cursor.getCursorType() == CursorType.OBJECT) {
-                    cursor.activate();
-                    if (cursor.getIoDevice() == currentIoDevice) {
-                        currentIoDeviceUsed = true;
+        private void enablePointCursors(List<Cursor> cursors)
+        {
+            for (Cursor cursor : cursors)
+            {
+                if (cursor.getCursorType() == CursorType.OBJECT)
+                {
+                    if (cursor.getController() == null)
+                    {
+                        cursor.setEnable(true);
+                        cursor.activate();
                     }
                     handCursors.add(cursor);
-                } else if (cursor.getCursorType() == CursorType.LASER) {
+                }
+                else if (cursor.getCursorType() == CursorType.LASER)
+                {
                     cursor.deactivate();
+                    cursor.setEnable(false);
                 }
             }
         }
@@ -823,7 +811,7 @@ public class CursorMain extends SXRMain {
         public void onTouchEnd(Cursor c, SXRPicker.SXRPickedObject hit)
         {
             Cursor currentCursor = c;
-            Cursor targetCursor = cursorManager.findCursorByDevice(gearWearableDevice);
+            Cursor targetCursor = cursorManager.findCursorByController(gearWearableDevice);
 
             if (targetCursor == null)
             {
