@@ -12,6 +12,7 @@ import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRScene;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.simplephysics.R;
@@ -130,8 +131,7 @@ public class MainHelper {
         return cylinderObject;
     }
 
-    public static SXRNode createBall(SXRNode ballProto, float x, float y, float z,
-                                            float[] force) throws IOException {
+    public static SXRNode createBall(SXRNode ballProto, SXRScene scene, float x, float y, float z) throws IOException {
         SXRContext context = ballProto.getSXRContext();
         SXRNode ballGeometry = new SXRNode(context, ballProto.getRenderData().getMesh(), ballProto.getRenderData().getMaterial());
         ballGeometry.getTransform().setScale(0.7f, 0.7f, 0.7f);
@@ -144,7 +144,7 @@ public class MainHelper {
         SXRRigidBody rigidBody = new SXRRigidBody(context, BALL_MASS, COLLISION_GROUP_BALL);
         rigidBody.setRestitution(1.5f);
         rigidBody.setFriction(0.5f);
-        rigidBody.applyCentralForce(force[0], force[1], force[2]);
+        scene.addNode(ballGeometry);
         ballGeometry.attachComponent(rigidBody);
         return ballGeometry;
     }
