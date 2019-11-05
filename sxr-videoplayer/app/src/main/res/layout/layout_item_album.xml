@@ -44,6 +44,7 @@
                 android:maxLines="2"
                 android:text="subtitles"
                 android:textAllCaps="true"
+                android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:textSize="24px" />
 
