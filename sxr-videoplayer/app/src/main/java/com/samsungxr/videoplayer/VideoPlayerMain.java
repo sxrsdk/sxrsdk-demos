@@ -79,7 +79,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mContext = sxrContext;
         mScene = sxrContext.getMainScene();
 
-        addSkyBoxSphere();
+        addSkyBox();
         initCursorController();
         createGallery();
         createVideoPlayer();
@@ -111,7 +111,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mParentCursor.setEnable(true);
     }
 
-    private void addSkyBoxSphere() {
+    private void addSkyBox() {
         SXRAssetLoader loader = mContext.getAssetLoader();
         ArrayList<SXRTexture> mTextureList2;
         mTextureList2 = new ArrayList<SXRTexture>(6);
