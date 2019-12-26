@@ -129,9 +129,9 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
                 }
                 mCursorController = newController;
                 newController.addPickEventListener(mTouchHandler);
-                newController.setCursor(createCursor());
                 newController.setCursorDepth(-CURSOR_DEPTH);
                 newController.setCursorControl(SXRCursorController.CursorControl.CURSOR_CONSTANT_DEPTH);
+                newController.setCursor(createCursor());
             }
         });
     }
@@ -219,10 +219,10 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
     }
 
     private void repositionScene() {
-        final float rotationX = mCursorController.getCursor().getParent().getParent().getParent().getTransform().getRotationX();
-        final float rotationY = mCursorController.getCursor().getParent().getParent().getParent().getTransform().getRotationY();
-        final float rotationZ = mCursorController.getCursor().getParent().getParent().getParent().getTransform().getRotationZ();
-        final float rotationW = mCursorController.getCursor().getParent().getParent().getParent().getTransform().getRotationW();
+        final float rotationX = getSXRContext().getMainScene().getMainCameraRig().getHeadTransform().getRotationX();
+        final float rotationY = getSXRContext().getMainScene().getMainCameraRig().getHeadTransform().getRotationY();
+        final float rotationZ = getSXRContext().getMainScene().getMainCameraRig().getHeadTransform().getRotationZ();
+        final float rotationW = getSXRContext().getMainScene().getMainCameraRig().getHeadTransform().getRotationW();
 
         Quaternionf cursorRotation = new Quaternionf(rotationX, rotationY, rotationZ, rotationW);
         Vector3f lookat = new Vector3f(0, 0, 1);
