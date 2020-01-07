@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.samsungxr.SXRAndroidResource;
+import com.samsungxr.SXRAssetLoader;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
@@ -29,6 +30,7 @@ import com.samsungxr.ITouchEvents;
 import com.samsungxr.io.SXRCursorController;
 import com.samsungxr.io.SXRInputManager;
 import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.utility.Log;
 import com.samsungxr.videoplayer.component.DefaultFadeableObject;
 import com.samsungxr.videoplayer.component.FadeableObject;
@@ -48,6 +50,7 @@ import org.joml.Vector3f;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.ArrayList;
 
 
 public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEventListener {
@@ -56,6 +59,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
     private static float CURSOR_DEPTH = -8.0f;
     private static float WIDTH_VIDEO_PLAYER = 10.0f;
     private static final float SCALE = 200.0f;
+    private static final float CUBE_WIDTH = 250.0f;
 
     private SXRContext mContext;
     private SXRScene mScene;
@@ -65,7 +69,6 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
     private FadeableObject mCurrentCursor, mParentCursor;
     private LabelCursor mLabelCursor;
     private Gallery mGallery;
-    private SXRSphereNode mSkybox;
     private NetworkManager mNetworkManager;
 
     /**
@@ -76,7 +79,7 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mContext = sxrContext;
         mScene = sxrContext.getMainScene();
 
-        addSkyBoxSphere();
+        addSkyBox();
         initCursorController();
         createGallery();
         createVideoPlayer();
@@ -108,15 +111,20 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
         mParentCursor.setEnable(true);
     }
 
-    private void addSkyBoxSphere() {
-        // Select a skybox
-        int availableSkyboxes[] = {R.raw.skybox_a, R.raw.skybox_b, R.raw.skybox_c};
-        int selectedSkybox = availableSkyboxes[new SecureRandom().nextInt(2)];
-        SXRTexture texture = mContext.getAssetLoader().loadTexture(new SXRAndroidResource(mContext, selectedSkybox));
-        mSkybox = new SXRSphereNode(mContext, 72, 144, false, texture);
-        mSkybox.setName("sphere");
-        mSkybox.getTransform().setScale(SCALE, SCALE, SCALE);
-        mScene.addNode(mSkybox);
+    private void addSkyBox() {
+        SXRAssetLoader loader = mContext.getAssetLoader();
+        ArrayList<SXRTexture> mTextureList2;
+        mTextureList2 = new ArrayList<SXRTexture>(6);
+        mTextureList2.add(loader.loadTexture(new SXRAndroidResource(mContext, R.raw.city_cubeback)));
+        mTextureList2.add(loader.loadTexture(new SXRAndroidResource(mContext, R.raw.city_cuberight)));
+        mTextureList2.add(loader.loadTexture(new SXRAndroidResource(mContext, R.raw.city_cubefront)));
+        mTextureList2.add(loader.loadTexture(new SXRAndroidResource(mContext, R.raw.city_cubeleft)));
+        mTextureList2.add(loader.loadTexture(new SXRAndroidResource(mContext, R.raw.city_cubetop)));
+        mTextureList2.add(loader.loadTexture(new SXRAndroidResource(mContext, R.raw.city_cubebottom)));
+        SXRCubeNode mCubeEnvironment2 = new SXRCubeNode( mContext, false, mTextureList2, 2);
+        mCubeEnvironment2.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH, CUBE_WIDTH);
+        mScene.addNode(mCubeEnvironment2);
+
     }
 
     private void initCursorController() {
@@ -189,7 +197,6 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
                 }
             });
 
-            mSkybox.getRenderData().getMaterial().setColor(0.6f, 0.6f, 0.6f);
         }
     };
 
@@ -205,7 +212,6 @@ public class VideoPlayerMain extends BaseVideoPlayerMain implements OnGalleryEve
                     mParentCursor.setEnable(true);
                 }
             });
-            mSkybox.getRenderData().getMaterial().setColor(1.0f, 1.0f, 1.0f);
         }
     };
 

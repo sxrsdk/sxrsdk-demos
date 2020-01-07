@@ -69,7 +69,7 @@ public class VideoPlayerApp extends Application {
             Map<String, Typeface> map = (Map<String, Typeface>) fieldValue;
             map.put(fontFamily, typeface);
         } catch (Exception e) {
-            Log.d(TAG, "error" + e.getMessage(), e);
+            Log.d(TAG, "failed to inject custom typeface.  message: " + e.getMessage());
         }
     }
 
