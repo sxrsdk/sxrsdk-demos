@@ -49,7 +49,7 @@ public class MenuCloseButton extends ControlNode {
         createTextures(sxrContext);
 
         getRenderData().getMaterial().setFloat(ButtonShader.TEXTURE_SWITCH, IDLE_STATE);
-        getRenderData().setRenderingOrder(RenderingOrder.MENU_FRAME_TEXT + 1);
+        getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
 
         attachComponent(new SXRMeshCollider(sxrContext, false));
     }

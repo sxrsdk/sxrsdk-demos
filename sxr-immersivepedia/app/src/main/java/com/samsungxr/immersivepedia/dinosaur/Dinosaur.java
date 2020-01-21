@@ -27,12 +27,7 @@ public class Dinosaur extends FocusableNode {
             SXRNode ground) {
         super(context, dino.getRenderData().getMesh(), dino.getRenderData().getMaterial().getMainTexture());
 
-        if (dino != null && dino.getRenderData() != null
-                && dino.getRenderData().getMaterial() != null) {
-            dino.getRenderData().setRenderingOrder(RenderingOrderApplication.DINOSAUR);
-            this.addChildObject(dino);
-        }
-
+        getRenderData().setRenderingOrder(RenderingOrderApplication.DINOSAUR);
         if (base != null && base.getRenderData() != null
                 && base.getRenderData().getMaterial() != null) {
             base.getRenderData().setRenderingOrder(RenderingOrderApplication.DINOSAUR);

@@ -15,21 +15,24 @@
 
 package com.samsungxr.immersivepedia.util;
 
+import com.samsungxr.SXRRenderData;
+
 public class RenderingOrderApplication {
 
-    public static final int BUTTON_BOARD = 11110000;
-    public static final int CLOSING_VIDEO = 11110000;
-    public static int LOADING_COMPONENT = 111100000;
-    public static int GALLERY = 2000;
-    public static int GALLERY_PHOTO = 1000;
-    public static int TEXT = 1000;
-    public static int TEXT_BACKGROUND = 1000;
-    public static int DINOSAUR = 800;
-    public static int GALLERY_SCROLLBAR = 1000;
-    public static int TOTEM = 800;
+    public static final int BUTTON_BOARD = SXRRenderData.SXRRenderingOrder.OVERLAY;
+    public static final int PLAY_BUTTON = SXRRenderData.SXRRenderingOrder.OVERLAY;
+    public static final int LOADING_COMPONENT = SXRRenderData.SXRRenderingOrder.OVERLAY;
+    public static final int GALLERY = SXRRenderData.SXRRenderingOrder.GEOMETRY;
+    public static final int GALLERY_PHOTO = SXRRenderData.SXRRenderingOrder.BACKGROUND;
+    public static final int TEXT_BACKGROUND = SXRRenderData.SXRRenderingOrder.TRANSPARENT;
+    public static final int DINOSAUR = SXRRenderData.SXRRenderingOrder.GEOMETRY;
+    public static final int GALLERY_SCROLLBAR = SXRRenderData.SXRRenderingOrder.BACKGROUND;
+    public static final int TOTEM = SXRRenderData.SXRRenderingOrder.TRANSPARENT;
+    public static final int CURSOR = SXRRenderData.SXRRenderingOrder.OVERLAY + 10;
 
-    public static final int BACKGROUND_IMAGE = 1;
-    public static final int MAIN_IMAGE = 2;
-    public static final int IMAGE_TEXT_BACKGROUND = 3;
-    public static final int IMAGE_TEXT = 4;
+    public static final int SKYBOX = SXRRenderData.SXRRenderingOrder.BACKGROUND;
+    public static final int BACKGROUND_IMAGE = SXRRenderData.SXRRenderingOrder.GEOMETRY;
+    public static final int MAIN_IMAGE = SXRRenderData.SXRRenderingOrder.GEOMETRY;
+    public static final int IMAGE_TEXT_BACKGROUND = SXRRenderData.SXRRenderingOrder.TRANSPARENT;
+    public static final int IMAGE_TEXT = SXRRenderData.SXRRenderingOrder.OVERLAY;
 }

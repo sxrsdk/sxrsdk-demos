@@ -361,12 +361,12 @@ public class Worm extends SXRNode {
                 rotateWorm(MovementDirection.Down);
 
             }
-            else if (swipeDirection.equals(SXRTouchPadGestureListener.Action.SwipeForward))
+            else if (swipeDirection.equals(SXRTouchPadGestureListener.Action.SwipeBackward))
             {
                 rotateAroundCamera(duration, -degree);
                 rotateWorm(MovementDirection.Right);
             }
-            else if (swipeDirection.equals(SXRTouchPadGestureListener.Action.SwipeBackward))
+            else if (swipeDirection.equals(SXRTouchPadGestureListener.Action.SwipeForward))
             {
                 rotateAroundCamera(duration, degree);
                 rotateWorm(MovementDirection.Left);

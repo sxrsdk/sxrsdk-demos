@@ -19,6 +19,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRNode;
+import com.samsungxr.SXRRenderData;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXROnFinish;
 import com.samsungxr.animation.SXROpacityAnimation;
@@ -40,14 +41,11 @@ public class SwipeIndicator extends SXRNode {
     public SwipeIndicator(SXRContext sxrContext, FocusableNode dino) {
         super(sxrContext);
         this.sxrContext = sxrContext;
-
         this.dino = dino;
         swipeIndicator = new SXRNode(sxrContext, .6f, .1f,
                 sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.swipe_trace)));
-
         hand = new SXRNode(sxrContext, sxrContext.createQuad(.2f, .3f), sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(
                 sxrContext, R.drawable.swipe_hand)));
-
         setAttribute();
 
     }
@@ -86,7 +84,7 @@ public class SwipeIndicator extends SXRNode {
     }
 
     private void setAttribute() {
-        hand.getRenderData().setRenderingOrder(1000008);
+        hand.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
         hand.getTransform().setPosition(HAND_X, HAND_Y, HAND_Z);
     }
 
