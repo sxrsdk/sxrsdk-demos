@@ -27,6 +27,7 @@ import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.io.SXRCursorController;
+import com.samsungxr.io.SXRGearCursorController;
 import com.samsungxr.io.SXRInputManager;
 
 import com.samsungxr.PlatformEntitlementCheck;
@@ -69,24 +70,18 @@ public class SampleActivity extends SXRActivity {
             scene.setBackgroundColor(1, 1, 1, 1);
 
             try {
-                float eyeheight = -2.0f; // default to 2 meters
-
-                // try to read a system prop eye height if we want to override it
-                String eyeHeightString = SystemProperties.read("debug.samsungxr.eyeheight");
-                if(eyeHeightString != null && !eyeHeightString.isEmpty()) {
-                    eyeheight = Float.parseFloat(eyeHeightString);
-                    android.util.Log.d(TAG, "eye height set to: " + eyeheight);
-                }
-
                 String roomPath = new String("sample_environment.obj");
                 String gizmoPath = new String("transformgizmo.obj");
                 String groundPath = new String("groundplane.obj");
 
                 mRoom = sxrContext.getAssetLoader().loadModel(roomPath, scene);
-                mRoom.getTransform().setPosition(0.0f, eyeheight, 0.0f);
                 SXRNode gizmo = sxrContext.getAssetLoader().loadModel(gizmoPath, scene);
-                gizmo.getTransform().setPosition(0.0f, eyeheight, 0.0f);
                 SXRNode groundplane = sxrContext.getAssetLoader().loadModel(groundPath, scene);
+                groundplane.getTransform().setPosition(0.0f, 0.001f, 0.0f);
+
+                float eyeheight = -1.0f;
+                mRoom.getTransform().setPosition(0.0f, eyeheight, 0.0f);
+                gizmo.getTransform().setPosition(0.0f, eyeheight, 0.0f);
                 groundplane.getTransform().setPosition(0.0f, eyeheight+0.001f, 0.0f);
 
                 SXRNode node = new SXRNode(getSXRContext(), 0.5f, 0.5f);
@@ -99,10 +94,9 @@ public class SampleActivity extends SXRActivity {
                 e.printStackTrace();
             }
 
-
-            getSXRContext().getInputManager().selectController(new SXRInputManager.ICursorControllerSelectListener()
+            SXRInputManager.ICursorControllerListener l = new SXRInputManager.ICursorControllerListener()
             {
-                public void onCursorControllerSelected(SXRCursorController newController, SXRCursorController oldController)
+                public void onCursorControllerAdded(SXRCursorController newController)
                 {
                     SXRNode cursor = new SXRNode(sxrContext, sxrContext.createQuad(1f, 1f),
                             sxrContext.getAssetLoader().loadTexture(
@@ -116,15 +110,23 @@ public class SampleActivity extends SXRActivity {
                     newController.getPicker().setEventOptions(EnumSet.of(
                             SXRPicker.EventOptions.SEND_TOUCH_EVENTS,
                             SXRPicker.EventOptions.SEND_TO_LISTENERS));
+                    ((SXRGearCursorController) newController).showControllerModel(true);
+                    newController.setEnable(true);
                 }
-            });
+
+                public void onCursorControllerRemoved(SXRCursorController oldController)
+                {
+
+                }
+            };
+            getSXRContext().getInputManager().getEventReceiver().addListener(l);
+            getSXRContext().getInputManager().selectController();
         }
     }
 
     private static class SystemProperties {
 
         private static String GETPROP_EXECUTABLE_PATH = "/system/bin/getprop";
-        private static String TAG = "TVR";
 
         public static String read(String propName) {
             Process process = null;
